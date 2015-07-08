@@ -16,6 +16,8 @@ public class Product {
     private String crowd;
     private String content;
     private int sales;
+    private String startTime;
+    private String endTime;
     private int status;
     private String addTime;
     private String updateTime;
@@ -96,6 +98,22 @@ public class Product {
 
     public void setSales(int sales) {
         this.sales = sales;
+    }
+
+    public String getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
     }
 
     public int getStatus() {

@@ -171,14 +171,14 @@ public class SkuServiceImpl implements SkuService {
             if (adult == null && child==null && price == null ){
                 break;
             }
-            if(adult != null && !adult.equals("")){
+            if(adult != null && !adult.equals("") && !adult.equals("0")){
                 skuPrice.setAdult(adult);
             }
-            if(child != null && !child.equals("")){
+            if(child != null && !child.equals("") && !child.equals("0")){
                 skuPrice.setChild(child);
             }
             skuPrice.setPrice(price);
-            if (adult == null || adult.equals("") || child == null || child.equals("")){
+            if (adult == null || adult.equals("") || adult.equals("0") || child == null || child.equals("") || child.equals("0")){
                 skuPrice.setUnit("0");
             }else{
                 skuPrice.setUnit("1");
@@ -211,16 +211,16 @@ public class SkuServiceImpl implements SkuService {
 
         SkuPrice skuPrice = new SkuPrice();
         String adult = req.getParameter("adult1");
-        if(adult != null && !adult.equals("")){
+        if(adult != null && !adult.equals("") && !adult.equals("0")){
             skuPrice.setAdult(adult);
         }
         String child = req.getParameter("child1");
-        if(child != null && !child.equals("")){
+        if(child != null && !child.equals("") && !child.equals("0")){
             skuPrice.setChild(child);
         }
         String prices = req.getParameter("prices1");
         skuPrice.setPrice(prices);
-        if (adult == null || adult.equals("") || child == null || child.equals("")){
+        if (adult == null || adult.equals("") || adult.equals("0") || child == null || child.equals("") || child.equals("0")){
             skuPrice.setUnit("0");
         }else{
             skuPrice.setUnit("1");
@@ -241,8 +241,16 @@ public class SkuServiceImpl implements SkuService {
         List<Map<String,Object>> list = StringUtil.parseJSON2List(jsonPrices);
         for (int i = 0; i < list.size(); i++) {
             SkuPrice entity = new SkuPrice();
-            entity.setAdult(list.get(i).get("adult").toString());
-            entity.setChild(list.get(i).get("child").toString());
+            if (list.get(i).get("adult") != null && !list.get(i).get("adult").equals("")){
+                entity.setAdult(list.get(i).get("adult").toString());
+            }else{
+                entity.setAdult("0");
+            }
+            if (list.get(i).get("child") != null && !list.get(i).get("child").equals("")){
+                entity.setChild(list.get(i).get("child").toString());
+            }else{
+                entity.setChild("0");
+            }
             entity.setPrice(list.get(i).get("price").toString());
             entity.setUnit(list.get(i).get("unit").toString());
             ls.add(entity);
@@ -261,9 +269,15 @@ public class SkuServiceImpl implements SkuService {
             String adult = "adult"+intx;
             String child = "child"+intx;
             String price = "prices"+intx;
-            String adult_value = list.get(i).get("adult").toString();
-            String child_value = list.get(i).get("child").toString();
+            String adult_value = "";
+            String child_value = "";
             String price_value = list.get(i).get("price").toString();
+            if(list.get(i).get("adult") != null && !list.get(i).get("adult").equals("")){
+                adult_value = list.get(i).get("adult").toString();
+            }
+            if(list.get(i).get("child") != null && !list.get(i).get("child").equals("")){
+                child_value = list.get(i).get("child").toString();
+            }
             sb.append("<div class='controls'>");
             sb.append("成人<input class='input-xlarge focused' id='"+adult+"' name='"+adult+"' type='text' value='"+adult_value+"'><br>");
             sb.append("孩子<input class='input-xlarge focused' id='"+child+"' name='"+child+"' type='text' value='"+child_value+"'><br>");
@@ -321,8 +335,16 @@ public class SkuServiceImpl implements SkuService {
                     }
                 }
             }
-            skuPrice.setAdult(templs.get(0).get("adult").toString());
-            skuPrice.setChild(templs.get(0).get("child").toString());
+            if (templs.get(0).get("adult")!=null && !templs.get(0).get("adult").equals("")){
+                skuPrice.setAdult(templs.get(0).get("adult").toString());
+            }else{
+                skuPrice.setAdult("0");
+            }
+            if (templs.get(0).get("child")!=null && !templs.get(0).get("child").equals("")){
+                skuPrice.setChild(templs.get(0).get("child").toString());
+            }else{
+                skuPrice.setChild("0");
+            }
             skuPrice.setPrice(templs.get(0).get("price").toString());
             skuPrice.setUnit(templs.get(0).get("unit").toString());
         }

@@ -151,7 +151,7 @@ public class ProductController {
 
         Map<String, Object> context = new HashMap<String, Object>();
 
-        Images image = imagesService.uploadImgs(req,0,"");
+        Images image = imagesService.uploadImg(req,0,"");
         int reDate = productImgService.insert(productImgService.formEntity(image,pid));
         if (reDate > 0){
             context.put(FinalUtil.RETURN_MSG,"添加地址图片数据成功!");

@@ -94,6 +94,7 @@
                                             标题:<c:out value="${entity.title}"></c:out><br>
                                             封面:<img src="${filepath}${entity.cover}" ><br>
                                             适合人群:<c:out value="${entity.crowd}"></c:out><br>
+                                            活动时间:<c:out value="${entity.startTime}"></c:out>至<c:out value="${entity.endTime}"></c:out><br>
                                             已购买:<c:out value="${entity.sales}"></c:out><br>
                                             分类:<c:out value="${entity.catename}"></c:out><br>
                                             内容编辑:
@@ -139,17 +140,14 @@
 
                                             <c:if test="${not empty entity.content}">
                                                 <a class="btn btn-success" href="${ctx}/product/oper.do?uid=${user.id}&id=${entity.id}&mark=4&pageNo=${queryPage.pageNo}">
-                                                    <i class="icon-zoom-in icon-white"></i>
                                                     预览
                                                 </a>
                                             </c:if>
                                             <c:if test="${entity.status == 2}">
                                                 <a class="btn btn-info" href="${ctx}/product/oper.do?uid=${user.id}&id=${entity.id}&mark=5&pageNo=${queryPage.pageNo}">
-                                                    <i class="icon-edit icon-white"></i>
                                                     修改
                                                 </a>
                                                 <a class="btn btn-danger" href="${ctx}/product/del.do?uid=${user.id}&id=${entity.id}&pageNo=${queryPage.pageNo}">
-                                                    <i class="icon-trash icon-white"></i>
                                                     删除
                                                 </a>
                                             </c:if>

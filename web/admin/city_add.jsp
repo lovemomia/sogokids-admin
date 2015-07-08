@@ -75,50 +75,30 @@
 
         <div id="content" class="span10">
             <!-- content starts -->
-            <div class="sortable row-fluid">
-                <a data-rel="tooltip" class="well span3 top-block" href="${ctx}/category/info.do?uid=${user.id}${user.id}&pageNo=1">
-                    <span class="icon32 icon-green icon-newwin"></span>
-                    <div>分类信息</div>
-                    <div>1001</div>
-                </a>
-                <a data-rel="tooltip" class="well span3 top-block" href="${ctx}/place/info.do?uid=${user.id}&pageNo=1">
-                    <span class="icon32 icon-orange icon-image"></span>
-                    <div>活动地址</div>
-                    <div>1002</div>
-                </a>
-                <a data-rel="tooltip" class="well span3 top-block" href="${ctx}/product/info.do?uid=${user.id}&pageNo=1">
-                    <span class="icon32 icon-red icon-flag"></span>
-                    <div>活动编辑</div>
-                    <div>1003</div>
-                </a>
-                <a data-rel="tooltip" class="well span3 top-block" href="${ctx}/sku/info.do?uid=${user.id}&pageNo=1">
-                    <!--<span class="icon32 icon-color icon-edit"></span>-->
-                    <span class="icon32 icon-color icon-cart"></span>
-                    <div>库存单位</div>
-                    <div>1004</div>
-                </a>
-            </div>
-            <div class="sortable row-fluid">
-                <!--<a data-rel="tooltip" class="well span3 top-block" href="${ctx}/city/info.do?uid=${user.id}&pageNo=1">
-                    <span class="icon32 icon-orange icon-home"></span>
-                    <div>城市编辑</div>
-                    <div>1005</div>
-                </a>
-                <a data-rel="tooltip" class="well span3 top-block" href="${ctx}/region/info.do?uid=${user.id}&pageNo=1">
-                    <span class="icon32 icon-red icon-globe"></span>
-                    <div>区域编辑</div>
-                    <div>1006</div>
-                </a>-->
-                <a data-rel="tooltip" class="well span3 top-block" href="${ctx}/user/info.do?uid=${user.id}&pageNo=1">
-                    <span class="icon32 icon-orange icon-user"></span>
-                    <div>后台用户</div>
-                    <div>1007</div>
-                </a>
-                <!--<a data-rel="tooltip" class="well span3 top-block" href="${ctx}/property/info.do?uid=${user.id}">
-                    <span class="icon32 icon-color icon-book"></span>
-                    <div>属性管理</div>
-                    <div>1006</div>
-                </a>-->
+            <div class="box span12">
+                <div class="row-fluid sortable">
+                    <div class="box-header well" data-original-title>
+                        <h2><i class="icon-user"></i> 增加城市</h2>
+                        <div class="box-icon">
+                            <a href="${ctx}/city/info.do?uid=${user.id}&pageNo=${pageNo}" class="btn btn-back btn-round"><i class="icon-remove"></i></a>
+                        </div>
+                    </div>
+                    <div class="box-content">
+                        <form class="form-horizontal" id="vform" action="${ctx}/city/add.do?uid=${user.id}&pageNo=1" method="post">
+                            <fieldset>
+                                <div class="control-group">
+                                    <label class="control-label">城市名称</label>
+                                    <div class="controls">
+                                        <input class="input-xlarge focused" id="name" name="name" type="text" value="" >
+                                    </div>
+                                </div>
+                                <div class="form-actions">
+                                    <button type="submit" class="btn btn-primary" id="confirmbtn" name="confirmbtn" >确   定</button>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
             </div>
             </div>
             <!-- content ends -->

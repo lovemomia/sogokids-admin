@@ -104,7 +104,7 @@
                                 <div class="control-group">
                                     <label class="control-label">适合人群</label>
                                     <div class="controls">
-                                        <input class="input-xlarge focused" id="crowd" name="crowd" type="text" value="">
+                                        <input id="crowd" name="crowd" type="text" value="">
                                     </div>
                                 </div>
                                 <div class="control-group">
@@ -137,6 +137,19 @@
                                         </select>
                                     </div>
                                 </div>
+                                <div class="control-group">
+                                    <label class="control-label" >活动时间</label>
+                                    <div class="controls">
+                                        <!--<input type="text" class="input-xlarge datepicker" id="startTime"  name="startTime" maxlength="8"  readonly ><br>
+                                        <input type="text" id="startTimehms"  name="startTimehms" size="6" ><br>至<br>
+                                        <input type="text" class="input-xlarge datepicker" id="endTime"  name="endTime" maxlength="8" readonly ><br>
+                                        <input type="text" id="endTimehms"  name="endTimehms" size="6" >-->
+                                        <input type="text" id="startTime" name="startTime" >
+                                        <br>至<br>
+                                        <input type="text" id="endTime" name="endTime" >
+                                    </div>
+                                </div>
+
                                 <div class="form-actions">
                                     <button type="submit" class="btn btn-primary" id="confirmbtn" name="confirmbtn" >确   定</button>
                                 </div>
@@ -234,6 +247,7 @@
 <script language="JavaScript">
 
     $(function() {
+
         $("#fileurl").change(function(){
             //alert("进入事件...");
             //加载图标
@@ -261,6 +275,8 @@
             return false;
         });
     });
+
+
 
 </script>
 

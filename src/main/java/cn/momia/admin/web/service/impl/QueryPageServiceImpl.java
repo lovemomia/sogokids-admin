@@ -3,9 +3,11 @@ package cn.momia.admin.web.service.impl;
 import cn.momia.admin.web.common.QueryPage;
 import cn.momia.admin.web.service.AdminUserService;
 import cn.momia.admin.web.service.CategoryService;
+import cn.momia.admin.web.service.CityService;
 import cn.momia.admin.web.service.PlaceService;
 import cn.momia.admin.web.service.ProductService;
 import cn.momia.admin.web.service.QueryPageService;
+import cn.momia.admin.web.service.RegionService;
 import cn.momia.admin.web.service.SkuPropertyService;
 import cn.momia.admin.web.service.SkuService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +40,13 @@ public class QueryPageServiceImpl implements QueryPageService {
 
     @Autowired
     private SkuPropertyService skuPropertyService;
+
+    @Autowired
+    private CityService cityService;
+
+    @Autowired
+    private RegionService regionService;
+
 
     @Resource
     private JdbcTemplate jdbcTemplate;
@@ -90,6 +99,16 @@ public class QueryPageServiceImpl implements QueryPageService {
             entitys = skuService.getQueryPages((pageNo-1)*pageSize, pageNo*pageSize);
             total = skuService.getEntitys().size();
             queryPage.setList(skuService.getEntities(entitys));
+        }
+        if(queryPage.getQuery_type() == 6){
+            entitys = cityService.getQueryPages((pageNo-1)*pageSize, pageNo*pageSize);
+            total = cityService.getEntitys().size();
+            queryPage.setList(entitys);
+        }
+        if(queryPage.getQuery_type() == 7){
+            entitys = regionService.getQueryPages((pageNo-1)*pageSize, pageNo*pageSize);
+            total = regionService.getEntitys().size();
+            queryPage.setList(regionService.getEntities(entitys));
         }
         queryPage.setTotalRecords(total);
         queryPage.setList(entitys);

@@ -158,6 +158,14 @@
                                         </select>
                                     </div>
                                 </div>
+                                <div class="control-group">
+                                    <label class="control-label" >活动时间</label>
+                                    <div class="controls">
+                                        <input type="text" id="startTime" name="startTime" value="${model.startTime}" >
+                                        <br>至<br>
+                                        <input type="text" id="endTime" name="endTime" value="${model.endTime}" >
+                                    </div>
+                                </div>
                                 <div class="form-actions">
                                     <button type="submit" class="btn btn-primary" id="confirmbtn" name="confirmbtn" >确   定</button>
                                 </div>

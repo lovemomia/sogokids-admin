@@ -87,7 +87,7 @@
                         <form class="form-horizontal" id="vform" action="${ctx}/product/addcontent.do?uid=${user.id}&pid=${model.id}&pageNo=${pageNo}" enctype="multipart/form-data" method="post">
                             <input id='contentsize' name='contentsize' type='hidden' value='1'>
                             <fieldset id="contentmain">
-                                <div style="border:1px solid #000000">
+                                <div style="border:1px solid #000000" padding＝0>
 
                                     <div class="control-group">
                                         <div class="controls">
@@ -97,9 +97,9 @@
                                     <div class="control-group">
                                         <div class="controls">
                                             样式:<select id="style1" name="style1">
-                                                    <option value="ol" selected>ol</option>
+                                                    <option value="ol">ol</option>
                                                     <option value="ul">ul</option>
-                                                    <option value="none">none</option>
+                                                    <option value="none" selected>none</option>
                                                 </select>
                                         </div>
                                     </div>
@@ -173,7 +173,63 @@
                                             图片:<input id="fileurl15" name="fileurl15" type="file" size="30" >
                                             <input id="images15" name="images15" type="hidden" value="fileurl15" >
                                             <input id='hidparam15' name='hidparam15' type='hidden' value='未上传图片' ><br>
-                                        </div>
+                                        </div><br>
+                                        <div class="controls" style="border:1px solid #ff0000">
+                                            控件:<select id="param16" name="param16">
+                                            <option value="0" selected>内容</option>
+                                            <option value="1">标签</option>
+                                            <option value="2">链接</option>
+                                            <option value="3">图片</option>
+                                        </select><br>
+                                            标签:<input id="label16" name="label16" value=""><br>
+                                            内容:<textarea id="text16" name="text16" rows="3" cols="5" ></textarea><br>
+                                            链接:<input id="link16" name="link16" value=""><br>
+                                            图片:<input id="fileurl16" name="fileurl16" type="file" size="30" >
+                                            <input id="images16" name="images16" type="hidden" value="fileurl16" >
+                                            <input id='hidparam16' name='hidparam16' type='hidden' value='未上传图片' ><br>
+                                        </div><br>
+                                        <div class="controls" style="border:1px solid #ff0000">
+                                            控件:<select id="param17" name="param17">
+                                            <option value="0" selected>内容</option>
+                                            <option value="1">标签</option>
+                                            <option value="2">链接</option>
+                                            <option value="3">图片</option>
+                                        </select><br>
+                                            标签:<input id="label17" name="label17" value=""><br>
+                                            内容:<textarea id="text17" name="text17" rows="3" cols="5" ></textarea><br>
+                                            链接:<input id="link17" name="link17" value=""><br>
+                                            图片:<input id="fileurl17" name="fileurl17" type="file" size="30" >
+                                            <input id="images17" name="images17" type="hidden" value="fileurl17" >
+                                            <input id='hidparam17' name='hidparam17' type='hidden' value='未上传图片' ><br>
+                                        </div><br>
+                                        <div class="controls" style="border:1px solid #ff0000">
+                                            控件:<select id="param18" name="param18">
+                                            <option value="0" selected>内容</option>
+                                            <option value="1">标签</option>
+                                            <option value="2">链接</option>
+                                            <option value="3">图片</option>
+                                        </select><br>
+                                            标签:<input id="label18" name="label18" value=""><br>
+                                            内容:<textarea id="text18" name="text18" rows="3" cols="5" ></textarea><br>
+                                            链接:<input id="link18" name="link18" value=""><br>
+                                            图片:<input id="fileurl18" name="fileurl18" type="file" size="30" >
+                                            <input id="images18" name="images18" type="hidden" value="fileurl18" >
+                                            <input id='hidparam18' name='hidparam18' type='hidden' value='未上传图片' ><br>
+                                        </div><br>
+                                        <div class="controls" style="border:1px solid #ff0000">
+                                            控件:<select id="param19" name="param19">
+                                            <option value="0" selected>内容</option>
+                                            <option value="1">标签</option>
+                                            <option value="2">链接</option>
+                                            <option value="3">图片</option>
+                                        </select><br>
+                                            标签:<input id="label19" name="label19" value=""><br>
+                                            内容:<textarea id="text19" name="text19" rows="3" cols="5" ></textarea><br>
+                                            链接:<input id="link19" name="link19" value=""><br>
+                                            图片:<input id="fileurl19" name="fileurl19" type="file" size="30" >
+                                            <input id="images19" name="images19" type="hidden" value="fileurl19" >
+                                            <input id='hidparam19' name='hidparam19' type='hidden' value='未上传图片' ><br>
+                                        </div><br>
                                     </div>
                                 </div>
                             </fieldset>

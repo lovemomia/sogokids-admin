@@ -120,7 +120,7 @@ public class PlaceController {
 
         Map<String, Object> context = new HashMap<String, Object>();
 
-        Images image = imagesService.uploadImgs(req,0,"");
+        Images image = imagesService.uploadImg(req,0,"");
         int reDate = placeImgService.insert(placeImgService.formEntity(image,pid));
         if (reDate > 0){
             context.put(FinalUtil.RETURN_MSG,"添加地址图片数据成功!");

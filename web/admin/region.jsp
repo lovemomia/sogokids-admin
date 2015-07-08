@@ -75,50 +75,61 @@
 
         <div id="content" class="span10">
             <!-- content starts -->
-            <div class="sortable row-fluid">
-                <a data-rel="tooltip" class="well span3 top-block" href="${ctx}/category/info.do?uid=${user.id}${user.id}&pageNo=1">
-                    <span class="icon32 icon-green icon-newwin"></span>
-                    <div>分类信息</div>
-                    <div>1001</div>
-                </a>
-                <a data-rel="tooltip" class="well span3 top-block" href="${ctx}/place/info.do?uid=${user.id}&pageNo=1">
-                    <span class="icon32 icon-orange icon-image"></span>
-                    <div>活动地址</div>
-                    <div>1002</div>
-                </a>
-                <a data-rel="tooltip" class="well span3 top-block" href="${ctx}/product/info.do?uid=${user.id}&pageNo=1">
-                    <span class="icon32 icon-red icon-flag"></span>
-                    <div>活动编辑</div>
-                    <div>1003</div>
-                </a>
-                <a data-rel="tooltip" class="well span3 top-block" href="${ctx}/sku/info.do?uid=${user.id}&pageNo=1">
-                    <!--<span class="icon32 icon-color icon-edit"></span>-->
-                    <span class="icon32 icon-color icon-cart"></span>
-                    <div>库存单位</div>
-                    <div>1004</div>
-                </a>
-            </div>
-            <div class="sortable row-fluid">
-                <!--<a data-rel="tooltip" class="well span3 top-block" href="${ctx}/city/info.do?uid=${user.id}&pageNo=1">
-                    <span class="icon32 icon-orange icon-home"></span>
-                    <div>城市编辑</div>
-                    <div>1005</div>
-                </a>
-                <a data-rel="tooltip" class="well span3 top-block" href="${ctx}/region/info.do?uid=${user.id}&pageNo=1">
-                    <span class="icon32 icon-red icon-globe"></span>
-                    <div>区域编辑</div>
-                    <div>1006</div>
-                </a>-->
-                <a data-rel="tooltip" class="well span3 top-block" href="${ctx}/user/info.do?uid=${user.id}&pageNo=1">
-                    <span class="icon32 icon-orange icon-user"></span>
-                    <div>后台用户</div>
-                    <div>1007</div>
-                </a>
-                <!--<a data-rel="tooltip" class="well span3 top-block" href="${ctx}/property/info.do?uid=${user.id}">
-                    <span class="icon32 icon-color icon-book"></span>
-                    <div>属性管理</div>
-                    <div>1006</div>
-                </a>-->
+            <div class="box span12">
+                <div class="row-fluid sortable">
+                    <div class="box-header well" data-original-title>
+                        <h2><i class="icon-user"></i> 区域管理</h2>
+                        <div class="box-icon">
+                            <a href="${ctx}/region/oper.do?uid=${user.id}&id=0&mark=0&pageNo=${queryPage.pageNo}" class="btn btn-add btn-round"><i class=" icon-plus"></i></a>
+                        </div>
+                    </div>
+                    <div class="box-content">
+                        <form >
+                            <table class="table table-striped table-bordered bootstrap-datatable datatable">
+                                <c:forEach items="${queryPage.list}" var="entity">
+                                    <tr>
+                                        <td>区域编号:<c:out value="${entity.id}"></c:out><br>
+                                            区域名称:<c:out value="${entity.name}"></c:out><br>
+                                            城市:<c:out value="${entity.cityname}"></c:out><br>
+                                            父级区域:<c:out value="${entity.parentname}"></c:out><br>
+                                            添加时间:<c:out value="${fn:substring(entity.addTime,0,19)}"></c:out><br>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="center">
+                                            <a class="btn btn-info" href="${ctx}/region/oper.do?uid=${user.id}&id=${entity.id}&mark=2&pageNo=${queryPage.pageNo}">
+                                                <i class="icon-edit icon-white"></i>
+                                                修改
+                                            </a>
+                                            <a class="btn btn-danger" href="${ctx}/region/del.do?uid=${user.id}&id=${entity.id}&pageNo=${queryPage.pageNo}">
+                                                <i class="icon-trash icon-white"></i>
+                                                删除
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </c:forEach>
+                                <tr>
+                                    <td class="center">
+                                        页码:${queryPage.pageNo}/${queryPage.totalPages}
+                                        <a href="${ctx}/region/info.do?uid=${user.id}&pageNo=${queryPage.topPageNo}">
+                                            首页
+                                        </a>
+                                        <a href="${ctx}/region/info.do?uid=${user.id}&pageNo=${queryPage.previousPageNo}">
+                                            上一页
+                                        </a>
+                                        <a href="${ctx}/region/info.do?uid=${user.id}&pageNo=${queryPage.nextPageNo}">
+                                            下一页
+                                        </a>
+                                        <a href="${ctx}/region/info.do?uid=${user.id}&pageNo=${queryPage.bottomPageNo}">
+                                            尾页
+                                        </a>
+                                        总纪录:${queryPage.totalRecords}
+                                    </td>
+                                </tr>
+                            </table>
+                        </form>
+                    </div>
+                </div>
             </div>
             </div>
             <!-- content ends -->

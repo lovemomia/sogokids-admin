@@ -63,6 +63,8 @@
                         <value>/product</value>
                         <value>/property</value>
                         <value>/sku</value>
+                        <value>/city</value>
+                        <value>/region</value>
                         <value>/js</value>
                         <value>/css</value>
                         <value>/upload</value>

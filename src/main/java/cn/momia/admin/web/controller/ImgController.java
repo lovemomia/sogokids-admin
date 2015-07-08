@@ -38,7 +38,7 @@ public class ImgController {
         //设置响应给前台内容的PrintWriter对象
         try {
             PrintWriter out = rsp.getWriter();
-            Images images = imagesService.uploadImgs(req,0,"");
+            Images images = imagesService.uploadImg(req,0,"");
             context.put("msg","0");
             context.put("path",images.getUrl());
 
