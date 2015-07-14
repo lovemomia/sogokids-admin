@@ -20,6 +20,7 @@ import java.util.Map;
 public class StringUtil {
 
     public static List<Map<String, Object>> parseJSON2List(String jsonStr){
+        //System.out.print(jsonStr);
         JSONArray jsonArr = JSONArray.fromObject(jsonStr);
         List<Map<String, Object>> list = new ArrayList<Map<String,Object>>();
         Iterator<JSONObject> it = jsonArr.iterator();
@@ -88,7 +89,6 @@ public class StringUtil {
         }
         return null;
     }
-
 
     //test
     public static void main(String[] args) {

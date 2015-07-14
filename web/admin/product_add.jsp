@@ -87,7 +87,7 @@
                         <form class="form-horizontal" id="vform" action="${ctx}/product/add.do?uid=${user.id}&pageNo=1" method="post">
                             <fieldset>
                                 <div class="control-group">
-                                    <label class="control-label">封面图</label>
+                                    <label class="control-label">封面大图</label>
                                     <div class="controls">
                                         <img id="img_a" src="" height="100ps" width="200ps" alt="未上传"/><br>
                                         <input id="fileurl" type="file" size="20" name="fileurl" >
@@ -96,15 +96,29 @@
                                     </div>
                                 </div>
                                 <div class="control-group">
+                                    <label class="control-label">封面小图</label>
+                                    <div class="controls">
+                                        <img id="img_b" src="" height="100ps" width="200ps" alt="未上传"/><br>
+                                        <input id="fileurlth" type="file" size="20" name="fileurlth" >
+                                        <input id="thumb" name="thumb" type="hidden">
+                                    </div>
+                                </div>
+                                <div class="control-group">
                                     <label class="control-label">活动标题</label>
                                     <div class="controls">
-                                        <textarea id="title" name="title" rows="3" cols="3"></textarea>
+                                        <textarea id="title" name="title" rows="3" cols="3" class="required"></textarea>
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    <label class="control-label">摘要</label>
+                                    <div class="controls">
+                                        <textarea id="abstracts" name="abstracts" rows="3" cols="3" class="required"></textarea>
                                     </div>
                                 </div>
                                 <div class="control-group">
                                     <label class="control-label">适合人群</label>
                                     <div class="controls">
-                                        <input id="crowd" name="crowd" type="text" value="">
+                                        <input id="crowd" name="crowd" type="text" value="" class="required">
                                     </div>
                                 </div>
                                 <div class="control-group">
@@ -138,15 +152,25 @@
                                     </div>
                                 </div>
                                 <div class="control-group">
+                                    <label class="control-label" >标签</label>
+                                    <div class="controls">
+                                        <c:forEach items="${tags}" var="node">
+                                            <label class="checkbox inline">
+                                                <input type="checkbox" id="tag" name= "tag" value="${node.id}">${node.name}
+                                            </label>
+                                        </c:forEach>
+                                    </div>
+                                </div>
+                                <div class="control-group">
                                     <label class="control-label" >活动时间</label>
                                     <div class="controls">
                                         <!--<input type="text" class="input-xlarge datepicker" id="startTime"  name="startTime" maxlength="8"  readonly ><br>
                                         <input type="text" id="startTimehms"  name="startTimehms" size="6" ><br>至<br>
                                         <input type="text" class="input-xlarge datepicker" id="endTime"  name="endTime" maxlength="8" readonly ><br>
                                         <input type="text" id="endTimehms"  name="endTimehms" size="6" >-->
-                                        <input type="text" id="startTime" name="startTime" >
+                                        <input type="text" id="startTime" name="startTime" class="required" readonly>
                                         <br>至<br>
-                                        <input type="text" id="endTime" name="endTime" >
+                                        <input type="text" id="endTime" name="endTime" class="required" readonly>
                                     </div>
                                 </div>
 
@@ -178,6 +202,14 @@
 <script src="${ctx}/admin/js/jquery-1.7.2.min.js"></script>
 <!-- jQuery UI -->
 <script src="${ctx}/admin/js/jquery-ui-1.8.21.custom.min.js"></script>
+<script src="${ctx}/admin/js/jquery-ui-timepicker-addon.js"></script>
+<script src="${ctx}/admin/js/jquery-ui-slide.min.js"></script>
+
+<!--验证框架js-->
+<script src="${ctx}/admin/js/jquery.validate.js"></script>
+<script src="${ctx}/admin/js/messages.js"></script>
+<script src="${ctx}/admin/js/messages_zh.js"></script>
+
 <!-- transition / effect library -->
 <script src="${ctx}/admin/js/bootstrap-transition.js"></script>
 <!-- alert enhancer library -->
@@ -273,6 +305,36 @@
                 }
             });
             return false;
+        });
+
+        $("#fileurlth").change(function(){
+            $.ajaxFileUpload({
+                url:'/upload/img.do',
+                secureuri :false,
+                fileElementId :'fileurlth',
+                dataType : 'text',
+                success : function (data, status){
+                    var obj = JSON.parse(data);
+                    $("#thumb").val(obj.path);
+                    var pic = $("#filepath").val();
+                    $("#img_b").attr("src", pic + obj.path);
+                },
+                error: function(data, status, e){
+                }
+            });
+            return false;
+        });
+
+        $("#vform").validate();
+
+        $('#startTime').datetimepicker({
+            dateFormat:'yy-mm-dd',
+            timeFormat: 'hh:mm:ss'
+        });
+
+        $('#endTime').datetimepicker({
+            dateFormat:'yy-mm-dd',
+            timeFormat: 'hh:mm:ss'
         });
     });
 

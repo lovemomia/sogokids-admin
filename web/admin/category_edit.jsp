@@ -106,7 +106,7 @@
                                 <div class="control-group">
                                     <label class="control-label">分类名称</label>
                                     <div class="controls">
-                                        <input class="input-xlarge focused" id="name" name="name" type="text" value="${model.name}">
+                                        <input class="required" id="name" name="name" type="text" value="${model.name}">
                                     </div>
                                 </div>
                                 <div class="form-actions">
@@ -201,7 +201,19 @@
 <script src="${ctx}/admin/js/jquery.history.js"></script>
 <!-- application script for Charisma demo -->
 <script src="${ctx}/admin/js/charisma.js"></script>
+<!--验证框架js-->
+<script src="${ctx}/admin/js/jquery.validate.js"></script>
+<script src="${ctx}/admin/js/messages.js"></script>
+<script src="${ctx}/admin/js/messages_zh.js"></script>
 
+<script language="JavaScript">
+
+    $(function() {
+
+        $("#vform").validate();
+    });
+
+</script>
 
 </body>
 </html>

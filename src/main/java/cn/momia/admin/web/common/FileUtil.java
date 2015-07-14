@@ -50,4 +50,9 @@ public class FileUtil {
     public static final String REGION_ADD = "region_add";
     public static final String REGION_EDIT = "region_edit";
 
+    //红包信息相关文件跳转
+    public static final String COUPON = "coupon";
+    public static final String COUPON_ADD = "coupon_add";
+    public static final String COUPON_EDIT = "coupon_edit";
+
 }

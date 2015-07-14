@@ -102,9 +102,11 @@
                                                 <a class="btn btn-info" href="${ctx}/product/oper.do?uid=${user.id}&id=${entity.id}&mark=2&pageNo=${queryPage.pageNo}">
                                                     添加
                                                 </a>
+                                            <c:if test="${not empty entity.content}">
                                                 <a class="btn btn-info" href="${ctx}/product/oper.do?uid=${user.id}&id=${entity.id}&mark=3&pageNo=${queryPage.pageNo}">
                                                     修改
                                                 </a>
+                                            </c:if>
                                             </c:if>
                                             <br>
                                             地址:<c:out value="${entity.placename}"></c:out><br>

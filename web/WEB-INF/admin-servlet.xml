@@ -65,6 +65,7 @@
                         <value>/sku</value>
                         <value>/city</value>
                         <value>/region</value>
+                        <value>/coupon</value>
                         <value>/js</value>
                         <value>/css</value>
                         <value>/upload</value>

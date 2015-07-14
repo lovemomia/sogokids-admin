@@ -106,13 +106,13 @@
                                 <div class="control-group">
                                     <label class="control-label">属性(活动时间)</label>
                                     <div class="controls">
-                                        <input class="input-xlarge focused" id="properties" name="properties" type="text" value="${properties}">
+                                        <input class="required" id="properties" name="properties" type="text" value="${properties}">
                                     </div>
                                 </div>
                                 <div class="control-group">
                                     <label class="control-label">库存</label>
                                     <div class="controls">
-                                        <input class="input-xlarge focused" id="stock" name="stock" type="text" value="${model.stock}" >
+                                        <input class="required" id="stock" name="stock" type="text" value="${model.stock}" >
                                     </div>
                                 </div>
                                 <div class="control-group">
@@ -212,6 +212,16 @@
 <!-- application script for Charisma demo -->
 <script src="${ctx}/admin/js/charisma.js"></script>
 
+<!--验证框架js-->
+<script src="${ctx}/admin/js/jquery.validate.js"></script>
+<script src="${ctx}/admin/js/messages.js"></script>
+<script src="${ctx}/admin/js/messages_zh.js"></script>
+
+<script language="JavaScript">
+    $(function() {
+        $("#vform").validate();
+    });
+</script>
 
 </body>
 </html>

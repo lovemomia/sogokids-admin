@@ -78,30 +78,60 @@
             <div class="box span12">
                 <div class="row-fluid sortable">
                     <div class="box-header well" data-original-title>
-                        <h2><i class="icon-user"></i> 增加用户</h2>
+                        <h2><i class="icon-user"></i> 红包管理</h2>
                         <div class="box-icon">
-                            <a href="${ctx}/user/info.do?uid=${user.id}&pageNo=${pageNo}" class="btn btn-back btn-round"><i class="icon-remove"></i></a>
+                            <a href="${ctx}/coupon/oper.do?uid=${user.id}&id=0&mark=0&pageNo=${queryPage.pageNo}" class="btn btn-add btn-round"><i class=" icon-plus"></i></a>
                         </div>
                     </div>
                     <div class="box-content">
-                        <form class="form-horizontal" id="userform" action="${ctx}/user/add.do?uid=${user.id}&pageNo=1" method="post">
-                            <fieldset>
-                                <div class="control-group">
-                                    <label class="control-label">用户名称</label>
-                                    <div class="controls">
-                                        <input class="required" id="username" name="username" type="text" value="">${msg}
-                                    </div>
-                                </div>
-                                <div class="control-group">
-                                    <label class="control-label">用户密码</label>
-                                    <div class="controls">
-                                        <input class="required" id="password" name="password" type="text" value="">
-                                    </div>
-                                </div>
-                                <div class="form-actions">
-                                    <button type="submit" class="btn btn-primary" id="confirmbtn" name="confirmbtn" >确   定</button>
-                                </div>
-                            </fieldset>
+                        <form >
+                            <table class="table table-striped table-bordered bootstrap-datatable datatable">
+                                <c:forEach items="${queryPage.list}" var="entity">
+                                    <tr>
+                                        <td>编号:<c:out value="${entity.id}"></c:out><br>
+                                            类型:<c:out value="${entity.type}"></c:out><br>
+                                            使用状态:<c:out value="${entity.usage}"></c:out><br>
+                                            标题:<c:out value="${entity.title}"></c:out><br>
+                                            描述:<c:out value="${entity.desc}"></c:out><br>
+                                            消费:<c:out value="${entity.consumption}"></c:out><br>
+                                            折扣:<c:out value="${entity.discount}"></c:out><br>
+                                            累计:<c:out value="${entity.accumulation}"></c:out><br>
+                                            有效期:<c:out value="${fn:substring(entity.startTime,0,19)}"></c:out>至<c:out value="${fn:substring(entity.endTime,0,19)}"></c:out>
+                                            <br>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="center">
+                                            <a class="btn btn-info" href="${ctx}/coupon/oper.do?uid=${user.id}&id=${entity.id}&mark=2&pageNo=${queryPage.pageNo}">
+                                                <i class="icon-edit icon-white"></i>
+                                                修改
+                                            </a>
+                                            <a class="btn btn-danger" href="${ctx}/coupon/del.do?uid=${user.id}&id=${entity.id}&pageNo=${queryPage.pageNo}">
+                                                <i class="icon-trash icon-white"></i>
+                                                删除
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </c:forEach>
+                                    <tr>
+                                        <td class="center">
+                                            页码:${queryPage.pageNo}/${queryPage.totalPages}
+                                            <a href="${ctx}/coupon/info.do?uid=${user.id}&pageNo=${queryPage.topPageNo}">
+                                                首页
+                                            </a>
+                                            <a href="${ctx}/coupon/info.do?uid=${user.id}&pageNo=${queryPage.previousPageNo}">
+                                                上一页
+                                            </a>
+                                            <a href="${ctx}/coupon/info.do?uid=${user.id}&pageNo=${queryPage.nextPageNo}">
+                                                下一页
+                                            </a>
+                                            <a href="${ctx}/coupon/info.do?uid=${user.id}&pageNo=${queryPage.bottomPageNo}">
+                                                尾页
+                                            </a>
+                                            总纪录:${queryPage.totalRecords}
+                                        </td>
+                                    </tr>
+                            </table>
                         </form>
                     </div>
                 </div>
@@ -191,16 +221,7 @@
 <script src="${ctx}/admin/js/jquery.history.js"></script>
 <!-- application script for Charisma demo -->
 <script src="${ctx}/admin/js/charisma.js"></script>
-<!--验证框架js-->
-<script src="${ctx}/admin/js/jquery.validate.js"></script>
-<script src="${ctx}/admin/js/messages.js"></script>
-<script src="${ctx}/admin/js/messages_zh.js"></script>
 
-<script language="JavaScript">
-    $(function() {
-        $("#userform").validate();
-    });
-</script>
 
 </body>
 </html>

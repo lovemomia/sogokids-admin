@@ -112,13 +112,13 @@
                 <a data-rel="tooltip" class="well span3 top-block" href="${ctx}/user/info.do?uid=${user.id}&pageNo=1">
                     <span class="icon32 icon-orange icon-user"></span>
                     <div>后台用户</div>
-                    <div>1007</div>
+                    <div>1005</div>
                 </a>
-                <!--<a data-rel="tooltip" class="well span3 top-block" href="${ctx}/property/info.do?uid=${user.id}">
-                    <span class="icon32 icon-color icon-book"></span>
-                    <div>属性管理</div>
+                <a data-rel="tooltip" class="well span3 top-block" href="${ctx}/coupon/info.do?uid=${user.id}&pageNo=1">
+                    <span class="icon32 icon-red icon-heart"></span>
+                    <div>红包管理</div>
                     <div>1006</div>
-                </a>-->
+                </a>
             </div>
             </div>
             <!-- content ends -->

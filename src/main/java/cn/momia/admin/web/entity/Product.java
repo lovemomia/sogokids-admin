@@ -10,9 +10,12 @@ public class Product {
     private int id;
     private int cityId;
     private int categoryId;
+    private String tags;
     private int placeId;
     private String title;
+    private String abstracts;
     private String cover;
+    private String thumb;
     private String crowd;
     private String content;
     private int sales;
@@ -52,6 +55,14 @@ public class Product {
         this.categoryId = categoryId;
     }
 
+    public String getTags() {
+        return tags;
+    }
+
+    public void setTags(String tags) {
+        this.tags = tags;
+    }
+
     public int getPlaceId() {
         return placeId;
     }
@@ -68,6 +79,14 @@ public class Product {
         this.cover = cover;
     }
 
+    public String getThumb() {
+        return thumb;
+    }
+
+    public void setThumb(String thumb) {
+        this.thumb = thumb;
+    }
+
     public String getCrowd() {
         return crowd;
     }
@@ -82,6 +101,14 @@ public class Product {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getAbstracts() {
+        return abstracts;
+    }
+
+    public void setAbstracts(String abstracts) {
+        this.abstracts = abstracts;
     }
 
     public String getContent() {

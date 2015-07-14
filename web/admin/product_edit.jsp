@@ -43,7 +43,6 @@
 
     <!-- The fav icon -->
     <link rel="shortcut icon" href="${ctx}/admin/img/logo200.png">
-
 </head>
 
 <body>
@@ -72,7 +71,6 @@
 <!-- topbar ends -->
 <div class="container-fluid">
     <div class="row-fluid">
-
         <div id="content" class="span10">
             <!-- content starts -->
             <div class="box span12">
@@ -87,7 +85,7 @@
                         <form class="form-horizontal" id="vform" action="${ctx}/product/edit.do?uid=${user.id}&id=${model.id}&pageNo=${pageNo}" method="post">
                             <fieldset>
                                 <div class="control-group">
-                                    <label class="control-label">封面图</label>
+                                    <label class="control-label">封面大图</label>
                                     <div class="controls">
                                         <img id="img_a" src="${filepath}${model.cover}" height="100ps" width="200ps" alt="未上传"/><br>
                                         <input id="fileurl" type="file" size="20" name="fileurl" >
@@ -96,15 +94,29 @@
                                     </div>
                                 </div>
                                 <div class="control-group">
+                                    <label class="control-label">封面小图</label>
+                                    <div class="controls">
+                                        <img id="img_b" src="${filepath}${model.thumb}" height="100ps" width="200ps" alt="未上传"/><br>
+                                        <input id="fileurlth" type="file" size="20" name="fileurlth" >
+                                        <input id="thumb" name="thumb" type="hidden" value="${model.thumb}">
+                                    </div>
+                                </div>
+                                <div class="control-group">
                                     <label class="control-label">活动标题</label>
                                     <div class="controls">
-                                        <textarea id="title" name="title" rows="3" cols="3">${model.title}</textarea>
+                                        <textarea id="title" name="title" class="required" rows="3" cols="3">${model.title}</textarea>
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    <label class="control-label">摘要</label>
+                                    <div class="controls">
+                                        <textarea id="abstracts" name="abstracts" class="required" rows="3" cols="3">${model.abstracts}</textarea>
                                     </div>
                                 </div>
                                 <div class="control-group">
                                     <label class="control-label">适合人群</label>
                                     <div class="controls">
-                                        <input class="input-xlarge focused" id="crowd" name="crowd" type="text" value="${model.crowd}">
+                                        <input class="required" id="crowd" name="crowd" type="text" value="${model.crowd}">
                                     </div>
                                 </div>
                                 <div class="control-group">
@@ -159,11 +171,21 @@
                                     </div>
                                 </div>
                                 <div class="control-group">
+                                    <label class="control-label" >标签</label>
+                                    <div class="controls">
+                                        <c:forEach items="${tags}" var="node">
+                                            <label class="checkbox inline">
+                                                <input type="checkbox" id="tag" name= "tag" value="${node.id}"  <c:if test="${node.checked==1}">checked</c:if>>${node.name}
+                                            </label>
+                                        </c:forEach>
+                                    </div>
+                                </div>
+                                <div class="control-group">
                                     <label class="control-label" >活动时间</label>
                                     <div class="controls">
-                                        <input type="text" id="startTime" name="startTime" value="${model.startTime}" >
+                                        <input type="text" id="startTime" name="startTime" class="required" readonly value="${model.startTime}" >
                                         <br>至<br>
-                                        <input type="text" id="endTime" name="endTime" value="${model.endTime}" >
+                                        <input type="text" id="endTime" name="endTime" class="required" readonly value="${model.endTime}" >
                                     </div>
                                 </div>
                                 <div class="form-actions">
@@ -193,6 +215,14 @@
 <script src="${ctx}/admin/js/jquery-1.7.2.min.js"></script>
 <!-- jQuery UI -->
 <script src="${ctx}/admin/js/jquery-ui-1.8.21.custom.min.js"></script>
+<script src="${ctx}/admin/js/jquery-ui-timepicker-addon.js"></script>
+<script src="${ctx}/admin/js/jquery-ui-slide.min.js"></script>
+
+<!--验证框架js-->
+<script src="${ctx}/admin/js/jquery.validate.js"></script>
+<script src="${ctx}/admin/js/messages.js"></script>
+<script src="${ctx}/admin/js/messages_zh.js"></script>
+
 <!-- transition / effect library -->
 <script src="${ctx}/admin/js/bootstrap-transition.js"></script>
 <!-- alert enhancer library -->
@@ -283,11 +313,42 @@
                     $("#img_a").attr("src", pic + obj.path);
                 },
                 error: function(data, status, e){
-                    alert("e===="+e);
+                    //alert("e===="+e);
                 }
             });
             return false;
         });
+
+        $("#fileurlth").change(function(){
+            $.ajaxFileUpload({
+                url:'/upload/img.do',
+                secureuri :false,
+                fileElementId :'fileurlth',
+                dataType : 'text',
+                success : function (data, status){
+                    var obj = JSON.parse(data);
+                    $("#thumb").val(obj.path);
+                    var pic = $("#filepath").val();
+                    $("#img_b").attr("src", pic + obj.path);
+                },
+                error: function(data, status, e){
+                }
+            });
+            return false;
+        });
+
+        $("#vform").validate();
+
+        $('#startTime').datetimepicker({
+            dateFormat:'yy-mm-dd',
+            timeFormat: 'hh:mm:ss'
+        });
+
+        $('#endTime').datetimepicker({
+            dateFormat:'yy-mm-dd',
+            timeFormat: 'hh:mm:ss'
+        });
+
     });
 
 </script>

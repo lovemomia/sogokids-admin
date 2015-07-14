@@ -78,24 +78,60 @@
             <div class="box span12">
                 <div class="row-fluid sortable">
                     <div class="box-header well" data-original-title>
-                        <h2><i class="icon-user"></i> 增加用户</h2>
+                        <h2><i class="icon-user"></i> 增加红包</h2>
                         <div class="box-icon">
-                            <a href="${ctx}/user/info.do?uid=${user.id}&pageNo=${pageNo}" class="btn btn-back btn-round"><i class="icon-remove"></i></a>
+                            <a href="${ctx}/coupon/info.do?uid=${user.id}&pageNo=${pageNo}" class="btn btn-back btn-round"><i class="icon-remove"></i></a>
                         </div>
                     </div>
                     <div class="box-content">
-                        <form class="form-horizontal" id="userform" action="${ctx}/user/add.do?uid=${user.id}&pageNo=1" method="post">
+                        <form class="form-horizontal" id="vform" action="${ctx}/coupon/add.do?uid=${user.id}&pageNo=1" method="post">
                             <fieldset>
                                 <div class="control-group">
-                                    <label class="control-label">用户名称</label>
+                                    <label class="control-label">标题</label>
                                     <div class="controls">
-                                        <input class="required" id="username" name="username" type="text" value="">${msg}
+                                        <input class="required" id="title" name="title" type="text" value="">
                                     </div>
                                 </div>
                                 <div class="control-group">
-                                    <label class="control-label">用户密码</label>
+                                    <label class="control-label" >选择分类</label>
                                     <div class="controls">
-                                        <input class="required" id="password" name="password" type="text" value="">
+                                        <select id="type" name="type">
+                                            <option value="1">消费满送</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    <label class="control-label" >用途</label>
+                                    <div class="controls">
+                                        <select id="usage" name="usage">
+                                            <option value="1">注册赠送</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    <label class="control-label">消费</label>
+                                    <div class="controls">
+                                        <input class="required" id="consumption" name="consumption" type="text" value="">
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    <label class="control-label">折扣</label>
+                                    <div class="controls">
+                                        <input class="required" id="discount" name="discount" type="text" value="">
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    <label class="control-label">有效期</label>
+                                    <div class="controls">
+                                        <input type="text" class="required" id="startTime"  name="startTime" value="" readonly >至
+                                        <input type="text" class="required" id="endTime"  name="endTime"  value="" readonly >
+                                    </div>
+                                </div>
+
+                                <div class="control-group">
+                                    <label class="control-label">描述</label>
+                                    <div class="controls">
+                                        <textarea id="desc" name="desc" rows="3"></textarea>
                                     </div>
                                 </div>
                                 <div class="form-actions">
@@ -126,6 +162,14 @@
 <script src="${ctx}/admin/js/jquery-1.7.2.min.js"></script>
 <!-- jQuery UI -->
 <script src="${ctx}/admin/js/jquery-ui-1.8.21.custom.min.js"></script>
+<script src="${ctx}/admin/js/jquery-ui-timepicker-addon.js"></script>
+<script src="${ctx}/admin/js/jquery-ui-slide.min.js"></script>
+
+<!--验证框架js-->
+<script src="${ctx}/admin/js/jquery.validate.js"></script>
+<script src="${ctx}/admin/js/messages.js"></script>
+<script src="${ctx}/admin/js/messages_zh.js"></script>
+
 <!-- transition / effect library -->
 <script src="${ctx}/admin/js/bootstrap-transition.js"></script>
 <!-- alert enhancer library -->
@@ -198,7 +242,17 @@
 
 <script language="JavaScript">
     $(function() {
-        $("#userform").validate();
+        $("#vform").validate();
+
+        $('#startTime').datetimepicker({
+            dateFormat:'yy-mm-dd',
+            timeFormat: 'hh:mm:ss'
+        });
+
+        $('#endTime').datetimepicker({
+            dateFormat:'yy-mm-dd',
+            timeFormat: 'hh:mm:ss'
+        });
     });
 </script>
 

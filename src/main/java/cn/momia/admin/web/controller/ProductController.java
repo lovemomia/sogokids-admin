@@ -3,7 +3,6 @@ package cn.momia.admin.web.controller;
 import cn.momia.admin.web.common.FileUtil;
 import cn.momia.admin.web.common.FinalUtil;
 import cn.momia.admin.web.entity.Images;
-import cn.momia.admin.web.entity.Sku;
 import cn.momia.admin.web.service.AdminUserService;
 import cn.momia.admin.web.service.CategoryService;
 import cn.momia.admin.web.service.CityService;
@@ -12,7 +11,7 @@ import cn.momia.admin.web.service.PlaceService;
 import cn.momia.admin.web.service.ProductImgService;
 import cn.momia.admin.web.service.ProductService;
 import cn.momia.admin.web.service.QueryPageService;
-import cn.momia.admin.web.service.SkuService;
+import cn.momia.admin.web.service.TagsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -52,7 +51,7 @@ public class ProductController {
     private ImagesService imagesService;
 
     @Autowired
-    private SkuService skuService;
+    private TagsService tagsService;
 
     @Autowired
     private QueryPageService queryPageService;
@@ -72,6 +71,7 @@ public class ProductController {
         String reStr = FileUtil.PRODUCT_EDIT;
         if (mark == 0){
             reStr = FileUtil.PRODUCT_ADD;
+            context.put("tags",tagsService.getEntitys());
         }else if (mark == 1){
             reStr = FileUtil.PRODUCT_IMG;
             context.put(FinalUtil.ENTITY,productService.get(id));
@@ -81,10 +81,10 @@ public class ProductController {
             context.put(FinalUtil.ENTITY,productService.get(id));
         }else if (mark == 3){
             reStr = "product_other_edit";
-            String content = productService.get(id).getContent();
-            if (!content.equals("")) {
-                context.put("contents", productService.getContentJsontoMap(content));
-            }
+            //String content = productService.get(id).getContent();
+            //if (!content.equals("")) {
+                //context.put("contents", productService.getContentJsontoMap(content));
+            //}
             context.put(FinalUtil.ENTITY,productService.get(id));
         }else if (mark == 4){
             reStr = "product_preview";
@@ -92,6 +92,7 @@ public class ProductController {
             context.put(FinalUtil.ENTITY,productService.get(id));
         }else{
             context.put(FinalUtil.ENTITY,productService.get(id));
+            context.put("tags",tagsService.getTags(productService.get(id).getTags()));
         }
         context.put("pageNo",pageNo);
         context.put("categorys",categoryService.getEntitys());

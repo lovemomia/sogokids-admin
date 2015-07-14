@@ -99,31 +99,31 @@
                                 <div class="control-group">
                                     <label class="control-label">属性(活动时间)</label>
                                     <div class="controls">
-                                        <input class="input-xlarge focused" id="properties" name="properties" type="text" value="" >
+                                        <input class="required" id="properties" name="properties" type="text" value="" >
                                     </div>
                                 </div>
                                 <div class="control-group">
                                     <label class="control-label">库存</label>
                                     <div class="controls">
-                                        <input class="input-xlarge focused" id="stock" name="stock" type="text" value="" >
+                                        <input class="required" id="stock" name="stock" type="text" value="" >
                                     </div>
                                 </div>
                                 <div class="control-group">
                                     <label class="control-label">成人数量</label>
                                     <div class="controls">
-                                        <input class="input-xlarge focused" id="adult1" name="adult1" type="text" value="">
+                                        <input id="adult1" name="adult1" type="text" value="">
                                     </div>
                                 </div>
                                 <div class="control-group">
                                     <label class="control-label">儿童数量</label>
                                     <div class="controls">
-                                        <input class="input-xlarge focused" id="child1" name="child1" type="text" value="">
+                                        <input id="child1" name="child1" type="text" value="">
                                     </div>
                                 </div>
                                 <div class="control-group">
                                     <label class="control-label">价格</label>
                                     <div class="controls">
-                                        <input class="input-xlarge focused" id="prices1" name="prices1" type="text" value="">
+                                        <input class="required" id="prices1" name="prices1" type="text" value="">
                                     </div>
                                 </div>
                                 <div class="form-actions">
@@ -220,6 +220,16 @@
 <!-- application script for Charisma demo -->
 <script src="${ctx}/admin/js/charisma.js"></script>
 
+<!--验证框架js-->
+<script src="${ctx}/admin/js/jquery.validate.js"></script>
+<script src="${ctx}/admin/js/messages.js"></script>
+<script src="${ctx}/admin/js/messages_zh.js"></script>
+
+<script language="JavaScript">
+    $(function() {
+        $("#vform").validate();
+    });
+</script>
 
 </body>
 </html>

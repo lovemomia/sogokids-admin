@@ -89,25 +89,25 @@
                                 <div class="control-group">
                                     <label class="control-label">地址名称</label>
                                     <div class="controls">
-                                        <input class="input-xlarge focused" id="name" name="name" type="text" value="">
+                                        <input class="required" id="name" name="name" type="text" value="">
                                     </div>
                                 </div>
                                 <div class="control-group">
                                     <label class="control-label">地址详情</label>
                                     <div class="controls">
-                                        <input class="input-xlarge focused" id="address" name="address" type="text" value="">
+                                        <input class="required" id="address" name="address" type="text" value="">
                                     </div>
                                 </div>
                                 <div class="control-group">
                                     <label class="control-label">经度</label>
                                     <div class="controls">
-                                        <input class="input-xlarge focused" id="lng" name="lng" type="text" value="">
+                                        <input class="required" id="lng" name="lng" type="text" value="">
                                     </div>
                                 </div>
                                 <div class="control-group">
                                     <label class="control-label">纬度</label>
                                     <div class="controls">
-                                        <input class="input-xlarge focused" id="lat" name="lat" type="text" value="">
+                                        <input class="required" id="lat" name="lat" type="text" value="">
                                     </div>
                                 </div>
                                 <div class="control-group">
@@ -209,7 +209,16 @@
 <script src="${ctx}/admin/js/jquery.history.js"></script>
 <!-- application script for Charisma demo -->
 <script src="${ctx}/admin/js/charisma.js"></script>
+<!--验证框架js-->
+<script src="${ctx}/admin/js/jquery.validate.js"></script>
+<script src="${ctx}/admin/js/messages.js"></script>
+<script src="${ctx}/admin/js/messages_zh.js"></script>
 
+<script language="JavaScript">
+    $(function() {
+        $("#vform").validate();
+    });
+</script>
 
 </body>
 </html>
