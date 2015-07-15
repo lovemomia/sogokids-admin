@@ -26,5 +26,11 @@ public class FinalUtil {
     public static final int RELEASE_STATUS = 1;//发布
     public static final int OFFLINE_STATUS = 2;//下线
 
+    public static final int TYPE_1 = 1;
+    public static final int TYPE_2 = 2;
+    public static final int TYPE_3 = 3;
+    public static final int TYPE_4 = 4;
+    public static final int TYPE_5 = 5;
+
 
 }

@@ -87,9 +87,27 @@
                         <form class="form-horizontal" id="vform" action="${ctx}/place/edit.do?uid=${user.id}&id=${model.id}&pageNo=${pageNo}" method="post">
                             <fieldset>
                                 <div class="control-group">
+                                    <label class="control-label" >选择城市</label>
+                                    <div class="controls">
+                                        <select id="cityId" name="cityId">
+                                            <c:forEach items="${citys}" var="node">
+                                                <c:choose>
+                                                    <c:when test="${node.id == model.cityId}">
+                                                        <option value="${node.id}" selected>${node.name}</option>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <option value="${node.id}"  >${node.name}</option>
+                                                    </c:otherwise>
+                                                </c:choose>
+                                            </c:forEach>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="control-group">
                                     <label class="control-label">地址名称</label>
                                     <div class="controls">
                                         <input class="required" id="name" name="name" type="text" value="${model.name}">
+                                        <input id="regionId" name="regionId" type="hidden" value="0">
                                     </div>
                                 </div>
                                 <div class="control-group">

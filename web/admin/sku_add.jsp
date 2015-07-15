@@ -97,7 +97,27 @@
                                     </div>
                                 </div>
                                 <div class="control-group">
-                                    <label class="control-label">属性(活动时间)</label>
+                                    <label class="control-label" >SKU类型</label>
+                                    <div class="controls">
+                                        <select id="type" name="type">
+                                            <c:forEach items="${types}" var="node">
+                                                <option value="${node.id}">${node.name}</option>
+                                            </c:forEach>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    <label class="control-label" >实名认证</label>
+                                    <div class="controls">
+                                        <select id="needRealName" name="needRealName">
+                                            <c:forEach items="${needs}" var="node">
+                                                <option value="${node.id}">${node.name}</option>
+                                            </c:forEach>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    <label class="control-label">活动属性</label>
                                     <div class="controls">
                                         <input class="required" id="properties" name="properties" type="text" value="" >
                                     </div>
@@ -106,6 +126,12 @@
                                     <label class="control-label">库存</label>
                                     <div class="controls">
                                         <input class="required" id="stock" name="stock" type="text" value="" >
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    <label class="control-label">限购数量</label>
+                                    <div class="controls">
+                                        <input class="required" id="limit" name="limit" type="text" value="" >
                                     </div>
                                 </div>
                                 <div class="control-group">
@@ -124,6 +150,12 @@
                                     <label class="control-label">价格</label>
                                     <div class="controls">
                                         <input class="required" id="prices1" name="prices1" type="text" value="">
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    <label class="control-label">描述</label>
+                                    <div class="controls">
+                                        <textarea id="desc" name="desc" rows="3" cols="5" ></textarea>
                                     </div>
                                 </div>
                                 <div class="form-actions">

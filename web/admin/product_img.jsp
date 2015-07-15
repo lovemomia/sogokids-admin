@@ -104,7 +104,14 @@
                                         <td>图片<c:out value="${entity.id}"></c:out>:
                                             <c:out value="${entity.width}"></c:out>x
                                             <c:out value="${entity.height}"></c:out><br>
-                                            <img src="${filepath}${entity.url}"  style="margin:0 auto;display:block;" height="150ps" width="300ps"><br>
+                                            <c:choose>
+                                                <c:when test="${fn:contains(entity.url,'http')}">
+                                                    <img src="${entity.url}" style="margin:0 auto;display:block;" height="150ps" width="300ps">
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <img src="${filepath}${entity.url}" style="margin:0 auto;display:block;" height="150ps" width="300ps">
+                                                </c:otherwise>
+                                            </c:choose><br>
                                         </td>
                                     </tr>
                                     <tr>

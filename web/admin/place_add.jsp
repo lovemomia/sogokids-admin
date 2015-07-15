@@ -87,9 +87,20 @@
                         <form class="form-horizontal" id="vform" action="${ctx}/place/add.do?uid=${user.id}&pageNo=1" method="post">
                             <fieldset>
                                 <div class="control-group">
+                                    <label class="control-label" >选择城市</label>
+                                    <div class="controls">
+                                        <select id="cityId" name="cityId">
+                                            <c:forEach items="${citys}" var="node">
+                                                <option value="${node.id}">${node.name}</option>
+                                            </c:forEach>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="control-group">
                                     <label class="control-label">地址名称</label>
                                     <div class="controls">
                                         <input class="required" id="name" name="name" type="text" value="">
+                                        <input id="regionId" name="regionId" type="hidden" value="0">
                                     </div>
                                 </div>
                                 <div class="control-group">

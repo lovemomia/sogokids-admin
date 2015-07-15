@@ -5,7 +5,8 @@ package cn.momia.admin.web.entity;
  */
 public class Place {
     private int id;
-    private int userId;
+    private int cityId;
+    private int regionId;
     private String name;
     private String address;
     private String desc;
@@ -23,12 +24,20 @@ public class Place {
         this.id = id;
     }
 
-    public int getUserId() {
-        return userId;
+    public int getCityId() {
+        return cityId;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setCityId(int cityId) {
+        this.cityId = cityId;
+    }
+
+    public int getRegionId() {
+        return regionId;
+    }
+
+    public void setRegionId(int regionId) {
+        this.regionId = regionId;
     }
 
     public String getName() {

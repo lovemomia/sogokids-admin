@@ -104,6 +104,40 @@
                                     </div>
                                 </div>
                                 <div class="control-group">
+                                    <label class="control-label" >SKU类型</label>
+                                    <div class="controls">
+                                        <select id="type" name="type">
+                                            <c:forEach items="${types}" var="node">
+                                                <c:choose>
+                                                    <c:when test="${node.id == model.type}">
+                                                        <option value="${node.id}" selected>${node.name}</option>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <option value="${node.id}"  >${node.name}</option>
+                                                    </c:otherwise>
+                                                </c:choose>
+                                            </c:forEach>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    <label class="control-label" >实名认证</label>
+                                    <div class="controls">
+                                        <select id="needRealName" name="needRealName">
+                                            <c:forEach items="${needs}" var="node">
+                                                <c:choose>
+                                                    <c:when test="${node.id == model.needRealName}">
+                                                        <option value="${node.id}" selected>${node.name}</option>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <option value="${node.id}"  >${node.name}</option>
+                                                    </c:otherwise>
+                                                </c:choose>
+                                            </c:forEach>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="control-group">
                                     <label class="control-label">属性(活动时间)</label>
                                     <div class="controls">
                                         <input class="required" id="properties" name="properties" type="text" value="${properties}">
@@ -116,8 +150,20 @@
                                     </div>
                                 </div>
                                 <div class="control-group">
+                                    <label class="control-label">限购数量</label>
+                                    <div class="controls">
+                                        <input class="required" id="limit" name="limit" type="text" value="${model.limit}" >
+                                    </div>
+                                </div>
+                                <div class="control-group">
                                     <label class="control-label">价格</label><br>
                                     ${prices}
+                                </div>
+                                <div class="control-group">
+                                    <label class="control-label">描述</label>
+                                    <div class="controls">
+                                        <textarea id="desc" name="desc" rows="3" cols="5" >${model.desc}</textarea>
+                                    </div>
                                 </div>
                                 <div class="form-actions">
                                     <button type="submit" class="btn btn-primary" id="confirmbtn" name="confirmbtn" >确   定</button>

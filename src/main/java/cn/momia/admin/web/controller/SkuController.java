@@ -1,10 +1,9 @@
 package cn.momia.admin.web.controller;
 
+import cn.momia.admin.web.common.EnumUtil;
 import cn.momia.admin.web.common.FileUtil;
 import cn.momia.admin.web.common.FinalUtil;
 import cn.momia.admin.web.service.AdminUserService;
-import cn.momia.admin.web.service.CategoryService;
-import cn.momia.admin.web.service.PlaceService;
 import cn.momia.admin.web.service.ProductService;
 import cn.momia.admin.web.service.QueryPageService;
 import cn.momia.admin.web.service.SkuPropertyService;
@@ -44,12 +43,6 @@ public class SkuController {
     private ProductService productService;
 
     @Autowired
-    private CategoryService categoryService;
-
-    @Autowired
-    private PlaceService placeService;
-
-    @Autowired
     private QueryPageService queryPageService;
 
     @RequestMapping("/info")
@@ -77,6 +70,8 @@ public class SkuController {
             context.put("properties", skuService.getProperties(skuService.get(id).getProperties()));
             context.put(FinalUtil.ENTITYS, productService.getEntitys());
         }
+        context.put("types", EnumUtil.getEnums(FinalUtil.TYPE_1));
+        context.put("needs", EnumUtil.getEnums(FinalUtil.TYPE_2));
         context.put("pageNo",pageNo);
         context.put(FinalUtil.USER_ENTITY,adminUserService.get(uid));
         return new ModelAndView(reStr,context);

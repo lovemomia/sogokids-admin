@@ -87,7 +87,14 @@
                                 <div class="control-group">
                                     <label class="control-label">封面大图</label>
                                     <div class="controls">
-                                        <img id="img_a" src="${filepath}${model.cover}" height="100ps" width="200ps" alt="未上传"/><br>
+                                        <c:choose>
+                                            <c:when test="${fn:contains(model.cover,'http')}">
+                                                <img id="img_a" src="${model.cover}" height="100ps" width="200ps" alt="未上传">
+                                            </c:when>
+                                            <c:otherwise>
+                                                <img id="img_a" src="${filepath}${model.cover}" height="100ps" width="200ps" alt="未上传">
+                                            </c:otherwise>
+                                        </c:choose><br>
                                         <input id="fileurl" type="file" size="20" name="fileurl" >
                                         <input id="cover" name="cover" type="hidden" value="${model.cover}">
                                         <input id="filepath" name="filepath" type="hidden" value="${filepath}">
@@ -96,7 +103,14 @@
                                 <div class="control-group">
                                     <label class="control-label">封面小图</label>
                                     <div class="controls">
-                                        <img id="img_b" src="${filepath}${model.thumb}" height="100ps" width="200ps" alt="未上传"/><br>
+                                        <c:choose>
+                                            <c:when test="${fn:contains(model.thumb,'http')}">
+                                                <img id="img_b" src="${model.thumb}" height="100ps" width="200ps" alt="未上传">
+                                            </c:when>
+                                            <c:otherwise>
+                                                <img id="img_b" src="${filepath}${model.thumb}" height="100ps" width="200ps" alt="未上传">
+                                            </c:otherwise>
+                                        </c:choose><br>
                                         <input id="fileurlth" type="file" size="20" name="fileurlth" >
                                         <input id="thumb" name="thumb" type="hidden" value="${model.thumb}">
                                     </div>

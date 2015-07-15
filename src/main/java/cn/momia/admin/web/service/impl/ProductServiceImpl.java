@@ -335,30 +335,30 @@ public class ProductServiceImpl implements ProductService {
      * @param //contentJson
      * @return
      */
- //   @Override
-//    public Map<String, String> getContentJsontoMap(String contentJson) {
-//        Map<String, String> reData = new HashMap<String, String>();
-//        List<DataBean> ls = new ArrayList<DataBean>();
-//        StringBuffer hidden = new StringBuffer();
-//        StringBuffer sb = new StringBuffer();
-//        StringBuffer buffer = new StringBuffer();
-//        if (contentJson != null && !contentJson.equals("")) {
-//            ls = getDataBean(contentJson);
-//            hidden.append("<input id='contentsize' name='contentsize' type='hidden' value='" + ls.size() + "'>");
-//            reData.put("hidden", hidden.toString());
-//            for (int i = 0; i < ls.size(); i++) {
-//                DataBean entity = ls.get(i);
-//                int intx = i + 1;
-//                String hrefname = "#tabs-" + intx;
-//                sb.append("<li><a href='" + hrefname + "'>" + entity.getTitle() + "</a></li>");
-//                buffer.append(getTitleAndStyle(entity,intx));
-//            }
-//
-//            reData.put("tabsli", sb.toString());
-//            reData.put("contentstr", buffer.toString());
-//        }
-//        return reData;
-//    }
+    @Override
+    public Map<String, String> getContentJsontoMap(String contentJson) {
+        Map<String, String> reData = new HashMap<String, String>();
+        List<DataBean> ls = new ArrayList<DataBean>();
+        StringBuffer hidden = new StringBuffer();
+        StringBuffer sb = new StringBuffer();
+        StringBuffer buffer = new StringBuffer();
+        if (contentJson != null && !contentJson.equals("")) {
+            ls = getDataBean(contentJson);
+            hidden.append("<input id='contentsize' name='contentsize' type='hidden' value='" + ls.size() + "'>");
+            reData.put("hidden", hidden.toString());
+            for (int i = 0; i < ls.size(); i++) {
+                DataBean entity = ls.get(i);
+                int intx = i + 1;
+                String hrefname = "#tabs-" + intx;
+                sb.append("<li><a href='" + hrefname + "'>" + entity.getTitle() + "</a></li>");
+                buffer.append(getTitleAndStyle(entity,intx));
+            }
+
+            reData.put("tabsli", sb.toString());
+            reData.put("contentstr", buffer.toString());
+        }
+        return reData;
+    }
 
     /**
      * 根据content信息组装标题(title)和样式(style)
@@ -477,8 +477,12 @@ public class ProductServiceImpl implements ProductService {
                 sb.append("图片:<input id='"+imgid+"' name='"+imgid+"' type='file'>未上传");
                 sb.append("<input id='"+imgname+"' name='"+imgname+"' type='hidden' value='"+imgid+"' ><br>");
             }else{
+                String url = entity.getImg();
+                if (!url.contains("http")){
+                    url = ConfigUtil.loadProperties().getProperty("serverPath") + url;
+                }
                 sb.append("图片:<input id='"+imgid+"' name='"+imgid+"' type='file'><br>");
-                sb.append("<img id='"+imgparam+"' src='"+ConfigUtil.loadProperties().getProperty("serverPath")+entity.getImg()+"' height='100ps' width='250ps'></img>");
+                sb.append("<img id='"+imgparam+"' src='"+url+"' height='100ps' width='250ps'></img>");
                 sb.append("<input id='"+hidparam+"' name='"+hidparam+"' type='hidden' value='"+entity.getImg()+"' ><br>");
                 sb.append("<input id='"+imgname+"' name='"+imgname+"' type='hidden' value='"+imgid+"' ><br>");
             }
@@ -554,7 +558,11 @@ public class ProductServiceImpl implements ProductService {
             for (int i = 0; i < imgs.size(); i++) {
                 int intx = i + 1;
                 String img_id = "img" + intx;
-                reData.append("<p><img id='" + img_id + "' src='" + ConfigUtil.loadProperties().getProperty("serverPath") + imgs.get(i).getUrl() + "'></img><br></p>");
+                String imgurl = imgs.get(i).getUrl();
+                if(!imgurl.contains("http")){
+                    imgurl = ConfigUtil.loadProperties().getProperty("serverPath") + imgurl;
+                }
+                reData.append("<p><img id='" + img_id + "' src='" +imgurl+ "'></img><br></p>");
             }
         }else{
             reData.append("<p><img id='img1' src='' alt = '没有图片'></img><br></p>");
@@ -618,7 +626,10 @@ public class ProductServiceImpl implements ProductService {
                         reData.append(text);
                         reData.append("<br>");
                     }
-                    reData.append("<img id='drimg"+k+"' src='"+ConfigUtil.loadProperties().getProperty("serverPath")+ img +"'></img><br>");
+                    if(!img.contains("http")){
+                        img = ConfigUtil.loadProperties().getProperty("serverPath") + img;
+                    }
+                    reData.append("<img id='drimg"+k+"' src='"+ img +"'></img><br>");
                     reData.append("<br>");
                 }else{
                     if(text != null && !text.equals("")){

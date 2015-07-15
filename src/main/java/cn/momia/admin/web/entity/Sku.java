@@ -11,6 +11,9 @@ public class Sku {
     private int productId;
     private String properties;
     private String prices;
+    private int type;//0普通sku 1赠送类sku
+    private int limit;//限购
+    private int needRealName;//实名认证 0不需要 1需要
     private int stock;
     private int unlockedStock;
     private int lockedStock;
@@ -18,6 +21,7 @@ public class Sku {
     private String addTime;
     private String updateTime;
     private SkuOther skuOther;
+    private String desc;
 
     private String propertiesValue;
     private List<SkuPrice> skuPrices;
@@ -53,6 +57,38 @@ public class Sku {
 
     public void setPrices(String prices) {
         this.prices = prices;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
+
+    public int getLimit() {
+        return limit;
+    }
+
+    public void setLimit(int limit) {
+        this.limit = limit;
+    }
+
+    public int getNeedRealName() {
+        return needRealName;
+    }
+
+    public void setNeedRealName(int needRealName) {
+        this.needRealName = needRealName;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
     }
 
     public int getStock() {

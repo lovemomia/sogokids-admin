@@ -92,7 +92,15 @@
                                         <td>
                                             编号:<c:out value="${entity.id}"></c:out><br>
                                             标题:<c:out value="${entity.title}"></c:out><br>
-                                            封面:<img src="${filepath}${entity.cover}" ><br>
+                                            封面:
+                                            <c:choose>
+                                                <c:when test="${fn:contains(entity.cover,'http')}">
+                                                    <img src="${entity.cover}" >
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <img src="${filepath}${entity.cover}" >
+                                                </c:otherwise>
+                                            </c:choose><br>
                                             适合人群:<c:out value="${entity.crowd}"></c:out><br>
                                             活动时间:<c:out value="${entity.startTime}"></c:out>至<c:out value="${entity.endTime}"></c:out><br>
                                             已购买:<c:out value="${entity.sales}"></c:out><br>

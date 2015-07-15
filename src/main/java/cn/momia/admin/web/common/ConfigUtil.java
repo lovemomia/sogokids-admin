@@ -15,8 +15,8 @@ public class ConfigUtil {
 
     private static Logger logger = LoggerFactory.getLogger(ConfigUtil.class);
 
-    public static final String CONFIG_FILE = ConfigUtil.class.getResource("/").getPath().toString().replaceAll("file:/", "") + "beans/config.properties";
-
+   // public static final String CONFIG_FILE = ConfigUtil.class.getResource("/").getPath().toString().replaceAll("file:/", "") + "beans/config.properties";
+   // public final static String CONFIG_FILE = Object.class.getResourceAsStream("/beans/config.properties").getClass().get;
    /* public static void main(String[] args) {
 
         Properties prop = new Properties();
@@ -38,9 +38,11 @@ public class ConfigUtil {
 
     public static Properties loadProperties() {
         Properties prop = new Properties();
+        InputStream in = null;
         try {
             //读取属性文件config.properties
-            InputStream in = new BufferedInputStream(new FileInputStream(CONFIG_FILE));
+            //InputStream in = new BufferedInputStream(new FileInputStream(CONFIG_FILE));
+            in = Object.class.getResourceAsStream("/beans/config.properties");
             prop.load(in);     ///加载属性列表
             Iterator<String> it = prop.stringPropertyNames().iterator();
             while (it.hasNext()) {
@@ -50,8 +52,8 @@ public class ConfigUtil {
             in.close();
 
         } catch (Exception e) {
-            logger.error("系统配置文件" + CONFIG_FILE + "不存在!");
-            throw new IllegalArgumentException("系统配置文件" + CONFIG_FILE + "不存在!");
+            logger.error("System configuration file '" + "aaa" + "' Does not exist!");
+            throw new IllegalArgumentException("System configuration file '" + "bbb" + "' Does not exist!");
         }
 
         return prop;

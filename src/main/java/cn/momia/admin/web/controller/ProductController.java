@@ -81,10 +81,10 @@ public class ProductController {
             context.put(FinalUtil.ENTITY,productService.get(id));
         }else if (mark == 3){
             reStr = "product_other_edit";
-            //String content = productService.get(id).getContent();
-            //if (!content.equals("")) {
-                //context.put("contents", productService.getContentJsontoMap(content));
-            //}
+            String content = productService.get(id).getContent();
+            if (!content.equals("")) {
+                context.put("contents", productService.getContentJsontoMap(content));
+            }
             context.put(FinalUtil.ENTITY,productService.get(id));
         }else if (mark == 4){
             reStr = "product_preview";

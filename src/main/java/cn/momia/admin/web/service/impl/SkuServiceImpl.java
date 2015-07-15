@@ -46,15 +46,19 @@ public class SkuServiceImpl implements SkuService {
 
     @Override
     public Sku get(int id) {
-        String sql = "select id,productId,properties,prices,stock,unlockedStock,lockedStock,status,addTime from t_sku where id = ? and status > ? ";
+        String sql = "select id,productId,`desc`,type,properties,prices,`limit`,needRealName,stock,unlockedStock,lockedStock,status,addTime from t_sku where id = ? and status > ? ";
         final Object [] params = new Object[]{id, FinalUtil.DEL_STATUS};
         final Sku entity = new Sku();
         jdbcTemplate.query(sql,params, new RowCallbackHandler(){
             public void processRow(ResultSet rs) throws SQLException {
                 entity.setId(rs.getInt("id"));
                 entity.setProductId(rs.getInt("productId"));
+                entity.setDesc(rs.getString("desc"));
+                entity.setType(rs.getInt("type"));
                 entity.setProperties(rs.getString("properties"));
                 entity.setPrices(rs.getString("prices"));
+                entity.setLimit(rs.getInt("limit"));
+                entity.setNeedRealName(rs.getInt("needRealName"));
                 entity.setStock(rs.getInt("stock"));
                 entity.setUnlockedStock(rs.getInt("unlockedStock"));
                 entity.setLockedStock(rs.getInt("lockedStock"));
@@ -69,7 +73,7 @@ public class SkuServiceImpl implements SkuService {
     @Override
     public List<Sku> getEntitys() {
         List<Sku> reData = new ArrayList<Sku>();
-        String sql = "select id,productId,properties,prices,stock,unlockedStock,lockedStock,status,addTime from t_sku where status > ? order by id desc";
+        String sql = "select id,productId,`desc`,type,properties,prices,`limit`,needRealName,stock,unlockedStock,lockedStock,status,addTime from t_sku where status > ? order by id desc";
         Object [] params = new Object[]{FinalUtil.DEL_STATUS};
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql, params);
         if(list.size() > 0){
@@ -77,8 +81,12 @@ public class SkuServiceImpl implements SkuService {
                 Sku entity = new Sku();
                 entity.setId(Integer.parseInt(list.get(i).get("id").toString()));
                 entity.setProductId(Integer.parseInt(list.get(i).get("productId").toString()));
+                entity.setDesc(list.get(i).get("desc").toString());
+                entity.setType(Integer.parseInt(list.get(i).get("type").toString()));
                 entity.setProperties(list.get(i).get("properties").toString());
                 entity.setPrices(list.get(i).get("prices").toString());
+                entity.setLimit(Integer.parseInt(list.get(i).get("limit").toString()));
+                entity.setNeedRealName(Integer.parseInt(list.get(i).get("needRealName").toString()));
                 entity.setStock(Integer.parseInt(list.get(i).get("stock").toString()));
                 entity.setUnlockedStock(Integer.parseInt(list.get(i).get("unlockedStock").toString()));
                 entity.setLockedStock(Integer.parseInt(list.get(i).get("lockedStock").toString()));
@@ -94,7 +102,7 @@ public class SkuServiceImpl implements SkuService {
     @Override
     public List<Sku> getEntitysByKey(int productId) {
         List<Sku> reData = new ArrayList<Sku>();
-        String sql = "select id,productId,properties,prices,stock,unlockedStock,lockedStock,status,addTime from t_sku where productId = ? and status > ? ";
+        String sql = "select id,productId,`desc`,type,properties,prices,`limit`,needRealName,stock,unlockedStock,lockedStock,status,addTime from t_sku where productId = ? and status > ? ";
         Object [] params = new Object[]{productId, FinalUtil.DEL_STATUS};
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql, params);
         if(list.size() > 0){
@@ -102,8 +110,12 @@ public class SkuServiceImpl implements SkuService {
                 Sku entity = new Sku();
                 entity.setId(Integer.parseInt(list.get(i).get("id").toString()));
                 entity.setProductId(Integer.parseInt(list.get(i).get("productId").toString()));
+                entity.setDesc(list.get(i).get("desc").toString());
+                entity.setType(Integer.parseInt(list.get(i).get("type").toString()));
                 entity.setProperties(list.get(i).get("properties").toString());
                 entity.setPrices(list.get(i).get("prices").toString());
+                entity.setLimit(Integer.parseInt(list.get(i).get("limit").toString()));
+                entity.setNeedRealName(Integer.parseInt(list.get(i).get("needRealName").toString()));
                 entity.setStock(Integer.parseInt(list.get(i).get("stock").toString()));
                 entity.setUnlockedStock(Integer.parseInt(list.get(i).get("unlockedStock").toString()));
                 entity.setLockedStock(Integer.parseInt(list.get(i).get("lockedStock").toString()));
@@ -118,16 +130,16 @@ public class SkuServiceImpl implements SkuService {
 
     @Override
     public int insert(Sku entity) {
-        String sql = "insert into t_sku(productId,properties,prices,stock,unlockedStock,lockedStock,status,addTime) value(?, ?, ?, ?, ?, ?, ?, NOW()) ";
-        Object [] params = new Object[]{entity.getProductId(), entity.getProperties(), entity.getPrices(), entity.getStock(), entity.getUnlockedStock(), entity.getLockedStock(), FinalUtil.ADD_STATUS};
+        String sql = "insert into t_sku(productId,`desc`,type,properties,prices,`limit`,needRealName,stock,unlockedStock,lockedStock,status,addTime) value(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW()) ";
+        Object [] params = new Object[]{entity.getProductId(), entity.getDesc(), entity.getType(), entity.getProperties(), entity.getPrices(), entity.getLimit(), entity.getNeedRealName(), entity.getStock(), entity.getUnlockedStock(), entity.getLockedStock(), FinalUtil.ADD_STATUS};
         int reData = jdbcTemplate.update(sql,params);
         return reData;
     }
 
     @Override
     public int update(Sku entity) {
-        String sql = "update t_sku set productId = ? , properties = ?, prices = ?, stock = ?, unlockedStock = ? where id = ? ";
-        Object [] params = new Object[]{entity.getProductId(), entity.getProperties(), entity.getPrices(), entity.getStock(), entity.getUnlockedStock(), entity.getId()};
+        String sql = "update t_sku set productId = ? , `desc` = ?, type = ? ,  properties = ?, prices = ?, `limit` = ?, needRealName = ?, stock = ?, unlockedStock = ? where id = ? ";
+        Object [] params = new Object[]{entity.getProductId(), entity.getDesc(), entity.getType(), entity.getProperties(), entity.getPrices(), entity.getLimit(), entity.getNeedRealName(), entity.getStock(), entity.getUnlockedStock(), entity.getId()};
         int reData = jdbcTemplate.update(sql,params);
         return reData;
     }
@@ -194,7 +206,12 @@ public class SkuServiceImpl implements SkuService {
         entity.setPrices(priceStr);
         int stock = Integer.parseInt(req.getParameter("stock"));
         entity.setStock(stock);
-        entity.setStock(stock);
+        entity.setUnlockedStock(stock);
+        entity.setLockedStock(0);
+        entity.setDesc(req.getParameter("desc"));
+        entity.setType(Integer.parseInt(req.getParameter("type")));
+        entity.setLimit(Integer.parseInt(req.getParameter("limit")));
+        entity.setNeedRealName(Integer.parseInt(req.getParameter("needRealName")));
 
         return entity;
     }
@@ -375,7 +392,7 @@ public class SkuServiceImpl implements SkuService {
     @Override
     public List<Sku> getQueryPages(int start_row,int end_row) {
         List<Sku> reData = new ArrayList<Sku>();
-        String sql = "select id,productId,properties,prices,stock,unlockedStock,lockedStock,status,addTime from t_sku where status > ? order by id desc limit "+start_row+","+end_row;
+        String sql = "select id,productId,`desc`,type,properties,prices,`limit`,needRealName,stock,unlockedStock,lockedStock,status,addTime from t_sku where status > ? order by id desc limit "+start_row+","+end_row;
         Object [] params = new Object[]{FinalUtil.DEL_STATUS};
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql, params);
         if(list.size() > 0){
@@ -383,8 +400,12 @@ public class SkuServiceImpl implements SkuService {
                 Sku entity = new Sku();
                 entity.setId(Integer.parseInt(list.get(i).get("id").toString()));
                 entity.setProductId(Integer.parseInt(list.get(i).get("productId").toString()));
+                entity.setDesc(list.get(i).get("desc").toString());
+                entity.setType(Integer.parseInt(list.get(i).get("type").toString()));
                 entity.setProperties(list.get(i).get("properties").toString());
                 entity.setPrices(list.get(i).get("prices").toString());
+                entity.setLimit(Integer.parseInt(list.get(i).get("limit").toString()));
+                entity.setNeedRealName(Integer.parseInt(list.get(i).get("needRealName").toString()));
                 entity.setStock(Integer.parseInt(list.get(i).get("stock").toString()));
                 entity.setUnlockedStock(Integer.parseInt(list.get(i).get("unlockedStock").toString()));
                 entity.setLockedStock(Integer.parseInt(list.get(i).get("lockedStock").toString()));

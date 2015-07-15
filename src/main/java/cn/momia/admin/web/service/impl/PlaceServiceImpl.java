@@ -40,12 +40,14 @@ public class PlaceServiceImpl implements PlaceService {
     @Override
     public Place get(int id) {
 
-        String sql = "select id,name,address,`desc`,lng,lat,status,addTime from t_place where id = ? and status > ? ";
+        String sql = "select id,cityId,regionId,name,address,`desc`,lng,lat,status,addTime from t_place where id = ? and status > ? ";
         final Object [] params = new Object[]{id, FinalUtil.DEL_STATUS};
         final Place entity = new Place();
         jdbcTemplate.query(sql,params, new RowCallbackHandler(){
             public void processRow(ResultSet rs) throws SQLException {
                 entity.setId(rs.getInt("id"));
+                entity.setCityId(rs.getInt("cityId"));
+                entity.setRegionId(rs.getInt("regionId"));
                 entity.setName(rs.getString("name"));
                 entity.setAddress(rs.getString("address"));
                 entity.setDesc(rs.getString("desc"));
@@ -62,13 +64,15 @@ public class PlaceServiceImpl implements PlaceService {
     @Override
     public List<Place> getEntitys() {
         List<Place> reData = new ArrayList<Place>();
-        String sql = "select id,name,address,`desc`,lng,lat,status,addTime from t_place where status > ? order by id desc";
+        String sql = "select id,cityId,regionId,name,address,`desc`,lng,lat,status,addTime from t_place where status > ? order by id desc";
         Object [] params = new Object[]{FinalUtil.DEL_STATUS};
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql, params);
         if(list.size() > 0){
             for (int i = 0; i < list.size(); i++) {
                 Place entity = new Place();
                 entity.setId(Integer.parseInt(list.get(i).get("id").toString()));
+                entity.setCityId(Integer.parseInt(list.get(i).get("cityId").toString()));
+                entity.setRegionId(Integer.parseInt(list.get(i).get("regionId").toString()));
                 entity.setName(list.get(i).get("name").toString());
                 entity.setAddress(list.get(i).get("address").toString());
                 entity.setDesc(list.get(i).get("desc").toString());
@@ -85,8 +89,8 @@ public class PlaceServiceImpl implements PlaceService {
 
     @Override
     public int insert(Place entity) {
-        String sql = "insert into t_place(name, address, `desc`, lng, lat, status,addTime) value(?, ?, ?, ?, ?, ?,NOW()) ";
-        Object [] params = new Object[]{entity.getName(), entity.getAddress(), entity.getDesc(), entity.getLng(), entity.getLat(), FinalUtil.ADD_STATUS};
+        String sql = "insert into t_place(cityId,regionId,name, address, `desc`, lng, lat, status,addTime) value(?, ?, ?, ?, ?, ?, ?, ?,NOW()) ";
+        Object [] params = new Object[]{entity.getCityId(), entity.getRegionId(), entity.getName(), entity.getAddress(), entity.getDesc(), entity.getLng(), entity.getLat(), FinalUtil.ADD_STATUS};
         int reData = jdbcTemplate.update(sql,params);
         return reData;
     }
@@ -94,13 +98,15 @@ public class PlaceServiceImpl implements PlaceService {
     @Override
     public int insertKey(Place entity) {
         final Place place = entity;
-        final String sql = "insert into t_place (name, address, `desc`, lng, lat, status) values (?, ?, ?, ?, ?, ?)";
+        final String sql = "insert into t_place (cityId, regionId, name, address, `desc`, lng, lat, status) values (?, ?, ?, ?, ?, ?, ?, ?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         int reData = jdbcTemplate.update( new PreparedStatementCreator(){
             public java.sql.PreparedStatement createPreparedStatement(Connection conn) throws SQLException{
 
                 int i = 0;
                 java.sql.PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+                ps.setInt(++i, place.getCityId());
+                ps.setInt(++i, place.getRegionId());
                 ps.setString(++i, place.getName());
                 ps.setString(++i, place.getAddress());
                 ps.setString(++i, place.getDesc());
@@ -119,8 +125,8 @@ public class PlaceServiceImpl implements PlaceService {
 
     @Override
     public int update(Place entity) {
-        String sql = "update t_place set name = ? , address = ?, `desc` = ?, lng = ?, lat = ? where id = ? ";
-        Object [] params = new Object[]{entity.getName(), entity.getAddress(), entity.getDesc(), entity.getLng(), entity.getLat(), entity.getId()};
+        String sql = "update t_place set cityId = ?, regionId = ?, name = ? , address = ?, `desc` = ?, lng = ?, lat = ? where id = ? ";
+        Object [] params = new Object[]{entity.getCityId(), entity.getRegionId(), entity.getName(), entity.getAddress(), entity.getDesc(), entity.getLng(), entity.getLat(), entity.getId()};
         int reData = jdbcTemplate.update(sql,params);
         return reData;
     }
@@ -137,6 +143,8 @@ public class PlaceServiceImpl implements PlaceService {
     public Place formEntity(HttpServletRequest request, int id) {
         Place entity = new Place();
         entity.setId(id);
+        entity.setCityId(Integer.parseInt(request.getParameter("cityId")));
+        entity.setRegionId(Integer.parseInt(request.getParameter("regionId")));
         entity.setName(request.getParameter("name"));
         entity.setAddress(request.getParameter("address"));
         entity.setDesc(request.getParameter("desc"));
@@ -148,13 +156,15 @@ public class PlaceServiceImpl implements PlaceService {
     @Override
     public List<Place> getQueryPages(int start_row,int end_row) {
         List<Place> reData = new ArrayList<Place>();
-        String sql = "select id,name,address,`desc`,lng,lat,status,addTime from t_place where status > ? order by id desc limit "+start_row+","+end_row;
+        String sql = "select id,cityId, regionId, name,address,`desc`,lng,lat,status,addTime from t_place where status > ? order by id desc limit "+start_row+","+end_row;
         Object [] params = new Object[]{FinalUtil.DEL_STATUS};
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql, params);
         if(list.size() > 0){
             for (int i = 0; i < list.size(); i++) {
                 Place entity = new Place();
                 entity.setId(Integer.parseInt(list.get(i).get("id").toString()));
+                entity.setCityId(Integer.parseInt(list.get(i).get("cityId").toString()));
+                entity.setRegionId(Integer.parseInt(list.get(i).get("regionId").toString()));
                 entity.setName(list.get(i).get("name").toString());
                 entity.setAddress(list.get(i).get("address").toString());
                 entity.setDesc(list.get(i).get("desc").toString());

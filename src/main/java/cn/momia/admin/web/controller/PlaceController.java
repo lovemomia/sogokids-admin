@@ -5,10 +5,12 @@ import cn.momia.admin.web.common.FinalUtil;
 import cn.momia.admin.web.entity.Images;
 import cn.momia.admin.web.entity.ReturnResult;
 import cn.momia.admin.web.service.AdminUserService;
+import cn.momia.admin.web.service.CityService;
 import cn.momia.admin.web.service.ImagesService;
 import cn.momia.admin.web.service.PlaceImgService;
 import cn.momia.admin.web.service.PlaceService;
 import cn.momia.admin.web.service.QueryPageService;
+import cn.momia.admin.web.service.RegionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,6 +45,12 @@ public class PlaceController {
     @Autowired
     private QueryPageService queryPageService;
 
+    @Autowired
+    private CityService cityService;
+
+    @Autowired
+    private RegionService regionService;
+
     @RequestMapping("/info")
     public ModelAndView info(@RequestParam("uid") int uid,@RequestParam("pageNo") int pageNo, HttpServletRequest req){
         Map<String, Object> context = new HashMap<String, Object>();
@@ -65,6 +73,8 @@ public class PlaceController {
         else{
             context.put(FinalUtil.ENTITY,placeService.get(id));
         }
+        context.put("citys",cityService.getEntitys());
+        //context.put("regions",regionService.getEntitys());
         context.put("pageNo",pageNo);
         context.put(FinalUtil.USER_ENTITY,adminUserService.get(uid));
         return new ModelAndView(reStr,context);
