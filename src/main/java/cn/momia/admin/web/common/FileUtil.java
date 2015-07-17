@@ -1,5 +1,12 @@
 package cn.momia.admin.web.common;
 
+import cn.momia.common.config.Configuration;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+
 /**
  * Created by hoze on 15/6/15.
  */
@@ -54,5 +61,47 @@ public class FileUtil {
     public static final String COUPON = "coupon";
     public static final String COUPON_ADD = "coupon_add";
     public static final String COUPON_EDIT = "coupon_edit";
+
+    public void setServerPath(String serverPath) {
+        SERVER_PATH = serverPath;
+    }
+
+    public static String SERVER_PATH = "";
+
+    public static InputStream openFileInputStream(String fileName) {
+        InputStream inputStream = null;
+
+        // 先尝试直接打开文件
+        try {
+            inputStream = new FileInputStream(fileName);
+        } catch (Exception e) {
+            // 直接打开文件失败时忽略异常，尝试从classpath下加载文件
+        }
+
+        if (inputStream == null) {
+            try {
+                File file = getFileInClassPath(fileName);
+                inputStream = new FileInputStream(file);
+            } catch (Exception e) {
+                throw new RuntimeException("fail to open file input stream of file: " + fileName);
+            }
+        }
+
+        return inputStream;
+    }
+
+    private static File getFileInClassPath(String fileName) throws FileNotFoundException {
+        String[] classPaths = System.getProperty("java.class.path").split(System.getProperty("path.separator"));
+
+        for (String path : classPaths) {
+            File parentFile = new File(path);
+            if (parentFile.exists() && parentFile.isDirectory()) {
+                File file = new File(parentFile, fileName);
+                if (file.exists()) return file;
+            }
+        }
+
+        throw new FileNotFoundException(fileName);
+    }
 
 }

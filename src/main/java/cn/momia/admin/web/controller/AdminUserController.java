@@ -49,12 +49,12 @@ public class AdminUserController {
         Map<String, Object> context = new HashMap<String, Object>();
         String reStr = FileUtil.USER_LOGIN;
         AdminUser entity = adminUserService.isVerify(username, password);
-        if(!entity.exists()){
+        if(null != entity.getUsername() && !entity.getUsername().equals("")){
             context.put(FinalUtil.USER_ENTITY, entity);
             context.put(FinalUtil.RETURN_MSG, FinalUtil.LOGIN_SUCESS);
             reStr = FileUtil.USER_LOGIN_SUCESS;
         }else {
-            context.put(FinalUtil.RETURN_MSG, FinalUtil.LOGIN_AFTER);
+            context.put(FinalUtil.RETURN_MSG, "<font color=red >"+FinalUtil.LOGIN_AFTER+"</font>");
         }
 
         return new ModelAndView(reStr,context);

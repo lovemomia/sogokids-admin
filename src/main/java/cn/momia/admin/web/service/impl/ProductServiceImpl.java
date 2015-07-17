@@ -1,9 +1,9 @@
 package cn.momia.admin.web.service.impl;
 
-import cn.momia.admin.web.common.ConfigUtil;
 import cn.momia.admin.web.common.FinalUtil;
 import cn.momia.admin.web.common.StringUtil;
 import cn.momia.admin.web.entity.Category;
+import cn.momia.common.config.Configuration;
 import cn.momia.admin.web.entity.City;
 import cn.momia.admin.web.entity.Content;
 import cn.momia.admin.web.entity.DataBean;
@@ -25,7 +25,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowCallbackHandler;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -60,6 +59,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     private ImagesService imagesService;
+
+    @Autowired
+    private Configuration configuration;
 
     @Resource
     private JdbcTemplate jdbcTemplate;
@@ -479,7 +481,7 @@ public class ProductServiceImpl implements ProductService {
             }else{
                 String url = entity.getImg();
                 if (!url.contains("http")){
-                    url = ConfigUtil.loadProperties().getProperty("serverPath") + url;
+                    url = configuration.getString(FinalUtil.DISPLAY_IMAGE) + url;
                 }
                 sb.append("图片:<input id='"+imgid+"' name='"+imgid+"' type='file'><br>");
                 sb.append("<img id='"+imgparam+"' src='"+url+"' height='100ps' width='250ps'></img>");
@@ -560,7 +562,7 @@ public class ProductServiceImpl implements ProductService {
                 String img_id = "img" + intx;
                 String imgurl = imgs.get(i).getUrl();
                 if(!imgurl.contains("http")){
-                    imgurl = ConfigUtil.loadProperties().getProperty("serverPath") + imgurl;
+                    imgurl = configuration.getString(FinalUtil.DISPLAY_IMAGE) + imgurl;
                 }
                 reData.append("<p><img id='" + img_id + "' src='" +imgurl+ "'></img><br></p>");
             }
@@ -627,7 +629,7 @@ public class ProductServiceImpl implements ProductService {
                         reData.append("<br>");
                     }
                     if(!img.contains("http")){
-                        img = ConfigUtil.loadProperties().getProperty("serverPath") + img;
+                        img = configuration.getString(FinalUtil.DISPLAY_IMAGE) + img;
                     }
                     reData.append("<img id='drimg"+k+"' src='"+ img +"'></img><br>");
                     reData.append("<br>");

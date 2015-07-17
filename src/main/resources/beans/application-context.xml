@@ -6,6 +6,23 @@
        xmlns:aop="http://www.springframework.org/schema/aop"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
 
+    <!-- 加载配置文件 -->
+    <bean id="conf" class="cn.momia.admin.web.common.XmlConfiguration" init-method="init">
+        <property name="fileName" value="conf/configuration.xml" />
+    </bean>
+
+    <bean class="cn.momia.admin.web.common.XmlPropertyPlaceholderConfigurer">
+        <property name="conf" ref="conf" />
+    </bean>
+
+    <bean class="cn.momia.admin.web.common.LoggerConfigurer" init-method="init">
+        <property name="conf" ref="conf" />
+    </bean>
+
+    <bean class="cn.momia.admin.web.common.FileUtil">
+        <property name="serverPath" value="${Image.Tongqu.DisplayPath}" />
+    </bean>
+
     <!-- Spring MVC配置 -->
     <context:annotation-config />
     <!--扫描注解 -->
@@ -17,35 +34,18 @@
 
     <!-- 数据库和事务配置 -->
 
-    <!-- 加载配置文件 -->
-    <context:property-placeholder location="classpath:beans/jdbc.properties" />
     <!-- 定义数据源 -->
-    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
-          destroy-method="close">
-        <property name="driverClass">
-            <value>${jdbc.driverClassName}</value>
-        </property>
-        <property name="jdbcUrl">
-            <value>${jdbc.url}</value>
-        </property>
-        <property name="user">
-            <value>${jdbc.username}</value>
-        </property>
-        <property name="password">
-            <value>${jdbc.password}</value>
-        </property>
-        <!--连接池中保留的最小连接数。 -->
-        <property name="minPoolSize">
-            <value>${jdbc.cpool.minPoolSize}</value>
-        </property>
-        <!--连接池中保留的最大连接数。Default: 15 -->
-        <property name="maxPoolSize">
-            <value>${jdbc.cpool.maxPoolSize}</value>
-        </property>
-        <!--初始化时获取的连接数，取值应在minPoolSize与maxPoolSize之间。Default: 3 -->
-        <property name="initialPoolSize">
-            <value>${jdbc.cpool.initialPoolSize}</value>
-        </property>
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+        <property name="driverClass" value="com.mysql.jdbc.Driver" />
+        <property name="jdbcUrl" value="${Database.Tongqu.JdbcUrl}" />
+        <property name="user" value="${Database.Tongqu.Username}" />
+        <property name="password" value="${Database.Tongqu.Password}" />
+        <property name="maxPoolSize" value="30" />
+        <property name="maxIdleTime" value="7200" />
+        <property name="testConnectionOnCheckin" value="true" />
+        <property name="idleConnectionTestPeriod" value="5" />
+        <property name="preferredTestQuery" value="SELECT 1" />
+        <property name="checkoutTimeout" value="1800000" />
     </bean>
 
 

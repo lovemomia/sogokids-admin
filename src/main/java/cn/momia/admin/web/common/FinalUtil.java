@@ -33,4 +33,10 @@ public class FinalUtil {
     public static final int TYPE_5 = 5;
 
 
+    public static final int IMAGE_WH = 1;
+    public static final int IMAGE_SCALE = 2;
+
+    public static final String DISPLAY_IMAGE = "Image.Tongqu.DisplayPath";
+    public static final String UPLOAD_IMAGE = "Image.Tongqu.UploadPath";
+
 }

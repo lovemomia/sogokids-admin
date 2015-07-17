@@ -1,9 +1,10 @@
 package cn.momia.admin.web.service.impl;
 
-import cn.momia.admin.web.common.ConfigUtil;
+import cn.momia.admin.web.common.FinalUtil;
 import cn.momia.admin.web.common.StringUtil;
 import cn.momia.admin.web.entity.Images;
 import cn.momia.admin.web.service.ImagesService;
+import cn.momia.common.config.Configuration;
 import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.commons.io.FileUtils;
 import org.apache.http.HttpEntity;
@@ -15,6 +16,7 @@ import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -40,12 +42,15 @@ import java.util.Random;
 @Service
 public class ImagesServiceImpl implements ImagesService {
 
+    @Autowired
+    private Configuration configuration;
+
     @Override
     public Images uploadImgs(HttpServletRequest req,int intx,String imgname){
         //转型为MultipartHttpRequest(重点的所在)
         MultipartHttpServletRequest multipartRequest  =  (MultipartHttpServletRequest) req;
         String path = multipartRequest.getSession().getServletContext().getRealPath("/");
-        String configpath = ConfigUtil.loadProperties().get("uploadPath").toString();
+        String configpath = configuration.getString(FinalUtil.UPLOAD_IMAGE);
         String uploadpath = path +"/"+ configpath;
         Images imges = null;
         File folder = new File(uploadpath);
@@ -144,7 +149,7 @@ public class ImagesServiceImpl implements ImagesService {
     public Images uploadImg(HttpServletRequest req,int intx,String imgname) {
         Images result = new Images();
         int intflag = 0;
-        String upload_url = ConfigUtil.loadProperties().getProperty("img.server.upload.path");
+        String upload_url = configuration.getString(FinalUtil.UPLOAD_IMAGE);
         MultipartHttpServletRequest multipartRequest  =  (MultipartHttpServletRequest) req;
         Collection<MultipartFile> fileList = null;
         if (intx == 0){
