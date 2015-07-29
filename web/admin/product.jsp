@@ -95,26 +95,22 @@
                                             封面:
                                             <c:choose>
                                                 <c:when test="${fn:contains(entity.cover,'http')}">
-                                                    <img src="${entity.cover}" >
+                                                    <img height="100ps" width="200ps" src="${entity.cover}" >
                                                 </c:when>
                                                 <c:otherwise>
-                                                    <img src="${filepath}${entity.cover}" >
+                                                    <img height="100ps" width="200ps" src="${filepath}${entity.cover}" >
                                                 </c:otherwise>
                                             </c:choose><br>
                                             适合人群:<c:out value="${entity.crowd}"></c:out><br>
                                             活动时间:<c:out value="${entity.startTime}"></c:out>至<c:out value="${entity.endTime}"></c:out><br>
+                                            上下线时间:<c:out value="${entity.onlineTime}"></c:out>至<c:out value="${entity.offlineTime}"></c:out><br>
                                             已购买:<c:out value="${entity.sales}"></c:out><br>
                                             分类:<c:out value="${entity.catename}"></c:out><br>
                                             内容编辑:
                                             <c:if test="${entity.status == 2}">
-                                                <a class="btn btn-info" href="${ctx}/product/oper.do?uid=${user.id}&id=${entity.id}&mark=2&pageNo=${queryPage.pageNo}">
-                                                    添加
-                                                </a>
-                                            <c:if test="${not empty entity.content}">
-                                                <a class="btn btn-info" href="${ctx}/product/oper.do?uid=${user.id}&id=${entity.id}&mark=3&pageNo=${queryPage.pageNo}">
-                                                    修改
-                                                </a>
-                                            </c:if>
+                                            <a class="btn btn-info" href="${ctx}/product/oper.do?uid=${user.id}&id=${entity.id}&mark=5&pageNo=${queryPage.pageNo}">
+                                                内容编辑
+                                            </a>
                                             </c:if>
                                             <br>
                                             地址:<c:out value="${entity.placename}"></c:out><br>
@@ -154,14 +150,14 @@
                                                 </a>
                                             </c:if>
                                             <c:if test="${entity.status == 2}">
-                                                <a class="btn btn-info" href="${ctx}/product/oper.do?uid=${user.id}&id=${entity.id}&mark=5&pageNo=${queryPage.pageNo}">
+                                                <a class="btn btn-info" href="${ctx}/product/oper.do?uid=${user.id}&id=${entity.id}&mark=6&pageNo=${queryPage.pageNo}">
                                                     修改
                                                 </a>
                                                 <a class="btn btn-danger" href="${ctx}/product/del.do?uid=${user.id}&id=${entity.id}&pageNo=${queryPage.pageNo}">
                                                     删除
                                                 </a>
                                             </c:if>
-                                            <c:if test="${entity.status == 2}">
+                                            <c:if test="${entity.status == 2 && entity.skustatus > 0}">
                                                 <a class="btn btn-success" href="${ctx}/product/release.do?uid=${user.id}&id=${entity.id}&pageNo=${queryPage.pageNo}">
                                                     发布
                                                 </a>

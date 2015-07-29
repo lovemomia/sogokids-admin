@@ -96,6 +96,8 @@
                                                 成人:${node.adult};儿童:${node.child};价格:${node.price};家庭:${node.unit};<br>
                                             </c:forEach>
                                             库存:<c:out value="${entity.stock}"></c:out><br>
+                                            有效期:<c:out value="${entity.startTime}"></c:out>至<c:out value="${entity.endTime}"></c:out><br>
+                                            上下线时间:<c:out value="${entity.onlineTime}"></c:out>至<c:out value="${entity.offlineTime}"></c:out><br>
                                             添加时间:<c:out value="${fn:substring(entity.addTime,0,19)}"></c:out><br>
                                         </td>
                                     </tr>

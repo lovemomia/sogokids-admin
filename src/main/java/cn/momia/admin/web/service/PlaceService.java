@@ -17,4 +17,5 @@ public interface PlaceService {
     public int delete(int id);
     public Place formEntity(HttpServletRequest request,int id);
     public List<Place> getQueryPages(int start_row,int end_row);
+    public String getDataJsonStr(int placeid);
 }

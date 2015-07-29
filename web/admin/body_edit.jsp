@@ -8,10 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Charisma, a fully featured, responsive, HTML5, Bootstrap admin template.">
     <meta name="author" content="Muhammad Usman">
-    <style type="text/css">
-        *{margin:0;vertical-align: middle;}
-        .selectList{margin: 0;  font-size: 100%; vertical-align: middle;}
-    </style>
+
     <!-- The styles -->
     <link  href="${ctx}/admin/css/bootstrap-cerulean.css" rel="stylesheet">
     <style type="text/css">
@@ -81,77 +78,102 @@
             <div class="box span12">
                 <div class="row-fluid sortable">
                     <div class="box-header well" data-original-title>
-                        <h2><i class="icon-user"></i> 添加地址</h2>
+                        <h2><i class="icon-user"></i> 活动修改</h2>
                         <div class="box-icon">
-                            <a href="${ctx}/place/info.do?uid=${user.id}&pageNo=${pageNo}" class="btn btn-back btn-round"><i class="icon-remove"></i></a>
+                            <a href="${ctx}/product/opercon.do?uid=${user.id}&pid=${product.id}&id=${content.id}&mark=1&pageNo=${pageNo}" class="btn btn-back btn-round"><i class="icon-remove"></i></a>
                         </div>
                     </div>
                     <div class="box-content">
-                        <form class="form-horizontal" id="vform" action="${ctx}/place/add.do?uid=${user.id}&pageNo=1" method="post">
+                        <form class="form-horizontal" id="vform" action="${ctx}/product/editbody.do?uid=${user.id}&id=${model.id}&pageNo=${pageNo}" method="post">
                             <fieldset>
-                                <div class="selectList">
-                                    <div class="control-group" >
-                                        <label class="control-label" >选择城市</label>
-                                        <div class="controls">
-                                            <select id="cityId" name="cityId" class="province">
-                                                <option>请选择</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="control-group">
-                                        <label class="control-label" >选择区域</label>
-                                        <div class="controls">
-                                            <select id="quid" name="quid" class="city">
-                                                <option>请选择</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="control-group">
-                                        <label class="control-label" >选择街道</label>
-                                        <div class="controls">
-                                            <select id="regionId" name="regionId" class="district">
-                                                <option>请选择</option>
-                                            </select>
-                                        </div>
+                                <div class="control-group">
+                                    <label class="control-label">内容类型</label>
+                                    <div class="controls">
+                                        <select id="type" name="type">
+                                            <c:choose>
+                                                <c:when test="${model.type == 0}">
+                                                    <option value="0" selected>文本</option>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <option value="0">文本</option>
+                                                </c:otherwise>
+                                            </c:choose>
+                                            <c:choose>
+                                                <c:when test="${model.type == 1}">
+                                                    <option value="1" selected>标签</option>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <option value="1">标签</option>
+                                                </c:otherwise>
+                                            </c:choose>
+                                            <c:choose>
+                                                <c:when test="${model.type == 2}">
+                                                    <option value="1" selected>链接</option>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <option value="1">链接</option>
+                                                </c:otherwise>
+                                            </c:choose>
+                                            <c:choose>
+                                                <c:when test="${model.type == 3}">
+                                                    <option value="3" selected>图片</option>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <option value="3">图片</option>
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="control-group">
-                                    <label class="control-label">地址名称</label>
+                                    <label class="control-label">文本内容</label>
                                     <div class="controls">
-                                        <input class="required" id="name" name="name" type="text" value="">
+                                        <textarea id="text" name="text" rows="3" cols="5" >${model.text}</textarea>
                                     </div>
                                 </div>
                                 <div class="control-group">
-                                    <label class="control-label">地址详情</label>
+                                    <label class="control-label">标签描述</label>
                                     <div class="controls">
-                                        <input class="required" id="address" name="address" type="text" value="">
+                                        <input id="label" name="label" type="text" value="${model.label}">
+                                        <input id="productId" name="productId" type="hidden" value="${product.id}">
+                                        <input id="contentId" name="contentId" type="hidden" value="${content.id}">
+                                        <input id="filepath" name="filepath" type="hidden" value="${filepath}">
                                     </div>
                                 </div>
                                 <div class="control-group">
-                                    <label class="control-label">经度</label>
+                                    <label class="control-label">链接描述</label>
                                     <div class="controls">
-                                        <input class="required" id="lng" name="lng" type="text" value="">
+                                        <input id="link" name="link" type="text" value="${model.link}">
                                     </div>
                                 </div>
                                 <div class="control-group">
-                                    <label class="control-label">纬度</label>
+                                    <label class="control-label">上传图片</label>
                                     <div class="controls">
-                                        <input class="required" id="lat" name="lat" type="text" value="">
-                                    </div>
-                                </div>
-                                <div class="control-group">
-                                    <label class="control-label">描述</label>
-                                    <div class="controls">
-                                        <textarea id="desc" name="desc" rows="3"></textarea>
-                                    </div>
-                                </div>
+                                        <input id="fileurlth" type="file" size="20" name="fileurlth" >
+                                        <input id="img" name="img" type="hidden" value="${model.img}" ><br>
+                                        <c:choose>
+                                            <c:when test="${not empty model.img}">
+                                                <c:choose>
+                                                    <c:when test="${fn:contains(model.img,'http')}">
+                                                        <img id="img_b" src="${model.img}" height="100ps" width="200ps" alt="未上传">
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <img id="img_b" src="${filepath}${model.img}" height="100ps" width="200ps" alt="未上传">
+                                                    </c:otherwise>
+                                                </c:choose>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <img id="img_b" src="" height="100ps" width="200ps" alt="未上传">
+                                            </c:otherwise>
+                                        </c:choose>
 
+                                    </div>
+                                </div>
                                 <div class="form-actions">
                                     <button type="submit" class="btn btn-primary" id="confirmbtn" name="confirmbtn" >确   定</button>
                                 </div>
                             </fieldset>
                         </form>
-                    </div>
                 </div>
             </div>
             </div>
@@ -239,80 +261,38 @@
 <script src="${ctx}/admin/js/jquery.history.js"></script>
 <!-- application script for Charisma demo -->
 <script src="${ctx}/admin/js/charisma.js"></script>
+<script src="${ctx}/admin/js/ajaxfileupload.js"></script>
 <!--验证框架js-->
 <script src="${ctx}/admin/js/jquery.validate.js"></script>
 <script src="${ctx}/admin/js/messages.js"></script>
 <script src="${ctx}/admin/js/messages_zh.js"></script>
 
 <script language="JavaScript">
+
     $(function() {
 
-        $(".selectList").each(function(){
-            var url = "/place/datajson.do?id=0";
-            var areaJson;
-            var temp_html;
-            var oProvince = $(this).find(".province");
-            var oCity = $(this).find(".city");
-            var oDistrict = $(this).find(".district");
-            //初始化省
-            var province = function(){
-                $.each(areaJson,function(i,province){
-                    temp_html+="<option value='"+province.id+"'>"+province.name+"</option>";
-                });
-                oProvince.html(temp_html);
-                city();
-            };
-            //赋值市
-            var city = function(){
-                temp_html = "";
-
-                var n = oProvince.get(0).selectedIndex;
-                var regions = areaJson[n].regions;
-                if(regions == undefined){
-                }else{
-                    $.each(areaJson[n].regions,function(i,city){
-                        temp_html+="<option value='"+city.id+"'>"+city.name+"</option>";
-                    });
+        $("#fileurlth").change(function(){
+            $.ajaxFileUpload({
+                url:'/upload/img.do',
+                secureuri :false,
+                fileElementId :'fileurlth',
+                dataType : 'text',
+                success : function (data, status){
+                    var obj = JSON.parse(data);
+                    $("#img").val(obj.path);
+                    var pic = $("#filepath").val();
+                    $("#img_b").attr("src", pic + obj.path);
+                },
+                error: function(data, status, e){
                 }
-
-                oCity.html(temp_html);
-                district();
-            };
-            //赋值县
-            var district = function(){
-                temp_html = "";
-                var m = oProvince.get(0).selectedIndex;
-                var n = oCity.get(0).selectedIndex;
-
-                if(n == -1){
-                }else if(typeof(areaJson[m].regions[n].regchild) == "undefined"){
-                    oDistrict.css("display","none");
-                }else{
-                    oDistrict.css("display","inline");
-                    $.each(areaJson[m].regions[n].regchild,function(i,district){
-                        temp_html+="<option value='"+district.id+"'>"+district.name+"</option>";
-                    });
-                };
-                oDistrict.html(temp_html);
-            };
-            //选择省改变市
-            oProvince.change(function(){
-                city();
             });
-            //选择市改变县
-            oCity.change(function(){
-                district();
-            });
-            //获取json数据
-            $.getJSON(url,function(data){
-                areaJson = data;
-                province();
-            });
+            return false;
         });
 
         $("#vform").validate();
-    });
-</script>
 
+    });
+
+</script>
 </body>
 </html>

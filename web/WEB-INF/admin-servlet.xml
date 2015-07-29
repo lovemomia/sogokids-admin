@@ -61,6 +61,8 @@
                         <value>/category</value>
                         <value>/place</value>
                         <value>/product</value>
+                        <value>/con</value>
+                        <value>/body</value>
                         <value>/property</value>
                         <value>/sku</value>
                         <value>/city</value>

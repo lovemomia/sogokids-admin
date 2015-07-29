@@ -3,6 +3,10 @@ package cn.momia.admin.web.service.impl;
 import cn.momia.admin.web.common.FinalUtil;
 import cn.momia.admin.web.common.StringUtil;
 import cn.momia.admin.web.entity.Category;
+import cn.momia.admin.web.entity.ContentBody;
+import cn.momia.admin.web.entity.ProductContent;
+import cn.momia.admin.web.service.ContentBodyService;
+import cn.momia.admin.web.service.ProductContentService;
 import cn.momia.common.config.Configuration;
 import cn.momia.admin.web.entity.City;
 import cn.momia.admin.web.entity.Content;
@@ -66,6 +70,12 @@ public class ProductServiceImpl implements ProductService {
     @Resource
     private JdbcTemplate jdbcTemplate;
 
+    @Autowired
+    private ProductContentService productContentService;
+
+    @Autowired
+    private ContentBodyService contentBodyService;
+
     public JdbcTemplate getJdbcTemplate() {
         return jdbcTemplate;
     }
@@ -76,7 +86,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product get(int id) {
-        String sql = "select id,cityId,categoryId,tags,placeId,title,abstracts,thumb,cover,crowd,content,sales,startTime,endTime,status,addTime from t_product where id = ? and status > ? ";
+        String sql = "select id,cityId,categoryId,tags,placeId,title,abstracts,thumb,cover,crowd,content,sales,startTime,endTime,onlineTime,offlineTime,status,addTime from t_product where id = ? and status > ? ";
         final Object [] params = new Object[]{id, FinalUtil.DEL_STATUS};
         final Product entity = new Product();
         jdbcTemplate.query(sql,params, new RowCallbackHandler(){
@@ -95,6 +105,8 @@ public class ProductServiceImpl implements ProductService {
                 entity.setSales(rs.getInt("sales"));
                 entity.setStartTime(rs.getString("startTime"));
                 entity.setEndTime(rs.getString("endTime"));
+                entity.setOnlineTime(rs.getString("onlineTime"));
+                entity.setOfflineTime(rs.getString("offlineTime"));
                 entity.setStatus(rs.getInt("status"));
                 entity.setAddTime(rs.getString("addTime"));
             }
@@ -106,7 +118,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<Product> getEntitys() {
         List<Product> reData = new ArrayList<Product>();
-        String sql = "select id,cityId,categoryId,tags,placeId,title,abstracts,thumb,cover,crowd,content,sales,startTime,endTime,status,addTime from t_product where status > ? order by id desc";
+        String sql = "select id,cityId,categoryId,tags,placeId,title,abstracts,thumb,cover,crowd,content,sales,startTime,endTime,onlineTime,offlineTime,status,addTime from t_product where status > ? order by id desc";
         Object [] params = new Object[]{FinalUtil.DEL_STATUS};
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql, params);
         if(list.size() > 0){
@@ -126,6 +138,8 @@ public class ProductServiceImpl implements ProductService {
                 entity.setSales(Integer.parseInt(list.get(i).get("sales").toString()));
                 entity.setStartTime(list.get(i).get("startTime").toString());
                 entity.setEndTime(list.get(i).get("endTime").toString());
+                entity.setOnlineTime(list.get(i).get("onlineTime").toString());
+                entity.setOfflineTime(list.get(i).get("offlineTime").toString());
                 entity.setStatus(Integer.parseInt(list.get(i).get("status").toString()));
                 entity.setAddTime(list.get(i).get("addTime").toString());
                 reData.add(entity);
@@ -138,7 +152,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<Product> getEntitysByKey(int categoryId) {
         List<Product> reData = new ArrayList<Product>();
-        String sql = "select id,cityId,categoryId,tags,placeId,title,abstracts,thumb,cover,crowd,content,sales,startTime,endTime,status,addTime from t_product where categoryId = ? and status > ? ";
+        String sql = "select id,cityId,categoryId,tags,placeId,title,abstracts,thumb,cover,crowd,content,sales,startTime,endTime,onlineTime,offlineTime,status,addTime from t_product where categoryId = ? and status > ? ";
         Object [] params = new Object[]{categoryId, FinalUtil.DEL_STATUS};
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql, params);
         if(list.size() > 0){
@@ -158,6 +172,8 @@ public class ProductServiceImpl implements ProductService {
                 entity.setSales(Integer.parseInt(list.get(i).get("sales").toString()));
                 entity.setStartTime(list.get(i).get("startTime").toString());
                 entity.setEndTime(list.get(i).get("endTime").toString());
+                entity.setOnlineTime(list.get(i).get("onlineTime").toString());
+                entity.setOfflineTime(list.get(i).get("offlineTime").toString());
                 entity.setStatus(Integer.parseInt(list.get(i).get("status").toString()));
                 entity.setAddTime(list.get(i).get("addTime").toString());
                 reData.add(entity);
@@ -169,16 +185,16 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public int insert(Product entity) {
-        String sql = "insert into t_product(cityId,categoryId,tags,placeId,title,abstracts,thumb,cover,crowd,content,sales,startTime,endTime,status,addTime) value(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW()) ";
-        Object [] params = new Object[]{entity.getCityId(),entity.getCategoryId(), entity.getTags(), entity.getPlaceId(), entity.getTitle(), entity.getAbstracts(), entity.getThumb(), entity.getCover(), entity.getCrowd(), "", FinalUtil.ADD_INFO, entity.getStartTime(),entity.getEndTime(),FinalUtil.OFFLINE_STATUS};
+        String sql = "insert into t_product(cityId,categoryId,tags,placeId,title,abstracts,thumb,cover,crowd,content,sales,startTime,endTime,onlineTime,offlineTime,status,addTime) value(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW()) ";
+        Object [] params = new Object[]{entity.getCityId(),entity.getCategoryId(), entity.getTags(), entity.getPlaceId(), entity.getTitle(), entity.getAbstracts(), entity.getThumb(), entity.getCover(), entity.getCrowd(), "", FinalUtil.ADD_INFO, entity.getStartTime(),entity.getEndTime(), entity.getOnlineTime(), entity.getOfflineTime(), FinalUtil.OFFLINE_STATUS};
         int reData = jdbcTemplate.update(sql,params);
         return reData;
     }
 
     @Override
     public int update(Product entity) {
-        String sql = "update t_product set cityId = ?, categoryId = ?, tags = ?, placeId = ?, title = ?, abstracts = ?, thumb = ?, cover = ?, crowd = ?, startTime = ?, endTime = ? where id = ? ";
-        Object [] params = new Object[]{entity.getCityId(), entity.getCategoryId(), entity.getTags(), entity.getPlaceId(), entity.getTitle(), entity.getAbstracts(), entity.getThumb(), entity.getCover(), entity.getCrowd(), entity.getStartTime(), entity.getEndTime(), entity.getId()};
+        String sql = "update t_product set cityId = ?, categoryId = ?, tags = ?, placeId = ?, title = ?, abstracts = ?, thumb = ?, cover = ?, crowd = ?, startTime = ?, endTime = ?, onlineTime = ?, offlineTime = ? where id = ? ";
+        Object [] params = new Object[]{entity.getCityId(), entity.getCategoryId(), entity.getTags(), entity.getPlaceId(), entity.getTitle(), entity.getAbstracts(), entity.getThumb(), entity.getCover(), entity.getCrowd(), entity.getStartTime(), entity.getEndTime(), entity.getOnlineTime(), entity.getOfflineTime(), entity.getId()};
         int reData = jdbcTemplate.update(sql,params);
         return reData;
     }
@@ -230,6 +246,8 @@ public class ProductServiceImpl implements ProductService {
         entity.setCrowd(request.getParameter("crowd"));
         entity.setStartTime(request.getParameter("startTime"));
         entity.setEndTime(request.getParameter("endTime"));
+        entity.setOnlineTime(request.getParameter("onlineTime"));
+        entity.setOfflineTime(request.getParameter("offlineTime"));
         String [] tags = request.getParameterValues("tag");
         String temp = "";
         if (null != tags && tags.length > 0){
@@ -268,11 +286,15 @@ public class ProductServiceImpl implements ProductService {
             String titleid = "title" + intx;
             String styleid = "style" + intx;
             String title = req.getParameter(titleid);
-            bean.setTitle(title);
             String style = req.getParameter(styleid);
-            bean.setStyle(style);
-            bean.setBody(getBodys(req, intx));
-            ls.add(bean);
+            if (title == null || title.equals("")){
+                continue;
+            }else {
+                bean.setTitle(title);
+                bean.setStyle(style);
+                bean.setBody(getBodys(req, intx));
+                ls.add(bean);
+            }
         }
 
         return JSONObject.toJSONString(ls);
@@ -714,6 +736,97 @@ public class ProductServiceImpl implements ProductService {
         return products;
     }
 
+    @Override
+    public int updateContentJson(int pid){
+        List<DataBean> bean_ls = new ArrayList<DataBean>();
+        List<ProductContent> ls = productContentService.getEntitysByProductId(pid,FinalUtil.SQL_QUERY_SORT_ASC);
+        if (ls.size() > 0){
+            for (int i = 0; i < ls.size(); i++) {
+                DataBean bean = new DataBean();
+                bean.setTitle(ls.get(i).getTitle());
+                bean.setStyle(ls.get(i).getStyle());
+                List<ContentBody> body_ls = contentBodyService.getEntitysByContentId(ls.get(i).getId(),FinalUtil.SQL_QUERY_SORT_ASC);
+                List<Content> con_ls = new ArrayList<Content>();
+                if (body_ls.size() > 0){
+                    for (int j = 0; j < body_ls.size(); j++) {
+                        Content con = new Content();
+                        int type = body_ls.get(j).getType();
+                        if(type == 0){
+                            con.setText(body_ls.get(j).getText());
+                        }
+                        if(type == 1){
+                            con.setLabel(body_ls.get(j).getLabel());
+                            con.setText(body_ls.get(j).getText());
+                        }
+                        if(type == 2){
+                            con.setLink(body_ls.get(j).getLink());
+                            con.setText(body_ls.get(j).getText());
+                        }
+                        if(type == 3){
+                            con.setImg(body_ls.get(j).getImg());
+                        }
+                        con_ls.add(con);
+                    }
+                }
+                bean.setBody(con_ls);
+                bean_ls.add(bean);
+            }
+        }
+
+        return update_content(pid, JSONObject.toJSONString(bean_ls));
+    }
+
+    /**
+     * 历史数据进行修改
+     * @param pid
+     */
+    @Override
+    public void updateData(int pid){
+        Product product = this.get(pid);
+        List<ProductContent> ls = productContentService.getEntitysByProductId(pid,FinalUtil.SQL_QUERY_SORT_DESC);
+        if (ls.size() > 0){}else{
+            if(!product.getContent().equals("") && product.getContent().length() > 10){
+                List<DataBean> data_ls = getDataBean(product.getContent());
+                for (int i = 0; i < data_ls.size(); i++) {
+                    ProductContent content = new ProductContent();
+                    content.setTitle(data_ls.get(i).getTitle());
+                    content.setStyle(data_ls.get(i).getStyle());
+                    content.setProductId(pid);
+
+                    int content_id = productContentService.insertKey(content);
+                    List<Content> body_ls = data_ls.get(i).getBody();
+                    for (int j = 0; j < body_ls.size(); j++) {
+                        ContentBody body = new ContentBody();
+                        String img = body_ls.get(j).getImg();
+                        String text = body_ls.get(j).getText();
+                        String label = body_ls.get(j).getLabel();
+                        String link = body_ls.get(j).getLink();
+                        body.setContentId(content_id);
+                        if (img != null && !img.equals("")) {
+                            body.setType(3);
+                            body.setImg(img);
+                        }
+                        if (text != null && !text.equals("")) {
+                            if (label != null && !label.equals("")) {
+                                body.setType(1);
+                                body.setLabel(label);
+                                body.setText(text);
+                            }else if (link != null && !link.equals("")) {
+                                body.setType(2);
+                                body.setLink(link);
+                                body.setText(text);
+                            } else {
+                                body.setType(0);
+                                body.setText(text);
+                            }
+                        }
+                        contentBodyService.insert(body);
+                    }
+                }
+            }
+        }
+    }
+
     /**
      * 活动分页方法
      * @param start_row
@@ -723,7 +836,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<Product> getQueryPages(int start_row,int end_row) {
         List<Product> reData = new ArrayList<Product>();
-        String sql = "select id,cityId,categoryId,placeId,title,thumb,cover,crowd,content,sales,startTime,endTime,status,addTime from t_product where status > ? order by id desc limit "+start_row+","+end_row;
+        String sql = "select id,cityId,categoryId,placeId,title,thumb,cover,crowd,content,sales,startTime,endTime,onlineTime,offlineTime,status,addTime from t_product where status > ? order by id desc limit "+start_row+","+end_row;
         Object [] params = new Object[]{FinalUtil.DEL_STATUS};
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql, params);
         if(list.size() > 0){
@@ -740,6 +853,8 @@ public class ProductServiceImpl implements ProductService {
                 entity.setContent(list.get(i).get("content").toString());
                 entity.setStartTime(list.get(i).get("startTime").toString());
                 entity.setEndTime(list.get(i).get("endTime").toString());
+                entity.setOnlineTime(list.get(i).get("onlineTime").toString());
+                entity.setOfflineTime(list.get(i).get("offlineTime").toString());
                 entity.setSales(Integer.parseInt(list.get(i).get("sales").toString()));
                 entity.setStatus(Integer.parseInt(list.get(i).get("status").toString()));
                 entity.setAddTime(list.get(i).get("addTime").toString());

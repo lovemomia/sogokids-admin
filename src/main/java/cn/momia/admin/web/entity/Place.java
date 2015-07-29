@@ -103,4 +103,5 @@ public class Place {
     public void setUpdateTime(String updateTime) {
         this.updateTime = updateTime;
     }
+
 }

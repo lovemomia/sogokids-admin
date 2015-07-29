@@ -2,6 +2,7 @@ package cn.momia.admin.web.controller;
 
 import cn.momia.admin.web.common.FileUtil;
 import cn.momia.admin.web.common.FinalUtil;
+import cn.momia.admin.web.common.PageTypeUtil;
 import cn.momia.admin.web.entity.Category;
 import cn.momia.admin.web.entity.ReturnResult;
 import cn.momia.admin.web.service.AdminUserService;
@@ -39,7 +40,7 @@ public class CategoryController {
     @RequestMapping("/info")
     public ModelAndView info(@RequestParam("uid") int uid,@RequestParam("pageNo") int pageNo, HttpServletRequest req){
         Map<String, Object> context = new HashMap<String, Object>();
-        context.put(FinalUtil.QUERY_PAGE, queryPageService.getEntitys(queryPageService.formEntity(2, pageNo)));
+        context.put(FinalUtil.QUERY_PAGE, queryPageService.getEntitys(queryPageService.formEntity(PageTypeUtil.PAGE_TYPE_2, pageNo)));
         context.put(FinalUtil.USER_ENTITY,adminUserService.get(uid));
         return new ModelAndView(FileUtil.CATEGORY,context);
     }
@@ -76,7 +77,7 @@ public class CategoryController {
         }else{
             context.put(FinalUtil.RETURN_MSG,"添加分类数据失败!");
         }
-        context.put(FinalUtil.QUERY_PAGE, queryPageService.getEntitys(queryPageService.formEntity(2, pageNo)));
+        context.put(FinalUtil.QUERY_PAGE, queryPageService.getEntitys(queryPageService.formEntity(PageTypeUtil.PAGE_TYPE_2, pageNo)));
         context.put(FinalUtil.USER_ENTITY,adminUserService.get(uid));
         return new ModelAndView(FileUtil.CATEGORY,context);
     }
@@ -91,7 +92,7 @@ public class CategoryController {
         }else{
             context.put(FinalUtil.RETURN_MSG,"修改分类数据失败!");
         }
-        context.put(FinalUtil.QUERY_PAGE, queryPageService.getEntitys(queryPageService.formEntity(2, pageNo)));
+        context.put(FinalUtil.QUERY_PAGE, queryPageService.getEntitys(queryPageService.formEntity(PageTypeUtil.PAGE_TYPE_2, pageNo)));
         context.put(FinalUtil.USER_ENTITY,adminUserService.get(uid));
         return new ModelAndView(FileUtil.CATEGORY,context);
     }
@@ -106,7 +107,7 @@ public class CategoryController {
         }else{
             context.put(FinalUtil.RETURN_MSG,"删除分类数据失败!");
         }
-        context.put(FinalUtil.QUERY_PAGE, queryPageService.getEntitys(queryPageService.formEntity(2, pageNo)));
+        context.put(FinalUtil.QUERY_PAGE, queryPageService.getEntitys(queryPageService.formEntity(PageTypeUtil.PAGE_TYPE_2, pageNo)));
         context.put(FinalUtil.USER_ENTITY,adminUserService.get(uid));
         return new ModelAndView(FileUtil.CATEGORY,context);
     }

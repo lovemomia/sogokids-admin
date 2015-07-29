@@ -35,6 +35,15 @@ public class FileUtil {
     public static final String PRODUCT_ADD = "product_add";
     public static final String PRODUCT_EDIT = "product_edit";
     public static final String PRODUCT_IMG = "product_img";
+    public static final String PRODUCT_OTHER_ADD = "product_other_add";
+    public static final String PRODUCT_OTHER_EDIT = "product_other_edit";
+    public static final String PRODUCT_PREVIEW = "product_preview";
+
+    //
+    public static final String PRODUCT_CONTENT = "product_content";
+    public static final String PRODUCT_CON_EDIT = "content_edit";
+    public static final String PRODUCT_CON_BODY = "content_body";
+    public static final String PRODUCT_BODY_EDIT = "body_edit";
 
     //属性相关文件跳转
     public static final String PROPERTY = "property";

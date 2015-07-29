@@ -11,7 +11,7 @@ import java.util.Objects;
  */
 public class EnumUtil {
 
-    private static final String sku_type = "[{id:0,name:'正常SKU'},{id:1,name:'优惠SKU'}]";
+    private static final String sku_type = "[{id:0,name:'普通SKU'},{id:1,name:'特殊SKU'}]";
     private static final String need = "[{id:0,name:'不需要'},{id:1,name:'需要'}]";
 
     public static List<Map<String, Object>> getEnums(int intEnum) {

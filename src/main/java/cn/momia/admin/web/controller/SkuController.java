@@ -3,12 +3,15 @@ package cn.momia.admin.web.controller;
 import cn.momia.admin.web.common.EnumUtil;
 import cn.momia.admin.web.common.FileUtil;
 import cn.momia.admin.web.common.FinalUtil;
+import cn.momia.admin.web.common.PageTypeUtil;
 import cn.momia.admin.web.service.AdminUserService;
 import cn.momia.admin.web.service.ProductService;
 import cn.momia.admin.web.service.QueryPageService;
 import cn.momia.admin.web.service.SkuPropertyService;
 import cn.momia.admin.web.service.SkuPropertyValueService;
 import cn.momia.admin.web.service.SkuService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,14 +30,16 @@ import java.util.Map;
 @RequestMapping("/sku")
 public class SkuController {
 
+    private Logger LOGGER = LoggerFactory.getLogger(SkuController.class);
+
     @Autowired
     private SkuService skuService;
 
-    @Autowired
-    private SkuPropertyService skuPropertyService;
-
-    @Autowired
-    private SkuPropertyValueService skuPropertyValueService;
+//    @Autowired
+//    private SkuPropertyService skuPropertyService;
+//
+//    @Autowired
+//    private SkuPropertyValueService skuPropertyValueService;
 
     @Autowired
     private AdminUserService adminUserService;
@@ -48,7 +53,7 @@ public class SkuController {
     @RequestMapping("/info")
     public ModelAndView info(@RequestParam("uid") int uid,@RequestParam("pageNo") int pageNo, HttpServletRequest req){
         Map<String, Object> context = new HashMap<String, Object>();
-        context.put(FinalUtil.QUERY_PAGE, queryPageService.getEntitys(queryPageService.formEntity(5, pageNo)));
+        context.put(FinalUtil.QUERY_PAGE, queryPageService.getEntitys(queryPageService.formEntity(PageTypeUtil.PAGE_TYPE_5, pageNo)));
         context.put(FinalUtil.USER_ENTITY,adminUserService.get(uid));
         return new ModelAndView(FileUtil.SKU,context);
     }
@@ -84,10 +89,12 @@ public class SkuController {
         int reDate = skuService.insert(skuService.formEntity(req,FinalUtil.ADD_INFO));
         if (reDate > 0){
             context.put(FinalUtil.RETURN_MSG,"添加数据成功!");
+            LOGGER.info("Add Sku Info:"+"success!");
         }else{
             context.put(FinalUtil.RETURN_MSG,"添加数据失败!");
+            LOGGER.info("Add Sku Info:"+"failure!");
         }
-        context.put(FinalUtil.QUERY_PAGE, queryPageService.getEntitys(queryPageService.formEntity(5, pageNo)));
+        context.put(FinalUtil.QUERY_PAGE, queryPageService.getEntitys(queryPageService.formEntity(PageTypeUtil.PAGE_TYPE_5, pageNo)));
         context.put(FinalUtil.USER_ENTITY,adminUserService.get(uid));
         return new ModelAndView(FileUtil.SKU,context);
     }
@@ -99,10 +106,12 @@ public class SkuController {
         int reDate = skuService.update(skuService.formEntity(req, id));
         if (reDate > 0){
             context.put(FinalUtil.RETURN_MSG,"修改数据成功!");
+            LOGGER.info("Edit Sku Info:" + "success!");
         }else{
             context.put(FinalUtil.RETURN_MSG,"修改数据失败!");
+            LOGGER.info("Edit Sku Info:" + "failure!");
         }
-        context.put(FinalUtil.QUERY_PAGE, queryPageService.getEntitys(queryPageService.formEntity(5, pageNo)));
+        context.put(FinalUtil.QUERY_PAGE, queryPageService.getEntitys(queryPageService.formEntity(PageTypeUtil.PAGE_TYPE_5, pageNo)));
         context.put(FinalUtil.USER_ENTITY,adminUserService.get(uid));
         return new ModelAndView(FileUtil.SKU,context);
     }
@@ -114,10 +123,12 @@ public class SkuController {
         int reDate = skuService.delete(id);
         if (reDate > 0){
             context.put(FinalUtil.RETURN_MSG,"删除数据成功!");
+            LOGGER.info("Delete Sku Info:" + "success!");
         }else{
             context.put(FinalUtil.RETURN_MSG,"删除数据失败!");
+            LOGGER.info("Delete Sku Info:" + "failure!");
         }
-        context.put(FinalUtil.QUERY_PAGE, queryPageService.getEntitys(queryPageService.formEntity(5, pageNo)));
+        context.put(FinalUtil.QUERY_PAGE, queryPageService.getEntitys(queryPageService.formEntity(PageTypeUtil.PAGE_TYPE_5, pageNo)));
         context.put(FinalUtil.USER_ENTITY,adminUserService.get(uid));
         return new ModelAndView(FileUtil.SKU,context);
     }
@@ -128,11 +139,13 @@ public class SkuController {
         Map<String, Object> context = new HashMap<String, Object>();
         int reDate = skuService.update_price(skuService.formEntity2(req, id));
         if (reDate > 0){
-            context.put(FinalUtil.RETURN_MSG,"添加数据成功!");
+            context.put(FinalUtil.RETURN_MSG,"添加价格数据成功!");
+            LOGGER.info("Add Sku Price Info:"+"success!");
         }else{
-            context.put(FinalUtil.RETURN_MSG,"添加数据失败!");
+            context.put(FinalUtil.RETURN_MSG,"添加价格数据失败!");
+            LOGGER.info("Add Sku Price Info:"+"failure!");
         }
-        context.put(FinalUtil.QUERY_PAGE, queryPageService.getEntitys(queryPageService.formEntity(5, pageNo)));
+        context.put(FinalUtil.QUERY_PAGE, queryPageService.getEntitys(queryPageService.formEntity(PageTypeUtil.PAGE_TYPE_5, pageNo)));
         context.put(FinalUtil.USER_ENTITY,adminUserService.get(uid));
         return new ModelAndView(FileUtil.SKU,context);
     }

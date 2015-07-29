@@ -2,6 +2,7 @@ package cn.momia.admin.web.controller;
 
 import cn.momia.admin.web.common.FileUtil;
 import cn.momia.admin.web.common.FinalUtil;
+import cn.momia.admin.web.common.PageTypeUtil;
 import cn.momia.admin.web.service.AdminUserService;
 import cn.momia.admin.web.service.CityService;
 import cn.momia.admin.web.service.QueryPageService;
@@ -40,7 +41,7 @@ public class CityController {
     @RequestMapping("/info")
     public ModelAndView info(@RequestParam("uid") int uid,@RequestParam("pageNo") int pageNo, HttpServletRequest req){
         Map<String, Object> context = new HashMap<String, Object>();
-        context.put(FinalUtil.QUERY_PAGE, queryPageService.getEntitys(queryPageService.formEntity(6, pageNo)));
+        context.put(FinalUtil.QUERY_PAGE, queryPageService.getEntitys(queryPageService.formEntity(PageTypeUtil.PAGE_TYPE_6, pageNo)));
         context.put(FinalUtil.USER_ENTITY,adminUserService.get(uid));
         return new ModelAndView(FileUtil.CITY,context);
     }
@@ -74,7 +75,7 @@ public class CityController {
         }else{
             context.put(FinalUtil.RETURN_MSG,"添加city信息数据失败!");
         }
-        context.put(FinalUtil.QUERY_PAGE, queryPageService.getEntitys(queryPageService.formEntity(6, pageNo)));
+        context.put(FinalUtil.QUERY_PAGE, queryPageService.getEntitys(queryPageService.formEntity(PageTypeUtil.PAGE_TYPE_6, pageNo)));
         context.put(FinalUtil.USER_ENTITY,adminUserService.get(uid));
         return new ModelAndView(FileUtil.CITY,context);
     }
@@ -89,7 +90,7 @@ public class CityController {
         }else{
             context.put(FinalUtil.RETURN_MSG,"修改city信息数据失败!");
         }
-        context.put(FinalUtil.QUERY_PAGE, queryPageService.getEntitys(queryPageService.formEntity(6, pageNo)));
+        context.put(FinalUtil.QUERY_PAGE, queryPageService.getEntitys(queryPageService.formEntity(PageTypeUtil.PAGE_TYPE_6, pageNo)));
         context.put(FinalUtil.USER_ENTITY,adminUserService.get(uid));
         return new ModelAndView(FileUtil.CITY,context);
     }
@@ -104,7 +105,7 @@ public class CityController {
         }else{
             context.put(FinalUtil.RETURN_MSG,"删除city信息数据失败!");
         }
-        context.put(FinalUtil.QUERY_PAGE, queryPageService.getEntitys(queryPageService.formEntity(6, pageNo)));
+        context.put(FinalUtil.QUERY_PAGE, queryPageService.getEntitys(queryPageService.formEntity(PageTypeUtil.PAGE_TYPE_6, pageNo)));
         context.put(FinalUtil.USER_ENTITY,adminUserService.get(uid));
         return new ModelAndView(FileUtil.CITY,context);
     }

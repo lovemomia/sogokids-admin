@@ -2,6 +2,7 @@ package cn.momia.admin.web.controller;
 
 import cn.momia.admin.web.common.FileUtil;
 import cn.momia.admin.web.common.FinalUtil;
+import cn.momia.admin.web.common.PageTypeUtil;
 import cn.momia.admin.web.entity.Region;
 import cn.momia.admin.web.service.AdminUserService;
 import cn.momia.admin.web.service.CityService;
@@ -41,7 +42,7 @@ public class RegionController {
     @RequestMapping("/info")
     public ModelAndView info(@RequestParam("uid") int uid,@RequestParam("pageNo") int pageNo, HttpServletRequest req){
         Map<String, Object> context = new HashMap<String, Object>();
-        context.put(FinalUtil.QUERY_PAGE, queryPageService.getEntitys(queryPageService.formEntity(7, pageNo)));
+        context.put(FinalUtil.QUERY_PAGE, queryPageService.getEntitys(queryPageService.formEntity(PageTypeUtil.PAGE_TYPE_7, pageNo)));
         context.put(FinalUtil.USER_ENTITY,adminUserService.get(uid));
         return new ModelAndView(FileUtil.REGION,context);
     }
@@ -81,7 +82,7 @@ public class RegionController {
         }else{
             context.put(FinalUtil.RETURN_MSG,"添加区域信息数据失败!");
         }
-        context.put(FinalUtil.QUERY_PAGE, queryPageService.getEntitys(queryPageService.formEntity(7, pageNo)));
+        context.put(FinalUtil.QUERY_PAGE, queryPageService.getEntitys(queryPageService.formEntity(PageTypeUtil.PAGE_TYPE_7, pageNo)));
         context.put(FinalUtil.USER_ENTITY,adminUserService.get(uid));
         return new ModelAndView(FileUtil.REGION,context);
     }
@@ -96,7 +97,7 @@ public class RegionController {
         }else{
             context.put(FinalUtil.RETURN_MSG,"修改区域信息数据失败!");
         }
-        context.put(FinalUtil.QUERY_PAGE, queryPageService.getEntitys(queryPageService.formEntity(7, pageNo)));
+        context.put(FinalUtil.QUERY_PAGE, queryPageService.getEntitys(queryPageService.formEntity(PageTypeUtil.PAGE_TYPE_7, pageNo)));
         context.put(FinalUtil.USER_ENTITY,adminUserService.get(uid));
         return new ModelAndView(FileUtil.REGION,context);
     }
@@ -111,7 +112,7 @@ public class RegionController {
         }else{
             context.put(FinalUtil.RETURN_MSG,"删除区域信息数据失败!");
         }
-        context.put(FinalUtil.QUERY_PAGE, queryPageService.getEntitys(queryPageService.formEntity(7, pageNo)));
+        context.put(FinalUtil.QUERY_PAGE, queryPageService.getEntitys(queryPageService.formEntity(PageTypeUtil.PAGE_TYPE_7, pageNo)));
         context.put(FinalUtil.USER_ENTITY,adminUserService.get(uid));
         return new ModelAndView(FileUtil.REGION,context);
     }

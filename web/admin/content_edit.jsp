@@ -8,10 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Charisma, a fully featured, responsive, HTML5, Bootstrap admin template.">
     <meta name="author" content="Muhammad Usman">
-    <style type="text/css">
-        *{margin:0;vertical-align: middle;}
-        .selectList{margin: 0;  font-size: 100%; vertical-align: middle;}
-    </style>
+
     <!-- The styles -->
     <link  href="${ctx}/admin/css/bootstrap-cerulean.css" rel="stylesheet">
     <style type="text/css">
@@ -81,77 +78,57 @@
             <div class="box span12">
                 <div class="row-fluid sortable">
                     <div class="box-header well" data-original-title>
-                        <h2><i class="icon-user"></i> 添加地址</h2>
+                        <h2><i class="icon-user"></i> 活动标签修改</h2>
                         <div class="box-icon">
-                            <a href="${ctx}/place/info.do?uid=${user.id}&pageNo=${pageNo}" class="btn btn-back btn-round"><i class="icon-remove"></i></a>
+                            <a href="${ctx}/product/opercon.do?uid=${user.id}&pid=${product.id}&id=${model.id}&mark=0&pageNo=${pageNo}" class="btn btn-back btn-round"><i class="icon-remove"></i></a>
                         </div>
                     </div>
                     <div class="box-content">
-                        <form class="form-horizontal" id="vform" action="${ctx}/place/add.do?uid=${user.id}&pageNo=1" method="post">
+                        <form class="form-horizontal" id="vform" action="${ctx}/product/editcon.do?uid=${user.id}&id=${model.id}&pageNo=${pageNo}" method="post">
                             <fieldset>
-                                <div class="selectList">
-                                    <div class="control-group" >
-                                        <label class="control-label" >选择城市</label>
-                                        <div class="controls">
-                                            <select id="cityId" name="cityId" class="province">
-                                                <option>请选择</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="control-group">
-                                        <label class="control-label" >选择区域</label>
-                                        <div class="controls">
-                                            <select id="quid" name="quid" class="city">
-                                                <option>请选择</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="control-group">
-                                        <label class="control-label" >选择街道</label>
-                                        <div class="controls">
-                                            <select id="regionId" name="regionId" class="district">
-                                                <option>请选择</option>
-                                            </select>
-                                        </div>
+                                <div class="control-group">
+                                    <label class="control-label">标签标题</label>
+                                    <div class="controls">
+                                        <input id="title" type="text" name="title" value="${model.title}">
+                                        <input id="productId" type="hidden" name="productId" value="${product.id}">
                                     </div>
                                 </div>
                                 <div class="control-group">
-                                    <label class="control-label">地址名称</label>
+                                    <label class="control-label">排序方式</label>
                                     <div class="controls">
-                                        <input class="required" id="name" name="name" type="text" value="">
+                                        <select id="style" name="style">
+                                            <c:choose>
+                                                <c:when test="${model.style == 'ol'}">
+                                                    <option value="ol" selected>有序</option>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <option value="ol">有序</option>
+                                                </c:otherwise>
+                                            </c:choose>
+                                            <c:choose>
+                                                <c:when test="${model.style == 'ul'}">
+                                                    <option value="ul" selected>无序</option>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <option value="ul">无序</option>
+                                                </c:otherwise>
+                                            </c:choose>
+                                            <c:choose>
+                                                <c:when test="${model.style == 'none'}">
+                                                    <option value="none" selected>默认</option>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <option value="none">默认</option>
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </select>
                                     </div>
                                 </div>
-                                <div class="control-group">
-                                    <label class="control-label">地址详情</label>
-                                    <div class="controls">
-                                        <input class="required" id="address" name="address" type="text" value="">
-                                    </div>
-                                </div>
-                                <div class="control-group">
-                                    <label class="control-label">经度</label>
-                                    <div class="controls">
-                                        <input class="required" id="lng" name="lng" type="text" value="">
-                                    </div>
-                                </div>
-                                <div class="control-group">
-                                    <label class="control-label">纬度</label>
-                                    <div class="controls">
-                                        <input class="required" id="lat" name="lat" type="text" value="">
-                                    </div>
-                                </div>
-                                <div class="control-group">
-                                    <label class="control-label">描述</label>
-                                    <div class="controls">
-                                        <textarea id="desc" name="desc" rows="3"></textarea>
-                                    </div>
-                                </div>
-
                                 <div class="form-actions">
                                     <button type="submit" class="btn btn-primary" id="confirmbtn" name="confirmbtn" >确   定</button>
                                 </div>
                             </fieldset>
                         </form>
-                    </div>
                 </div>
             </div>
             </div>
@@ -246,70 +223,6 @@
 
 <script language="JavaScript">
     $(function() {
-
-        $(".selectList").each(function(){
-            var url = "/place/datajson.do?id=0";
-            var areaJson;
-            var temp_html;
-            var oProvince = $(this).find(".province");
-            var oCity = $(this).find(".city");
-            var oDistrict = $(this).find(".district");
-            //初始化省
-            var province = function(){
-                $.each(areaJson,function(i,province){
-                    temp_html+="<option value='"+province.id+"'>"+province.name+"</option>";
-                });
-                oProvince.html(temp_html);
-                city();
-            };
-            //赋值市
-            var city = function(){
-                temp_html = "";
-
-                var n = oProvince.get(0).selectedIndex;
-                var regions = areaJson[n].regions;
-                if(regions == undefined){
-                }else{
-                    $.each(areaJson[n].regions,function(i,city){
-                        temp_html+="<option value='"+city.id+"'>"+city.name+"</option>";
-                    });
-                }
-
-                oCity.html(temp_html);
-                district();
-            };
-            //赋值县
-            var district = function(){
-                temp_html = "";
-                var m = oProvince.get(0).selectedIndex;
-                var n = oCity.get(0).selectedIndex;
-
-                if(n == -1){
-                }else if(typeof(areaJson[m].regions[n].regchild) == "undefined"){
-                    oDistrict.css("display","none");
-                }else{
-                    oDistrict.css("display","inline");
-                    $.each(areaJson[m].regions[n].regchild,function(i,district){
-                        temp_html+="<option value='"+district.id+"'>"+district.name+"</option>";
-                    });
-                };
-                oDistrict.html(temp_html);
-            };
-            //选择省改变市
-            oProvince.change(function(){
-                city();
-            });
-            //选择市改变县
-            oCity.change(function(){
-                district();
-            });
-            //获取json数据
-            $.getJSON(url,function(data){
-                areaJson = data;
-                province();
-            });
-        });
-
         $("#vform").validate();
     });
 </script>

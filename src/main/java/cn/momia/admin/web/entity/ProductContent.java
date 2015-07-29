@@ -1,20 +1,17 @@
 package cn.momia.admin.web.entity;
 
-import java.util.List;
-
 /**
- * Created by hoze on 15/6/25.
+ * Created by hoze on 15/7/23.
  */
-public class City {
+public class ProductContent {
 
     private int id;
-    private String name;
+    private String title;
+    private String style;
+    private int productId;
     private int status;
     private String addTime;
     private String updateTime;
-
-    private List<Region> regions;
-    private int selected = 0;
 
     public int getId() {
         return id;
@@ -24,12 +21,28 @@ public class City {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getStyle() {
+        return style;
+    }
+
+    public void setStyle(String style) {
+        this.style = style;
+    }
+
+    public int getProductId() {
+        return productId;
+    }
+
+    public void setProductId(int productId) {
+        this.productId = productId;
     }
 
     public int getStatus() {
@@ -54,21 +67,5 @@ public class City {
 
     public void setUpdateTime(String updateTime) {
         this.updateTime = updateTime;
-    }
-
-    public List<Region> getRegions() {
-        return regions;
-    }
-
-    public void setRegions(List<Region> regions) {
-        this.regions = regions;
-    }
-
-    public int getSelected() {
-        return selected;
-    }
-
-    public void setSelected(int selected) {
-        this.selected = selected;
     }
 }

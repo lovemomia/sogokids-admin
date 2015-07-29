@@ -89,10 +89,54 @@ public class RegionServiceImpl implements RegionService {
     }
 
     @Override
-    public List<Region> getEntitysByKey(int cityId) {
+     public List<Region> getEntitysByKey(int cityId) {
         List<Region> reData = new ArrayList<Region>();
         String sql = "select id,name,parentId,cityId,status,addTime from t_region where cityId = ? and status > ? ";
         Object [] params = new Object[]{cityId,FinalUtil.DEL_STATUS};
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sql, params);
+        if(list.size() > 0){
+            for (int i = 0; i < list.size(); i++) {
+                Region entity = new Region();
+                entity.setId(Integer.parseInt(list.get(i).get("id").toString()));
+                entity.setCityId(Integer.parseInt(list.get(i).get("cityId").toString()));
+                entity.setName(list.get(i).get("name").toString());
+                entity.setParentId(Integer.parseInt(list.get(i).get("parentId").toString()));
+                entity.setStatus(Integer.parseInt(list.get(i).get("status").toString()));
+                entity.setAddTime(list.get(i).get("addTime").toString());
+                reData.add(entity);
+            }
+        }
+
+        return reData;
+    }
+
+    @Override
+    public List<Region> getEntitysBycpId(int cityId,int parentId) {
+        List<Region> reData = new ArrayList<Region>();
+        String sql = "select id,name,parentId,cityId,status,addTime from t_region where cityId = ? and parentId = ? and status > ? ";
+        Object [] params = new Object[]{cityId,parentId,FinalUtil.DEL_STATUS};
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sql, params);
+        if(list.size() > 0){
+            for (int i = 0; i < list.size(); i++) {
+                Region entity = new Region();
+                entity.setId(Integer.parseInt(list.get(i).get("id").toString()));
+                entity.setCityId(Integer.parseInt(list.get(i).get("cityId").toString()));
+                entity.setName(list.get(i).get("name").toString());
+                entity.setParentId(Integer.parseInt(list.get(i).get("parentId").toString()));
+                entity.setStatus(Integer.parseInt(list.get(i).get("status").toString()));
+                entity.setAddTime(list.get(i).get("addTime").toString());
+                reData.add(entity);
+            }
+        }
+
+        return reData;
+    }
+
+    @Override
+    public List<Region> getEntitysByparentId(int parentId) {
+        List<Region> reData = new ArrayList<Region>();
+        String sql = "select id,name,parentId,cityId,status,addTime from t_region where parentId = ? and status > ? ";
+        Object [] params = new Object[]{parentId,FinalUtil.DEL_STATUS};
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql, params);
         if(list.size() > 0){
             for (int i = 0; i < list.size(); i++) {

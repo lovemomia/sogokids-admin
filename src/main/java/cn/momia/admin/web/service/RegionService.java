@@ -14,10 +14,11 @@ public interface RegionService {
     public List<Region> getEntitys();
     public int insert(Region entity);
     public List<Region> getEntitysByKey(int cityId);
+    public List<Region> getEntitysByparentId(int parentId);
     public List<Region> getEntities(List<Region> regions);
     public int update(Region entity);
     public int delete(int id);
     public Region formEntity(HttpServletRequest request,int id);
     public List<Region> getQueryPages(int start_row,int end_row);
-
+    public List<Region> getEntitysBycpId(int cityId,int parentId);
 }

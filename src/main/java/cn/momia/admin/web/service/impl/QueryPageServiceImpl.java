@@ -7,6 +7,7 @@ import cn.momia.admin.web.service.CategoryService;
 import cn.momia.admin.web.service.CityService;
 import cn.momia.admin.web.service.CouponService;
 import cn.momia.admin.web.service.PlaceService;
+import cn.momia.admin.web.service.ProductContentService;
 import cn.momia.admin.web.service.ProductService;
 import cn.momia.admin.web.service.QueryPageService;
 import cn.momia.admin.web.service.RegionService;
@@ -52,6 +53,9 @@ public class QueryPageServiceImpl implements QueryPageService {
     @Autowired
     private CouponService couponService;
 
+    @Autowired
+    private ProductContentService productContentService;
+
     @Resource
     private JdbcTemplate jdbcTemplate;
 
@@ -80,43 +84,48 @@ public class QueryPageServiceImpl implements QueryPageService {
         int total = 0;
         List entitys = null;
         if(queryPage.getQuery_type() == PageTypeUtil.PAGE_TYPE_1){
-            entitys = adminUserService.getQueryPages((pageNo - 1) * pageSize, pageNo *pageSize);
+            entitys = adminUserService.getQueryPages((pageNo - 1) * pageSize, pageSize);
             total = adminUserService.getEntitys().size();
             queryPage.setList(entitys);
         }
         if(queryPage.getQuery_type() == PageTypeUtil.PAGE_TYPE_2){
-            entitys = categoryService.getQueryPages((pageNo-1)*pageSize, pageNo*pageSize);
+            entitys = categoryService.getQueryPages((pageNo-1)*pageSize, pageSize);
             total = categoryService.getEntitys().size();
             queryPage.setList(categoryService.getEntities(entitys));
         }
         if(queryPage.getQuery_type() == PageTypeUtil.PAGE_TYPE_3){
-            entitys = placeService.getQueryPages((pageNo-1)*pageSize, pageNo*pageSize);
+            entitys = placeService.getQueryPages((pageNo-1)*pageSize, pageSize);
             total = placeService.getEntitys().size();
             queryPage.setList(entitys);
         }
         if(queryPage.getQuery_type() == PageTypeUtil.PAGE_TYPE_4){
-            entitys = productService.getQueryPages((pageNo-1)*pageSize, pageNo*pageSize);
+            entitys = productService.getQueryPages((pageNo-1)*pageSize, pageSize);
             total = productService.getEntitys().size();
             queryPage.setList(productService.getEntities(entitys));
         }
         if(queryPage.getQuery_type() == PageTypeUtil.PAGE_TYPE_5){
-            entitys = skuService.getQueryPages((pageNo-1)*pageSize, pageNo*pageSize);
+            entitys = skuService.getQueryPages((pageNo-1)*pageSize, pageSize);
             total = skuService.getEntitys().size();
             queryPage.setList(skuService.getEntities(entitys));
         }
         if(queryPage.getQuery_type() == PageTypeUtil.PAGE_TYPE_6){
-            entitys = cityService.getQueryPages((pageNo-1)*pageSize, pageNo*pageSize);
+            entitys = cityService.getQueryPages((pageNo-1)*pageSize, pageSize);
             total = cityService.getEntitys().size();
             queryPage.setList(entitys);
         }
         if(queryPage.getQuery_type() == PageTypeUtil.PAGE_TYPE_7){
-            entitys = regionService.getQueryPages((pageNo-1)*pageSize, pageNo*pageSize);
+            entitys = regionService.getQueryPages((pageNo-1)*pageSize, pageSize);
             total = regionService.getEntitys().size();
             queryPage.setList(regionService.getEntities(entitys));
         }
         if(queryPage.getQuery_type() == PageTypeUtil.PAGE_TYPE_8){
-            entitys = couponService.getQueryPages((pageNo-1)*pageSize, pageNo*pageSize);
+            entitys = couponService.getQueryPages((pageNo-1)*pageSize, pageSize);
             total = couponService.getEntitys().size();
+            queryPage.setList(entitys);
+        }
+        if(queryPage.getQuery_type() == PageTypeUtil.PAGE_TYPE_9){
+            entitys = productContentService.getQueryPages((pageNo-1)*pageSize, pageSize);
+            total = productContentService.getEntitys().size();
             queryPage.setList(entitys);
         }
         queryPage.setTotalRecords(total);

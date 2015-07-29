@@ -1,5 +1,6 @@
 package cn.momia.admin.web.service.impl;
 
+import cn.momia.admin.web.common.DateUtil;
 import cn.momia.admin.web.common.FinalUtil;
 import cn.momia.admin.web.common.StringUtil;
 import cn.momia.admin.web.entity.Sku;
@@ -18,8 +19,13 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,7 +52,7 @@ public class SkuServiceImpl implements SkuService {
 
     @Override
     public Sku get(int id) {
-        String sql = "select id,productId,`desc`,type,properties,prices,`limit`,needRealName,stock,unlockedStock,lockedStock,status,addTime from t_sku where id = ? and status > ? ";
+        String sql = "select id,productId,`desc`,type,properties,prices,`limit`,needRealName,stock,unlockedStock,lockedStock,startTime,endTime,onWeekend,onlineTime,offlineTime,status,addTime from t_sku where id = ? and status > ? ";
         final Object [] params = new Object[]{id, FinalUtil.DEL_STATUS};
         final Sku entity = new Sku();
         jdbcTemplate.query(sql,params, new RowCallbackHandler(){
@@ -62,6 +68,11 @@ public class SkuServiceImpl implements SkuService {
                 entity.setStock(rs.getInt("stock"));
                 entity.setUnlockedStock(rs.getInt("unlockedStock"));
                 entity.setLockedStock(rs.getInt("lockedStock"));
+                entity.setStartTime(rs.getString("startTime"));
+                entity.setEndTime(rs.getString("endTime"));
+                entity.setOnWeekend(rs.getInt("onWeekend"));
+                entity.setOnlineTime(rs.getString("onlineTime"));
+                entity.setOfflineTime(rs.getString("offlineTime"));
                 entity.setStatus(rs.getInt("status"));
                 entity.setAddTime(rs.getString("addTime"));
             }
@@ -73,7 +84,7 @@ public class SkuServiceImpl implements SkuService {
     @Override
     public List<Sku> getEntitys() {
         List<Sku> reData = new ArrayList<Sku>();
-        String sql = "select id,productId,`desc`,type,properties,prices,`limit`,needRealName,stock,unlockedStock,lockedStock,status,addTime from t_sku where status > ? order by id desc";
+        String sql = "select id,productId,`desc`,type,properties,prices,`limit`,needRealName,stock,unlockedStock,lockedStock,startTime,endTime,onWeekend,onlineTime,offlineTime,status,addTime from t_sku where status > ? order by id desc";
         Object [] params = new Object[]{FinalUtil.DEL_STATUS};
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql, params);
         if(list.size() > 0){
@@ -90,6 +101,27 @@ public class SkuServiceImpl implements SkuService {
                 entity.setStock(Integer.parseInt(list.get(i).get("stock").toString()));
                 entity.setUnlockedStock(Integer.parseInt(list.get(i).get("unlockedStock").toString()));
                 entity.setLockedStock(Integer.parseInt(list.get(i).get("lockedStock").toString()));
+                if (list.get(i).get("startTime") == null){
+                    entity.setStartTime("");
+                }else {
+                    entity.setStartTime(list.get(i).get("startTime").toString());
+                }
+                if (list.get(i).get("endTime") == null){
+                    entity.setEndTime("");
+                }else {
+                    entity.setEndTime(list.get(i).get("endTime").toString());
+                }
+                entity.setOnWeekend(Integer.parseInt(list.get(i).get("onWeekend").toString()));
+                if (list.get(i).get("onlineTime") == null){
+                    entity.setOnlineTime("");
+                }else {
+                    entity.setOnlineTime(list.get(i).get("onlineTime").toString());
+                }
+                if (list.get(i).get("offlineTime") == null){
+                    entity.setOfflineTime("");
+                }else {
+                    entity.setOfflineTime(list.get(i).get("offlineTime").toString());
+                }
                 entity.setStatus(Integer.parseInt(list.get(i).get("status").toString()));
                 entity.setAddTime(list.get(i).get("addTime").toString());
                 reData.add(entity);
@@ -102,7 +134,7 @@ public class SkuServiceImpl implements SkuService {
     @Override
     public List<Sku> getEntitysByKey(int productId) {
         List<Sku> reData = new ArrayList<Sku>();
-        String sql = "select id,productId,`desc`,type,properties,prices,`limit`,needRealName,stock,unlockedStock,lockedStock,status,addTime from t_sku where productId = ? and status > ? ";
+        String sql = "select id,productId,`desc`,type,properties,prices,`limit`,needRealName,stock,unlockedStock,lockedStock,startTime,endTime,onWeekend,onlineTime,offlineTime,status,addTime from t_sku where productId = ? and status > ? ";
         Object [] params = new Object[]{productId, FinalUtil.DEL_STATUS};
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql, params);
         if(list.size() > 0){
@@ -119,6 +151,27 @@ public class SkuServiceImpl implements SkuService {
                 entity.setStock(Integer.parseInt(list.get(i).get("stock").toString()));
                 entity.setUnlockedStock(Integer.parseInt(list.get(i).get("unlockedStock").toString()));
                 entity.setLockedStock(Integer.parseInt(list.get(i).get("lockedStock").toString()));
+                if (list.get(i).get("startTime") == null){
+                    entity.setStartTime("");
+                }else {
+                    entity.setStartTime(list.get(i).get("startTime").toString());
+                }
+                if (list.get(i).get("endTime") == null){
+                    entity.setEndTime("");
+                }else {
+                    entity.setEndTime(list.get(i).get("endTime").toString());
+                }
+                entity.setOnWeekend(Integer.parseInt(list.get(i).get("onWeekend").toString()));
+                if (list.get(i).get("onlineTime") == null){
+                    entity.setOnlineTime("");
+                }else {
+                    entity.setOnlineTime(list.get(i).get("onlineTime").toString());
+                }
+                if (list.get(i).get("offlineTime") == null){
+                    entity.setOfflineTime("");
+                }else {
+                    entity.setOfflineTime(list.get(i).get("offlineTime").toString());
+                }
                 entity.setStatus(Integer.parseInt(list.get(i).get("status").toString()));
                 entity.setAddTime(list.get(i).get("addTime").toString());
                 reData.add(entity);
@@ -130,16 +183,16 @@ public class SkuServiceImpl implements SkuService {
 
     @Override
     public int insert(Sku entity) {
-        String sql = "insert into t_sku(productId,`desc`,type,properties,prices,`limit`,needRealName,stock,unlockedStock,lockedStock,status,addTime) value(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW()) ";
-        Object [] params = new Object[]{entity.getProductId(), entity.getDesc(), entity.getType(), entity.getProperties(), entity.getPrices(), entity.getLimit(), entity.getNeedRealName(), entity.getStock(), entity.getUnlockedStock(), entity.getLockedStock(), FinalUtil.ADD_STATUS};
+        String sql = "insert into t_sku(productId,`desc`,type,properties,prices,`limit`,needRealName,stock,unlockedStock,lockedStock,startTime,endTime,onWeekend,onlineTime,offlineTime,status,addTime) value(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW()) ";
+        Object [] params = new Object[]{entity.getProductId(), entity.getDesc(), entity.getType(), entity.getProperties(), entity.getPrices(), entity.getLimit(), entity.getNeedRealName(), entity.getStock(), entity.getUnlockedStock(), entity.getLockedStock(), entity.getStartTime(), entity.getEndTime(), entity.getOnWeekend(), entity.getOnlineTime(), entity.getOfflineTime(), FinalUtil.ADD_STATUS};
         int reData = jdbcTemplate.update(sql,params);
         return reData;
     }
 
     @Override
     public int update(Sku entity) {
-        String sql = "update t_sku set productId = ? , `desc` = ?, type = ? ,  properties = ?, prices = ?, `limit` = ?, needRealName = ?, stock = ?, unlockedStock = ? where id = ? ";
-        Object [] params = new Object[]{entity.getProductId(), entity.getDesc(), entity.getType(), entity.getProperties(), entity.getPrices(), entity.getLimit(), entity.getNeedRealName(), entity.getStock(), entity.getUnlockedStock(), entity.getId()};
+        String sql = "update t_sku set productId = ? , `desc` = ?, type = ? ,  properties = ?, prices = ?, `limit` = ?, needRealName = ?, stock = ?, unlockedStock = ?, startTime = ?, endTime = ?, onWeekend = ?, onlineTime = ?, offlineTime = ? where id = ? ";
+        Object [] params = new Object[]{entity.getProductId(), entity.getDesc(), entity.getType(), entity.getProperties(), entity.getPrices(), entity.getLimit(), entity.getNeedRealName(), entity.getStock(), entity.getUnlockedStock(), entity.getStartTime(), entity.getEndTime(), entity.getOnWeekend(), entity.getOnlineTime(), entity.getOfflineTime(), entity.getId()};
         int reData = jdbcTemplate.update(sql,params);
         return reData;
     }
@@ -160,11 +213,37 @@ public class SkuServiceImpl implements SkuService {
         return reData;
     }
 
+    /**
+     * 添加或修改sku时，组装实体信息
+     * @param req
+     * @param id
+     * @return
+     */
     @Override
     public Sku formEntity(HttpServletRequest req, int id) {
+        String time = "0000-00-00 00:00:00";
         List<SkuOther> mapls = new ArrayList<SkuOther>();
         SkuOther other = new SkuOther();
-        String value = req.getParameter("properties");
+        String startTime = req.getParameter("startTime");
+        String endTime = req.getParameter("endTime");
+        String value = "";
+        int onWeekend = 0;
+        if (startTime != null && !startTime.equals("") && endTime != null && !endTime.equals("")){
+            value = startTime.substring(0,19)+"~"+endTime.substring(0,19);
+            onWeekend = getOnWeekendValue(startTime,endTime);
+        }else{
+            if (startTime != null && !startTime.equals("")){
+                value = startTime;
+            }else{
+                startTime = time;
+            }
+            if (endTime != null && !endTime.equals("")){
+                value = endTime;
+            }else{
+                endTime = time;
+            }
+        }
+        //String value = req.getParameter("properties");
         other.setName("time");
         other.setValue(value);
         mapls.add(other);
@@ -180,22 +259,23 @@ public class SkuServiceImpl implements SkuService {
             String adult = req.getParameter(adultx);
             String child = req.getParameter(childx);
             String price = req.getParameter(pricex);
-            if (adult == null && child==null && price == null ){
-                break;
-            }
-            if(adult != null && !adult.equals("") && !adult.equals("0")){
-                skuPrice.setAdult(adult);
-            }
-            if(child != null && !child.equals("") && !child.equals("0")){
-                skuPrice.setChild(child);
-            }
-            skuPrice.setPrice(price);
-            if (adult == null || adult.equals("") || adult.equals("0") || child == null || child.equals("") || child.equals("0")){
-                skuPrice.setUnit("0");
+            if (price == null || price.equals("")){
+                continue;
             }else{
-                skuPrice.setUnit("1");
+                if(adult != null && !adult.equals("") && !adult.equals("0")){
+                    skuPrice.setAdult(adult);
+                }
+                if(child != null && !child.equals("") && !child.equals("0")){
+                    skuPrice.setChild(child);
+                }
+                skuPrice.setPrice(price);
+                if (adult == null || adult.equals("") || adult.equals("0") || child == null || child.equals("") || child.equals("0")){
+                    skuPrice.setUnit("0");
+                }else{
+                    skuPrice.setUnit("1");
+                }
+                mappricels.add(skuPrice);
             }
-            mappricels.add(skuPrice);
         }
 
         String priceStr = JSONObject.toJSONString(mappricels);
@@ -212,10 +292,41 @@ public class SkuServiceImpl implements SkuService {
         entity.setType(Integer.parseInt(req.getParameter("type")));
         entity.setLimit(Integer.parseInt(req.getParameter("limit")));
         entity.setNeedRealName(Integer.parseInt(req.getParameter("needRealName")));
+        entity.setStartTime(startTime);
+        entity.setEndTime(endTime);
+        entity.setOnWeekend(onWeekend);
+        entity.setOnlineTime(req.getParameter("onlineTime"));
+        entity.setOfflineTime(req.getParameter("offlineTime"));
 
         return entity;
     }
 
+    /**
+     * 根据开始时间和结束时间获取是否双休日的值
+     * @param startTime
+     * @param endTime
+     * @return
+     */
+    private int getOnWeekendValue(String startTime, String endTime){
+        int reData = 0;
+
+        if (!startTime.equals("") && !endTime.equals("")){
+            if (DateUtil.isWeek(startTime) && DateUtil.isWeek(endTime)){
+                if (DateUtil.daysBetween(DateUtil.StrToDate(startTime),DateUtil.StrToDate(endTime)) > 1){
+                    reData = 1;
+                }
+            }
+        }
+
+        return reData;
+    }
+
+    /**
+     * 同一个sku中添加多种报价组合
+     * @param req
+     * @param id
+     * @return
+     */
     @Override
     public Sku formEntity2(HttpServletRequest req, int id) {
         List<SkuPrice> mappricels = null;
@@ -253,6 +364,11 @@ public class SkuServiceImpl implements SkuService {
         return entity;
     }
 
+    /**
+     * 根据prices的json串获取sku的价格组合信息
+     * @param jsonPrices
+     * @return
+     */
     private List<SkuPrice> getSkuPrices(String jsonPrices){
         List<SkuPrice> ls = new ArrayList<SkuPrice>();
         List<Map<String,Object>> list = StringUtil.parseJSON2List(jsonPrices);
@@ -275,12 +391,15 @@ public class SkuServiceImpl implements SkuService {
         return ls;
     }
 
-
+    /**
+     *组装修改页面的组合报价html信息
+     * @param jsonPrices
+     * @return
+     */
     @Override
     public String getPricesMap(String jsonPrices){
         StringBuffer sb = new StringBuffer();
         List<Map<String,Object>> list = StringUtil.parseJSON2List(jsonPrices);
-        System.out.print(list.size());
         for (int i = 0; i < list.size(); i++) {
             int intx = i+1;
             String adult = "adult"+intx;
@@ -317,6 +436,11 @@ public class SkuServiceImpl implements SkuService {
         return others.get(0).getValue();
     }
 
+    /**
+     * 获取一个sku中多种报价组合中的最小值
+     * @param jsonPrices
+     * @return
+     */
     @Override
     public SkuPrice getPricesMinValue(String jsonPrices){
         SkuPrice skuPrice = new SkuPrice();
@@ -389,10 +513,16 @@ public class SkuServiceImpl implements SkuService {
         return skus;
     }
 
+    /**
+     * 分页查询
+     * @param start_row
+     * @param end_row
+     * @return
+     */
     @Override
     public List<Sku> getQueryPages(int start_row,int end_row) {
         List<Sku> reData = new ArrayList<Sku>();
-        String sql = "select id,productId,`desc`,type,properties,prices,`limit`,needRealName,stock,unlockedStock,lockedStock,status,addTime from t_sku where status > ? order by id desc limit "+start_row+","+end_row;
+        String sql = "select id,productId,`desc`,type,properties,prices,`limit`,needRealName,stock,unlockedStock,lockedStock,startTime,endTime,onWeekend,onlineTime,offlineTime,status,addTime from t_sku where status > ? order by id desc limit "+start_row+","+end_row;
         Object [] params = new Object[]{FinalUtil.DEL_STATUS};
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql, params);
         if(list.size() > 0){
@@ -409,6 +539,27 @@ public class SkuServiceImpl implements SkuService {
                 entity.setStock(Integer.parseInt(list.get(i).get("stock").toString()));
                 entity.setUnlockedStock(Integer.parseInt(list.get(i).get("unlockedStock").toString()));
                 entity.setLockedStock(Integer.parseInt(list.get(i).get("lockedStock").toString()));
+                if (list.get(i).get("startTime") == null){
+                    entity.setStartTime("");
+                }else {
+                    entity.setStartTime(list.get(i).get("startTime").toString());
+                }
+                if (list.get(i).get("endTime") == null){
+                    entity.setEndTime("");
+                }else {
+                    entity.setEndTime(list.get(i).get("endTime").toString());
+                }
+                entity.setOnWeekend(Integer.parseInt(list.get(i).get("onWeekend").toString()));
+                if (list.get(i).get("onlineTime") == null){
+                    entity.setOnlineTime("");
+                }else {
+                    entity.setOnlineTime(list.get(i).get("onlineTime").toString());
+                }
+                if (list.get(i).get("offlineTime") == null){
+                    entity.setOfflineTime("");
+                }else {
+                    entity.setOfflineTime(list.get(i).get("offlineTime").toString());
+                }
                 entity.setStatus(Integer.parseInt(list.get(i).get("status").toString()));
                 entity.setAddTime(list.get(i).get("addTime").toString());
                 reData.add(entity);

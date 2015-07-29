@@ -26,4 +26,6 @@ public interface ProductService {
     public int update_content(int pid,String contentJson);
     public Map<String, String> getContentJsontoMap(String jsonStr);
     public String getPreviewInfo(int id);
+    public int updateContentJson(int pid);
+    public void updateData(int pid);
 }

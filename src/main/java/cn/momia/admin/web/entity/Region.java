@@ -1,5 +1,7 @@
 package cn.momia.admin.web.entity;
 
+import java.util.List;
+
 /**
  * Created by hoze on 15/7/6.
  */
@@ -14,6 +16,9 @@ public class Region {
 
     private String parentname;
     private String cityname;
+
+    private List<Region> regchild;
+    private int selected = 0;
 
     public int getId() {
         return id;
@@ -85,5 +90,21 @@ public class Region {
 
     public void setCityname(String cityname) {
         this.cityname = cityname;
+    }
+
+    public List<Region> getRegchild() {
+        return regchild;
+    }
+
+    public void setRegchild(List<Region> regchild) {
+        this.regchild = regchild;
+    }
+
+    public int getSelected() {
+        return selected;
+    }
+
+    public void setSelected(int selected) {
+        this.selected = selected;
     }
 }

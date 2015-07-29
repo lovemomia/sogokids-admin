@@ -2,6 +2,7 @@ package cn.momia.admin.web.controller;
 
 import cn.momia.admin.web.common.FileUtil;
 import cn.momia.admin.web.common.FinalUtil;
+import cn.momia.admin.web.common.PageTypeUtil;
 import cn.momia.admin.web.entity.Images;
 import cn.momia.admin.web.entity.ReturnResult;
 import cn.momia.admin.web.service.AdminUserService;
@@ -11,6 +12,7 @@ import cn.momia.admin.web.service.PlaceImgService;
 import cn.momia.admin.web.service.PlaceService;
 import cn.momia.admin.web.service.QueryPageService;
 import cn.momia.admin.web.service.RegionService;
+import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +20,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -54,7 +59,7 @@ public class PlaceController {
     @RequestMapping("/info")
     public ModelAndView info(@RequestParam("uid") int uid,@RequestParam("pageNo") int pageNo, HttpServletRequest req){
         Map<String, Object> context = new HashMap<String, Object>();
-        context.put(FinalUtil.QUERY_PAGE, queryPageService.getEntitys(queryPageService.formEntity(3, pageNo)));
+        context.put(FinalUtil.QUERY_PAGE, queryPageService.getEntitys(queryPageService.formEntity(PageTypeUtil.PAGE_TYPE_3, pageNo)));
         context.put(FinalUtil.USER_ENTITY,adminUserService.get(uid));
         return new ModelAndView(FileUtil.PLACE,context);
     }
@@ -74,7 +79,7 @@ public class PlaceController {
             context.put(FinalUtil.ENTITY,placeService.get(id));
         }
         context.put("citys",cityService.getEntitys());
-        //context.put("regions",regionService.getEntitys());
+        context.put("regions",regionService.getEntitys());
         context.put("pageNo",pageNo);
         context.put(FinalUtil.USER_ENTITY,adminUserService.get(uid));
         return new ModelAndView(reStr,context);
@@ -90,7 +95,7 @@ public class PlaceController {
         }else{
             context.put(FinalUtil.RETURN_MSG,"添加地址信息数据失败!");
         }
-        context.put(FinalUtil.QUERY_PAGE, queryPageService.getEntitys(queryPageService.formEntity(3, pageNo)));
+        context.put(FinalUtil.QUERY_PAGE, queryPageService.getEntitys(queryPageService.formEntity(PageTypeUtil.PAGE_TYPE_3, pageNo)));
         context.put(FinalUtil.USER_ENTITY,adminUserService.get(uid));
         return new ModelAndView(FileUtil.PLACE,context);
     }
@@ -105,7 +110,7 @@ public class PlaceController {
         }else{
             context.put(FinalUtil.RETURN_MSG,"修改地址信息数据失败!");
         }
-        context.put(FinalUtil.QUERY_PAGE, queryPageService.getEntitys(queryPageService.formEntity(3, pageNo)));
+        context.put(FinalUtil.QUERY_PAGE, queryPageService.getEntitys(queryPageService.formEntity(PageTypeUtil.PAGE_TYPE_3, pageNo)));
         context.put(FinalUtil.USER_ENTITY,adminUserService.get(uid));
         return new ModelAndView(FileUtil.PLACE,context);
     }
@@ -120,7 +125,7 @@ public class PlaceController {
         }else{
             context.put(FinalUtil.RETURN_MSG,"删除地址信息数据失败!");
         }
-        context.put(FinalUtil.QUERY_PAGE, queryPageService.getEntitys(queryPageService.formEntity(3, pageNo)));
+        context.put(FinalUtil.QUERY_PAGE, queryPageService.getEntitys(queryPageService.formEntity(PageTypeUtil.PAGE_TYPE_3, pageNo)));
         context.put(FinalUtil.USER_ENTITY,adminUserService.get(uid));
         return new ModelAndView(FileUtil.PLACE,context);
     }
@@ -159,5 +164,20 @@ public class PlaceController {
         context.put(FinalUtil.ENTITY,placeService.get(pid));
         context.put(FinalUtil.USER_ENTITY,adminUserService.get(uid));
         return new ModelAndView(FileUtil.PLACE_IMG,context);
+    }
+
+    @RequestMapping("/datajson")
+    public String getJson(HttpServletRequest req,HttpServletResponse rsp){
+        int id = Integer.parseInt(req.getParameter("id"));
+        rsp.setContentType("text/html; charset=UTF-8");
+        String reStr = placeService.getDataJsonStr(id);
+        //System.out.print(reStr);
+        try {
+            rsp.getWriter().write(reStr);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 }

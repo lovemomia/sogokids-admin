@@ -138,9 +138,19 @@
                                     </div>
                                 </div>
                                 <div class="control-group">
-                                    <label class="control-label">属性(活动时间)</label>
+                                    <label class="control-label" >活动时间</label>
                                     <div class="controls">
-                                        <input class="required" id="properties" name="properties" type="text" value="${properties}">
+                                        <input type="text" id="startTime" name="startTime" class="required" readonly value="${model.startTime}" >
+                                        <br>至<br>
+                                        <input type="text" id="endTime" name="endTime" readonly value="${model.endTime}" >
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    <label class="control-label" >上下线时间</label>
+                                    <div class="controls">
+                                        <input type="text" id="onlineTime" name="onlineTime" class="required" readonly value="${model.onlineTime}">
+                                        <br>至<br>
+                                        <input type="text" id="offlineTime" name="offlineTime" class="required" readonly value="${model.offlineTime}">
                                     </div>
                                 </div>
                                 <div class="control-group">
@@ -192,6 +202,10 @@
 <script src="${ctx}/admin/js/jquery-1.7.2.min.js"></script>
 <!-- jQuery UI -->
 <script src="${ctx}/admin/js/jquery-ui-1.8.21.custom.min.js"></script>
+
+<script src="${ctx}/admin/js/jquery-ui-timepicker-addon.js"></script>
+<script src="${ctx}/admin/js/jquery-ui-slide.min.js"></script>
+
 <!-- transition / effect library -->
 <script src="${ctx}/admin/js/bootstrap-transition.js"></script>
 <!-- alert enhancer library -->
@@ -266,6 +280,26 @@
 <script language="JavaScript">
     $(function() {
         $("#vform").validate();
+
+        $('#startTime').datetimepicker({
+            dateFormat:'yy-mm-dd',
+            timeFormat: 'hh:mm:ss'
+        });
+
+        $('#endTime').datetimepicker({
+            dateFormat:'yy-mm-dd',
+            timeFormat: 'hh:mm:ss'
+        });
+
+        $('#onlineTime').datetimepicker({
+            dateFormat:'yy-mm-dd',
+            timeFormat: 'hh:mm:ss'
+        });
+
+        $('#offlineTime').datetimepicker({
+            dateFormat:'yy-mm-dd',
+            timeFormat: 'hh:mm:ss'
+        });
     });
 </script>
 

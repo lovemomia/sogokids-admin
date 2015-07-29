@@ -173,7 +173,14 @@
                                         <input type="text" id="endTime" name="endTime" class="required" readonly>
                                     </div>
                                 </div>
-
+                                <div class="control-group">
+                                    <label class="control-label" >上下线时间</label>
+                                    <div class="controls">
+                                        <input type="text" id="onlineTime" name="onlineTime" class="required" readonly>
+                                        <br>至<br>
+                                        <input type="text" id="offlineTime" name="offlineTime" class="required" readonly>
+                                    </div>
+                                </div>
                                 <div class="form-actions">
                                     <button type="submit" class="btn btn-primary" id="confirmbtn" name="confirmbtn" >确   定</button>
                                 </div>
@@ -333,6 +340,16 @@
         });
 
         $('#endTime').datetimepicker({
+            dateFormat:'yy-mm-dd',
+            timeFormat: 'hh:mm:ss'
+        });
+
+        $('#onlineTime').datetimepicker({
+            dateFormat:'yy-mm-dd',
+            timeFormat: 'hh:mm:ss'
+        });
+
+        $('#offlineTime').datetimepicker({
             dateFormat:'yy-mm-dd',
             timeFormat: 'hh:mm:ss'
         });

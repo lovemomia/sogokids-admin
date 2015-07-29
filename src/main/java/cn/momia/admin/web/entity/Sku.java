@@ -17,6 +17,11 @@ public class Sku {
     private int stock;
     private int unlockedStock;
     private int lockedStock;
+    private String startTime;
+    private String endTime;
+    private int onWeekend;
+    private String onlineTime;
+    private String offlineTime;
     private int status;
     private String addTime;
     private String updateTime;
@@ -113,6 +118,46 @@ public class Sku {
 
     public void setLockedStock(int lockedStock) {
         this.lockedStock = lockedStock;
+    }
+
+    public String getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
+    }
+
+    public int getOnWeekend() {
+        return onWeekend;
+    }
+
+    public void setOnWeekend(int onWeekend) {
+        this.onWeekend = onWeekend;
+    }
+
+    public String getOnlineTime() {
+        return onlineTime;
+    }
+
+    public void setOnlineTime(String onlineTime) {
+        this.onlineTime = onlineTime;
+    }
+
+    public String getOfflineTime() {
+        return offlineTime;
+    }
+
+    public void setOfflineTime(String offlineTime) {
+        this.offlineTime = offlineTime;
     }
 
     public int getStatus() {

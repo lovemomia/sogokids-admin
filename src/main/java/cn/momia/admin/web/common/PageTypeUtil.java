@@ -13,6 +13,6 @@ public class PageTypeUtil {
     public static final int PAGE_TYPE_6 = 6; //city
     public static final int PAGE_TYPE_7 = 7; //region
     public static final int PAGE_TYPE_8 = 8; //coupon
-    public static final int PAGE_TYPE_9 = 9;
+    public static final int PAGE_TYPE_9 = 9; //product content
 
 }

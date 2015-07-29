@@ -21,6 +21,8 @@ public class Product {
     private int sales;
     private String startTime;
     private String endTime;
+    private String onlineTime;
+    private String offlineTime;
     private int status;
     private String addTime;
     private String updateTime;
@@ -141,6 +143,22 @@ public class Product {
 
     public void setEndTime(String endTime) {
         this.endTime = endTime;
+    }
+
+    public String getOnlineTime() {
+        return onlineTime;
+    }
+
+    public void setOnlineTime(String onlineTime) {
+        this.onlineTime = onlineTime;
+    }
+
+    public String getOfflineTime() {
+        return offlineTime;
+    }
+
+    public void setOfflineTime(String offlineTime) {
+        this.offlineTime = offlineTime;
     }
 
     public int getStatus() {
