@@ -40,7 +40,7 @@ start)
                         fi
     fi
 
-    nohup java $JAVA_OPTS -cp $CLASSPATH cn.momia.admin.web.MApiWeb $PORT >> $GCLOGPATH 2>&1 &
+    nohup java $JAVA_OPTS -cp $CLASSPATH com.sogokids.AdminWeb $PORT >> $GCLOGPATH 2>&1 &
     pid=$!
     sleep 3
     kill -0 $pid

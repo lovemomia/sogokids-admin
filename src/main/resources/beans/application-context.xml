@@ -7,26 +7,27 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
 
     <!-- 加载配置文件 -->
-    <bean id="conf" class="cn.momia.admin.web.common.XmlConfiguration" init-method="init">
+    <bean id="conf" class="com.sogokids.utils.config.XmlConfiguration" init-method="init">
         <property name="fileName" value="conf/configuration.xml" />
     </bean>
 
-    <bean class="cn.momia.admin.web.common.XmlPropertyPlaceholderConfigurer">
+    <bean class="com.sogokids.utils.config.XmlPropertyPlaceholderConfigurer">
         <property name="conf" ref="conf" />
     </bean>
 
-    <bean class="cn.momia.admin.web.common.LoggerConfigurer" init-method="init">
+    <bean class="com.sogokids.utils.config.LoggerConfigurer" init-method="init">
         <property name="conf" ref="conf" />
     </bean>
 
-    <bean class="cn.momia.admin.web.common.FileUtil">
+    <bean class="com.sogokids.utils.util.FileUtil">
         <property name="serverPath" value="${Image.Tongqu.DisplayPath}" />
+        <property name="uploadPath" value="${Image.Tongqu.UploadPath}" />
     </bean>
 
     <!-- Spring MVC配置 -->
     <context:annotation-config />
     <!--扫描注解 -->
-    <context:component-scan base-package="cn.momia.admin.web.service" />
+    <context:component-scan base-package="com.sogokids" />
     <!--默认的mvc注解映射的支持 -->
     <mvc:annotation-driven/>
     <!-- 支持异步方法执行 -->
@@ -67,6 +68,17 @@
         </property>
     </bean>
 
+    <!--<bean id="multipartResolver"-->
+          <!--class="org.springframework.web.multipart.commons.CommonsMultipartResolver">-->
+        <!--&lt;!&ndash; set the max upload size100MB &ndash;&gt;-->
+        <!--<property name="maxUploadSize">-->
+            <!--<value>104857600</value>-->
+        <!--</property>-->
+        <!--<property name="maxInMemorySize">-->
+            <!--<value>4096</value>-->
+        <!--</property>-->
+    <!--</bean>-->
+
     <!-- 配置事务特性 ，配置add、delete和update开始的方法，事务传播特性为required -->
     <tx:advice id="txAdvice" transaction-manager="transactionManager">
         <tx:attributes>
@@ -83,7 +95,7 @@
 
     <!-- 配置那些类的方法进行事务管理 -->
     <aop:config>
-        <aop:pointcut id="allManagerMethod" expression="execution (* cn.momia.admin.web.service.*.*(..))" />
+        <aop:pointcut id="allManagerMethod" expression="execution (* com.sogokids.*.service.*.*(..))" />
         <aop:advisor advice-ref="txAdvice" pointcut-ref="allManagerMethod" />
     </aop:config>
 </beans>
