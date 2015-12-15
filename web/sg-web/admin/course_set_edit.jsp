@@ -91,7 +91,7 @@
                     <ul class="nav nav-second-level">
                         <li><a href="${ctx}/city/info.do?uid=${user.id}"><i class="fa fa-hacker-news"></i> <span class="nav-label">城市信息</span> </a></li>
                         <li><a href="${ctx}/region/info.do?uid=${user.id}"><i class="fa fa-map-marker"></i> <span class="nav-label">区域信息</span> </a></li>
-                        <li><a href="${ctx}/place/info.do?uid=${user.id}"><i class="fa fa-rebel"></i> <span class="nav-label">地址信息</span> </a></li>
+                        <li><a href="${ctx}/place/info.do?uid=${user.id}"><i class="fa fa-rebel"></i> <span class="nav-label">商户信息</span> </a></li>
                         <li><a href="${ctx}/inst/info.do?uid=${user.id}"><i class="fa fa-bank"></i> <span class="nav-label">机构信息</span> </a></li>
                         <li><a href="${ctx}/teacher/info.do?uid=${user.id}"><i class="fa fa-user-secret"></i> <span class="nav-label">师资力量</span></a></li>
                     </ul>
@@ -223,135 +223,141 @@
                 <h2><a href="${ctx}/one/info.do?uid=${user.id}" class="btn btn-primary btn-x">返回</a></h2>
             </div>
         </div>
-        <div class="col-lg-12">
-            <div class="ibox">
-                <div class="ibox-content">
-                    <div class="row">
-                        <div class="ibox-content">
-                            <form class="form-horizontal" id="set_form" action="" method="post">
-                                <fieldset>
-                                    <div class="form-group">
-                                        <div class="col-sm-10">
-                                            <p><h3 align="center">${course.title}</h3></p>
-                                            <input id="set_id" name="set_id" type="hidden" value="${recommend.id}">
-                                            <input id="course_id" name="course_id" type="hidden" value="${course.id}">
-                                        </div>
-                                    </div>
-                                    <div class="hr-line-dashed"></div>
-                                    <div class="form-group">
-                                        <label class="col-sm-2 control-label">推荐顺序 </label>
-                                        <div class="col-sm-3">
-                                            <input id="weight" name="weight" type="text" class="form-control" value="${recommend.weight}" >
-                                        </div>
-                                        <label class="col-sm-2 control-label">购买须知 </label>
-                                        <div class="col-sm-3">
-                                            <textarea id="notice" name="notice" class="form-control">${course.notice}</textarea>
-                                        </div>
-                                    </div>
-                                    <div class="hr-line-dashed"></div>
-                                    <div class="form-group">
-                                        <div class="col-sm-4 col-sm-offset-5">
-                                            <button class="btn btn-primary" type="button" id="btn_set_save" name="btn_set_save">保存内容</button>
-                                        </div>
-                                    </div>
-                                </fieldset>
-                            </form>
+        <div class="row">
+            <div class="ibox-content">
+                <form class="form-horizontal" id="set_form" action="" method="post">
+                    <fieldset>
+                        <div class="form-group">
+                            <div class="col-sm-10">
+                                <p><h3 align="center">${course.title}</h3></p>
+                                <input id="set_id" name="set_id" type="hidden" value="${recommend.id}">
+                                <input id="course_id" name="course_id" type="hidden" value="${course.id}">
+                            </div>
                         </div>
-                    </div>
+                        <%--<div class="hr-line-dashed"></div>--%>
+                        <%--<div class="form-group">--%>
+                            <%--<label class="col-sm-2 control-label">推荐顺序 </label>--%>
+                            <%--<div class="col-sm-3">--%>
+                                <%--<input id="weight" name="weight" type="text" class="form-control" value="${recommend.weight}" >--%>
+                            <%--</div>--%>
+                        <%--</div>--%>
+                    </fieldset>
+                </form>
+                <div class="form-group">
                     <div class="row">
-                        <div class="col-lg-12">课程表</div>
-                        <div class="hr-line-dashed"></div>
-                        <div class="col-lg-5 col-sm-offset-1">
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    录入信息
-                                </div>
-                                <div class="panel-body">
-                                    <div class="list-group" style="height:400px;overflow:auto;">
-                                        <form class="form-horizontal" id="sku_form" action="" method="post">
-                                            <fieldset>
-                                                <div class="form-group">
-                                                    <label class="col-sm-3 control-label">sku描述</label>
-                                                    <div class="col-sm-7">
-                                                        <textarea id="desc" name="desc" class="form-control"></textarea>
-                                                        <input id="sku_id" name="sku_id" type="hidden" value="0"></td>
-                                                    </div>
-                                                </div>
-                                                <div class="hr-line-dashed"></div>
-                                                <div class="form-group">
-                                                    <label class="col-sm-3 control-label">原始价格</label>
-                                                    <div class="col-sm-3">
-                                                        <input id="originalPrice" name="originalPrice" type="text" class="form-control">
-                                                    </div>
-                                                    <label class="col-sm-3 control-label">出售价格</label>
-                                                    <div class="col-sm-3">
-                                                        <input id="price" name="price" type="text" class="form-control">
-                                                    </div>
-                                                </div>
-                                                <div class="hr-line-dashed"></div>
-                                                <div class="form-group">
-                                                    <label class="col-sm-3 control-label">大人数量</label>
-                                                    <div class="col-sm-3">
-                                                        <input id="adult" name="adult" type="text" class="form-control">
-                                                    </div>
-                                                    <label class="col-sm-3 control-label">儿童数量</label>
-                                                    <div class="col-sm-3">
-                                                        <input id="child" name="child" type="text" class="form-control">
-                                                        <input id="courseCount" name="courseCount" type="hidden" value="1">
-                                                    </div>
-                                                </div>
-                                                <div class="hr-line-dashed"></div>
-                                                <div class="form-group">
-                                                    <label class="col-sm-3 control-label">时间数量</label>
-                                                    <div class="col-sm-3">
-                                                        <input id="time" name="time" type="text" class="form-control">
-                                                    </div>
-                                                    <label class="col-sm-3 control-label">时间单位</label>
-                                                    <div class="col-sm-3">
-                                                        <div id="div_time">
-                                                            <select id="timeUnit" name="timeUnit" class="form-control m-b">
-                                                                <c:forEach items="${time_unit}" var="node">
-                                                                    <option value="${node.id}">${node.name}</option>
-                                                                </c:forEach>
-                                                            </select>
+                        <div class="col-lg-12">
+                            <div class="col-lg-5 col-sm-offset-1">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        录入信息
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="list-group" style="height:300px;">
+                                            <form class="form-horizontal" id="sku_form" action="" method="post">
+                                                <fieldset>
+                                                    <div class="form-group">
+                                                        <%--<label class="col-sm-3 control-label">原始价格</label>--%>
+                                                        <%--<div class="col-sm-3">--%>
+                                                        <%--<input id="originalPrice" name="originalPrice" type="text" class="form-control">--%>
+                                                        <%--</div>--%>
+                                                        <label class="col-sm-3 control-label">出售价格</label>
+                                                        <div class="col-sm-5">
+                                                            <input id="price" name="price" type="text" class="form-control" style="width: 80%;">
                                                         </div>
                                                     </div>
-                                                </div>
-                                                <div class="hr-line-dashed"></div>
-                                                <div class="form-group">
-                                                    <div class="col-sm-4 col-sm-offset-4">
-                                                        <button class="btn btn-primary" type="button" id="btn_sku_save" name="btn_sku_save">保存内容</button>
+                                                    <div class="form-group">
+                                                        <label class="col-sm-3 control-label">大人数量</label>
+                                                        <div class="col-sm-2">
+                                                            <input id="adult" name="adult" type="text" class="form-control" style="width: 190%;">
+                                                        </div>
+                                                        <label class="col-sm-3 control-label">儿童数量</label>
+                                                        <div class="col-sm-2">
+                                                            <input id="child" name="child" type="text" class="form-control" style="width: 190%;">
+                                                        </div>
                                                     </div>
+                                                    <div class="form-group">
+                                                        <label class="col-sm-3 control-label">规则描述</label>
+                                                        <div class="col-sm-8">
+                                                            <textarea id="desc" name="desc" class="form-control" rows="3" style="resize:none;"></textarea>
+                                                            <input id="sku_id" name="sku_id" type="hidden" value="0">
+                                                            <%--<input id="courseCount" name="courseCount" type="hidden" value="1">--%>
+                                                        </div>
+                                                    </div>
+                                                    <%--<div class="form-group">--%>
+                                                    <%--<label class="col-sm-3 control-label">时间数量</label>--%>
+                                                    <%--<div class="col-sm-3">--%>
+                                                    <%--<input id="time" name="time" type="text" class="form-control">--%>
+                                                    <%--</div>--%>
+                                                    <%--<label class="col-sm-3 control-label">时间单位</label>--%>
+                                                    <%--<div class="col-sm-3">--%>
+                                                    <%--<div id="div_time">--%>
+                                                    <%--<select id="timeUnit" name="timeUnit" class="form-control m-b">--%>
+                                                    <%--<c:forEach items="${time_unit}" var="node">--%>
+                                                    <%--<option value="${node.id}">${node.name}</option>--%>
+                                                    <%--</c:forEach>--%>
+                                                    <%--</select>--%>
+                                                    <%--</div>--%>
+                                                    <%--</div>--%>
+                                                    <%--</div>--%>
+                                                    <br>
+                                                    <br>
+                                                    <div class="hr-line-dashed"></div>
+                                                    <div class="form-group">
+                                                        <div class="col-sm-4 col-sm-offset-4">
+                                                            <button class="btn btn-primary" type="button" id="btn_sku_save" name="btn_sku_save">保存内容</button>
+                                                        </div>
+                                                    </div>
+                                                </fieldset>
+                                            </form>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-lg-5">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        显示列表
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="list-group" style="height:300px;overflow:auto;">
+                                            <form>
+                                                <div id="sku_div" class="form-group">
+                                                    ${skuHtml}
                                                 </div>
-                                            </fieldset>
-                                        </form>
+                                            </form>
+                                        </div>
                                     </div>
-                                </div>
 
+                                </div>
                             </div>
                         </div>
-                        <div class="col-lg-5">
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    显示列表
+                    </div>
+                    <div class="form-group">
+                        <form class="form-horizontal" id="notice_form" action="" method="post">
+                            <fieldset>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">购买须知 </label>
                                 </div>
-                                <div class="panel-body">
-                                    <div class="list-group" style="height:400px;overflow:auto;">
-                                        <form>
-                                            <div class="hr-line-dashed"></div>
-                                            <div id="sku_div" class="form-group">
-                                                ${skuHtml}
-                                            </div>
-                                        </form>
+                                <div class="form-group">
+                                    <label class="col-sm-1 control-label"> </label>
+                                    <div class="col-sm-10">
+                                        <textarea id="notice" name="notice" class="form-control" rows="5" style="resize:none;">${course.notice}</textarea>
                                     </div>
                                 </div>
-
-                            </div>
-                        </div>
+                                <div class="hr-line-dashed"></div>
+                                <div class="form-group">
+                                    <div class="col-sm-4 col-sm-offset-5">
+                                        <button class="btn btn-primary" type="button" id="btn_set_save" name="btn_set_save">保存内容</button>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
+
         <div class="footer">
             <div class="pull-right">
                 By：<a href="http://www.duolaqinzi.com" target="_blank">sg home</a>
@@ -371,13 +377,18 @@
         });
 
         $('#btn_set_save').click(function(){
-            $.post("/one/edit.do", $("#set_form").serialize(),
+            var courId = $('#course_id').val();
+            var set_id = $('#set_id').val();
+            var weight = $('#weight').val();
+            var notice = $('#notice').val();
+            $.post("/one/edit.do", {course_id:courId,set_id:set_id,weight:weight,notice:notice},
                     function(data){
                         if(data.success == 0){
-                            $("#set_id").attr("value",data.set_id);
-                            $("#sku_id").attr("value",data.sku_id);
+//                            layer.alert(data.msg,10,'提示信息');
+                            window.location.href="${ctx}/one/info.do?uid=${user.id}";
+                        }else{
+                            layer.alert(data.msg,10,'提示信息');
                         }
-                        layer.alert(data.msg,10,'提示信息');
                     }, "json");
 
         });
@@ -395,8 +406,9 @@
                                 var divshow = $("#sku_div");
                                 divshow.text("");// 清空数据
                                 divshow.append(data.skuHtml);
+                            }else{
+                                layer.alert(data.msg,10,'提示信息');
                             }
-                            layer.alert(data.msg,10,'提示信息');
                         }, "json");
             }
         });
@@ -414,21 +426,43 @@
                 }, "json");
     }
 
+//    /**
+//     * 删除sku信息
+//     * @param id
+//     */
+//    function skuDel(id){
+//        var courId = $('#course_id').val();
+//        layer.confirm('您确定要删除此SKU吗？', function(index){
+//            $.post("/one/delSku.do?courId="+courId, {skuId:id},
+//                    function(data){
+//                        if(data.success == 0) {
+//                            var divshow = $("#sku_div");
+//                            divshow.text("");
+//                            divshow.append(data.skuHtml);
+//                        }else{
+//                            layer.alert(data.msg,10,'提示信息');
+//                        }
+//                    }, "json");
+//            layer.close(index);
+//        });
+//    }
+
     /**
-     * 删除sku信息
+     * 取消sku信息
      * @param id
      */
-    function skuDel(id){
+    function cancelSku(id){
         var courId = $('#course_id').val();
-        layer.confirm('您确定要删除此SKU吗？', function(index){
-            $.post("/one/delSku.do?courId="+courId, {skuId:id},
+        layer.confirm('您确定要取消此SKU吗？', function(index){
+            $.post("/one/cancelSku.do?courseId="+courId, {skuId:id},
                     function(data){
                         if(data.success == 0) {
                             var divshow = $("#sku_div");
-                            divshow.text("");
+                            divshow.text("");// 清空数据
                             divshow.append(data.skuHtml);
+                        }else{
+                            layer.alert(data.msg,10,'提示信息');
                         }
-                        layer.alert(data.msg,10,'提示信息');
                     }, "json");
             layer.close(index);
         });

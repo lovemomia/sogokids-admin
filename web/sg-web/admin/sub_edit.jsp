@@ -17,7 +17,7 @@
     <link href="${ctx}/sg-web/js/plugins/fancybox/jquery.fancybox.css" rel="stylesheet">
 
     <style>
-        .main{margin:0 auto;}
+        .main{margin:0 auto;margin-left: 50px;}
         .div_img{float: left;}
         .div_img ul{
             background: #F8F8FF;
@@ -117,7 +117,7 @@
                     <ul class="nav nav-second-level">
                         <li><a href="${ctx}/city/info.do?uid=${user.id}"><i class="fa fa-hacker-news"></i> <span class="nav-label">城市信息</span> </a></li>
                         <li><a href="${ctx}/region/info.do?uid=${user.id}"><i class="fa fa-map-marker"></i> <span class="nav-label">区域信息</span> </a></li>
-                        <li><a href="${ctx}/place/info.do?uid=${user.id}"><i class="fa fa-rebel"></i> <span class="nav-label">地址信息</span> </a></li>
+                        <li><a href="${ctx}/place/info.do?uid=${user.id}"><i class="fa fa-rebel"></i> <span class="nav-label">商户信息</span> </a></li>
                         <li><a href="${ctx}/inst/info.do?uid=${user.id}"><i class="fa fa-bank"></i> <span class="nav-label">机构信息</span> </a></li>
                         <li><a href="${ctx}/teacher/info.do?uid=${user.id}"><i class="fa fa-user-secret"></i> <span class="nav-label">师资力量</span></a></li>
                     </ul>
@@ -262,9 +262,9 @@
 
                             <ul class="nav nav-tabs">
                                 <li id="tab_li_1" class="active"><a id="tab1" data-toggle="tab" href="tabs_panels.html#tab-4"><i class="fa fa-laptop"></i>基本信息</a></li>
-                                <li id="tab_li_2" class=""><a id="tab2" data-toggle="tab" href="tabs_panels.html#tab-5"><i class="fa fa-desktop"></i>轮播图片</a></li>
-                                <li id="tab_li_3" class=""><a id="tab3" data-toggle="tab" href="tabs_panels.html#tab-6"><i class="fa fa-signal"></i>购买须知</a></li>
-                                <li id="tab_li_4" class=""><a id="tab4" data-toggle="tab" href="tabs_panels.html#tab-7"><i class="fa fa-bar-chart-o"></i>SKU</a></li>
+                                <li id="tab_li_2" class=""><a id="tab2" data-toggle="tab" href="tabs_panels.html#tab-5"><i class="fa fa-picture-o"></i>轮播图片</a></li>
+                                <li id="tab_li_3" class=""><a id="tab3" data-toggle="tab" href="tabs_panels.html#tab-6"><i class="fa fa-cart-plus"></i>购买须知</a></li>
+                                <li id="tab_li_4" class=""><a id="tab4" data-toggle="tab" href="tabs_panels.html#tab-7"><i class="fa fa-gears"></i>购买规则</a></li>
                             </ul>
                         </div>
                     </div>
@@ -279,19 +279,19 @@
                                                 <div class="form-group">
                                                     <label class="col-sm-2 control-label">标题</label>
                                                     <div class="col-sm-3">
-                                                        <textarea id="title" name="title" class="form-control" rows="7">${model.title}</textarea>
+                                                        <textarea id="title" name="title" class="form-control" rows="5" style="resize:none;">${model.title}</textarea>
                                                         <input id="sub_id" name="sub_id" type="hidden" value="${model.id}">
                                                         <input id="type" name="type" type="hidden" value="${model.type}"></td>
                                                     </div>
-                                                    <label class="col-sm-2 control-label"></label>
+                                                    <label class="col-sm-2 control-label">上传图片</label>
                                                     <div class="col-sm-3">
-                                                        <input id="img_path" type="file" name="img_path" class="form-control" style="width: 200px">
-                                                        <img id="img_a" src="${filepath}${model.cover}" style="width: 200px;height: 100px"/>
+                                                        <img id="img_a" src="${filepath}${model.cover}" style="width: 200px;height: 120px;border: 1px solid #999;"/>
+                                                        <input id="img_path" type="file" name="img_path" style="opacity: 0;filter:alpha(opacity=0);">
                                                         <input id="cover" name="cover" type="hidden" value="${model.cover}">
                                                         <input id="filepath" name="filepath" type="hidden" value="${filepath}">
-                                                        <div class="col-sm-3 col-sm-offset-3">
-                                                            <button class="btn btn-primary" type="button" id="btn_img_save" name="btn_img_save">上传</button>
-                                                        </div>
+                                                        <%--<div class="col-sm-3 col-sm-offset-3">--%>
+                                                            <%--<button class="btn btn-primary" type="button" id="btn_img_save" name="btn_img_save">上传</button>--%>
+                                                        <%--</div>--%>
                                                     </div>
                                                 </div>
                                                 <div class="hr-line-dashed"></div>
@@ -311,21 +311,21 @@
                                                             </c:forEach>
                                                         </select>
                                                     </div>
-                                                    <label class="col-sm-2 control-label">所属标签</label>
-                                                    <div class="col-sm-3">
-                                                        <select id="tags" name="tags" class="form-control m-b" >
-                                                            <c:forEach items="${tags}" var="node">
-                                                                <c:choose>
-                                                                    <c:when test="${node.title == model.tags}">
-                                                                        <option value="${node.id}" selected>${node.title}</option>
-                                                                    </c:when>
-                                                                    <c:otherwise>
-                                                                        <option value="${node.id}"  >${node.title}</option>
-                                                                    </c:otherwise>
-                                                                </c:choose>
-                                                            </c:forEach>
-                                                        </select>
-                                                    </div>
+                                                    <%--<label class="col-sm-2 control-label">所属标签</label>--%>
+                                                    <%--<div class="col-sm-3">--%>
+                                                        <%--<select id="tags" name="tags" class="form-control m-b" >--%>
+                                                            <%--<c:forEach items="${tags}" var="node">--%>
+                                                                <%--<c:choose>--%>
+                                                                    <%--<c:when test="${node.title == model.tags}">--%>
+                                                                        <%--<option value="${node.id}" selected>${node.title}</option>--%>
+                                                                    <%--</c:when>--%>
+                                                                    <%--<c:otherwise>--%>
+                                                                        <%--<option value="${node.id}"  >${node.title}</option>--%>
+                                                                    <%--</c:otherwise>--%>
+                                                                <%--</c:choose>--%>
+                                                            <%--</c:forEach>--%>
+                                                        <%--</select>--%>
+                                                    <%--</div>--%>
                                                 </div>
                                                 <%--<div class="hr-line-dashed"></div>--%>
                                                 <%--<div class="form-group">--%>
@@ -349,7 +349,7 @@
                                                 <div class="form-group">
                                                     <label class="col-sm-2 control-label">课程目标</label>
                                                     <div class="col-sm-8">
-                                                        <textarea id="intro" name="intro" class="form-control" rows="5">${model.intro}</textarea>
+                                                        <textarea id="intro" name="intro" class="form-control" rows="5" style="resize:none;">${model.intro}</textarea>
                                                     </div>
                                                 </div>
 
@@ -369,7 +369,7 @@
 
                             <div id="tab-2" class="tab-pane">
                                 <div class="ibox-content">
-                                    <div class="list-group">
+                                    <div class="row">
                                         <form class="form-horizontal" id="img_form" action="" method="post">
                                             <div class="form-group">
                                                 <label class="col-sm-3 control-label">选择图片</label>
@@ -381,26 +381,15 @@
                                                 </div>
                                             </div>
                                         </form>
-                                        <form>
-                                            <div class="hr-line-dashed"></div>
-                                            <div class="row">
-                                                <div class="col-lg-12">
-                                                    <div class="ibox float-e-margins">
-                                                        <div class="ibox-title">
-                                                            <h5>轮播图片</h5>
-                                                        </div>
-                                                        <div class="ibox-content">
-                                                            <div id="img_div" class="main">
-                                                                ${imageJson}
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </form>
                                     </div>
                                     <div class="hr-line-dashed"></div>
-                                    <div class="form-group">
+                                    <div class="row">
+                                        <div id="img_div" class="main">
+                                            ${imageJson}
+                                        </div>
+                                    </div>
+                                    <div class="hr-line-dashed"></div>
+                                    <div class="row">
                                         <div class="col-sm-5 col-sm-offset-5">
                                             <button class="btn btn-warning" type="button" id="btn_pic_next_save" name="btn_sub_next_save">下一步</button>
                                         </div>
@@ -408,8 +397,8 @@
                                 </div>
                             </div>
                             <div id="tab-3" class="tab-pane">
-                                <div class="col-lg-12">
-                                    <div class="ibox">
+                                <%--<div class="col-lg-12">--%>
+                                    <%--<div class="ibox">--%>
                                         <div class="ibox-content">
                                             <div class="row">
                                                 <div class="col-lg-1"></div>
@@ -429,16 +418,16 @@
                                                                                 <input id="notice_id" name="notice_id" type="hidden" value="0"></td>
                                                                             </div>
                                                                         </div>
-                                                                        <div class="hr-line-dashed"></div>
+                                                                        <%--<div class="hr-line-dashed"></div>--%>
                                                                         <div class="form-group">
                                                                             <label class="col-sm-3 control-label">须知内容</label>
                                                                             <div class="col-sm-7">
-                                                                                <textarea id="n_content" name="n_content" class="form-control" rows="5"></textarea>
+                                                                                <textarea id="n_content" name="n_content" class="form-control" rows="16" style="resize:none;"></textarea>
                                                                             </div>
                                                                         </div>
                                                                         <div class="hr-line-dashed"></div>
                                                                         <div class="form-group">
-                                                                            <div class="col-sm-4 col-sm-offset-5">
+                                                                            <div class="col-sm-4 col-sm-offset-4">
                                                                                 <button class="btn btn-primary" type="button" id="btn_notice_save" name="btn_notice_save">保存内容</button>
                                                                             </div>
                                                                         </div>
@@ -468,18 +457,18 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div class="row">
+                                                <div class="col-sm-4 col-sm-offset-5">
+                                                    <button class="btn btn-warning" type="button" id="btn_notice_next_save" name="btn_notice_save">下一步</button>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="col-sm-4 col-sm-offset-5">
-                                        <button class="btn btn-warning" type="button" id="btn_notice_next_save" name="btn_notice_save">下一步</button>
-                                    </div>
-                                </div>
+                                    <%--</div>--%>
+                                <%--</div>--%>
                             </div>
                             <div id="tab-4" class="tab-pane">
-                                <div class="col-lg-12">
-                                    <div class="ibox">
+                                <%--<div class="col-lg-12">--%>
+                                    <%--<div class="ibox">--%>
                                         <div class="ibox-content">
                                             <div class="row">
                                                 <div class="col-lg-1"></div>
@@ -494,7 +483,7 @@
                                                                     <fieldset>
 
                                                                         <div class="form-group">
-                                                                            <label class="col-sm-3 control-label">sku描述</label>
+                                                                            <label class="col-sm-3 control-label">规则描述</label>
                                                                             <div class="col-sm-7">
                                                                                 <textarea id="desc" name="desc" class="form-control"></textarea>
                                                                                 <input id="sku_id" name="sku_id" type="hidden" value="0"></td>
@@ -577,14 +566,14 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="form-group">
+                                            <div class="row">
                                                 <div class="col-sm-12 col-sm-offset-5">
                                                     <a href="${ctx}/sub/info.do?uid=${user.id}" class="btn btn-primary btn-x">&numsp;&numsp;完&numsp;&numsp;成&numsp;&numsp;</a>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
+                                    <%--</div>--%>
+                                <%--</div>--%>
                             </div>
                         </div>
 
@@ -612,13 +601,39 @@
             closeEffect: 'none'
         });
 
-//        new baidu.editor.ui.Editor({
-//            initialContent: '',
-//            textarea: 'ncontent',
-//            toolbars: [["bold","italic"]],
-//            minFrameHeight:500,
-//            initialFrameWidth:260
-//        }).render("content-editor");
+        $('#img_a').click(function (){
+            document.getElementById("img_path").click();
+        });
+
+        $('#img_path').change(function (){
+            var pathUrl = $('#img_path').val();
+            if(pathUrl != null || pathUrl != ""){
+                //创建FormData对象
+                var data = new FormData();
+                //为FormData对象添加数据
+                $.each($('#img_path')[0].files, function(i, file) {
+                    data.append('upload_file', file);
+                });
+
+                $.ajax({
+                    url:'/upload/jsonImg.do',
+                    type:'POST',
+                    data:data,
+                    cache: false,
+                    contentType: false,    //不可缺
+                    processData: false,    //不可缺
+                    success:function(data){
+                        var obj = $.parseJSON(data);
+                        if(obj.success == 0){
+                            $("#cover").val(obj.path);
+                            $("#img_a").attr("src", $("#filepath").val() + obj.path);
+                        }else{
+                            layer.alert(obj.msg,10,'提示信息');
+                        }
+                    }
+                });
+            }
+        });
     });
 </script>
 

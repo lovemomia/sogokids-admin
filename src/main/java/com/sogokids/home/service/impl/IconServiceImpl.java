@@ -40,7 +40,7 @@ public class IconServiceImpl implements IconService {
     @Override
     public List<Icon> getEntitys() {
         List<Icon> reData = new ArrayList<Icon>();
-        String sql = "select Id,CityId,Title,Img,Action,Weight,Status,AddTime from SG_Icon where Status > ? ";
+        String sql = "select Id,CityId,Title,Img,Action,Platform,Weight,Status,AddTime from SG_Icon where Status > ? ";
         Object [] params = new Object[]{Quantity.STATUS_ZERO};
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql, params);
         if(list.size() > 0){
@@ -51,6 +51,7 @@ public class IconServiceImpl implements IconService {
                 entity.setTitle(list.get(i).get("Title").toString());
                 entity.setImg(list.get(i).get("Img").toString());
                 entity.setAction(list.get(i).get("Action").toString());
+                entity.setPlatform(Integer.parseInt(list.get(i).get("Platform").toString()));
                 entity.setWeight(Integer.parseInt(list.get(i).get("Weight").toString()));
                 entity.setStatus(Integer.parseInt(list.get(i).get("Status").toString()));
                 entity.setAddTime(list.get(i).get("AddTime").toString());
@@ -65,7 +66,7 @@ public class IconServiceImpl implements IconService {
 
     @Override
     public Icon get(int id) {
-        String sql = "select Id,CityId,Title,Img,Action,Weight,Status,AddTime from SG_Icon where Id = ? and Status > ? ";
+        String sql = "select Id,CityId,Title,Img,Action,Platform,Weight,Status,AddTime from SG_Icon where Id = ? and Status > ? ";
         final Object [] params = new Object[]{id, Quantity.STATUS_ZERO};
         final Icon entity = new Icon();
         jdbcTemplate.query(sql,params, new RowCallbackHandler(){
@@ -75,6 +76,7 @@ public class IconServiceImpl implements IconService {
                 entity.setTitle(rs.getString("Title"));
                 entity.setImg(rs.getString("Img"));
                 entity.setAction(rs.getString("Action"));
+                entity.setPlatform(rs.getInt("Platform"));
                 entity.setWeight(rs.getInt("Weight"));
                 entity.setStatus(rs.getInt("Status"));
                 entity.setAddTime(rs.getString("AddTime"));
@@ -86,16 +88,16 @@ public class IconServiceImpl implements IconService {
 
     @Override
     public int insert(Icon entity) {
-        String sql = "insert into SG_Icon(CityId,Title,Img,Action,Weight,Status,AddTime) value(?, ?, ?, ?, ?, ?, NOW()) ";
-        Object [] params = new Object[]{entity.getCityId(), entity.getTitle(), entity.getImg(), entity.getAction(), entity.getWeight(), Quantity.STATUS_ONE};
+        String sql = "insert into SG_Icon(CityId,Title,Img,Action,Platform,Weight,Status,AddTime) value(?, ?, ?, ?, ?, ?, ?, NOW()) ";
+        Object [] params = new Object[]{entity.getCityId(), entity.getTitle(), entity.getImg(), entity.getAction(), entity.getPlatform(), entity.getWeight(), Quantity.STATUS_ONE};
         int reData = jdbcTemplate.update(sql,params);
         return reData;
     }
 
     @Override
     public int update(Icon entity) {
-        String sql = "update SG_Icon set CityId = ?, Title = ?, Img = ?, Action = ?, Weight = ?  where Id = ? ";
-        Object [] params = new Object[]{entity.getCityId(), entity.getTitle(), entity.getImg(), entity.getAction(), entity.getWeight(), entity.getId()};
+        String sql = "update SG_Icon set CityId = ?, Title = ?, Img = ?, Action = ?, Platform = ?, Weight = ?  where Id = ? ";
+        Object [] params = new Object[]{entity.getCityId(), entity.getTitle(), entity.getImg(), entity.getAction(), entity.getPlatform(), entity.getWeight(), entity.getId()};
         int reData = jdbcTemplate.update(sql,params);
         return reData;
     }
@@ -117,6 +119,7 @@ public class IconServiceImpl implements IconService {
         entity.setTitle(request.getParameter("title"));
         entity.setImg(request.getParameter("cover"));
         entity.setAction(request.getParameter("action"));
+        entity.setPlatform(Integer.parseInt(request.getParameter("platform")));
         entity.setWeight(Integer.parseInt(request.getParameter("weight")));
 
         return entity;

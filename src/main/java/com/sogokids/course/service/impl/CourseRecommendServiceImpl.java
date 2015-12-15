@@ -21,6 +21,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -76,7 +77,7 @@ public class CourseRecommendServiceImpl implements CourseRecommendService {
         List<CourseRecommend> courseRecommends = this.getEntitys();
         if (courseRecommends.size() > 0){
             for (CourseRecommend courseRecommend : courseRecommends) {
-                courses.add(courseService.get(courseRecommend.getCourseId()));
+                courses.add(courseService.getRecommend(courseRecommend.getCourseId()));
             }
         }
         return courses;
@@ -225,8 +226,22 @@ public class CourseRecommendServiceImpl implements CourseRecommendService {
 
         entity.setId(id);
         entity.setCourseId(course_id);
-        entity.setWeight(Integer.parseInt(request.getParameter("weight")));
+        entity.setWeight(getWeightMax()+1);
 
         return entity;
+    }
+
+    @Override
+    public int getWeightMax() {
+        String sql = "SELECT max(weight) as weight FROM sogokids.SG_CourseRecommend ";
+        final Map reData = new HashMap();
+        jdbcTemplate.query(sql, new RowCallbackHandler(){
+            public void processRow(ResultSet rs) throws SQLException {
+                reData.put("weight", rs.getInt("weight"));
+//                System.out.print("============="+rs.getInt("weight"));
+            }
+        });
+
+        return Integer.parseInt(reData.get("weight").toString());
     }
 }

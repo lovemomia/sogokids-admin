@@ -102,29 +102,6 @@ $(function () {
         }
     });
 
-    /**
-     * 上传图片
-     */
-    //$("#btn_bookImg_save").click(function(){
-    //    $.ajaxFileUpload({
-    //        url:'/upload/img.do',//处理图片脚本
-    //        secureuri :false,
-    //        fileElementId :'bookFile',//file控件id
-    //        dataType : 'text',
-    //        success : function (data, status){
-    //            var obj = JSON.parse(data);
-    //            $("#book_img").val(obj.path);
-    //            var pic = $("#filepath").val();
-    //            $("#img_book").attr("src", pic + obj.path);
-    //        },
-    //        error: function(data, status, e){
-    //            alert(e);
-    //        }
-    //    });
-    //
-    //    return false;
-    //});
-
     $('#btn_sku_save').click(function () {
         var courseId = $('#course_id').val();
         var stock = $('#stock').val();
@@ -192,10 +169,10 @@ $(function () {
                         var divshow = $("#course_placeId");
                         divshow.text("");// 清空数据
                         divshow.append(data.placeHtml);
-
-                        $('#myModal4').modal('hide')
+                        $('#myModal4').modal('hide');
+                    }else{
+                        layer.alert(data.msg,10,'提示信息');
                     }
-                    layer.alert(data.msg,10,'提示信息');
                 }, "json");
         }
     });
@@ -296,8 +273,9 @@ function delimg(id){
                     var divshow = $("#img_div");
                     divshow.text("");// 清空数据
                     divshow.append(data.imageJson);
+                }else{
+                    layer.alert(data.msg,10,'提示信息');
                 }
-                layer.alert(data.msg,10,'提示信息');
             }, "json");
         layer.close(index);
     });
@@ -329,8 +307,9 @@ function bookDel(bookId){
                     var divshow = $("#book_div");
                     divshow.text("");
                     divshow.append(data.books);
+                }else{
+                    layer.alert(data.msg,10,'提示信息');
                 }
-                layer.alert(data.msg,10,'提示信息');
             }, "json");
         layer.close(index);
     });
@@ -387,8 +366,30 @@ function skuDel(id){
                     var divshow = $("#sku_div");
                     divshow.text("");
                     divshow.append(data.skuHtml);
+                }else{
+                    layer.alert(data.msg,10,'提示信息');
                 }
-                layer.alert(data.msg,10,'提示信息');
+            }, "json");
+        layer.close(index);
+    });
+}
+
+/**
+ * 取消sku信息
+ * @param id
+ */
+function cancelSku(id){
+    var courseId = $('#course_id').val();
+    layer.confirm('您确定要取消此SKU吗？', function(index){
+        $.post("/course/cancelSku.do?courseId="+courseId, {skuId:id},
+            function(data){
+                if(data.success == 0) {
+                    var divshow = $("#sku_div");
+                    divshow.text("");
+                    divshow.append(data.skuHtml);
+                }else{
+                    layer.alert(data.msg,10,'提示信息');
+                }
             }, "json");
         layer.close(index);
     });

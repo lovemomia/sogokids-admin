@@ -278,8 +278,9 @@ function delimg(id){
                     var divshow = $("#img_div");
                     divshow.text("");// 清空数据
                     divshow.append(data.imageJson);
+                }else{
+                    layer.alert(data.msg,10,'提示信息');
                 }
-                layer.alert(data.msg,10,'提示信息');
             }, "json");
         layer.close(index);
     });
@@ -311,8 +312,9 @@ function bookDel(bookId){
                     var divshow = $("#book_div");
                     divshow.text("");
                     divshow.append(data.books);
+                }else{
+                    layer.alert(data.msg,10,'提示信息');
                 }
-                layer.alert(data.msg,10,'提示信息');
             }, "json");
         layer.close(index);
     });
@@ -369,8 +371,9 @@ function skuDel(id){
                     var divshow = $("#sku_div");
                     divshow.text("");
                     divshow.append(data.skuHtml);
+                }else{
+                    layer.alert(data.msg,10,'提示信息');
                 }
-                layer.alert(data.msg,10,'提示信息');
             }, "json");
         layer.close(index);
     });

@@ -8,4 +8,7 @@ import com.sogokids.query.model.Customer;
 public interface CustomerService {
 
     public Customer getCustomer(int id);
+    public Customer getCustomerByMobile(String mobile);
+
+    public int updateCustomer(int id);
 }

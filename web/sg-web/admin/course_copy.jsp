@@ -87,7 +87,7 @@
                     <ul class="nav nav-second-level">
                         <li><a href="${ctx}/city/info.do?uid=${user.id}"><i class="fa fa-hacker-news"></i> <span class="nav-label">城市信息</span> </a></li>
                         <li><a href="${ctx}/region/info.do?uid=${user.id}"><i class="fa fa-map-marker"></i> <span class="nav-label">区域信息</span> </a></li>
-                        <li><a href="${ctx}/place/info.do?uid=${user.id}"><i class="fa fa-rebel"></i> <span class="nav-label">地址信息</span> </a></li>
+                        <li><a href="${ctx}/place/info.do?uid=${user.id}"><i class="fa fa-rebel"></i> <span class="nav-label">商户信息</span> </a></li>
                         <li><a href="${ctx}/inst/info.do?uid=${user.id}"><i class="fa fa-bank"></i> <span class="nav-label">机构信息</span> </a></li>
                         <li><a href="${ctx}/teacher/info.do?uid=${user.id}"><i class="fa fa-user-secret"></i> <span class="nav-label">师资力量</span></a></li>
                     </ul>
@@ -226,33 +226,34 @@
             <div class="ibox-content">
                 <form class="form-horizontal" id="copy_form" action="" method="post">
                     <fieldset>
-                        <div class="hr-line-dashed"></div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">试听课标题 </label>
-                            <div class="col-sm-8">
-                                <textarea id="title" name="title" class="form-control" rows="5"></textarea>
+                            <p><h3 align="center">${model.title}</h3></p>
+                        </div>
+                        <%--<div class="hr-line-dashed"></div>--%>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">售卖价格 </label>
+                            <div class="col-sm-3">
+                                <input id="price" name="price" type="text" class="form-control" value="1" >
                                 <input id="course_id" name="course_id" type="hidden" value="${model.id}">
                             </div>
+                            <%--<label class="col-sm-2 control-label">原始价格 </label>--%>
+                            <%--<div class="col-sm-3">--%>
+                                <%--<input id="originalPrice" name="originalPrice" type="text" class="form-control" >--%>
+                            <%--</div>--%>
                         </div>
-                        <div class="hr-line-dashed"></div>
+
+                        <%--<div class="hr-line-dashed"></div>--%>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">价格 </label>
-                            <div class="col-sm-8">
-                                <input id="price" name="price" type="text" class="form-control" >
-                            </div>
-                        </div>
-                        <div class="hr-line-dashed"></div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">课程SKU </label>
+                            <label class="col-sm-2 control-label">课程表 </label>
                             <div class="col-sm-8">
                                 ${sku_ls}
                             </div>
                         </div>
-                        <div class="hr-line-dashed"></div>
+                        <%--<div class="hr-line-dashed"></div>--%>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">购买须知 </label>
                             <div class="col-sm-8">
-                                <textarea id="notice" name="notice" class="form-control" rows="5"></textarea>
+                                <textarea id="notice" name="notice" class="form-control" rows="5" style="resize:none;">${st_gmxz_str}</textarea>
                             </div>
                         </div>
                         <div class="hr-line-dashed"></div>
@@ -280,21 +281,22 @@
     $(document).ready(function () {
         $('#btn_copy_save').click(function(){
             var course_id = $('#course_id').val();
-            var title = $('#title').val();
             var price = $('#price').val();
-            if(title == null || title == ""){
-                layer.alert('请填写标题信息！',3,'提示信息');
-                return false;
-            }else if(price == null || price == ""){
-                layer.alert('请填写价格信息！',3,'提示信息');
+            if(price == null || price == ""){
+                layer.alert('请填写售卖价格信息！',3,'提示信息');
                 return false;
             }else{
                 $.post("/course/isCopy.do", $("#copy_form").serialize(),
                         function(data){
                             if(data.success == 0){
-                                $.post("/course/copy.do", $("#copy_form").serialize(),
+                                $.post("/course/copy.do?uid=${user.id}", $("#copy_form").serialize(),
                                         function(data){
-                                            layer.alert(data.msg,10,'提示信息');
+                                            if(data.success == 0){
+                                                layer.alert(data.msg,10,'提示信息');
+                                                window.location.href="${ctx}/book/info.do?uid=${user.id}";
+                                            }else{
+                                                layer.alert(data.msg,10,'提示信息');
+                                            }
                                         }, "json");
                             }else{
                                 layer.alert(data.msg,10,'提示信息');
@@ -304,6 +306,7 @@
             }
 
         });
+
     });
 </script>
 </div>

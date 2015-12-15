@@ -22,4 +22,6 @@ public interface CourseRecommendService {
     public int update(CourseRecommend entity);
     public int delete(int id);
     public CourseRecommend formEntity(HttpServletRequest request, int course_id, int id);
+
+    public int getWeightMax();
 }

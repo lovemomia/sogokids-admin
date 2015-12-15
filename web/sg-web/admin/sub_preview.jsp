@@ -13,9 +13,11 @@
     <link href="${ctx}/sg-web/css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
     <link href="${ctx}/sg-web/font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
 
+    <!-- Data Tables -->
+    <link href="${ctx}/sg-web/css/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet">
+
     <link href="${ctx}/sg-web/css/animate.css" rel="stylesheet">
     <link href="${ctx}/sg-web/css/style.css?v=2.2.0" rel="stylesheet">
-    <link href="${ctx}/sg-web/js/plugins/layer/skin/layer.css" rel="stylesheet">
 
     <!-- Mainly scripts -->
     <script src="${ctx}/sg-web/js/jquery-2.1.1.min.js"></script>
@@ -23,17 +25,16 @@
     <script src="${ctx}/sg-web/js/plugins/metisMenu/jquery.metisMenu.js"></script>
     <script src="${ctx}/sg-web/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
 
+    <!-- Data Tables -->
+    <script src="${ctx}/sg-web/js/plugins/dataTables/jquery.dataTables.js"></script>
+    <script src="${ctx}/sg-web/js/plugins/dataTables/dataTables.bootstrap.js"></script>
+
     <!-- Custom and plugin javascript -->
     <script src="${ctx}/sg-web/js/hplus.js?v=2.2.0"></script>
     <script src="${ctx}/sg-web/js/plugins/pace/pace.min.js"></script>
 
-    <!-- layerDate plugin javascript -->
-    <script src="${ctx}/sg-web/js/plugins/layer/laydate/laydate.js"></script>
-
-
     <!-- layer javascript -->
     <script src="${ctx}/sg-web/js/plugins/layer/layer.min.js"></script>
-
 
 </head>
 
@@ -87,7 +88,7 @@
                     <ul class="nav nav-second-level">
                         <li><a href="${ctx}/city/info.do?uid=${user.id}"><i class="fa fa-hacker-news"></i> <span class="nav-label">城市信息</span> </a></li>
                         <li><a href="${ctx}/region/info.do?uid=${user.id}"><i class="fa fa-map-marker"></i> <span class="nav-label">区域信息</span> </a></li>
-                        <li><a href="${ctx}/place/info.do?uid=${user.id}"><i class="fa fa-rebel"></i> <span class="nav-label">地址信息</span> </a></li>
+                        <li><a href="${ctx}/place/info.do?uid=${user.id}"><i class="fa fa-rebel"></i> <span class="nav-label">商户信息</span> </a></li>
                         <li><a href="${ctx}/inst/info.do?uid=${user.id}"><i class="fa fa-bank"></i> <span class="nav-label">机构信息</span> </a></li>
                         <li><a href="${ctx}/teacher/info.do?uid=${user.id}"><i class="fa fa-user-secret"></i> <span class="nav-label">师资力量</span></a></li>
                     </ul>
@@ -202,48 +203,21 @@
         </div>
         <div class="row wrapper border-bottom white-bg page-heading">
             <div class="col-lg-10">
-                <h2>课程列表</h2>
-                <ol class="breadcrumb">
-                    <li>
-                        <a href="${ctx}/user/index.do?uid=${user.id}">主页</a>
-                    </li>
-                    <li>
-                        <a href="${ctx}/sub/info.do?uid=${user.id}&subid=${subid}">课程体系</a>
-                    </li>
-                    <li>
-                        <a href="${ctx}/course/info.do?uid=${user.id}&subid=${subid}">课程信息</a>
-                    </li>
-                    <li>
-                        <strong>设为试听课</strong>
-                    </li>
-                </ol>
+                <h2>课程体系</h2>
             </div>
             <div class="col-lg-2">
-                <h2><a href="${ctx}/course/info.do?uid=${user.id}&subid=${subid}" class="btn btn-primary btn-x">返回</a></h2>
+                <h2><a href="${ctx}/sub/info.do?uid=${user.id}" class="btn btn-primary btn-x">返回</a></h2>
             </div>
         </div>
-        <div class="row">
-            <div class="ibox-content">
-                <form class="form-horizontal" id="copy_sku_form" action="" method="post">
-                    <fieldset>
-                        <input id="course_id" name="course_id" type="hidden" value="${model.id}">
-                        <p>课程SKU</p>
-                        <div class="hr-line-dashed"></div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label"></label>
-                            <div class="col-sm-8">
-                                ${sku_ls}
-                            </div>
-                        </div>
-
-                        <div class="hr-line-dashed"></div>
-                        <div class="form-group">
-                            <div class="col-sm-4 col-sm-offset-5">
-                                <button id="btn_copy_sku_save" name="btn_copy_sku_save" class="btn btn-primary" type="button">保存内容</button>
-                            </div>
-                        </div>
-                    </fieldset>
-                </form>
+        <div class="wrapper wrapper-content animated fadeInRight">
+            <div class="row">
+                <div class="col-lg-3"></div>
+                <div class="col-lg-6">
+                    <div class="ibox">
+                        ${previewHtml}
+                    </div>
+                </div>
+                <div class="col-lg-3"></div>
             </div>
         </div>
         <div class="footer">
@@ -256,20 +230,23 @@
         </div>
     </div>
 </div>
-<script language="JavaScript">
-
+</div>
+<!-- Page-Level Scripts -->
+<script>
     $(document).ready(function () {
-        $('#btn_copy_sku_save').click(function(){
-            var course_id = $('#course_id').val();
-//            alert(course_id);
-            $.post("/course/copySku.do", $("#copy_sku_form").serialize(),
-                    function(data){
-                        layer.alert(data.msg,10,'提示信息');
-                    }, "json");
-
+        $('.dataTables-example').dataTable({
+            "aLengthMenu":[25,50,100],
+            "bSort": false //排序功能
         });
     });
+
+    function delSubject(id){
+        layer.confirm('您确定要删除此课程体系吗？', function(index){
+            window.location.href="${ctx}/sub/del.do?uid=${user.id}&id="+id;
+            layer.close(index);
+        });
+
+    }
 </script>
-</div>
 </body>
 </html>

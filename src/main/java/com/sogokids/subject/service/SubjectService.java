@@ -20,7 +20,10 @@ public interface SubjectService {
     public int update(Subject entity);
     public int updateNotice(int sub_id, String contents);
     public int updateStatus(int sub_id, int status);
-    public int updateStock(int sub_id, int status);
+    public int updateStock(int sub_id, int stock);
     public int delete(int id);
     public Subject formEntity(HttpServletRequest request, int id);
+
+    /*预览 */
+    public String getPreview(int sub_id);
 }

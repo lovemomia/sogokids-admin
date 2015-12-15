@@ -1,10 +1,14 @@
 package com.sogokids.controller;
 
+import com.alibaba.fastjson.JSONObject;
+import com.sogokids.query.model.Customer;
+import com.sogokids.query.service.CustomerService;
 import com.sogokids.system.service.TeacherService;
 import com.sogokids.user.service.UserService;
 import com.sogokids.utils.util.EnumUtil;
 import com.sogokids.utils.util.JumpPage;
 import com.sogokids.utils.util.Quantity;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,6 +16,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,6 +31,9 @@ public class TeacherController {
 
     @Autowired
     private TeacherService teacherService;
+
+    @Autowired
+    private CustomerService customerService;
 
     @Autowired
     private UserService adminUserService;
@@ -64,19 +74,65 @@ public class TeacherController {
         return new ModelAndView(reStr,context);
     }
 
-    @RequestMapping("/add")
-    public ModelAndView addEntity(@RequestParam("uid") int uid, HttpServletRequest req){
 
+    @RequestMapping("/isMobile")
+    public String isMobile(HttpServletRequest req, HttpServletResponse rsp){
+        rsp.setContentType("text/html; charset=UTF-8");
         Map<String, Object> context = new HashMap<String, Object>();
-        int reDate = teacherService.insert(teacherService.formEntity(req,Quantity.STATUS_ONE));
+        Customer customer = customerService.getCustomerByMobile(req.getParameter("mobile"));
+        if (customer.getId() > 0){
+            context.put("userId",customer.getId());
+            context.put(Quantity.RETURN_SUCCESS,0);
+            context.put(Quantity.RETURN_MSG,"编辑讲师信息成功!");
+        }else{
+            context.put(Quantity.RETURN_SUCCESS,1);
+            context.put(Quantity.RETURN_MSG,"编辑讲师信息失败,手机号验证失败!");
+        }
+
+
+        Writer writer = null;
+        try {
+            writer = rsp.getWriter();
+            writer.write(JSONObject.toJSONString(context));
+            writer.flush();
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            IOUtils.closeQuietly(writer);
+        }
+        return null;
+    }
+
+
+    @RequestMapping("/add")
+    public String addEntity(HttpServletRequest req, HttpServletResponse rsp){
+        rsp.setContentType("text/html; charset=UTF-8");
+        Map<String, Object> context = new HashMap<String, Object>();
+        int customer_id = Integer.parseInt(req.getParameter("userId"));
+        int reDate = teacherService.insert(teacherService.formEntity(req, Quantity.STATUS_ONE));
         if (reDate > 0){
+            customerService.updateCustomer(customer_id);
+            context.put(Quantity.RETURN_SUCCESS,0);
             context.put(Quantity.RETURN_MSG,"添加讲师数据成功!");
         }else{
+            context.put(Quantity.RETURN_SUCCESS,1);
             context.put(Quantity.RETURN_MSG,"添加讲师数据失败!");
         }
-        context.put(Quantity.RETURN_ENTITY_LIST, teacherService.getEntitys());
-        context.put(Quantity.RETURN_USER,adminUserService.get(uid));
-        return new ModelAndView(JumpPage.TEACHER,context);
+
+        Writer writer = null;
+        try {
+            writer = rsp.getWriter();
+            writer.write(JSONObject.toJSONString(context));
+            writer.flush();
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            IOUtils.closeQuietly(writer);
+        }
+        return null;
+
     }
 
     @RequestMapping("/edit")

@@ -80,7 +80,7 @@ public class SubjectController {
 
         context.put("sub_type", EnumUtil.getEnums(Quantity.STATUS_THREE));
         context.put("time_unit", EnumUtil.getEnums(Quantity.STATUS_FOUR));
-        context.put("tags", subjectService.getModelsByType());
+//        context.put("tags", subjectService.getModelsByType());
         context.put("citys", cityService.getEntitys());
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
         return new ModelAndView(reStr,context);
@@ -384,6 +384,35 @@ public class SubjectController {
         return null;
     }
 
+    @RequestMapping("/cancelSku")
+    public String cancelSku(@RequestParam("subId") int subId, HttpServletRequest req, HttpServletResponse rsp) {
+        rsp.setContentType("text/html; charset=UTF-8");
+        Map<String, Object> context = new HashMap<String, Object>();
+
+        int skuId = Integer.parseInt(req.getParameter("skuId"));
+        int reDate = subjectSkuService.updateStatus(skuId, Quantity.STATUS_THREE);
+        if (reDate > 0) {
+            context.put(Quantity.RETURN_SUCCESS, 0);
+            context.put(Quantity.RETURN_MSG, "课程体系sku信息取消成功!");
+        } else {
+            context.put(Quantity.RETURN_SUCCESS, 1);
+            context.put(Quantity.RETURN_MSG, "课程体系sku信息取消失败!");
+        }
+        context.put("skuHtml", subjectSkuService.getSkuHtml(subId));
+        Writer writer = null;
+        try {
+            writer = rsp.getWriter();
+            writer.write(JSONObject.toJSONString(context));
+            writer.flush();
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            IOUtils.closeQuietly(writer);
+        }
+        return null;
+    }
+
     @RequestMapping("/upOrDown")
     public ModelAndView updateStatus(@RequestParam("uid") int uid,@RequestParam("id") int id,@RequestParam("mark") int mark, HttpServletRequest req){
 
@@ -397,6 +426,14 @@ public class SubjectController {
         context.put(Quantity.RETURN_ENTITY_LIST, subjectService.getEntitys(Quantity.STATUS_ONE));
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
         return new ModelAndView(JumpPage.SUB,context);
+    }
+
+    @RequestMapping("/preview")
+    public ModelAndView preview(@RequestParam("uid") int uid,@RequestParam("id") int id, HttpServletRequest req) {
+        Map<String, Object> context = new HashMap<String, Object>();
+        context.put("previewHtml", subjectService.getPreview(id));
+        context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        return new ModelAndView(JumpPage.SUB_PREVIEW,context);
     }
 
 

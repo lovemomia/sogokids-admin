@@ -12,6 +12,7 @@ public class Place {
     private String desc;
     private double lng;
     private double lat;
+    private String route;
     private int status;
     private String addTime;
     private String updateTime;
@@ -78,6 +79,14 @@ public class Place {
 
     public void setLat(double lat) {
         this.lat = lat;
+    }
+
+    public String getRoute() {
+        return route;
+    }
+
+    public void setRoute(String route) {
+        this.route = route;
     }
 
     public int getStatus() {

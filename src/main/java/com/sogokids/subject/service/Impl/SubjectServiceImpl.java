@@ -1,11 +1,17 @@
 package com.sogokids.subject.service.Impl;
 
+import cn.momia.common.config.Configuration;
 import com.sogokids.course.model.Course;
 import com.sogokids.course.service.CourseService;
 import com.sogokids.subject.model.Subject;
+import com.sogokids.subject.model.SubjectImg;
+import com.sogokids.subject.model.SubjectSku;
+import com.sogokids.subject.service.SubjectImgService;
 import com.sogokids.subject.service.SubjectService;
+import com.sogokids.subject.service.SubjectSkuService;
 import com.sogokids.system.service.CityService;
 import com.sogokids.utils.util.Quantity;
+import com.sogokids.utils.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
@@ -34,7 +40,16 @@ public class SubjectServiceImpl implements SubjectService {
     private CityService cityService;
 
     @Autowired
+    private SubjectSkuService subjectSkuService;
+
+    @Autowired
+    private SubjectImgService subjectImgService;
+
+    @Autowired
     private CourseService courseService;
+
+    @Autowired
+    private Configuration configuration;
 
     @Resource
     private JdbcTemplate jdbcTemplate;
@@ -149,6 +164,8 @@ public class SubjectServiceImpl implements SubjectService {
                 entity.setStock(rs.getInt("Stock"));
                 entity.setStatus(rs.getInt("Status"));
                 entity.setAddTime(rs.getString("AddTime"));
+
+                entity.setCityName(cityService.get(rs.getInt("CityId")).getName());
             }
         });
 
@@ -222,9 +239,9 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Override
-    public int updateStock(int sub_id, int status) {
+    public int updateStock(int sub_id, int stock) {
         String sql = "update SG_Subject set Stock = ? where Id = ? ";
-        Object [] params = new Object[]{status, sub_id};
+        Object [] params = new Object[]{stock, sub_id};
         int reData = jdbcTemplate.update(sql,params);
         return reData;
     }
@@ -248,12 +265,13 @@ public class SubjectServiceImpl implements SubjectService {
         entity.setCityId(Integer.parseInt(request.getParameter("cityId")));
         entity.setTitle(request.getParameter("title"));
         entity.setCover(request.getParameter("cover"));
-        int tags = Integer.parseInt(request.getParameter("tags"));
-        if (tags == 0){
-            entity.setTags("");
-        }else{
-            entity.setTags(this.get(tags).getTitle());
-        }
+        entity.setTags("");
+//        int tags = Integer.parseInt(request.getParameter("tags"));
+//        if (tags == 0){
+//            entity.setTags("");
+//        }else{
+//            entity.setTags(this.get(tags).getTitle());
+//        }
         if (id == 0){
             if (type == 1){
                 entity.setStock(-1);
@@ -280,5 +298,73 @@ public class SubjectServiceImpl implements SubjectService {
             }
         }
         return courses;
+    }
+
+
+    @Override
+    public String getPreview(int sub_id){
+        StringBuffer sb = new StringBuffer();
+        Subject subject = this.get(sub_id);
+        List<SubjectSku> subjectSkus = subjectSkuService.getModelsBySub_Key(sub_id);
+        List<SubjectImg> subjectImgs = subjectImgService.getModelsBySub_Key(sub_id);
+        List<Map<String,Object>> list = StringUtil.parseJSON2List(subject.getNotice());
+        List<Course> courses = courseService.getCoursesBySubId(sub_id);
+        String fm_pic_url = configuration.getString(Quantity.DISPLAY_IMAGE) + subject.getCover();
+        sb.append("<div class='ibox-title'>");
+        sb.append("<h5>"+subject.getTitle()+"</h5>");
+        sb.append("</div>");
+        sb.append("<div class='ibox-content'>");
+            sb.append("<div class='well'>");
+                sb.append("<p  align='center'><img src='"+fm_pic_url+"' style='width: 300px;height: 200px'></p>");
+            sb.append("</div>");
+            sb.append("<div class='well'>");
+            sb.append("<h3>购买规则</h3>");
+            for (SubjectSku subjectSku : subjectSkus) {
+                sb.append("<p>");
+                String timeUnit = "";
+                if (subjectSku.getTimeUnit() == 3){
+                    timeUnit = subjectSku.getTime() + "年 ";
+                }else if(subjectSku.getTimeUnit() == 2){
+                    timeUnit = subjectSku.getTime() + "季度 ";
+                }else{
+                    timeUnit = subjectSku.getTime() + "月 ";
+                }
+                sb.append(subjectSku.getAdult()+"大"+subjectSku.getChild()+"小 "+subjectSku.getPrice()+"元 "+timeUnit+subjectSku.getCourseCount()+"节课程;");
+                sb.append("</p>");
+            }
+            sb.append("</div>");
+        sb.append("<div class='well'>");
+        sb.append("<h3>课程目标</h3>");
+        sb.append("<p>"+subject.getIntro().replace("\r\n","<br>")+"</p>");
+        sb.append("</div>");
+
+        sb.append("<div class='well'>");
+        sb.append("<h3>可选课程</h3>");
+        for (Course course : courses) {
+            String c_url = configuration.getString(Quantity.DISPLAY_IMAGE) + course.getCover();
+            sb.append("<p>").append("<img src='"+c_url+"' style='width: 100px;height: 80px'>").append(course.getTitle()).append("</p>");
+        }
+        sb.append("</div>");
+
+        sb.append("<div class='well'>");
+        sb.append("<h3>购买须知</h3>");
+        for (int i = 0; i < list.size(); i++) {
+            sb.append("<h4>").append(list.get(i).get("title")).append("</h4>");
+            sb.append("<p>"+(list.get(i).get("content").toString()).replace("\r\n","<br>")+"</p>");
+        }
+        sb.append("</div>");
+
+        sb.append("<div class='well'>");
+        sb.append("<h3>轮播图片</h3>");
+        for (SubjectImg subjectImg : subjectImgs) {
+            String lb_pic_url = configuration.getString(Quantity.DISPLAY_IMAGE) + subjectImg.getUrl();
+            sb.append("<p  align='center'><img src='"+lb_pic_url+"' style='width: 300px;height: 200px'></p>");
+        }
+        sb.append("</div>");
+
+        sb.append("</div>");
+
+        return sb.toString();
+
     }
 }

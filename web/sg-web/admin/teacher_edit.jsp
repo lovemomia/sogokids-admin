@@ -27,11 +27,8 @@
     <script src="${ctx}/sg-web/js/hplus.js?v=2.2.0"></script>
     <script src="${ctx}/sg-web/js/plugins/pace/pace.min.js"></script>
 
-    <!-- layerDate plugin javascript -->
-    <script src="${ctx}/sg-web/js/plugins/layer/laydate/laydate.js"></script>
-
-    <script src="${ctx}/sg-web/js/ajaxfileupload.js"></script>
-    <script src="${ctx}/sg-web/js/sg-admin/sogokids-img.js"></script>
+    <!-- layer javascript -->
+    <script src="${ctx}/sg-web/js/plugins/layer/layer.min.js"></script>
 
 </head>
 
@@ -85,7 +82,7 @@
                     <ul class="nav nav-second-level">
                         <li><a href="${ctx}/city/info.do?uid=${user.id}"><i class="fa fa-hacker-news"></i> <span class="nav-label">城市信息</span> </a></li>
                         <li><a href="${ctx}/region/info.do?uid=${user.id}"><i class="fa fa-map-marker"></i> <span class="nav-label">区域信息</span> </a></li>
-                        <li><a href="${ctx}/place/info.do?uid=${user.id}"><i class="fa fa-rebel"></i> <span class="nav-label">地址信息</span> </a></li>
+                        <li><a href="${ctx}/place/info.do?uid=${user.id}"><i class="fa fa-rebel"></i> <span class="nav-label">商户信息</span> </a></li>
                         <li><a href="${ctx}/inst/info.do?uid=${user.id}"><i class="fa fa-bank"></i> <span class="nav-label">机构信息</span> </a></li>
                         <li class="active"><a href="${ctx}/teacher/info.do?uid=${user.id}"><i class="fa fa-user-secret"></i> <span class="nav-label">师资力量</span></a></li>
                     </ul>
@@ -219,28 +216,28 @@
         </div>
         <div class="row">
             <div class="ibox-content">
-                <form class="form-horizontal" id="vform" action="${ctx}/teacher/edit.do?uid=${user.id}&id=${model.id}" method="post">
+                <form class="form-horizontal" id="teacher_form" action="${ctx}/teacher/edit.do?uid=${user.id}&id=${model.id}" method="post">
                     <fieldset>
                         <div class="hr-line-dashed"></div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">姓名 </label>
-                            <div class="col-sm-3 row">
+                            <label class="col-sm-2 control-label">讲师姓名 </label>
+                            <div class="col-sm-3">
                                 <input id="name" name="name" type="text" class="form-control" value="${model.name}">
                             </div>
-                            <label class="col-sm-2 control-label"></label>
+                            <label class="col-sm-2 control-label">上传图片</label>
                             <div class="col-sm-3">
-                                <input id="img_path" type="file" name="img_path" class="form-control" style="width: 200px">
-                                <img id="img_a" src="${filepath}${model.avatar}" style="width: 200px;height: 100px"/>
+                                <img id="img_a" src="${filepath}${model.avatar}" style="width: 200px;height: 100px;border: 1px solid #999;"/>
+                                <input id="img_path" type="file" name="img_path" style="opacity: 0;filter:alpha(opacity=0);">
                                 <input id="cover" name="cover" type="hidden" value="${model.avatar}">
                                 <input id="filepath" name="filepath" type="hidden" value="${filepath}">
-                                <div class="col-sm-3 col-sm-offset-3">
-                                    <button class="btn btn-primary" type="button" id="btn_img_save" name="btn_img_save">上传</button>
-                                </div>
+                                <%--<div class="col-sm-3 col-sm-offset-3">--%>
+                                    <%--<button class="btn btn-primary" type="button" id="btn_img_save" name="btn_img_save">上传</button>--%>
+                                <%--</div>--%>
                             </div>
                         </div>
                         <div class="hr-line-dashed"></div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">性别 </label>
+                            <label class="col-sm-2 control-label">讲师性别 </label>
                             <div class="col-sm-3">
                                 <select id="sex" name="sex" class="form-control m-b" >
                                     <c:forEach items="${sexs}" var="node">
@@ -255,7 +252,15 @@
                                     </c:forEach>
                                 </select>
                             </div>
-                            <label class="col-sm-2 control-label">职称 </label>
+                            <label class="col-sm-2 control-label">手机号 </label>
+                            <div class="col-sm-3">
+                                <input id="mobile" name="mobile" type="text" class="form-control" value="${model.mobile}">
+                                <input id="userId" name="userId" type="hidden" value="${model.userId}">
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">讲师职称 </label>
                             <div class="col-sm-3">
                                 <select id="job" name="job" class="form-control m-b" >
                                     <c:forEach items="${jobs}" var="node">
@@ -273,30 +278,23 @@
                         </div>
                         <div class="hr-line-dashed"></div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">联系方式 </label>
+                            <label class="col-sm-2 control-label">个人简介</label>
                             <div class="col-sm-8">
-                                <input id="mobile" name="mobile" type="text" class="form-control" value="${model.mobile}">
-                            </div>
-                        </div>
-                        <div class="hr-line-dashed"></div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">简介</label>
-                            <div class="col-sm-8">
-                                <textarea id="experience" name="experience" class="form-control" rows="8">${model.experience}</textarea>
+                                <textarea id="experience" name="experience" class="form-control" rows="8" style="resize:none;">${model.experience}</textarea>
                             </div>
                         </div>
                         <div class="hr-line-dashed"></div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">教育背景</label>
                             <div class="col-sm-8">
-                                <textarea id="education" name="education" class="form-control" rows="8">${model.education}</textarea>
+                                <textarea id="education" name="education" class="form-control" rows="8" style="resize:none;">${model.education}</textarea>
                             </div>
                         </div>
 
                         <div class="hr-line-dashed"></div>
                         <div class="form-group">
                             <div class="col-sm-4 col-sm-offset-5">
-                                <button class="btn btn-primary" type="submit">保存内容</button>
+                                <button class="btn btn-primary" type="button" id="btn_teacher_save" name="btn_teacher_save">保存内容</button>
                             </div>
                         </div>
                     </fieldset>
@@ -314,5 +312,61 @@
     </div>
 </div>
 </div>
+<script language="JavaScript">
+    $(document).ready(function () {
+
+        $('#img_a').click(function (){
+            document.getElementById("img_path").click();
+        });
+
+        $('#img_path').change(function (){
+            var pathUrl = $('#img_path').val();
+            if(pathUrl != null || pathUrl != ""){
+                //创建FormData对象
+                var data = new FormData();
+                //为FormData对象添加数据
+                $.each($('#img_path')[0].files, function(i, file) {
+                    data.append('upload_file', file);
+                });
+
+                $.ajax({
+                    url:'/upload/jsonImg.do',
+                    type:'POST',
+                    data:data,
+                    cache: false,
+                    contentType: false,    //不可缺
+                    processData: false,    //不可缺
+                    success:function(data){
+                        var obj = $.parseJSON(data);
+                        if(obj.success == 0){
+                            $("#cover").val(obj.path);
+                            $("#img_a").attr("src", $("#filepath").val() + obj.path);
+                        }else{
+                            layer.alert(obj.msg,10,'提示信息');
+                        }
+                    }
+                });
+            }
+        });
+
+        $('#btn_teacher_save').click(function(){
+            var mobile = $('#mobile').val();
+            if(mobile == null || mobile == ""){
+                layer.alert('请填写手机号信息！',3,'提示信息');
+                return false;
+            }else{
+                $.post("/teacher/isMobile.do", {mobile : mobile},
+                        function(data){
+                            if(data.success == 0){
+                                $('#userId').val(data.userId);
+                                $('#teacher_form').submit();
+                            }else{
+                                layer.alert(data.msg,10,'提示信息');
+                            }
+                        }, "json");
+            }
+        });
+    });
+</script>
 </body>
 </html>

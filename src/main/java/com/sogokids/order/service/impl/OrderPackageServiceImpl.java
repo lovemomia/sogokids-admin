@@ -6,6 +6,7 @@ import com.sogokids.course.service.CourseService;
 import com.sogokids.course.service.CourseSkuService;
 import com.sogokids.order.model.OrderPackage;
 import com.sogokids.order.service.OrderPackageService;
+import com.sogokids.query.model.BookedCourse;
 import com.sogokids.subject.model.SubjectSku;
 import com.sogokids.subject.service.SubjectSkuService;
 import com.sogokids.system.model.Place;
@@ -14,13 +15,18 @@ import com.sogokids.utils.util.DateUtil;
 import com.sogokids.utils.util.Quantity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowCallbackHandler;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by hoze on 15/11/10.
@@ -125,4 +131,58 @@ public class OrderPackageServiceImpl implements OrderPackageService {
 
         return reStr;
     }
+
+    @Override
+    public Set getOrderPackage(int course_id, int course_sku_id){
+        Set set = new HashSet();
+        String sql = "select Id,PackageId from SG_BookedCourse where CourseId = ? and CourseSkuId = ? and Status > ? ";
+        Object [] params = new Object[]{course_id, course_sku_id, Quantity.STATUS_ZERO};
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sql, params);
+        for (int i = 0; i < list.size(); i++) {
+//            OrderPackage orderPackage = this.get(Integer.parseInt(list.get(i).get("PackageId").toString()));
+            set.add(Integer.parseInt(list.get(i).get("PackageId").toString()));
+            updateBookedCourse(Integer.parseInt(list.get(i).get("Id").toString()),Quantity.STATUS_ZERO);
+        }
+
+        return set;
+    }
+
+    private int updateBookedCourse(int id,int status){
+        String sql = "update SG_BookedCourse set Status = ? where Id = ? ";
+        Object [] params = new Object[]{status, id};
+        int reData = jdbcTemplate.update(sql,params);
+        return reData;
+    }
+
+    @Override
+    public OrderPackage get(int id) {
+        String sql = "select Id,OrderId,SkuId,Price,CourseCount,BookableCount,Status,AddTime from SG_SubjectOrderPackage where Id = ? and Status > ? ";
+        final Object [] params = new Object[]{id, Quantity.STATUS_ZERO};
+        final OrderPackage entity = new OrderPackage();
+        jdbcTemplate.query(sql,params, new RowCallbackHandler(){
+            public void processRow(ResultSet rs) throws SQLException {
+                entity.setId(rs.getInt("id"));
+                entity.setOrderId(rs.getInt("OrderId"));
+                entity.setSkuId(rs.getInt("SkuId"));
+                entity.setPrice(rs.getBigDecimal("Price"));
+                entity.setCourseCount(rs.getInt("CourseCount"));
+                entity.setBookableCount(rs.getInt("BookableCount"));
+
+                entity.setStatus(rs.getInt("Status"));
+                entity.setAddTime(rs.getString("AddTime"));
+
+            }
+        });
+
+        return entity;
+    }
+
+    @Override
+    public int update(OrderPackage entity) {
+        String sql = "update SG_SubjectOrderPackage set BookableCount = ? where Id = ? ";
+        Object [] params = new Object[]{entity.getBookableCount(), entity.getId()};
+        int reData = jdbcTemplate.update(sql,params);
+        return reData;
+    }
+
 }

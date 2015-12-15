@@ -88,7 +88,7 @@
                     <ul class="nav nav-second-level">
                         <li><a href="${ctx}/city/info.do?uid=${user.id}"><i class="fa fa-hacker-news"></i> <span class="nav-label">城市信息</span> </a></li>
                         <li><a href="${ctx}/region/info.do?uid=${user.id}"><i class="fa fa-map-marker"></i> <span class="nav-label">区域信息</span> </a></li>
-                        <li><a href="${ctx}/place/info.do?uid=${user.id}"><i class="fa fa-rebel"></i> <span class="nav-label">地址信息</span> </a></li>
+                        <li><a href="${ctx}/place/info.do?uid=${user.id}"><i class="fa fa-rebel"></i> <span class="nav-label">商户信息</span> </a></li>
                         <li><a href="${ctx}/inst/info.do?uid=${user.id}"><i class="fa fa-bank"></i> <span class="nav-label">机构信息</span> </a></li>
                         <li><a href="${ctx}/teacher/info.do?uid=${user.id}"><i class="fa fa-user-secret"></i> <span class="nav-label">师资力量</span></a></li>
                     </ul>
@@ -241,13 +241,13 @@
                                 <td>
                                     <c:choose>
                                         <c:when test="${entity.status == 1}">
-                                            <button type="button" class="btn btn-primary btn-sm">已上线</button>
+                                            <font color="#1AB394"> 已上线</font>
                                         </c:when>
                                         <c:when test="${entity.status == 2}">
-                                            <button type="button" class="btn btn-warning btn-sm">未上线</button>
+                                            <font color="#F8AC59"> 未上线</font>
                                         </c:when>
                                         <c:otherwise>
-                                            <button type="button" class="btn btn-danger btn-sm">已下线</button>
+                                            <font color="#ED5565"> 已下线</font>
                                         </c:otherwise>
                                     </c:choose>
                                 </td>
@@ -255,6 +255,7 @@
                                 <td class="center">
                                     <a href="${ctx}/one/oper.do?uid=${user.id}&id=${entity.id}&mark=8" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i> 编辑 </a>
                                     <a href="javascript:void(0)" onclick="cancelCourse(${entity.id})" class="btn btn-white btn-sm"><i class="fa fa-volume-up"></i> 取消推荐 </a>
+                                    <a href="${ctx}/one/preview.do?uid=${user.id}&id=${entity.id}" class="btn btn-white btn-sm"><i class="fa fa-eye"></i> 预览 </a>
                                 </td>
                             </tr>
                         </c:forEach>
@@ -297,17 +298,6 @@
         <%--});--%>
 
     <%--}--%>
-
-//    function showDiv(pic)
-//    {
-//        divPic.innerHTML="<img src="+pic+">";
-//        divPic.style.display="block";
-//        //还可以让div跟着图片所在的当前窗体位置居中，代码略。
-//    }
-//    function hideDiv()
-//    {
-//        divPic.style.display="none";
-//    }
 </script>
 </body>
 </html>

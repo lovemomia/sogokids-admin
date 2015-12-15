@@ -4,6 +4,7 @@ import com.sogokids.home.service.EventService;
 import com.sogokids.home.service.IconService;
 import com.sogokids.system.service.CityService;
 import com.sogokids.user.service.UserService;
+import com.sogokids.utils.util.EnumUtil;
 import com.sogokids.utils.util.JumpPage;
 import com.sogokids.utils.util.Quantity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +50,7 @@ public class EventController {
             context.put(Quantity.RETURN_ENTITY, eventService.get(id));
         }
         context.put("citys", cityService.getEntitys());
+        context.put("platforms", EnumUtil.getEnums(Quantity.STATUS_NINE));
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
         return new ModelAndView(reStr,context);
     }

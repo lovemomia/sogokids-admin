@@ -66,10 +66,13 @@ public class JumpPage {
     public static final String SUB = "admin/sub";
     public static final String SUB_ADD = "admin/sub_add";
     public static final String SUB_EDIT = "admin/sub_edit";
+    public static final String SUB_COPY = "admin/sub_copy";
+    public static final String SUB_PREVIEW = "admin/sub_preview";
 
     public static final String BOOKED = "admin/book";
     public static final String BOOKED_ADD = "admin/book_add";
     public static final String BOOKED_EDIT = "admin/book_edit";
+    public static final String BOOKED_PREVIEW = "admin/book_preview";
 
     public static final String COURSE = "admin/course";
     public static final String COURSE_ADD = "admin/course_add";
@@ -78,6 +81,9 @@ public class JumpPage {
     public static final String COURSE_COPY = "admin/course_copy";
     public static final String COURSE_COPY_SKU = "admin/copy_sku";
     public static final String COURSE_SET_ONE = "admin/set_one";
+
+
+    public static final String COURSE_PREVIEW = "admin/course_preview";
 
     public static final String INST = "admin/inst";
     public static final String INST_ADD = "admin/inst_add";
@@ -95,4 +101,5 @@ public class JumpPage {
     public static final String SET_ONE = "admin/course_set_one";
     public static final String SET_ONE_ADD = "admin/course_set_add";
     public static final String SET_ONE_EDIT = "admin/course_set_edit";
+    public static final String COURSE_SET_PREVIEW = "admin/course_set_preview";
 }

@@ -40,13 +40,14 @@ public class TeacherServiceImpl implements TeacherService {
     @Override
     public List<Teacher> getEntitys() {
         List<Teacher> reData = new ArrayList<Teacher>();
-        String sql = "select Id,Name,Avatar,Education,Experience,Sex,Job,Mobile,Status,AddTime from SG_Teacher where Status > ? ";
+        String sql = "select Id,UserId,Name,Avatar,Education,Experience,Sex,Job,Mobile,Status,AddTime from SG_Teacher where Status > ? ";
         Object [] params = new Object[]{Quantity.STATUS_ZERO};
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql, params);
         if(list.size() > 0){
             for (int i = 0; i < list.size(); i++) {
                 Teacher entity = new Teacher();
                 entity.setId(Integer.parseInt(list.get(i).get("Id").toString()));
+                entity.setUserId(Integer.parseInt(list.get(i).get("UserId").toString()));
                 entity.setName(list.get(i).get("Name").toString());
                 entity.setAvatar(list.get(i).get("Avatar").toString());
                 entity.setEducation(list.get(i).get("Education").toString());
@@ -69,13 +70,14 @@ public class TeacherServiceImpl implements TeacherService {
         String whereStr = " where Status > ? ";
         whereStr = whereStr + where;
         List<Teacher> reData = new ArrayList<Teacher>();
-        String sql = "select Id,Name,Avatar,Education,Experience,Sex,Job,Mobile,Status,AddTime from SG_Teacher " + whereStr;
+        String sql = "select Id,UserId,Name,Avatar,Education,Experience,Sex,Job,Mobile,Status,AddTime from SG_Teacher " + whereStr;
         Object [] params = new Object[]{Quantity.STATUS_ZERO};
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql, params);
         if(list.size() > 0){
             for (int i = 0; i < list.size(); i++) {
                 Teacher entity = new Teacher();
                 entity.setId(Integer.parseInt(list.get(i).get("Id").toString()));
+                entity.setUserId(Integer.parseInt(list.get(i).get("UserId").toString()));
                 entity.setName(list.get(i).get("Name").toString());
                 entity.setAvatar(list.get(i).get("Avatar").toString());
                 entity.setEducation(list.get(i).get("Education").toString());
@@ -95,12 +97,13 @@ public class TeacherServiceImpl implements TeacherService {
 
     @Override
     public Teacher get(int id) {
-        String sql = "select Id,Name,Avatar,Education,Experience,Sex,Job,Mobile,Status,AddTime from SG_Teacher where Id = ? and Status > ? ";
+        String sql = "select Id,UserId,Name,Avatar,Education,Experience,Sex,Job,Mobile,Status,AddTime from SG_Teacher where Id = ? and Status > ? ";
         final Object [] params = new Object[]{id, Quantity.STATUS_ZERO};
         final Teacher entity = new Teacher();
         jdbcTemplate.query(sql,params, new RowCallbackHandler(){
             public void processRow(ResultSet rs) throws SQLException {
                 entity.setId(rs.getInt("id"));
+                entity.setUserId(rs.getInt("UserId"));
                 entity.setName(rs.getString("Name"));
                 entity.setAvatar(rs.getString("Avatar"));
                 entity.setEducation(rs.getString("Education"));
@@ -118,16 +121,16 @@ public class TeacherServiceImpl implements TeacherService {
 
     @Override
     public int insert(Teacher entity) {
-        String sql = "insert into SG_Teacher(Name,Avatar,Education,Experience,Sex,Job,Mobile,Status,AddTime) value(?, ?, ?, ?, ?, ?, ?, ?, NOW()) ";
-        Object [] params = new Object[]{entity.getName(), entity.getAvatar(), entity.getEducation(), entity.getExperience(), entity.getSex(), entity.getJob(), entity.getMobile(), Quantity.STATUS_ONE};
+        String sql = "insert into SG_Teacher(UserId,Name,Avatar,Education,Experience,Sex,Job,Mobile,Status,AddTime) value(?, ?, ?, ?, ?, ?, ?, ?, ?, NOW()) ";
+        Object [] params = new Object[]{entity.getUserId(), entity.getName(), entity.getAvatar(), entity.getEducation(), entity.getExperience(), entity.getSex(), entity.getJob(), entity.getMobile(), Quantity.STATUS_ONE};
         int reData = jdbcTemplate.update(sql,params);
         return reData;
     }
 
     @Override
     public int update(Teacher entity) {
-        String sql = "update SG_Teacher set Name = ?, Avatar = ?, Education = ?, Experience = ?, Sex = ?, Job = ?, Mobile = ?  where Id = ? ";
-        Object [] params = new Object[]{entity.getName(), entity.getAvatar(), entity.getEducation(), entity.getExperience(), entity.getSex(), entity.getJob(), entity.getMobile(), entity.getId()};
+        String sql = "update SG_Teacher set UserId = ?, Name = ?, Avatar = ?, Education = ?, Experience = ?, Sex = ?, Job = ?, Mobile = ?  where Id = ? ";
+        Object [] params = new Object[]{entity.getUserId(), entity.getName(), entity.getAvatar(), entity.getEducation(), entity.getExperience(), entity.getSex(), entity.getJob(), entity.getMobile(), entity.getId()};
         int reData = jdbcTemplate.update(sql,params);
         return reData;
     }
@@ -145,6 +148,7 @@ public class TeacherServiceImpl implements TeacherService {
         Teacher entity = new Teacher();
 
         entity.setId(id);
+        entity.setUserId(Integer.parseInt(request.getParameter("userId")));
         entity.setName(request.getParameter("name"));
         entity.setAvatar(request.getParameter("cover"));
         entity.setEducation(request.getParameter("education"));
@@ -160,10 +164,10 @@ public class TeacherServiceImpl implements TeacherService {
     public String getY_Teachers(int course_id) {
         StringBuffer sb = new StringBuffer();
         List<Teacher> reData = new ArrayList<Teacher>();
-        String sql = "select Id,Name,Avatar,Education,Experience,Sex,Job,Mobile,Status,AddTime from SG_Teacher where Status > ? and Id in (SELECT TeacherId FROM sogokids.SG_CourseTeacher where Status > ? and CourseId = ?) ";
+        String sql = "select Id,UserId,Name,Avatar,Education,Experience,Sex,Job,Mobile,Status,AddTime from SG_Teacher where Status > ? and Id in (SELECT TeacherId FROM sogokids.SG_CourseTeacher where Status > ? and CourseId = ?) ";
         Object [] params = new Object[]{Quantity.STATUS_ZERO, Quantity.STATUS_ZERO, course_id};
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql, params);
-        sb.append(getHtmlTableStrat());
+        sb.append(getHtmlTableStrat1());
         if(list.size() > 0){
             for (int i = 0; i < list.size(); i++) {
                 sb.append("<tr>");
@@ -186,7 +190,7 @@ public class TeacherServiceImpl implements TeacherService {
     public String getW_Teachers(int course_id) {
         StringBuffer sb = new StringBuffer();
         List<Teacher> reData = new ArrayList<Teacher>();
-        String sql = "select Id,Name,Avatar,Education,Experience,Sex,Job,Mobile,Status,AddTime from SG_Teacher where Status > ? and Id not in (SELECT TeacherId FROM sogokids.SG_CourseTeacher where Status > ? and CourseId = ?) ";
+        String sql = "select Id,UserId,Name,Avatar,Education,Experience,Sex,Job,Mobile,Status,AddTime from SG_Teacher where Status > ? and Id not in (SELECT TeacherId FROM sogokids.SG_CourseTeacher where Status > ? and CourseId = ?) ";
         Object [] params = new Object[]{Quantity.STATUS_ZERO, Quantity.STATUS_ZERO, course_id};
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql, params);
         sb.append(getHtmlTableStrat());
@@ -214,8 +218,22 @@ public class TeacherServiceImpl implements TeacherService {
         sb.append("<table class='table table-striped table-bordered table-hover dataTables-example'>");
         sb.append("<thead>");
         sb.append("<tr class='gradeX'>");
-        sb.append("<th width='10%'>勾选</th>");
-        sb.append("<th width='70%'>讲师</th>");
+        sb.append("<th>勾选</th>");
+        sb.append("<th>讲师</th>");
+        sb.append("</tr>");
+        sb.append("</thead>");
+        sb.append("<tbody>");
+
+        return sb.toString();
+    }
+
+    private String getHtmlTableStrat1(){
+        StringBuffer sb = new StringBuffer();
+        sb.append("<table class='table table-striped table-bordered table-hover'>");
+        sb.append("<thead>");
+        sb.append("<tr class='gradeX'>");
+        sb.append("<th>勾选</th>");
+        sb.append("<th>讲师</th>");
         sb.append("</tr>");
         sb.append("</thead>");
         sb.append("<tbody>");

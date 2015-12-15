@@ -107,7 +107,7 @@ public class QueryServiceImpl implements QueryService {
                     sum = sum + p_customers.size();
                 }
 
-                List<CourseSku> c_sku_ls = courseSkuService.getCourseSkuById(entity.getId());
+                List<CourseSku> c_sku_ls = courseSkuService.getCourseSkuById(course.getId(),entity.getId());
                 if (c_sku_ls.size() > 0){
                     for (int j = 0; j < c_sku_ls.size(); j++) {
                         CourseSku c_entity = c_sku_ls.get(j);

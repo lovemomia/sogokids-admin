@@ -85,7 +85,7 @@
                     <ul class="nav nav-second-level">
                         <li><a href="${ctx}/city/info.do?uid=${user.id}"><i class="fa fa-hacker-news"></i> <span class="nav-label">城市信息</span> </a></li>
                         <li><a href="${ctx}/region/info.do?uid=${user.id}"><i class="fa fa-map-marker"></i> <span class="nav-label">区域信息</span> </a></li>
-                        <li><a href="${ctx}/place/info.do?uid=${user.id}"><i class="fa fa-rebel"></i> <span class="nav-label">地址信息</span> </a></li>
+                        <li><a href="${ctx}/place/info.do?uid=${user.id}"><i class="fa fa-rebel"></i> <span class="nav-label">商户信息</span> </a></li>
                         <li><a href="${ctx}/inst/info.do?uid=${user.id}"><i class="fa fa-bank"></i> <span class="nav-label">机构信息</span> </a></li>
                         <li><a href="${ctx}/teacher/info.do?uid=${user.id}"><i class="fa fa-user-secret"></i> <span class="nav-label">师资力量</span></a></li>
                     </ul>
@@ -224,11 +224,12 @@
                         <thead>
                         <tr class="gradeX">
                             <th>编号</th>
-                            <th>城市</th>
+                            <th>所属城市</th>
                             <th>图片</th>
                             <th>跳转地址</th>
-                            <th>权重</th>
-                            <th>添加时间</th>
+                            <th>排序顺序</th>
+                            <th>应用类型</th>
+                            <%--<th>添加时间</th>--%>
                             <th>操作</th>
                         </tr>
                         </thead>
@@ -240,7 +241,14 @@
                                 <td><img id="img_a" src="${filepath}${entity.cover}" style="width: 100px;height: 50px"/></td>
                                 <td><c:out value="${fn:substring(entity.action,0,19)}"></c:out></td>
                                 <td><c:out value="${entity.weight}"></c:out></td>
-                                <td><c:out value="${fn:substring(entity.addTime,0,19)}"></c:out></td>
+                                <td>
+                                    <c:choose>
+                                        <c:when test="${entity.platform == 1}">APP</c:when>
+                                        <c:when test="${entity.platform == 2}">M站</c:when>
+                                        <c:otherwise>通用</c:otherwise>
+                                    </c:choose>
+                                </td>
+                                <%--<td><c:out value="${fn:substring(entity.addTime,0,19)}"></c:out></td>--%>
                                 <td class="center">
                                     <a href="${ctx}/banner/oper.do?uid=${user.id}&id=${entity.id}" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i> 编辑 </a>
                                     <a href="${ctx}/banner/del.do?uid=${user.id}&id=${entity.id}" class="btn btn-white btn-sm"><i class="fa fa-times-circle"></i> 删除 </a>

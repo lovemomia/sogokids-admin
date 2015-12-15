@@ -39,6 +39,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.Writer;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -83,6 +84,9 @@ public class BookedController {
     @Autowired
     private TeacherService teacherService;
 
+    @Autowired
+    private SubjectSkuService subjectSkuService;
+
     @RequestMapping("/info")
     public ModelAndView info(@RequestParam("uid") int uid, HttpServletRequest req){
         Map<String, Object> context = new HashMap<String, Object>();
@@ -97,24 +101,7 @@ public class BookedController {
         Map<String, Object> context = new HashMap<String, Object>();
         if (mark == 0) {
             reStr = JumpPage.BOOKED_ADD;
-        }
-//        else if(mark == 1){
-//            List<CourseDetail> entity_ls = new ArrayList<CourseDetail>();
-//            entity_ls = courseDetailService.getModelsByCourse_Key(id);
-//            CourseDetail entity = new CourseDetail();
-//            if (entity_ls.size() > 0){
-//                entity = entity_ls.get(0);
-//            }
-//            context.put("detail", entity);
-//            context.put("course", courseService.get(id));
-//            reStr = JumpPage.COURSE_DETAIL;
-//        }
-////        else if(mark == 2){
-////            context.put(Quantity.RETURN_ENTITY, courseService.get(id));
-////            context.put("sku_ls",courseSkuService.getCopySkuHtml(id));
-////            reStr = JumpPage.COURSE_COPY;
-////        }
-        else{
+        } else{
             context.put(Quantity.RETURN_ENTITY, courseService.get(id));
             context.put("imageJson",courseImgService.getImgHtml(id));
             context.put("bookJson",courseBookService.getBooksHtml(id));
@@ -143,40 +130,17 @@ public class BookedController {
         return new ModelAndView(reStr,context);
     }
 
-//    @RequestMapping("/edit")
-//    public String editEntity(HttpServletRequest req, HttpServletResponse rsp){
-//        rsp.setContentType("text/html; charset=UTF-8");
-//        int course_id = Integer.parseInt(req.getParameter("course_id"));
-//        Map<String, Object> context = new HashMap<String, Object>();
-//        int reDate = courseService.update(courseService.formEntity(req, course_id));
-//        if (reDate > 0) {
-//            context.put(Quantity.RETURN_SUCCESS, 0);
-//            context.put(Quantity.RETURN_MSG, "课程基本信息修改成功!");
-//        } else {
-//            context.put(Quantity.RETURN_SUCCESS, 1);
-//            context.put(Quantity.RETURN_MSG, "课程基本信息修改失败!");
-//        }
-//        context.put("courseId",course_id);
-//        Writer writer = null;
-//        try {
-//            writer = rsp.getWriter();
-//            writer.write(JSONObject.toJSONString(context));
-//            writer.flush();
-//            writer.close();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }finally {
-//            IOUtils.closeQuietly(writer);
-//        }
-//        return null;
-//    }
-//
     @RequestMapping("/del")
     public ModelAndView delEntity(@RequestParam("uid") int uid,@RequestParam("id") int id, HttpServletRequest req){
 
         Map<String, Object> context = new HashMap<String, Object>();
+        List<CourseSku> courseSkus = courseSkuService.getModelsByCourse_Key(id);
+        for (int i = 0; i < courseSkus.size(); i++) {
+            courseSkuService.delete(courseSkus.get(i).getId());
+        }
         int reDate = courseService.delete(id);
         if (reDate > 0){
+
             context.put(Quantity.RETURN_MSG,"删除试听课数据成功!");
         }else{
             context.put(Quantity.RETURN_MSG,"删除试听课数据失败!");
@@ -185,314 +149,6 @@ public class BookedController {
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
         return new ModelAndView(JumpPage.BOOKED,context);
     }
-//
-//    @RequestMapping("/addImg")
-//    public String addImg(@RequestParam("courseId") int courseId,HttpServletRequest req, HttpServletResponse rsp) {
-//        rsp.setContentType("text/html; charset=UTF-8");
-//        Images image = imagesService.uploadImg(req, 0, "","true");
-//        int reDate = courseImgService.insert(courseImgService.formEntity(image, courseId));
-//        Writer writer = null;
-//        try {
-//            writer = rsp.getWriter();
-//            writer.write(JSONObject.toJSONString(courseImgService.getImgHtml(courseId)).replace("\"", ""));
-//            writer.flush();
-//            writer.close();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }finally {
-//            IOUtils.closeQuietly(writer);
-//        }
-//
-//        return null;
-//    }
-//
-//    @RequestMapping("/delImg")
-//    public String delImg(@RequestParam("courseId") int courseId,HttpServletRequest req, HttpServletResponse rsp) {
-//        rsp.setContentType("text/html; charset=UTF-8");
-//        Map<String, Object> context = new HashMap<String, Object>();
-//        String imgstr = req.getParameter("imgs");
-//        int reDate = courseImgService.delete(Integer.parseInt(imgstr));
-//
-//        if (reDate > 0) {
-//            context.put(Quantity.RETURN_SUCCESS, 0);
-//            context.put(Quantity.RETURN_MSG, "图片删除成功!");
-//        } else {
-//            context.put(Quantity.RETURN_SUCCESS, 1);
-//            context.put(Quantity.RETURN_MSG, "图片删除失败!");
-//        }
-//
-//        context.put("imageJson",courseImgService.getImgHtml(courseId));
-//        Writer writer = null;
-//        try {
-//            writer = rsp.getWriter();
-//            writer.write(JSONObject.toJSONString(context));
-//            writer.flush();
-//            writer.close();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }finally {
-//            IOUtils.closeQuietly(writer);
-//        }
-//        return null;
-//    }
-//
-//    @RequestMapping("/addBook")
-//    public String addNotice(@RequestParam("courseId") int courseId,HttpServletRequest req, HttpServletResponse rsp) {
-//        rsp.setContentType("text/html; charset=UTF-8");
-//        int bookId = Integer.parseInt(req.getParameter("book_id"));
-//        int order = Integer.parseInt(req.getParameter("order"));
-//        String img = req.getParameter("book_img");
-//        Images images = new Images();
-//        images.setUrl(img);
-//        Map<String, Object> context = new HashMap<String, Object>();
-//        int reDate = 0;
-//        if (bookId == 0) {
-//            reDate = courseBookService.insert(courseBookService.formEntity(images, courseId, bookId, order));
-//        }else{
-//            reDate = courseBookService.update(courseBookService.formEntity(images, courseId, bookId, order));
-//        }
-//        if (reDate > 0) {
-//            context.put(Quantity.RETURN_SUCCESS, 0);
-//            context.put(Quantity.RETURN_MSG, "课程课前绘本添加数据成功!");
-//        } else {
-//            context.put(Quantity.RETURN_SUCCESS, 1);
-//            context.put(Quantity.RETURN_MSG, "课程课前绘本添加数据失败!");
-//        }
-//        context.put("books",courseBookService.getBooksHtml(courseId));
-//        Writer writer = null;
-//        try {
-//            writer = rsp.getWriter();
-//            writer.write(JSONObject.toJSONString(context));
-//            writer.flush();
-//            writer.close();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }finally {
-//            IOUtils.closeQuietly(writer);
-//        }
-//        return null;
-//    }
-//
-//    @RequestMapping("/editBook")
-//    public String editNotice(HttpServletRequest req, HttpServletResponse rsp) {
-//        rsp.setContentType("text/html; charset=UTF-8");
-//        int bookId = Integer.parseInt(req.getParameter("bookId"));
-//        Map<String, Object> context = new HashMap<String, Object>();
-//        CourseBook entity = courseBookService.get(bookId);
-//
-//        context.put("book",entity);
-//        Writer writer = null;
-//        try {
-//            writer = rsp.getWriter();
-//            writer.write(JSONObject.toJSONString(context));
-//            writer.flush();
-//            writer.close();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }finally {
-//            IOUtils.closeQuietly(writer);
-//        }
-//        return null;
-//    }
-//
-//    @RequestMapping("/delBook")
-//    public String delNotice(@RequestParam("courseId") int courseId, HttpServletRequest req, HttpServletResponse rsp) {
-//        rsp.setContentType("text/html; charset=UTF-8");
-//        Map<String, Object> context = new HashMap<String, Object>();
-//
-//        int bookId = Integer.parseInt(req.getParameter("bookId"));
-//        int reDate = courseBookService.delete(bookId);
-//        if (reDate > 0) {
-//            context.put(Quantity.RETURN_SUCCESS, 0);
-//            context.put(Quantity.RETURN_MSG, "课程课前绘本数据删除成功!");
-//        } else {
-//            context.put(Quantity.RETURN_SUCCESS, 1);
-//            context.put(Quantity.RETURN_MSG, "课程课前绘本数据删除失败!");
-//        }
-//        context.put("books",courseBookService.getBooksHtml(courseId));
-//        Writer writer = null;
-//        try {
-//            writer = rsp.getWriter();
-//            writer.write(JSONObject.toJSONString(context));
-//            writer.flush();
-//            writer.close();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        } finally {
-//            IOUtils.closeQuietly(writer);
-//        }
-//        return null;
-//    }
-//
-//    @RequestMapping("/addSku")
-//    public String addSku(@RequestParam("courseId") int courseId, HttpServletRequest req, HttpServletResponse rsp) {
-//        rsp.setContentType("text/html; charset=UTF-8");
-//        Map<String, Object> context = new HashMap<String, Object>();
-//        int skuId = Integer.parseInt(req.getParameter("sku_id"));
-//        int stock = Integer.parseInt(req.getParameter("stock"));
-//        Course course = courseService.get(courseId);
-//        Subject subject = subjectService.get(course.getSubjectId());
-//        int sum = subject.getStock();
-//        int reDate = 0;
-//        if (skuId == 0) {
-//            reDate = courseSkuService.insert(courseSkuService.formEntity(req, courseId, Quantity.STATUS_ZERO));
-//            sum = sum + stock;
-//        }else{
-//            int sku_stock = courseSkuService.get(skuId).getStock();
-//            reDate = courseSkuService.update(courseSkuService.formEntity(req, courseId, skuId));
-//            int int_stock = stock - sku_stock;
-//            sum = sum + int_stock;
-//        }
-//
-//        if (reDate > 0) {
-//            if (subject.getType() == 2) {
-//                int update_sub = subjectService.updateStock(subject.getId(), sum);
-//            }
-//
-//            context.put(Quantity.RETURN_SUCCESS, 0);
-//            context.put(Quantity.RETURN_MSG, "课程sku信息保存成功!");
-//        } else {
-//            context.put(Quantity.RETURN_SUCCESS, 1);
-//            context.put(Quantity.RETURN_MSG, "课程sku信息保存失败!");
-//        }
-//        context.put("skuHtml",courseSkuService.getSkuHtml(courseId));
-//        Writer writer = null;
-//        try {
-//            writer = rsp.getWriter();
-//            writer.write(JSONObject.toJSONString(context));
-//            writer.flush();
-//            writer.close();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }finally {
-//            IOUtils.closeQuietly(writer);
-//        }
-//        return null;
-//    }
-//
-//    @RequestMapping("/editSku")
-//    public String editSku(HttpServletRequest req, HttpServletResponse rsp) {
-//        rsp.setContentType("text/html; charset=UTF-8");
-//        Map<String, Object> context = new HashMap<String, Object>();
-//        int skuId = Integer.parseInt(req.getParameter("skuId"));
-//        CourseSku entity = courseSkuService.get(skuId);
-//        context.put("sku",entity);
-//        context.put("placeHtml", courseSkuService.getSkuPlaceHtml(skuId));
-//        Writer writer = null;
-//        try {
-//            writer = rsp.getWriter();
-//            writer.write(JSONObject.toJSONString(context));
-//            writer.flush();
-//            writer.close();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }finally {
-//            IOUtils.closeQuietly(writer);
-//        }
-//        return null;
-//    }
-//
-//    @RequestMapping("/delSku")
-//    public String delSku(@RequestParam("courseId") int courseId, HttpServletRequest req, HttpServletResponse rsp) {
-//        rsp.setContentType("text/html; charset=UTF-8");
-//        Map<String, Object> context = new HashMap<String, Object>();
-//
-//        int skuId = Integer.parseInt(req.getParameter("skuId"));
-//
-//        Course course = courseService.get(courseId);
-//        Subject subject = subjectService.get(course.getSubjectId());
-//        int sum = subject.getStock();
-//        int sku_stock = courseSkuService.get(skuId).getStock();
-//        sum = sum - sku_stock;
-//        int reDate = courseSkuService.delete(skuId);
-//        if (subject.getType() == 2) {
-//            int update_sub = subjectService.updateStock(subject.getId(), sum);
-//        }
-//
-//        if (reDate > 0) {
-//            context.put(Quantity.RETURN_SUCCESS, 0);
-//            context.put(Quantity.RETURN_MSG, "课程sku信息删除成功!");
-//        } else {
-//            context.put(Quantity.RETURN_SUCCESS, 1);
-//            context.put(Quantity.RETURN_MSG, "课程sku信息删除失败!");
-//        }
-//        context.put("skuHtml", courseSkuService.getSkuHtml(courseId));
-//        Writer writer = null;
-//        try {
-//            writer = rsp.getWriter();
-//            writer.write(JSONObject.toJSONString(context));
-//            writer.flush();
-//            writer.close();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        } finally {
-//            IOUtils.closeQuietly(writer);
-//        }
-//        return null;
-//    }
-//
-//    @RequestMapping("/addplace")
-//    public ModelAndView addPlace(HttpServletRequest req, HttpServletResponse rsp){
-//        rsp.setContentType("text/html; charset=UTF-8");
-//        Map<String, Object> context = new HashMap<String, Object>();
-//        int reDate = placeService.insert(placeService.formEntity(req, Quantity.STATUS_ONE));
-//        if (reDate > 0){
-//            context.put(Quantity.RETURN_SUCCESS, 0);
-//            context.put(Quantity.RETURN_MSG,"地址信息保存成功!");
-//        }else{
-//            context.put(Quantity.RETURN_SUCCESS, 1);
-//            context.put(Quantity.RETURN_MSG,"地址信息保存失败!");
-//        }
-//        context.put("placeHtml", courseSkuService.getSkuPlaceHtml(Quantity.STATUS_ZERO));
-//        Writer writer = null;
-//        try {
-//            writer = rsp.getWriter();
-//            writer.write(JSONObject.toJSONString(context));
-//            writer.flush();
-//            writer.close();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        } finally {
-//            IOUtils.closeQuietly(writer);
-//        }
-//        return null;
-//    }
-//
-//    @RequestMapping("/addDetail")
-//    public String addDetail(HttpServletRequest req, HttpServletResponse rsp){
-//        rsp.setContentType("text/html; charset=UTF-8");
-//        Map<String, Object> context = new HashMap<String, Object>();
-//        int course_id = Integer.parseInt(req.getParameter("course_id"));
-//        int id = Integer.parseInt(req.getParameter("d_id"));
-//        int reDate = 0;
-//        if (id == 0){
-//            reDate = courseDetailService.insertKey(courseDetailService.formEntity(req, course_id, id));
-//            id = reDate;
-//        }else{
-//            reDate = courseDetailService.update(courseDetailService.formEntity(req, course_id, id));
-//        }
-//
-//        if (reDate > 0){
-//            context.put(Quantity.RETURN_SUCCESS, 0);
-//            context.put(Quantity.RETURN_MSG,"详情信息操作成功!");
-//        }else{
-//            context.put(Quantity.RETURN_SUCCESS, 1);
-//            context.put(Quantity.RETURN_MSG,"详情信息操作失败!");
-//        }
-//        context.put("d_id", id);
-//        Writer writer = null;
-//        try {
-//            writer = rsp.getWriter();
-//            writer.write(JSONObject.toJSONString(context));
-//            writer.flush();
-//            writer.close();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        } finally {
-//            IOUtils.closeQuietly(writer);
-//        }
-//        return null;
-//    }
 
     @RequestMapping("/upOrDown")
     public ModelAndView updateStatus(@RequestParam("uid") int uid,@RequestParam("id") int id,@RequestParam("mark") int mark, HttpServletRequest req){
@@ -504,7 +160,6 @@ public class BookedController {
         if (reDate > 0){
             context.put(Quantity.RETURN_MSG,"Course数据上下线成功!");
             int sub_id = courseService.get(id).getSubjectId();
-//            System.out.print(sub_id);
             subjectService.updateStatus(sub_id, mark);
         }else{
             context.put(Quantity.RETURN_MSG,"Course数据上下线失败!");
@@ -514,5 +169,203 @@ public class BookedController {
         return new ModelAndView(JumpPage.BOOKED,context);
     }
 
+    @RequestMapping("/subcopy")
+    public ModelAndView sub_copy(@RequestParam("uid") int uid,@RequestParam("id") int id,@RequestParam("mark") int mark,HttpServletRequest req){
+        Map<String, Object> context = new HashMap<String, Object>();
+
+        Course course = courseService.get(id);//试听课对象
+        int parentId = course.getParentId();
+        SubjectSku subjectSku = subjectSkuService.getSubjectSku(course.getSubjectId(),id);
+        context.put(Quantity.RETURN_ENTITY, courseService.get(parentId));//父级课程对象
+        context.put("subSku", subjectSku);//subject sku 对象
+        context.put("sku_ls",courseSkuService.getCopySkuHtml(parentId));//html字符串对象
+        context.put("course_c", course);
+
+        context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        return new ModelAndView(JumpPage.SUB_COPY,context);
+    }
+
+    @RequestMapping("/copy")
+    public ModelAndView editSubCourse(HttpServletRequest req, HttpServletResponse rsp){
+        rsp.setContentType("text/html; charset=UTF-8");
+        int success = 1;
+        Map<String, Object> context = new HashMap<String, Object>();
+        try {
+            int id = Integer.parseInt(req.getParameter("course_id"));//父级课程ID
+            BigDecimal price = new BigDecimal(req.getParameter("price"));
+//            BigDecimal originalPrice = new BigDecimal(req.getParameter("originalPrice"));
+            String notice = req.getParameter("notice");
+            Course cour = courseService.get(id);//父级课程对象
+
+            Course c_cour = courseService.getEntitysById(cour.getId()).get(0);//试听课课程对象
+            int c_sub_id = c_cour.getSubjectId();
+            int c_cour_id = c_cour.getId();
+
+            Subject sub = subjectService.get(c_sub_id);//课程包对象
+            int sum = sub.getStock();//库存总数计算
+            String[] course_sku_id = req.getParameterValues("course_sku_id");//父级勾选sku的id的数组
+            if (course_sku_id == null){
+                SubjectSku subjectSku = subjectSkuService.getSubjectSku(sub.getId(), c_cour_id);
+                subjectSku.setPrice(price);
+                subjectSku.setOriginalPrice(price);//设置原始价格为售卖价格
+                subjectSkuService.update(subjectSku);
+                courseService.updateNotice(c_cour.getId(),notice);
+                courseSkuService.update_un_check(cour.getId(),course_sku_id);
+                success = 0;
+                context.put(Quantity.RETURN_SUCCESS, success);
+                context.put(Quantity.RETURN_MSG, "试听课编辑成功!");
+            }else {
+                for (int i = 0; i < course_sku_id.length; i++) {
+                    int old_id = Integer.parseInt(course_sku_id[i]);//父级sku的id
+                    CourseSku course_sku = courseSkuService.get(old_id);//父级sku对象
+                    int old_stock = course_sku.getStock();//父级sku对象的库存
+                    int old_un_stock = course_sku.getUnlockedStock();//父级sku对象的剩余库存
+                    String stock_str = "stock_" + old_id;
+                    int new_stock = Integer.parseInt(req.getParameter(stock_str));//页面填写的试听课库存
+                    List<CourseSku> courseSkus = courseSkuService.getCourseSkuById(c_cour_id,course_sku.getId());//通过父级sku的id获取下属sku对象集合
+                    if (courseSkus.size() > 0) {
+                        CourseSku courseSku = courseSkus.get(0);
+                        int c_old_stock = courseSku.getStock();//如果有下属sku对象，获取第一个sku对象的库存
+                        int c_old_un_stock = courseSku.getUnlockedStock();//如果有下属sku对象，获取第一个sku对象的剩余库存
+
+                        int c_old_stock_subtract = new_stock - c_old_stock;
+
+                        if (new_stock < c_old_stock) {
+                            int a = c_old_un_stock + c_old_stock_subtract;
+
+                            if (a < 0) {
+                                context.put(Quantity.RETURN_SUCCESS, success);
+                                context.put(Quantity.RETURN_MSG, "试听课编辑失败,填写数值计算已超出现有试听课库存,现有库存:" + c_old_un_stock);
+                                break;
+                            } else {
+                                int new_a = c_old_stock + c_old_stock_subtract;
+                                int new_b = c_old_un_stock + c_old_stock_subtract;
+                                courseSku.setStock(new_a);
+                                courseSku.setUnlockedStock(new_b);
+                                courseSkuService.update(courseSku);//更新所属sku
+
+                                int old_a = old_stock - c_old_stock_subtract;
+                                int old_b = old_un_stock - c_old_stock_subtract;
+                                course_sku.setStock(old_a);
+                                course_sku.setUnlockedStock(old_b);
+                                courseSkuService.update(course_sku);//更新正常sku
+
+                                sum = sum + c_old_stock_subtract;
+                                success = 0;
+                            }
+                        } else if (new_stock > c_old_stock) {
+                            int b = old_un_stock - c_old_stock_subtract;
+                            if (b < 0) {
+                                context.put(Quantity.RETURN_SUCCESS, success);
+                                context.put(Quantity.RETURN_MSG, "试听课编辑失败,填写数值计算已超出现有库存,现有库存:" + old_un_stock);
+                                break;
+                            } else {
+                                int new_a = c_old_stock + c_old_stock_subtract;
+                                int new_b = c_old_un_stock + c_old_stock_subtract;
+                                courseSku.setStock(new_a);
+                                courseSku.setUnlockedStock(new_b);
+                                courseSkuService.update(courseSku);//更新所属sku
+
+                                int old_a = old_stock - c_old_stock_subtract;
+                                int old_b = old_un_stock - c_old_stock_subtract;
+
+                                course_sku.setStock(old_a);
+                                course_sku.setUnlockedStock(old_b);
+                                courseSkuService.update(course_sku);//更新正常sku
+
+                                sum = sum + c_old_stock_subtract;
+                                success = 0;
+                            }
+                        }else{
+                            success = 0;
+                            continue;
+                        }
+                    } else {
+
+                        int old_stock_1 = old_stock - new_stock;
+                        int old_un_stock_1 = old_un_stock - new_stock;
+
+                        if (old_un_stock_1 < 0) {
+                            context.put(Quantity.RETURN_SUCCESS, success);
+                            context.put(Quantity.RETURN_MSG, "试听课编辑失败,填写数值计算已超出现有库存,现有库存:" + old_un_stock);
+                            break;
+                        } else {
+                            course_sku.setStock(old_stock_1);
+                            course_sku.setUnlockedStock(old_un_stock_1);
+                            courseSkuService.update(course_sku);//更新正常课程的SKU库存
+
+                            course_sku.setCourseId(c_cour_id);
+                            course_sku.setStock(new_stock);
+                            course_sku.setUnlockedStock(new_stock);
+                            course_sku.setLockedStock(Quantity.STATUS_ZERO);
+                            course_sku.setParentId(course_sku.getId());
+                            courseSkuService.insert(course_sku);//添加试听课的新的sku信息
+
+                            sum = sum + new_stock;
+                            success = 0;
+                        }
+                    }
+                }
+                if (success == 0) {
+                    subjectService.updateStock(sub.getId(), sum);//更新试听课的总sku数量
+                    SubjectSku subjectSku = subjectSkuService.getSubjectSku(sub.getId(), c_cour_id);
+                    subjectSku.setPrice(price);
+                    subjectSku.setOriginalPrice(price);
+                    subjectSkuService.update(subjectSku);
+                    courseService.updateNotice(c_cour.getId(),notice);
+                    courseSkuService.update_un_check(cour.getId(),course_sku_id);
+                    context.put(Quantity.RETURN_SUCCESS, success);
+                    context.put(Quantity.RETURN_MSG, "试听课编辑成功!");
+                }
+            }
+
+
+        }catch (Exception _ex){
+            _ex.printStackTrace();
+        }
+
+        Writer writer = null;
+        try {
+            writer = rsp.getWriter();
+            writer.write(JSONObject.toJSONString(context));
+            writer.flush();
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            IOUtils.closeQuietly(writer);
+        }
+        return null;
+    }
+
+    @RequestMapping("/cancelCopy")
+    public ModelAndView cancelTrialCourse(@RequestParam("uid") int uid,@RequestParam("id") int id,HttpServletRequest req){
+        Map<String, Object> context = new HashMap<String, Object>();
+
+        int reData = courseService.deleteTrialCourse(id);
+
+        if (reData > 0) {
+            context.put(Quantity.RETURN_SUCCESS, 0);
+            context.put(Quantity.RETURN_MSG, "取消试听课成功!");
+        }else{
+            context.put(Quantity.RETURN_SUCCESS, 1);
+            context.put(Quantity.RETURN_MSG,"取消试听课失败!");
+        }
+
+        int sub_id = Integer.parseInt(req.getParameter("subid"));
+        context.put(Quantity.RETURN_ENTITY_LIST, courseService.getCoursesBySubId(sub_id));
+        context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        context.put("subid", sub_id);
+        return new ModelAndView(JumpPage.COURSE,context);
+    }
+
+    @RequestMapping("/preview")
+    public ModelAndView preview(@RequestParam("uid") int uid,@RequestParam("id") int id, HttpServletRequest req) {
+        Map<String, Object> context = new HashMap<String, Object>();
+        context.put("previewHtml", courseService.getPreview(id));
+        context.put(Quantity.RETURN_ENTITY_LIST, subjectService.getCoursesBySubjects());
+        context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        return new ModelAndView(JumpPage.BOOKED_PREVIEW,context);
+    }
 
 }

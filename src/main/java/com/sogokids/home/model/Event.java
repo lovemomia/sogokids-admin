@@ -12,6 +12,7 @@ public class Event {
     private String desc;
     private String action;
     private int weight;
+    private int platform;
     private int status;
     private String addTime;
     private String updateTime;
@@ -72,6 +73,14 @@ public class Event {
 
     public void setWeight(int weight) {
         this.weight = weight;
+    }
+
+    public int getPlatform() {
+        return platform;
+    }
+
+    public void setPlatform(int platform) {
+        this.platform = platform;
     }
 
     public int getStatus() {

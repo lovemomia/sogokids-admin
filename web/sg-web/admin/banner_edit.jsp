@@ -27,11 +27,8 @@
     <script src="${ctx}/sg-web/js/hplus.js?v=2.2.0"></script>
     <script src="${ctx}/sg-web/js/plugins/pace/pace.min.js"></script>
 
-    <!-- layerDate plugin javascript -->
-    <script src="${ctx}/sg-web/js/plugins/layer/laydate/laydate.js"></script>
-
-    <script src="${ctx}/sg-web/js/ajaxfileupload.js"></script>
-    <script src="${ctx}/sg-web/js/sg-admin/sogokids-img.js"></script>
+    <!-- layer javascript -->
+    <script src="${ctx}/sg-web/js/plugins/layer/layer.min.js"></script>
 
 </head>
 
@@ -85,7 +82,7 @@
                     <ul class="nav nav-second-level">
                         <li><a href="${ctx}/city/info.do?uid=${user.id}"><i class="fa fa-hacker-news"></i> <span class="nav-label">城市信息</span> </a></li>
                         <li><a href="${ctx}/region/info.do?uid=${user.id}"><i class="fa fa-map-marker"></i> <span class="nav-label">区域信息</span> </a></li>
-                        <li><a href="${ctx}/place/info.do?uid=${user.id}"><i class="fa fa-rebel"></i> <span class="nav-label">地址信息</span> </a></li>
+                        <li><a href="${ctx}/place/info.do?uid=${user.id}"><i class="fa fa-rebel"></i> <span class="nav-label">商户信息</span> </a></li>
                         <li><a href="${ctx}/inst/info.do?uid=${user.id}"><i class="fa fa-bank"></i> <span class="nav-label">机构信息</span> </a></li>
                         <li><a href="${ctx}/teacher/info.do?uid=${user.id}"><i class="fa fa-user-secret"></i> <span class="nav-label">师资力量</span></a></li>
                     </ul>
@@ -224,7 +221,7 @@
                         <div class="hr-line-dashed"></div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">选择城市 </label>
-                            <div class="col-sm-8">
+                            <div class="col-sm-3">
                                 <select id="cityId" name="cityId" class="form-control m-b" >
                                     <c:forEach items="${citys}" var="node">
                                         <c:choose>
@@ -238,32 +235,44 @@
                                     </c:forEach>
                                 </select>
                             </div>
-                        </div>
-                        <div class="hr-line-dashed"></div>
-                        <div class="form-group">
                             <label class="col-sm-2 control-label">上传图片</label>
-                            <div class="col-sm-6">
-                                <input id="img_path" type="file" name="img_path" class="form-control">
-                                <img id="img_a" src="${filepath}${model.cover}" style="width: 236px;height: 100px"/>
+                            <div class="col-sm-2">
+                                <img id="img_a" src="${filepath}${model.cover}" style="width: 200px;height: 100px;border: 1px solid #999;"/>
+                                <input id="img_path" type="file" name="img_path" style="opacity: 0;filter:alpha(opacity=0);">
                                 <input id="cover" name="cover" type="hidden" value="${model.cover}">
                                 <input id="filepath" name="filepath" type="hidden" value="${filepath}">
                             </div>
+                            <%--<div>--%>
+                                <%--<button class="btn btn-primary" type="button" id="btn_img_save" name="btn_img_save">上传</button>--%>
+                            <%--</div>--%>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">应用类型 </label>
                             <div class="col-sm-3">
-                                <button class="btn btn-primary" type="button" id="btn_img_save" name="btn_img_save">上传</button>
+                                <select id="platform" name="platform" class="form-control m-b" >
+                                    <c:forEach items="${platforms}" var="node">
+                                        <c:choose>
+                                            <c:when test="${node.id == model.platform}">
+                                                <option value="${node.id}" selected>${node.name}</option>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <option value="${node.id}"  >${node.name}</option>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </c:forEach>
+                                </select>
+                            </div>
+                            <label class="col-sm-2 control-label">排序顺序</label>
+                            <div class="col-sm-3">
+                                <input id="weight" name="weight" type="text" class="form-control" value="${model.weight}">
                             </div>
                         </div>
                         <div class="hr-line-dashed"></div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">跳转连接</label>
                             <div class="col-sm-8">
-                                <textarea id="action" name="action" class="form-control">${model.action}</textarea>
-                            </div>
-                        </div>
-                        <div class="hr-line-dashed"></div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">所占权重</label>
-                            <div class="col-sm-8">
-                                <input id="weight" name="weight" type="text" class="form-control" value="${model.weight}">
+                                <textarea id="action" name="action" class="form-control" rows="5" style="resize:none;">${model.action}</textarea>
                             </div>
                         </div>
 
@@ -288,5 +297,43 @@
     </div>
 </div>
 </div>
+<script language="JavaScript">
+    $(document).ready(function () {
+
+        $('#img_a').click(function (){
+            document.getElementById("img_path").click();
+        });
+
+        $('#img_path').change(function (){
+            var pathUrl = $('#img_path').val();
+            if(pathUrl != null || pathUrl != ""){
+                //创建FormData对象
+                var data = new FormData();
+                //为FormData对象添加数据
+                $.each($('#img_path')[0].files, function(i, file) {
+                    data.append('upload_file', file);
+                });
+
+                $.ajax({
+                    url:'/upload/jsonImg.do',
+                    type:'POST',
+                    data:data,
+                    cache: false,
+                    contentType: false,    //不可缺
+                    processData: false,    //不可缺
+                    success:function(data){
+                        var obj = $.parseJSON(data);
+                        if(obj.success == 0){
+                            $("#cover").val(obj.path);
+                            $("#img_a").attr("src", $("#filepath").val() + obj.path);
+                        }else{
+                            layer.alert(obj.msg,10,'提示信息');
+                        }
+                    }
+                });
+            }
+        });
+    });
+</script>
 </body>
 </html>

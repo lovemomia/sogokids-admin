@@ -53,7 +53,7 @@ public class PlaceServiceImpl implements PlaceService {
     @Override
     public Place get(int id) {
 
-        String sql = "select id,cityId,regionId,name,address,`desc`,lng,lat,status,addTime from SG_Place where id = ? and status > ? ";
+        String sql = "select id,cityId,regionId,name,address,`desc`,lng,lat,route,status,addTime from SG_Place where id = ? and status > ? ";
         final Object [] params = new Object[]{id, Quantity.STATUS_ZERO};
         final Place entity = new Place();
         jdbcTemplate.query(sql,params, new RowCallbackHandler(){
@@ -66,6 +66,7 @@ public class PlaceServiceImpl implements PlaceService {
                 entity.setDesc(rs.getString("desc"));
                 entity.setLng(rs.getFloat("lng"));
                 entity.setLat(rs.getFloat("lat"));
+                entity.setRoute(rs.getString("route"));
                 entity.setStatus(rs.getInt("status"));
                 entity.setAddTime(rs.getString("addTime"));
             }
@@ -77,7 +78,7 @@ public class PlaceServiceImpl implements PlaceService {
     @Override
     public List<Place> getEntitys() {
         List<Place> reData = new ArrayList<Place>();
-        String sql = "select id,cityId,regionId,name,address,`desc`,lng,lat,status,addTime from SG_Place where status > ? order by id desc";
+        String sql = "select id,cityId,regionId,name,address,`desc`,lng,lat,route,status,addTime from SG_Place where status > ? order by id desc";
         Object [] params = new Object[]{Quantity.STATUS_ZERO};
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql, params);
         if(list.size() > 0){
@@ -91,6 +92,11 @@ public class PlaceServiceImpl implements PlaceService {
                 entity.setDesc(list.get(i).get("desc").toString());
                 entity.setLng(Float.parseFloat(list.get(i).get("lng").toString()));
                 entity.setLat(Float.parseFloat(list.get(i).get("lat").toString()));
+                if (list.get(i).get("route") == null){
+                    entity.setRoute("");
+                }else {
+                    entity.setRoute(list.get(i).get("route").toString());
+                }
                 entity.setStatus(Integer.parseInt(list.get(i).get("status").toString()));
                 entity.setAddTime(list.get(i).get("addTime").toString());
                 reData.add(entity);
@@ -102,8 +108,8 @@ public class PlaceServiceImpl implements PlaceService {
 
     @Override
     public int insert(Place entity) {
-        String sql = "insert into SG_Place(cityId,regionId,name, address, `desc`, lng, lat, status,addTime) value(?, ?, ?, ?, ?, ?, ?, ?,NOW()) ";
-        Object [] params = new Object[]{entity.getCityId(), entity.getRegionId(), entity.getName(), entity.getAddress(), entity.getDesc(), entity.getLng(), entity.getLat(), Quantity.STATUS_ONE};
+        String sql = "insert into SG_Place(cityId,regionId,name, address, `desc`, lng, lat, route, status,addTime) value(?, ?, ?, ?, ?, ?, ?, ?, ?,NOW()) ";
+        Object [] params = new Object[]{entity.getCityId(), entity.getRegionId(), entity.getName(), entity.getAddress(), entity.getDesc(), entity.getLng(), entity.getLat(), entity.getRoute(), Quantity.STATUS_ONE};
         int reData = jdbcTemplate.update(sql,params);
         return reData;
     }
@@ -111,7 +117,7 @@ public class PlaceServiceImpl implements PlaceService {
     @Override
     public int insertKey(Place entity) {
         final Place place = entity;
-        final String sql = "insert into SG_Place (cityId, regionId, name, address, `desc`, lng, lat, status) values (?, ?, ?, ?, ?, ?, ?, ?)";
+        final String sql = "insert into SG_Place (cityId, regionId, name, address, `desc`, lng, lat, route,  status) values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         int reData = jdbcTemplate.update( new PreparedStatementCreator(){
             public java.sql.PreparedStatement createPreparedStatement(Connection conn) throws SQLException{
@@ -125,6 +131,7 @@ public class PlaceServiceImpl implements PlaceService {
                 ps.setString(++i, place.getDesc());
                 ps.setDouble(++i, place.getLng());
                 ps.setDouble(++i, place.getLat());
+                ps.setString(++i, place.getRoute());
                 ps.setInt(++i, Quantity.STATUS_ZERO);
                 return ps;
             }
@@ -138,8 +145,8 @@ public class PlaceServiceImpl implements PlaceService {
 
     @Override
     public int update(Place entity) {
-        String sql = "update SG_Place set cityId = ?, regionId = ?, name = ? , address = ?, `desc` = ?, lng = ?, lat = ? where id = ? ";
-        Object [] params = new Object[]{entity.getCityId(), entity.getRegionId(), entity.getName(), entity.getAddress(), entity.getDesc(), entity.getLng(), entity.getLat(), entity.getId()};
+        String sql = "update SG_Place set cityId = ?, regionId = ?, name = ? , address = ?, `desc` = ?, lng = ?, lat = ?, route = ? where id = ? ";
+        Object [] params = new Object[]{entity.getCityId(), entity.getRegionId(), entity.getName(), entity.getAddress(), entity.getDesc(), entity.getLng(), entity.getLat(), entity.getRoute(), entity.getId()};
         int reData = jdbcTemplate.update(sql,params);
         return reData;
     }
@@ -157,7 +164,7 @@ public class PlaceServiceImpl implements PlaceService {
         Place entity = new Place();
         entity.setId(id);
         entity.setCityId(Integer.parseInt(request.getParameter("cityId")));
-        if (null == request.getParameter("regionId")){
+        if (null == request.getParameter("regionId") || request.getParameter("regionId").equals("")){
             if (null != request.getParameter("quid") && !request.getParameter("quid").equals("")){
                 entity.setRegionId(Integer.parseInt(request.getParameter("quid")));
             }
@@ -177,6 +184,7 @@ public class PlaceServiceImpl implements PlaceService {
             entity.setLat(Double.parseDouble("0"));
         }
 
+        entity.setRoute(request.getParameter("route"));
         return entity;
     }
 

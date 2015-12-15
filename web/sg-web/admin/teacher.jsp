@@ -41,14 +41,8 @@
     <script src="${ctx}/sg-web/js/hplus.js?v=2.2.0"></script>
     <script src="${ctx}/sg-web/js/plugins/pace/pace.min.js"></script>
 
-    <%--<!-- Flot -->--%>
-    <%--<script src="${ctx}/sg-web/js/plugins/flot/jquery.flot.js"></script>--%>
-    <%--<script src="${ctx}/sg-web/js/plugins/flot/jquery.flot.tooltip.min.js"></script>--%>
-    <%--<script src="${ctx}/sg-web/js/plugins/flot/jquery.flot.resize.js"></script>--%>
-
-    <%--<!-- Jvectormap -->--%>
-    <%--<script src="${ctx}/sg-web/js/plugins/jvectormap/jquery-jvectormap-1.2.2.min.js"></script>--%>
-    <%--<script src="${ctx}/sg-web/js/plugins/jvectormap/jquery-jvectormap-world-mill-en.js"></script>--%>
+    <!-- layer javascript -->
+    <script src="${ctx}/sg-web/js/plugins/layer/layer.min.js"></script>
 
 </head>
 
@@ -102,7 +96,7 @@
                     <ul class="nav nav-second-level">
                         <li><a href="${ctx}/city/info.do?uid=${user.id}"><i class="fa fa-hacker-news"></i> <span class="nav-label">城市信息</span> </a></li>
                         <li><a href="${ctx}/region/info.do?uid=${user.id}"><i class="fa fa-map-marker"></i> <span class="nav-label">区域信息</span> </a></li>
-                        <li><a href="${ctx}/place/info.do?uid=${user.id}"><i class="fa fa-rebel"></i> <span class="nav-label">地址信息</span> </a></li>
+                        <li><a href="${ctx}/place/info.do?uid=${user.id}"><i class="fa fa-rebel"></i> <span class="nav-label">商户信息</span> </a></li>
                         <li><a href="${ctx}/inst/info.do?uid=${user.id}"><i class="fa fa-bank"></i> <span class="nav-label">机构信息</span> </a></li>
                         <li class="active"><a href="${ctx}/teacher/info.do?uid=${user.id}"><i class="fa fa-user-secret"></i> <span class="nav-label">师资力量</span></a></li>
                     </ul>
@@ -274,7 +268,8 @@
                                         <div class="hr-line-dashed"></div>
                                     <div class="text-center">
                                         <a class="btn btn-xs btn-primary" href="${ctx}/teacher/oper.do?uid=${user.id}&id=${entity.id}"><i class="fa fa-pencil"></i> 编辑 </a>&numsp;&numsp;
-                                        <a class="btn btn-xs btn-danger" href="${ctx}/teacher/del.do?uid=${user.id}&id=${entity.id}"><i class="fa fa-times-circle"></i> 删除</a>
+                                        <%--<a class="btn btn-xs btn-danger" href="${ctx}/teacher/del.do?uid=${user.id}&id=${entity.id}"><i class="fa fa-times-circle"></i> 删除</a>--%>
+                                        <a href="javascript:void(0)" onclick="delTeacher(${entity.id})" class="btn btn-xs btn-danger"><i class="fa fa-times-circle"></i> 删除</a>
                                     </div>
                                 </div>
                             <%--</div>--%>
@@ -356,6 +351,14 @@
         var teacher_name = $('#name').val();
 //        alert(teacher_name);
         window.location.href="${ctx}/teacher/query.do?uid=${user.id}&name="+teacher_name;
+    }
+
+    function delTeacher(id){
+        layer.confirm('您确定要删除此讲师吗？', function(index){
+            window.location.href="${ctx}/teacher/del.do?uid=${user.id}&id="+id;
+            layer.close(index);
+        });
+
     }
 </script>
 </body>

@@ -37,7 +37,7 @@ $(document).ready(function () {
      * 添加课程包的基本信息
      */
     $('#btn_sub_save').click(function(){
-        var re = /^[-]{0,1}[0-9]{1,}$/;
+        //var re = /^[-]{0,1}[0-9]{1,}$/;
         var sub_id = $('#sub_id').val();
         var title = $('#title').val();
         var cover = $('#cover').val();
@@ -135,8 +135,9 @@ function delimg(id){
                     var divshow = $("#img_div");
                     divshow.text("");// 清空数据
                     divshow.append(data.imageJson);
+                }else{
+                    layer.alert(data.msg,10,'提示信息');
                 }
-                layer.alert(data.msg,10,'提示信息');
             }, "json");
         layer.close(index);
     });
@@ -168,8 +169,9 @@ function noticeDel(noticeId){
                     var divshow = $("#ncontent_div");
                     divshow.text("");
                     divshow.append(data.notices);
+                }else{
+                    layer.alert(data.msg,10,'提示信息');
                 }
-                layer.alert(data.msg,10,'提示信息');
             }, "json");
         layer.close(index);
     });
@@ -220,8 +222,30 @@ function skuDel(id){
                     var divshow = $("#sku_div");
                     divshow.text("");
                     divshow.append(data.skuHtml);
+                }else{
+                    layer.alert(data.msg,10,'提示信息');
                 }
-                layer.alert(data.msg,10,'提示信息');
+            }, "json");
+        layer.close(index);
+    });
+}
+
+/**
+ * 取消sku信息
+ * @param id
+ */
+function cancelSku(id){
+    var subId = $('#sub_id').val();
+    layer.confirm('您确定要取消此SKU吗？', function(index){
+        $.post("/sub/cancelSku.do?subId="+subId, {skuId:id},
+            function(data){
+                if(data.success == 0) {
+                    var divshow = $("#sku_div");
+                    divshow.text("");
+                    divshow.append(data.skuHtml);
+                }else{
+                    layer.alert(data.msg,10,'提示信息');
+                }
             }, "json");
         layer.close(index);
     });

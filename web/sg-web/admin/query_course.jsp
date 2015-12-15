@@ -99,7 +99,7 @@
                     <ul class="nav nav-second-level">
                         <li><a href="${ctx}/city/info.do?uid=${user.id}"><i class="fa fa-hacker-news"></i> <span class="nav-label">城市信息</span> </a></li>
                         <li><a href="${ctx}/region/info.do?uid=${user.id}"><i class="fa fa-map-marker"></i> <span class="nav-label">区域信息</span> </a></li>
-                        <li><a href="${ctx}/place/info.do?uid=${user.id}"><i class="fa fa-rebel"></i> <span class="nav-label">地址信息</span> </a></li>
+                        <li><a href="${ctx}/place/info.do?uid=${user.id}"><i class="fa fa-rebel"></i> <span class="nav-label">商户信息</span> </a></li>
                         <li><a href="${ctx}/inst/info.do?uid=${user.id}"><i class="fa fa-bank"></i> <span class="nav-label">机构信息</span> </a></li>
                         <li><a href="${ctx}/teacher/info.do?uid=${user.id}"><i class="fa fa-user-secret"></i> <span class="nav-label">师资力量</span></a></li>
                     </ul>
@@ -228,57 +228,136 @@
                 </ol>
             </div>
         </div>
+
         <div class="row">
-            <div class="ibox-content">
-                <form class="form-horizontal" id="vform" action="${ctx}/query/query.do?uid=${user.id}" method="post">
-                    <fieldset>
-                        <div class="form-group">
-                            <label class="col-sm-1 control-label">开始时间 </label>
-                            <div class="col-sm-2">
-                                <input id="startTime" name="startTime" type="text" value="${startTime}" class="form-control layer-date" onclick="laydate({istime: true, format: 'YYYY-MM-DD'})" readonly>
+            <div class="col-lg-12">
+                <div class="panel blank-panel">
+
+                    <div class="panel-heading">
+                        <%--<div class="panel-title m-b-md">--%>
+                            <%--<h4>文字选项卡</h4>--%>
+                        <%--</div>--%>
+                        <div class="panel-options">
+
+                            <ul class="nav nav-tabs">
+                                <li id="tab_li_1" class="active"><a id="tab1" data-toggle="tab" href="tabs_panels.html#tab-1"><i class="fa fa-calendar"></i>时间查找</a></li>
+                                <li id="tab_li_2" class=""><a id="tab2" data-toggle="tab" href="tabs_panels.html#tab-2"><i class="fa fa-mobile-phone"></i>手机号查询</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="panel-body">
+
+                        <div class="tab-content">
+                            <div id="tab-1" class="tab-pane active">
+                                <div class="row">
+                                    <div class="ibox-content">
+                                        <form class="form-horizontal" id="time_form" action="${ctx}/query/query.do?uid=${user.id}" method="post">
+                                            <fieldset>
+                                                <div class="form-group">
+                                                    <label class="col-sm-1 control-label">开始时间 </label>
+                                                    <div class="col-sm-2">
+                                                        <input id="startTime" name="startTime" type="text" value="${startTime}" class="form-control layer-date" onclick="laydate({istime: true, format: 'YYYY-MM-DD'})" readonly>
+                                                    </div>
+                                                    <label class="col-sm-1 control-label">结束时间</label>
+                                                    <div class="col-sm-2">
+                                                        <input id="endTime" name="endTime" type="text" value="${endTime}" class="form-control layer-date"  onclick="laydate({istime: true, format: 'YYYY-MM-DD'})" readonly>
+                                                    </div>
+                                                    <label class="col-sm-1 control-label">课程标题</label>
+                                                    <div class="col-sm-2">
+                                                        <input id="title" name="title" type="text" value="${title}" class="form-control">
+                                                    </div>
+                                                    <div class="col-sm-1 col-sm-offset-1">
+                                                        <button class="btn btn-primary" type="button" id="btn_time_query" name ="btn_time_query">查询</button>
+                                                    </div>
+                                                </div>
+                                            </fieldset>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="ibox-content">
+                                        <form>
+                                            <table class="table table-striped table-bordered table-hover dataTables-example">
+                                                <thead>
+                                                <tr class="gradeX">
+                                                    <th>项目</th>
+                                                    <th>开课时间</th>
+                                                    <th>上课地点</th>
+                                                    <th>操作</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <c:forEach items="${courseTimeQuery}" var="entity">
+                                                    <tr>
+                                                        <td><img id="img_a" src="${filepath}${entity.courseCover}" style="width: 100px;height: 50px"/>&nbsp;&nbsp;&nbsp;&nbsp;<c:out value="${entity.courseTitle}"></c:out></td>
+                                                        <td><c:out value="${entity.skuStartTime}"></c:out></td>
+                                                        <td><c:out value="${entity.placeName}"></c:out></td>
+                                                        <td><a href="${ctx}/query/queryDetail.do?uid=${user.id}&id=${entity.courseId}&skuId=${entity.skuId}&startTime=${startTime}&endTime=${endTime}&title=${title}&name=${entity.courseTitle}" class="btn btn-white btn-sm"><i class="fa fa-newspaper-o"></i> <c:out value="${entity.userCount}"></c:out>人已选 </a></td>
+                                                    </tr>
+                                                </c:forEach>
+                                                </tbody>
+                                            </table>
+                                        </form>
+                                    </div>
+                                </div>
                             </div>
-                            <label class="col-sm-1 control-label">结束时间</label>
-                            <div class="col-sm-2">
-                                <input id="endTime" name="endTime" type="text" value="${endTime}" class="form-control layer-date"  onclick="laydate({istime: true, format: 'YYYY-MM-DD'})" readonly>
-                            </div>
-                            <label class="col-sm-1 control-label">课程标题</label>
-                            <div class="col-sm-2">
-                                <input id="title" name="title" type="text" value="${title}" class="form-control">
-                            </div>
-                            <div class="col-sm-1 col-sm-offset-1">
-                                <button class="btn btn-primary" type="submit">查询</button>
+
+                            <div id="tab-2" class="tab-pane">
+                                <div class="row">
+                                    <div class="ibox-content">
+                                        <form class="form-horizontal" id="mobile_form" action="${ctx}/query/queryMobile.do?uid=${user.id}" method="post">
+                                            <fieldset>
+                                                <div class="form-group">
+                                                    <label class="col-sm-1 control-label">手机号</label>
+                                                    <div class="col-sm-2">
+                                                        <input id="mobile" name="mobile" type="text" value="${mobile}" class="form-control">
+                                                    </div>
+                                                    <div class="col-sm-1 col-sm-offset-1">
+                                                        <button class="btn btn-primary" type="button" id="btn_mobile_query" name="btn_mobile_query">查询</button>
+                                                    </div>
+                                                </div>
+                                            </fieldset>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="ibox-content">
+                                        <form>
+                                            <div id="mobileDiv">
+                                                <table class="table table-striped table-bordered table-hover dataTables-abc">
+                                                    <thead>
+                                                    <tr class="gradeX">
+                                                        <th>用户昵称</th>
+                                                        <th>联系方式</th>
+                                                        <th>所选课程</th>
+                                                        <th>开课时间</th>
+                                                        <th>上课地点</th>
+                                                        <th>购买来源</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+
+                                                    <%--<c:forEach items="${queryMobiles}" var="entity">--%>
+                                                        <tr>
+                                                            <td colspan="6">没有数据</td>
+                                                        </tr>
+                                                    <%--</c:forEach>--%>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </fieldset>
-                </form>
+
+                    </div>
+
+                </div>
             </div>
         </div>
-        <div class="row">
-            <div class="ibox-content">
-                <form>
-                    <table class="table table-striped table-bordered table-hover dataTables-example">
-                        <thead>
-                        <tr class="gradeX">
-                            <th>课程编码</th>
-                            <th>课程名称</th>
-                            <th>添加时间</th>
-                            <th>操作</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                            <c:forEach items="${courses}" var="entity">
-                                <tr>
-                                    <td><c:out value="${entity.id}"></c:out></td>
-                                    <td><c:out value="${entity.title}"></c:out></td>
-                                    <td><c:out value="${fn:substring(entity.addTime,0,19)}"></c:out></td>
-                                    <td><a href="${ctx}/query/queryDetail.do?uid=${user.id}&id=${entity.id}&startTime=${startTime}&endTime=${endTime}&title=${title}" class="btn btn-white btn-sm"><i class="fa fa-newspaper-o"></i> 课程详情 </a></td>
-                                </tr>
-                            </c:forEach>
-                        </tbody>
-                    </table>
-                </form>
-            </div>
-        </div>
+
         <div class="footer">
             <div class="pull-right">
                 By：<a href="http://www.duolaqinzi.com" target="_blank">sg home</a>
@@ -297,10 +376,30 @@
             "bSort": false //排序功能
         });
 
-//        $('.fancybox').fancybox({
-//            openEffect: 'none',
-//            closeEffect: 'none'
-//        });
+        $('#btn_time_query').click(function(){
+            $("#time_form").submit();
+//            $('#tab-1').show();
+//            $('#tab-2').hide();
+        });
+
+        $('#btn_mobile_query').click(function(){
+//            $("#mobile_form").submit();
+//            $('#tab-1').hide();
+//            $('#tab_li_1').attr('class','');
+//            $('#tab-2').show();
+//            $('#tab_li_2').attr('class','active');
+            $.post("/query/queryMobile.do", $("#mobile_form").serialize(),
+                    function(data){
+                        if(data.success == 0) {
+                            console.log(data);
+                            var divshow = $("#mobileDiv");
+                            divshow.text("");// 清空数据
+                            divshow.append(data.queryMobiles);
+                        }else{
+                            layer.alert(data.msg,10,'提示信息');
+                        }
+                    }, "json");
+        });
     });
 </script>
 </body>

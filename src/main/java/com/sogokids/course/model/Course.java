@@ -1,5 +1,7 @@
 package com.sogokids.course.model;
 
+import com.sogokids.system.model.Institution;
+
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -26,11 +28,14 @@ public class Course {
     private String updateTime;
 
     private String subTitle;
-    private int flag = 0;
+    private int flag = 0;//是否已推荐
+    private int copyFlag = 0;//是否已加入试听
 
     private List<Course> courses;
 
     private List<CourseSku> courseSkus;
+
+    private Institution institution;
 
     private int st_mark;
 
@@ -194,6 +199,14 @@ public class Course {
         this.flag = flag;
     }
 
+    public int getCopyFlag() {
+        return copyFlag;
+    }
+
+    public void setCopyFlag(int copyFlag) {
+        this.copyFlag = copyFlag;
+    }
+
     public List<Course> getCourses() {
         return courses;
     }
@@ -210,5 +223,11 @@ public class Course {
         this.courseSkus = courseSkus;
     }
 
+    public Institution getInstitution() {
+        return institution;
+    }
 
+    public void setInstitution(Institution institution) {
+        this.institution = institution;
+    }
 }

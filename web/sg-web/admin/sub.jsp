@@ -125,7 +125,7 @@
                     <ul class="nav nav-second-level">
                         <li><a href="${ctx}/city/info.do?uid=${user.id}"><i class="fa fa-hacker-news"></i> <span class="nav-label">城市信息</span> </a></li>
                         <li><a href="${ctx}/region/info.do?uid=${user.id}"><i class="fa fa-map-marker"></i> <span class="nav-label">区域信息</span> </a></li>
-                        <li><a href="${ctx}/place/info.do?uid=${user.id}"><i class="fa fa-rebel"></i> <span class="nav-label">地址信息</span> </a></li>
+                        <li><a href="${ctx}/place/info.do?uid=${user.id}"><i class="fa fa-rebel"></i> <span class="nav-label">商户信息</span> </a></li>
                         <li><a href="${ctx}/inst/info.do?uid=${user.id}"><i class="fa fa-bank"></i> <span class="nav-label">机构信息</span> </a></li>
                         <li><a href="${ctx}/teacher/info.do?uid=${user.id}"><i class="fa fa-user-secret"></i> <span class="nav-label">师资力量</span></a></li>
                     </ul>
@@ -257,6 +257,8 @@
                                     <div align="center">
                                         <c:choose>
                                             <c:when test="${entity.status == 1}">
+                                                <a href="${ctx}/sub/oper.do?uid=${user.id}&id=${entity.id}" class="btn btn-primary btn-sm"><i class="fa fa-pencil"></i> 编辑 </a>&numsp;
+                                                <a href="${ctx}/sub/preview.do?uid=${user.id}&id=${entity.id}" class="btn btn-success btn-sm"><i class="fa fa-eye"></i> 预览 </a>&numsp;
                                                 <a href="${ctx}/sub/upOrDown.do?uid=${user.id}&id=${entity.id}&mark=3" class="btn btn-info btn-sm"><i class="fa fa-level-down"></i> 下线 </a>
                                             </c:when>
                                             <c:otherwise>
@@ -275,7 +277,6 @@
                                 <div class="images-content"></div>
                             </a>
                         </li>
-
                     </ul>
 
                 </div>

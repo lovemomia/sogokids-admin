@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.sogokids.course.service.CourseService;
 import com.sogokids.home.service.IconService;
 import com.sogokids.order.service.OrderService;
+import com.sogokids.query.service.CourseTimeQueryService;
 import com.sogokids.query.service.QueryService;
 import com.sogokids.system.service.CityService;
 import com.sogokids.user.service.UserService;
@@ -38,6 +39,9 @@ public class QueryController {
     private QueryService queryService;
 
     @Autowired
+    private CourseTimeQueryService courseTimeQueryService;
+
+    @Autowired
     private OrderService orderService;
 
 
@@ -58,7 +62,7 @@ public class QueryController {
         String startTime = req.getParameter("startTime");
         String endTime = req.getParameter("endTime");
         String title = req.getParameter("title");
-        context.put("courses", queryService.getCourses(startTime, endTime, title));
+        context.put("courseTimeQuery", courseTimeQueryService.getCourseTimeQuerys(title, startTime, endTime));
 
         context.put("startTime", startTime);
         context.put("endTime", endTime);
@@ -71,11 +75,13 @@ public class QueryController {
     public ModelAndView query_detail(@RequestParam("uid") int uid, @RequestParam("id") int id,HttpServletRequest req){
         Map<String, Object> context = new HashMap<String, Object>();
 
+        int sku_id = Integer.parseInt(req.getParameter("skuId"));
         context.put("startTime", req.getParameter("startTime"));
         context.put("endTime", req.getParameter("endTime"));
         context.put("title", req.getParameter("title"));
 
-        context.put("course",queryService.getCourseSkuByCourseId(id));
+        context.put("courseName",req.getParameter("name"));
+        context.put("courseUser",courseTimeQueryService.getCourseUsers(id,sku_id));
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
         return new ModelAndView(JumpPage.QUERY_DETAIL,context);
     }
@@ -148,5 +154,29 @@ public class QueryController {
         context.put("status", EnumUtil.getEnums(Quantity.STATUS_FIVE));
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
         return new ModelAndView(JumpPage.QUERY_ORDER,context);
+    }
+
+    @RequestMapping("/queryMobile")
+    public ModelAndView queryMobile(HttpServletRequest req, HttpServletResponse rsp){
+        rsp.setContentType("text/html; charset=UTF-8");
+        //String reStr = JumpPage.QUERY_COURSE;
+        Map<String, Object> context = new HashMap<String, Object>();
+        String mobile = req.getParameter("mobile");
+        context.put("success", 0);
+        context.put("queryMobiles", courseTimeQueryService.getMobileUsers(mobile).get("mobileHtml"));
+        context.put("mobile", mobile);
+
+        Writer writer = null;
+        try {
+            writer = rsp.getWriter();
+            writer.write(JSONObject.toJSONString(context));
+            writer.flush();
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            IOUtils.closeQuietly(writer);
+        }
+        return null;
     }
 }

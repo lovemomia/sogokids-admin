@@ -31,4 +31,5 @@ public class Customer {
     public void setNickName(String nickName) {
         this.nickName = nickName;
     }
+
 }

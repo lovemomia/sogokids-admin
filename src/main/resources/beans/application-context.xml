@@ -22,6 +22,7 @@
     <bean class="com.sogokids.utils.util.FileUtil">
         <property name="serverPath" value="${Image.Tongqu.DisplayPath}" />
         <property name="uploadPath" value="${Image.Tongqu.UploadPath}" />
+        <!--<property name="groupPath" value="${Image.Tongqu.GroupPath}" />-->
     </bean>
 
     <!-- Spring MVC配置 -->
@@ -95,7 +96,7 @@
 
     <!-- 配置那些类的方法进行事务管理 -->
     <aop:config>
-        <aop:pointcut id="allManagerMethod" expression="execution (* com.sogokids.*.service.*.*(..))" />
+        <aop:pointcut id="allManagerMethod" expression="execution (* com.sogokids.*.service.impl.*.*(..))" />
         <aop:advisor advice-ref="txAdvice" pointcut-ref="allManagerMethod" />
     </aop:config>
 </beans>

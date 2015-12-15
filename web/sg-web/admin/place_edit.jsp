@@ -84,7 +84,7 @@
                     <ul class="nav nav-second-level">
                         <li><a href="${ctx}/city/info.do?uid=${user.id}"><i class="fa fa-hacker-news"></i> <span class="nav-label">城市信息</span> </a></li>
                         <li><a href="${ctx}/region/info.do?uid=${user.id}"><i class="fa fa-map-marker"></i> <span class="nav-label">区域信息</span> </a></li>
-                        <li class="active"><a href="${ctx}/place/info.do?uid=${user.id}"><i class="fa fa-rebel"></i> <span class="nav-label">地址信息</span> </a></li>
+                        <li class="active"><a href="${ctx}/place/info.do?uid=${user.id}"><i class="fa fa-rebel"></i> <span class="nav-label">商户信息</span> </a></li>
                         <li><a href="${ctx}/inst/info.do?uid=${user.id}"><i class="fa fa-bank"></i> <span class="nav-label">机构信息</span> </a></li>
                         <li><a href="${ctx}/teacher/info.do?uid=${user.id}"><i class="fa fa-user-secret"></i> <span class="nav-label">师资力量</span></a></li>
                     </ul>
@@ -199,16 +199,16 @@
         </div>
         <div class="row wrapper border-bottom white-bg page-heading">
             <div class="col-lg-10">
-                <h2>地址列表</h2>
+                <h2>商户信息列表</h2>
                 <ol class="breadcrumb">
                     <li>
                         <a href="${ctx}/user/index.do?uid=${user.id}">主页</a>
                     </li>
                     <li>
-                        <a href="${ctx}/place/info.do?uid=${user.id}">地址信息</a>
+                        <a href="${ctx}/place/info.do?uid=${user.id}">商户信息</a>
                     </li>
                     <li>
-                        <strong>编辑地址</strong>
+                        <strong>编辑商户信息</strong>
                     </li>
                 </ol>
             </div>
@@ -244,7 +244,7 @@
                                             <option>请选择</option>
                                         </select>
                                     </div>
-                                    <label class="col-sm-2 control-label">地址名称 </label>
+                                    <label class="col-sm-2 control-label">商户地址名称 </label>
                                     <div class="col-sm-3">
                                         <input id="name" name="name" type="text" class="form-control" value="${model.name}">
                                         <input id="id" name="id" type="hidden" value="${model.id}">
@@ -252,7 +252,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="col-sm-2 control-label">地址详情 </label>
+                                    <label class="col-sm-2 control-label">商户地址详情 </label>
                                     <div class="col-sm-8">
                                         <input id="address" name="address" type="text" class="form-control" value="${model.address}">
                                     </div>
@@ -269,9 +269,16 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="col-sm-2 control-label">地址描述 </label>
+                                    <label class="col-sm-2 control-label">交通路线 </label>
                                     <div class="col-sm-8">
-                                        <textarea id="desc" name="desc" type="text" class="form-control">${model.desc}</textarea>
+                                        <textarea id="desc" name="desc" type="text" class="form-control">${model.route}</textarea>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">商户地址描述 </label>
+                                    <div class="col-sm-8">
+                                        <textarea id="route" name="route" type="text" class="form-control">${model.desc}</textarea>
                                     </div>
                                 </div>
 

@@ -40,7 +40,7 @@ public class EventServiceImpl implements EventService {
     @Override
     public List<Event> getEntitys() {
         List<Event> reData = new ArrayList<Event>();
-        String sql = "select Id,CityId,Title,Img,`Desc`,Action,Weight,Status,AddTime from SG_Event where Status > ? ";
+        String sql = "select Id,CityId,Title,Img,`Desc`,Action,Platform,Weight,Status,AddTime from SG_Event where Status > ? ";
         Object [] params = new Object[]{Quantity.STATUS_ZERO};
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql, params);
         if(list.size() > 0){
@@ -52,6 +52,7 @@ public class EventServiceImpl implements EventService {
                 entity.setImg(list.get(i).get("Img").toString());
                 entity.setDesc(list.get(i).get("Desc").toString());
                 entity.setAction(list.get(i).get("Action").toString());
+                entity.setPlatform(Integer.parseInt(list.get(i).get("Platform").toString()));
                 entity.setWeight(Integer.parseInt(list.get(i).get("Weight").toString()));
                 entity.setStatus(Integer.parseInt(list.get(i).get("Status").toString()));
                 entity.setAddTime(list.get(i).get("AddTime").toString());
@@ -66,7 +67,7 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public Event get(int id) {
-        String sql = "select Id,CityId,Title,Img,`Desc`,Action,Weight,Status,AddTime from SG_Event where Id = ? and Status > ? ";
+        String sql = "select Id,CityId,Title,Img,`Desc`,Action,Platform,Weight,Status,AddTime from SG_Event where Id = ? and Status > ? ";
         final Object [] params = new Object[]{id, Quantity.STATUS_ZERO};
         final Event entity = new Event();
         jdbcTemplate.query(sql,params, new RowCallbackHandler(){
@@ -77,6 +78,7 @@ public class EventServiceImpl implements EventService {
                 entity.setImg(rs.getString("Img"));
                 entity.setDesc(rs.getString("Desc"));
                 entity.setAction(rs.getString("Action"));
+                entity.setPlatform(rs.getInt("Platform"));
                 entity.setWeight(rs.getInt("Weight"));
                 entity.setStatus(rs.getInt("Status"));
                 entity.setAddTime(rs.getString("AddTime"));
@@ -88,16 +90,16 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public int insert(Event entity) {
-        String sql = "insert into SG_Event(CityId,Title,Img,`Desc`,Action,Weight,Status,AddTime) value(?, ?, ?, ?, ?, ?, ?, NOW()) ";
-        Object [] params = new Object[]{entity.getCityId(), entity.getTitle(), entity.getImg(), entity.getDesc(), entity.getAction(), entity.getWeight(), Quantity.STATUS_ONE};
+        String sql = "insert into SG_Event(CityId,Title,Img,`Desc`,Action,Platform,Weight,Status,AddTime) value(?, ?, ?, ?, ?, ?, ?, ?, NOW()) ";
+        Object [] params = new Object[]{entity.getCityId(), entity.getTitle(), entity.getImg(), entity.getDesc(), entity.getAction(), entity.getPlatform(), entity.getWeight(), Quantity.STATUS_ONE};
         int reData = jdbcTemplate.update(sql,params);
         return reData;
     }
 
     @Override
     public int update(Event entity) {
-        String sql = "update SG_Event set CityId = ?, Title = ?, Img = ?, `Desc` = ?, Action = ?, Weight = ?  where Id = ? ";
-        Object [] params = new Object[]{entity.getCityId(), entity.getTitle(), entity.getImg(), entity.getDesc(), entity.getAction(), entity.getWeight(), entity.getId()};
+        String sql = "update SG_Event set CityId = ?, Title = ?, Img = ?, `Desc` = ?, Action = ?, Platform = ?, Weight = ?  where Id = ? ";
+        Object [] params = new Object[]{entity.getCityId(), entity.getTitle(), entity.getImg(), entity.getDesc(), entity.getAction(), entity.getPlatform(), entity.getWeight(), entity.getId()};
         int reData = jdbcTemplate.update(sql,params);
         return reData;
     }
@@ -120,6 +122,7 @@ public class EventServiceImpl implements EventService {
         entity.setImg(request.getParameter("cover"));
         entity.setDesc(request.getParameter("desc"));
         entity.setAction(request.getParameter("action"));
+        entity.setPlatform(Integer.parseInt(request.getParameter("platform")));
         entity.setWeight(Integer.parseInt(request.getParameter("weight")));
 
         return entity;

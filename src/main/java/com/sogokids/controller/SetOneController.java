@@ -69,9 +69,14 @@ public class SetOneController {
         String reStr = JumpPage.SET_ONE_EDIT;
         Map<String, Object> context = new HashMap<String, Object>();
         context.put("course",courseService.get(id));
-        context.put("recommend",courseRecommendService.getEntitysByCourseId(id).get(0));
+        List<CourseRecommend> courseRecommends = courseRecommendService.getEntitysByCourseId(id);
+        CourseRecommend courseRecommend = new CourseRecommend();
+        if (courseRecommends.size() > 0){
+            courseRecommend = courseRecommends.get(0);
+        }
+        context.put("recommend",courseRecommend);
         context.put("skuHtml",subjectSkuService.getCourseSkuHtml(id));
-        context.put("time_unit", EnumUtil.getEnums(Quantity.STATUS_FOUR));
+//        context.put("time_unit", EnumUtil.getEnums(Quantity.STATUS_FOUR));
 
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
         return new ModelAndView(reStr,context);
@@ -85,16 +90,18 @@ public class SetOneController {
         Map<String, Object> context = new HashMap<String, Object>();
         int reDate = courseService.updateNotice(course_id, req.getParameter("notice"));
         if (reDate > 0) {
-            CourseRecommend courseRecommend = courseRecommendService.get(set_id);
-            courseRecommend.setWeight(Integer.parseInt(req.getParameter("weight")));
-            int update_weight = courseRecommendService.update(courseRecommend);
-            if (update_weight > 0) {
-                context.put(Quantity.RETURN_SUCCESS, 0);
-                context.put(Quantity.RETURN_MSG, "推荐课程信息修改成功!");
-            }else {
-                context.put(Quantity.RETURN_SUCCESS, 1);
-                context.put(Quantity.RETURN_MSG, "推荐课程信息修改失败!");
-            }
+//            CourseRecommend courseRecommend = courseRecommendService.get(set_id);
+//            courseRecommend.setWeight(Integer.parseInt(req.getParameter("weight")));
+//            int update_weight = courseRecommendService.update(courseRecommend);
+//            if (update_weight > 0) {
+//                context.put(Quantity.RETURN_SUCCESS, 0);
+//                context.put(Quantity.RETURN_MSG, "推荐课程信息修改成功!");
+//            }else {
+//                context.put(Quantity.RETURN_SUCCESS, 1);
+//                context.put(Quantity.RETURN_MSG, "推荐课程信息修改失败!");
+//            }
+            context.put(Quantity.RETURN_SUCCESS, 0);
+            context.put(Quantity.RETURN_MSG, "推荐课程信息修改成功!");
         } else {
             context.put(Quantity.RETURN_SUCCESS, 1);
             context.put(Quantity.RETURN_MSG, "推荐课程信息修改失败!");
@@ -121,12 +128,12 @@ public class SetOneController {
         int reDate = 0;
         if (skuId == 0) {
             Course course = courseService.get(cursId);
-            SubjectSku subjectSku = subjectSkuService.formEntity(req, course.getSubjectId(), Quantity.STATUS_ZERO);
+            SubjectSku subjectSku = subjectSkuService.formEntityOne(req, course.getSubjectId(), Quantity.STATUS_ZERO);
             subjectSku.setCourseId(cursId);
-            reDate = subjectSkuService.insert(subjectSku);
+            reDate = subjectSkuService.insertOne(subjectSku);
         }else{
             SubjectSku subjectSku = subjectSkuService.get(skuId);
-            reDate = subjectSkuService.update(subjectSkuService.formEntity(req, subjectSku.getSubjectId(), skuId));
+            reDate = subjectSkuService.update(subjectSkuService.formEntityOne(req, subjectSku.getSubjectId(), skuId));
         }
 
         if (reDate > 0) {
@@ -224,23 +231,12 @@ public class SetOneController {
     @RequestMapping("/cancelCourse")
     public ModelAndView cancelCourse(@RequestParam("uid") int uid,@RequestParam("id") int id, HttpServletRequest req){
         Map<String, Object> context = new HashMap<String, Object>();
-        try {
-            List<CourseRecommend> courseRecommends = courseRecommendService.getEntitysByCourseId(id);
+        int reData = courseService.update_cancelCourse(id);
 
-            int reData = 0;
-            if (courseRecommends.size() > 0){
-                for (int i = 0; i < courseRecommends.size(); i++) {
-                    reData = courseRecommendService.delete(courseRecommends.get(i).getId());
-                }
-            }
-            if (reData > 0) {
-                context.put(Quantity.RETURN_SUCCESS, 0);
-                context.put(Quantity.RETURN_MSG, "课程取消推荐成功!");
-            }else{
-                context.put(Quantity.RETURN_SUCCESS, 1);
-                context.put(Quantity.RETURN_MSG,"课程取消推荐失败!");
-            }
-        }catch (Exception _ex){
+        if (reData > 0) {
+            context.put(Quantity.RETURN_SUCCESS, 0);
+            context.put(Quantity.RETURN_MSG, "课程取消推荐成功!");
+        }else{
             context.put(Quantity.RETURN_SUCCESS, 1);
             context.put(Quantity.RETURN_MSG,"课程取消推荐失败!");
         }
@@ -250,5 +246,42 @@ public class SetOneController {
         return new ModelAndView(JumpPage.SET_ONE,context);
     }
 
+    @RequestMapping("/preview")
+    public ModelAndView preview(@RequestParam("uid") int uid,@RequestParam("id") int id, HttpServletRequest req) {
+        Map<String, Object> context = new HashMap<String, Object>();
+        context.put("previewHtml", courseService.getPreview(id));
+        context.put(Quantity.RETURN_ENTITY_LIST, courseRecommendService.getCourses());
+        context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        return new ModelAndView(JumpPage.COURSE_SET_PREVIEW,context);
+    }
+
+    @RequestMapping("/cancelSku")
+    public String cancelSku(@RequestParam("courseId") int courseId, HttpServletRequest req, HttpServletResponse rsp) {
+        rsp.setContentType("text/html; charset=UTF-8");
+        Map<String, Object> context = new HashMap<String, Object>();
+
+        int skuId = Integer.parseInt(req.getParameter("skuId"));
+        int reDate = subjectSkuService.updateStatus(skuId, Quantity.STATUS_THREE);
+        if (reDate > 0) {
+            context.put(Quantity.RETURN_SUCCESS, 0);
+            context.put(Quantity.RETURN_MSG, "推荐课程sku信息取消成功!");
+        } else {
+            context.put(Quantity.RETURN_SUCCESS, 1);
+            context.put(Quantity.RETURN_MSG, "推荐课程sku信息取消失败!");
+        }
+        context.put("skuHtml", subjectSkuService.getCourseSkuHtml(courseId));
+        Writer writer = null;
+        try {
+            writer = rsp.getWriter();
+            writer.write(JSONObject.toJSONString(context));
+            writer.flush();
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            IOUtils.closeQuietly(writer);
+        }
+        return null;
+    }
 
 }

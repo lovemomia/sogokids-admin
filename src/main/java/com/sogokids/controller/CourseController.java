@@ -26,18 +26,21 @@ import com.sogokids.system.service.InstitutionService;
 import com.sogokids.system.service.PlaceService;
 import com.sogokids.system.service.TeacherService;
 import com.sogokids.user.service.UserService;
+import com.sogokids.utils.entity.QzResult;
 import com.sogokids.utils.util.EnumUtil;
 import com.sogokids.utils.util.JumpPage;
 import com.sogokids.utils.util.Quantity;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.beans.Transient;
 import java.io.IOException;
 import java.io.Writer;
 import java.math.BigDecimal;
@@ -97,7 +100,7 @@ public class CourseController {
     @RequestMapping("/info")
     public ModelAndView info(@RequestParam("uid") int uid,@RequestParam("subid") int subid, HttpServletRequest req){
         Map<String, Object> context = new HashMap<String, Object>();
-        context.put(Quantity.RETURN_ENTITY_LIST, courseService.getEntitysBySubId(subid));
+        context.put(Quantity.RETURN_ENTITY_LIST, courseService.getCoursesBySubId(subid));
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
         context.put("subid", subid);
         return new ModelAndView(JumpPage.COURSE,context);
@@ -119,8 +122,10 @@ public class CourseController {
                 context.put(Quantity.RETURN_ENTITY_LIST, courseService.getEntitysBySubId(subid));
                 reStr = JumpPage.COURSE;
             }
+            context.put("gmxz", Quantity.GMXZ_STR);
+            context.put("gzms", Quantity.GZMS_STR);
             context.put(Quantity.RETURN_ENTITY, courseService.get(id));
-            context.put("time_unit", EnumUtil.getEnums(Quantity.STATUS_FOUR));
+//            context.put("time_unit", EnumUtil.getEnums(Quantity.STATUS_FOUR));
         }else{
             context.put(Quantity.RETURN_ENTITY, courseService.get(id));
             context.put("imageJson",courseImgService.getImgHtml(id));
@@ -183,9 +188,23 @@ public class CourseController {
         int course_id = Integer.parseInt(req.getParameter("course_id"));
         Map<String, Object> context = new HashMap<String, Object>();
         int reDate = courseService.update(courseService.formEntity(req, course_id));
+
         if (reDate > 0) {
-            context.put(Quantity.RETURN_SUCCESS, 0);
-            context.put(Quantity.RETURN_MSG, "课程基本信息修改成功!");
+            List<Course> courses = courseService.getEntitysById(course_id);
+            if (courses.size() > 0){
+                Course course = courses.get(0);
+                int st_course = courseService.update(courseService.formEntity(req, courses.get(0).getId()));
+                if (reDate > 0) {
+                    context.put(Quantity.RETURN_SUCCESS, 0);
+                    context.put(Quantity.RETURN_MSG, "课程基本信息修改成功!");
+                }else{
+                    context.put(Quantity.RETURN_SUCCESS, 1);
+                    context.put(Quantity.RETURN_MSG, "课程基本信息修改失败!");
+                }
+            }else{
+                context.put(Quantity.RETURN_SUCCESS, 0);
+                context.put(Quantity.RETURN_MSG, "课程基本信息修改成功!");
+            }
         } else {
             context.put(Quantity.RETURN_SUCCESS, 1);
             context.put(Quantity.RETURN_MSG, "课程基本信息修改失败!");
@@ -216,7 +235,7 @@ public class CourseController {
             context.put(Quantity.RETURN_MSG,"删除Course数据失败!");
         }
         int sub_id = Integer.parseInt(req.getParameter("subid"));
-        context.put(Quantity.RETURN_ENTITY_LIST, courseService.getEntitysBySubId(sub_id));
+        context.put(Quantity.RETURN_ENTITY_LIST, courseService.getCoursesBySubId(sub_id));
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
         context.put("subid", sub_id);
         return new ModelAndView(JumpPage.COURSE,context);
@@ -623,7 +642,7 @@ public class CourseController {
             context.put(Quantity.RETURN_MSG,"Course数据上下线失败!");
         }
         int sub_id = Integer.parseInt(req.getParameter("subid"));
-        context.put(Quantity.RETURN_ENTITY_LIST, courseService.getEntitysBySubId(sub_id));
+        context.put(Quantity.RETURN_ENTITY_LIST, courseService.getCoursesBySubId(sub_id));
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
         context.put("subid", sub_id);
         return new ModelAndView(JumpPage.COURSE,context);
@@ -671,14 +690,13 @@ public class CourseController {
     public ModelAndView copyInfo(@RequestParam("uid") int uid,@RequestParam("id") int id,@RequestParam("subid") int subid,HttpServletRequest req, HttpServletResponse rsp){
         String retStr = JumpPage.COURSE_COPY;
         Map<String, Object> context = new HashMap<String, Object>();
-        List<Course> courses = courseService.getEntitysById(id);
-        int c_ls = courses.size();
-        if (c_ls > 0){
-            retStr = JumpPage.COURSE_COPY_SKU;
-
-        }
-
+//        List<Course> courses = courseService.getEntitysById(id);
+//        int c_ls = courses.size();
+//        if (c_ls > 0){
+//            retStr = JumpPage.COURSE_COPY_SKU;
+//        }
         context.put(Quantity.RETURN_ENTITY, courseService.get(id));
+        context.put("st_gmxz_str",Quantity.ST_GMXZ_STR);
         context.put("sku_ls",courseSkuService.getCopySkuHtml(id));
         context.put("subid", subid);
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
@@ -687,110 +705,14 @@ public class CourseController {
     }
 
     @RequestMapping("/copy")
-    public ModelAndView copyCourse(HttpServletRequest req, HttpServletResponse rsp){
+    public ModelAndView copyCourse(@RequestParam("uid") int uid,HttpServletRequest req, HttpServletResponse rsp){
         rsp.setContentType("text/html; charset=UTF-8");
         Map<String, Object> context = new HashMap<String, Object>();
-        try {
-            int id = Integer.parseInt(req.getParameter("course_id"));
-            String title = req.getParameter("title");
-            BigDecimal price = new BigDecimal(req.getParameter("price"));
-            Course cour = courseService.get(id);
-            Subject sub = subjectService.get(cour.getSubjectId());
-            sub.setType(Quantity.STATUS_TWO);
-            sub.setTags(sub.getTitle());
-            sub.setTitle(title);
-            int sub_id = subjectService.insertKey(sub);
-
-            cour.setParentId(cour.getId());
-            cour.setSubjectId(sub_id);
-            cour.setPrice(price);
-
-            int course_id = 0;
-            try {
-                course_id = courseService.insertKey(cour);
-                courseService.updateNotice(course_id,req.getParameter("notice"));
-            } catch (Exception _ex) {
-                _ex.printStackTrace();
-            }
-
-            SubjectSku sub_sku = new SubjectSku();
-            sub_sku.setSubjectId(sub_id);
-            sub_sku.setCourseId(course_id);
-            sub_sku.setPrice(price);
-            sub_sku.setDesc("试听课程,每人只有一次试听机会.");
-            sub_sku.setAdult(Quantity.STATUS_ZERO);
-            sub_sku.setChild(Quantity.STATUS_ZERO);
-            sub_sku.setCourseCount(Quantity.STATUS_ONE);
-            sub_sku.setTime(Quantity.STATUS_ONE);
-            sub_sku.setTimeUnit(Quantity.STATUS_ONE);
-            sub_sku.setOriginalPrice(new BigDecimal(0));
-
-            if (sub_id > 0) {
-                subjectSkuService.insertOne(sub_sku);
-            }
-
-            if (course_id > 0){
-
-                String[] course_sku_id = req.getParameterValues("course_sku_id");
-                int sum = 0;
-                for (int i = 0; i < course_sku_id.length; i++) {
-                    int old_id = Integer.parseInt(course_sku_id[i]);
-                    CourseSku course_sku = courseSkuService.get(old_id);
-                    int old_stock = course_sku.getStock();
-                    int old_un_stock = course_sku.getUnlockedStock();
-                    String stock_str = "stock_" + old_id;
-                    int new_stock = Integer.parseInt(req.getParameter(stock_str));
-                    int old_stock_1 = old_stock - new_stock;
-                    int old_un_stock_1 = old_un_stock - new_stock;
-
-                    course_sku.setStock(old_stock_1);
-                    course_sku.setUnlockedStock(old_un_stock_1);
-                    courseSkuService.update(course_sku);
-
-                    course_sku.setCourseId(course_id);
-                    course_sku.setStock(new_stock);
-                    course_sku.setUnlockedStock(new_stock);
-                    course_sku.setLockedStock(Quantity.STATUS_ZERO);
-                    course_sku.setParentId(course_sku.getId());
-
-                    courseSkuService.insert(course_sku);
-
-                    sum = sum + new_stock;
-
-                }
-
-                int update_stock = subjectService.updateStock(sub_id, sum);
-
-                List<CourseImg> img_ls = courseImgService.getModelsBySub_Key(id);
-                for (CourseImg img : img_ls) {
-                    img.setCourseId(course_id);
-                    courseImgService.insert(img);
-                }
-                List<CourseBook> book_ls = courseBookService.getEntitys(id);
-                for (CourseBook book : book_ls) {
-                    book.setCourseId(course_id);
-                    courseBookService.insert(book);
-                }
-
-                List<CourseDetail> detail_ls = courseDetailService.getModelsByCourse_Key(id);
-                for (CourseDetail cour_detail : detail_ls) {
-                    cour_detail.setCourseId(course_id);
-                    courseDetailService.insert(cour_detail);
-                }
-
-                List<CourseTeacher> teacher_ls = courseTeacherService.getCourseTeachers(id);
-                for (CourseTeacher CourseTeacher : teacher_ls){
-                    courseTeacherService.insert(course_id,CourseTeacher.getTeacherId());
-                }
-
-                context.put(Quantity.RETURN_SUCCESS, 0);
-                context.put(Quantity.RETURN_MSG,"加入试听课成功!");
-            }else{
-                context.put(Quantity.RETURN_SUCCESS, 1);
-                context.put(Quantity.RETURN_MSG,"加入试听课失败!");
-            }
-
-        }catch (Exception _ex){
+        int success = courseService.insert_copyCourseTrial(req);
+        if (success == 0){
+            context.put(Quantity.RETURN_SUCCESS, 0);
+            context.put(Quantity.RETURN_MSG,"加入试听课成功!");
+        }else{
             context.put(Quantity.RETURN_SUCCESS, 1);
             context.put(Quantity.RETURN_MSG,"加入试听课失败!");
         }
@@ -809,176 +731,44 @@ public class CourseController {
         return null;
     }
 
-    @RequestMapping("/copySku")
-    public ModelAndView copyCourseSku(HttpServletRequest req, HttpServletResponse rsp){
-        rsp.setContentType("text/html; charset=UTF-8");
-        int success = 1;
+    @RequestMapping("/cancelCopy")
+    public ModelAndView cancelTrialCourse(@RequestParam("uid") int uid,@RequestParam("id") int id,HttpServletRequest req){
         Map<String, Object> context = new HashMap<String, Object>();
-        try {
-            int id = Integer.parseInt(req.getParameter("course_id"));//父级课程ID
-            Course cour = courseService.get(id);//父级课程对象
-            Course c_cour = courseService.getEntitysById(cour.getId()).get(0);
-            int c_sub_id = c_cour.getSubjectId();
-            int c_cour_id = c_cour.getId();
-            Subject sub = subjectService.get(c_sub_id);
-            int sum = sub.getStock();
-            String[] course_sku_id = req.getParameterValues("course_sku_id");//父级勾选sku的id的数组
-            if (course_sku_id == null){
-                context.put(Quantity.RETURN_SUCCESS, 1);
-                context.put(Quantity.RETURN_MSG, "没有勾选任何sku信息，请勾选!");
-            }else {
-                for (int i = 0; i < course_sku_id.length; i++) {
-                    int old_id = Integer.parseInt(course_sku_id[i]);//父级sku的id
-                    CourseSku course_sku = courseSkuService.get(old_id);//父级sku对象
-                    int old_stock = course_sku.getStock();//父级sku对象的库存
-                    int old_un_stock = course_sku.getUnlockedStock();//父级sku对象的剩余库存
-                    String stock_str = "stock_" + old_id;
-                    int new_stock = Integer.parseInt(req.getParameter(stock_str));//页面填写的试听课库存
-                    List<CourseSku> courseSkus = courseSkuService.getCourseSkuById(course_sku.getId());//通过父级sku的id获取下属sku对象集合
-                    if (courseSkus.size() > 0) {
-                        CourseSku courseSku = courseSkus.get(0);
-                        int c_old_stock = courseSku.getStock();//如果有下属sku对象，获取第一个sku对象的库存
-                        int c_old_un_stock = courseSku.getUnlockedStock();//如果有下属sku对象，获取第一个sku对象的剩余库存
 
-                        int c_old_stock_subtract = new_stock - c_old_stock;
+        int reData = courseService.deleteTrialCourse(id);
 
-                        if (new_stock < c_old_stock) {
-                            int a = c_old_un_stock + c_old_stock_subtract;
-
-                            if (a < 0) {
-                                context.put(Quantity.RETURN_SUCCESS, success);
-                                context.put(Quantity.RETURN_MSG, "加入试听课失败,填写数值计算已超出现有试听课库存,现有库存:" + c_old_un_stock);
-                                break;
-                            } else {
-                                int new_a = c_old_stock + c_old_stock_subtract;
-                                int new_b = c_old_un_stock + c_old_stock_subtract;
-                                courseSku.setStock(new_a);
-                                courseSku.setUnlockedStock(new_b);
-                                courseSkuService.update(courseSku);//更新所属sku
-
-                                int old_a = old_stock - c_old_stock_subtract;
-                                int old_b = old_un_stock - c_old_stock_subtract;
-                                course_sku.setStock(old_a);
-                                course_sku.setUnlockedStock(old_b);
-                                courseSkuService.update(course_sku);//更新正常sku
-
-                                sum = sum + c_old_stock_subtract;
-                                success = 0;
-                            }
-                        } else if (new_stock > c_old_stock) {
-                            int b = old_un_stock - c_old_stock_subtract;
-                            if (b < 0) {
-                                context.put(Quantity.RETURN_SUCCESS, success);
-                                context.put(Quantity.RETURN_MSG, "加入试听课失败,填写数值计算已超出现有库存,现有库存:" + old_un_stock);
-                                break;
-                            } else {
-                                int new_a = c_old_stock + c_old_stock_subtract;
-                                int new_b = c_old_un_stock + c_old_stock_subtract;
-                                courseSku.setStock(new_a);
-                                courseSku.setUnlockedStock(new_b);
-                                courseSkuService.update(courseSku);//更新所属sku
-
-                                int old_a = old_stock - c_old_stock_subtract;
-                                int old_b = old_un_stock - c_old_stock_subtract;
-
-                                course_sku.setStock(old_a);
-                                course_sku.setUnlockedStock(old_b);
-                                courseSkuService.update(course_sku);//更新正常sku
-
-                                sum = sum + c_old_stock_subtract;
-                                success = 0;
-                            }
-                        }else{
-                            break;
-                        }
-                    } else {
-
-                        int old_stock_1 = old_stock - new_stock;
-                        int old_un_stock_1 = old_un_stock - new_stock;
-
-                        if (old_un_stock_1 < 0) {
-                            context.put(Quantity.RETURN_SUCCESS, success);
-                            context.put(Quantity.RETURN_MSG, "加入试听课失败,填写数值计算已超出现有库存,现有库存:" + old_un_stock);
-                            break;
-                        } else {
-                            course_sku.setStock(old_stock_1);
-                            course_sku.setUnlockedStock(old_un_stock_1);
-                            courseSkuService.update(course_sku);//更新正常课程的SKU库存
-
-                            course_sku.setCourseId(c_cour_id);
-                            course_sku.setStock(new_stock);
-                            course_sku.setUnlockedStock(new_stock);
-                            course_sku.setLockedStock(Quantity.STATUS_ZERO);
-                            course_sku.setParentId(course_sku.getId());
-                            courseSkuService.insert(course_sku);//添加试听课的新的sku信息
-
-                            sum = sum + new_stock;
-                            success = 0;
-                        }
-                    }
-                }
-                if (success == 0) {
-                    context.put(Quantity.RETURN_SUCCESS, success);
-                    context.put(Quantity.RETURN_MSG, "加入试听课成功!");
-                    subjectService.updateStock(sub.getId(), sum);//更新试听课的总sku数量
-                }
-            }
-        }catch (Exception _ex){
-            _ex.printStackTrace();
+        if (reData > 0) {
+            context.put(Quantity.RETURN_SUCCESS, 0);
+            context.put(Quantity.RETURN_MSG, "取消试听课成功!");
+        }else{
+            context.put(Quantity.RETURN_SUCCESS, 1);
+            context.put(Quantity.RETURN_MSG,"取消试听课失败!");
         }
 
-        Writer writer = null;
-        try {
-            writer = rsp.getWriter();
-            writer.write(JSONObject.toJSONString(context));
-            writer.flush();
-            writer.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            IOUtils.closeQuietly(writer);
-        }
-        return null;
+        int sub_id = Integer.parseInt(req.getParameter("subid"));
+        context.put(Quantity.RETURN_ENTITY_LIST, courseService.getCoursesBySubId(sub_id));
+        context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        context.put("subid", sub_id);
+        return new ModelAndView(JumpPage.COURSE,context);
     }
 
     @RequestMapping("/setOneCourse")
     public ModelAndView setOneCourse(HttpServletRequest req, HttpServletResponse rsp){
         rsp.setContentType("text/html; charset=UTF-8");
         Map<String, Object> context = new HashMap<String, Object>();
-        int id = Integer.parseInt(req.getParameter("course_id"));
-        int set_id = Integer.parseInt(req.getParameter("set_id"));
-        int sku_id = Integer.parseInt(req.getParameter("sku_id"));
-        int sub_id = Integer.parseInt(req.getParameter("sub_id"));
-        try {
-            if (set_id == 0){
-                set_id = courseRecommendService.insertKey(courseRecommendService.formEntity(req, id, Quantity.STATUS_ZERO));
-                if (set_id > 0) {
-                    courseService.updateNotice(id, req.getParameter("notice"));
-                    SubjectSku subjectSku = subjectSkuService.formEntity(req, Quantity.STATUS_ZERO, Quantity.STATUS_ZERO);
-                    subjectSku.setCourseId(id);
-                    subjectSku.setSubjectId(sub_id);
-                    subjectSkuService.insertOne(subjectSku);
-                }
-            }else{
-                CourseRecommend courseRecommend = courseRecommendService.get(set_id);
-                int weight = Integer.parseInt(req.getParameter("weight"));
-                courseRecommend.setWeight(weight);
-                int update_int = courseRecommendService.update(courseRecommend);
-                if (update_int > 0){
-                    courseService.updateNotice(id, req.getParameter("notice"));
-                    SubjectSku subjectSku = subjectSkuService.formEntity(req, Quantity.STATUS_ZERO, sku_id);
-                    subjectSkuService.update(subjectSku);
-                }
-            }
+
+        Map<String, Object> re_context = courseService.insert_setOneCourse(req);
+        int success = Integer.parseInt(re_context.get("success").toString());
+        if(success == 0){
             context.put(Quantity.RETURN_SUCCESS, 0);
             context.put(Quantity.RETURN_MSG,"设置单独课程成功!");
-        }catch (Exception _ex){
+        }else{
             context.put(Quantity.RETURN_SUCCESS, 1);
             context.put(Quantity.RETURN_MSG,"设置单独课程失败!");
         }
 
-        context.put("set_id",set_id);
-        context.put("sku_id",sku_id);
+//        context.put("set_id",re_context.get("set_id"));
+//        context.put("sku_id",re_context.get("sku_id"));
 
         Writer writer = null;
         try {
@@ -997,33 +787,95 @@ public class CourseController {
     @RequestMapping("/cancelCourse")
     public ModelAndView cancelCourse(@RequestParam("uid") int uid,@RequestParam("id") int id, HttpServletRequest req){
         Map<String, Object> context = new HashMap<String, Object>();
-        try {
-            List<CourseRecommend> courseRecommends = courseRecommendService.getEntitysByCourseId(id);
+        int reData = courseService.update_cancelCourse(id);
 
-            int reData = 0;
-            if (courseRecommends.size() > 0){
-                for (int i = 0; i < courseRecommends.size(); i++) {
-                    reData = courseRecommendService.delete(courseRecommends.get(i).getId());
-                }
-            }
-            if (reData > 0) {
-                context.put(Quantity.RETURN_SUCCESS, 0);
-                context.put(Quantity.RETURN_MSG, "课程取消推荐成功!");
-            }else{
-                context.put(Quantity.RETURN_SUCCESS, 1);
-                context.put(Quantity.RETURN_MSG,"课程取消推荐失败!");
-            }
-        }catch (Exception _ex){
+        if (reData > 0) {
+            context.put(Quantity.RETURN_SUCCESS, 0);
+            context.put(Quantity.RETURN_MSG, "课程取消推荐成功!");
+        }else{
             context.put(Quantity.RETURN_SUCCESS, 1);
             context.put(Quantity.RETURN_MSG,"课程取消推荐失败!");
         }
 
         int sub_id = Integer.parseInt(req.getParameter("subid"));
-        context.put(Quantity.RETURN_ENTITY_LIST, courseService.getEntitysBySubId(sub_id));
+        context.put(Quantity.RETURN_ENTITY_LIST, courseService.getCoursesBySubId(sub_id));
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
         context.put("subid", sub_id);
         return new ModelAndView(JumpPage.COURSE,context);
     }
 
+    @RequestMapping("/cancelSku")
+    public String cancelSku(@RequestParam("courseId") int courseId, HttpServletRequest req, HttpServletResponse rsp) {
+        rsp.setContentType("text/html; charset=UTF-8");
+        Map<String, Object> context = new HashMap<String, Object>();
 
+        int skuId = Integer.parseInt(req.getParameter("skuId"));
+        int reDate = courseSkuService.update_CourseSku(courseId,skuId);
+        if (reDate > 0) {
+            context.put(Quantity.RETURN_SUCCESS, 0);
+            context.put(Quantity.RETURN_MSG, "课程sku信息取消成功!");
+        } else {
+            context.put(Quantity.RETURN_SUCCESS, 1);
+            context.put(Quantity.RETURN_MSG, "课程sku信息取消失败!");
+        }
+        context.put("skuHtml", courseSkuService.getSkuHtml(courseId));
+        Writer writer = null;
+        try {
+            writer = rsp.getWriter();
+            writer.write(JSONObject.toJSONString(context));
+            writer.flush();
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            IOUtils.closeQuietly(writer);
+        }
+        return null;
+    }
+
+    @RequestMapping("/createQz")
+    public ModelAndView createQz(@RequestParam("courseId") int courseId,HttpServletRequest req, HttpServletResponse rsp){
+        rsp.setContentType("text/html; charset=UTF-8");
+        Map<String, Object> context = new HashMap<String, Object>();
+
+        QzResult qzResult = courseService.createQz(req,courseId);
+
+        if (qzResult.getErrno() == 0){
+            if (qzResult.getData().equals("true")) {
+                context.put(Quantity.RETURN_SUCCESS, 0);
+                context.put(Quantity.RETURN_MSG, "创建群组成功!");
+            }else{
+                context.put(Quantity.RETURN_SUCCESS, 1);
+                context.put(Quantity.RETURN_MSG, "创建群组失败!");
+            }
+        }else if (qzResult.getErrno() == -1){
+            context.put(Quantity.RETURN_SUCCESS, 1);
+            context.put(Quantity.RETURN_MSG, "创建群组失败,无讲师信息!");
+        }else{
+            context.put(Quantity.RETURN_SUCCESS, 1);
+            context.put(Quantity.RETURN_MSG, "创建群组失败!");
+        }
+        Writer writer = null;
+        try {
+            writer = rsp.getWriter();
+            writer.write(JSONObject.toJSONString(context));
+            writer.flush();
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            IOUtils.closeQuietly(writer);
+        }
+        return null;
+    }
+
+
+    @RequestMapping("/preview")
+    public ModelAndView preview(@RequestParam("uid") int uid,@RequestParam("id") int id, HttpServletRequest req) {
+        Map<String, Object> context = new HashMap<String, Object>();
+        context.put("previewHtml", courseService.getPreview(id));
+        context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        context.put("subid", Integer.parseInt(req.getParameter("subid")));
+        return new ModelAndView(JumpPage.COURSE_PREVIEW,context);
+    }
 }

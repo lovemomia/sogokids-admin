@@ -185,6 +185,11 @@ public class DateUtil {
         return df.format(new Date());
     }
 
+    public static String getDateStr(Date date) {
+        SimpleDateFormat df = new SimpleDateFormat("MM-dd");
+        return df.format(date);
+    }
+
     public static String NowDateW() {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         return df.format(new Date());
@@ -196,8 +201,11 @@ public class DateUtil {
     }
 
     public static void main(String[] args) {
-        System.out.print(RandomStringUtils.randomNumeric(4));
-        System.out.print(RandomStringUtils.randomNumeric(4));
+        String ss = "2015-12-20 11:11:10";
+        System.out.print(getDateStr(StrToDate(ss)));
+//        System.out.print(RandomStringUtils.randomNumeric(4));
+//        System.out.print(RandomStringUtils.randomNumeric(4));
+//        System.out.print(RandomStringUtils.randomNumeric(4));
         //System.out.print(NowDateStr());
         //Date date = new Date();
 //        String dateStr = "2015-07-18 00:00:01";

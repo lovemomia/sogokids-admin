@@ -88,7 +88,7 @@
                     <ul class="nav nav-second-level">
                         <li><a href="${ctx}/city/info.do?uid=${user.id}"><i class="fa fa-hacker-news"></i> <span class="nav-label">城市信息</span> </a></li>
                         <li><a href="${ctx}/region/info.do?uid=${user.id}"><i class="fa fa-map-marker"></i> <span class="nav-label">区域信息</span> </a></li>
-                        <li><a href="${ctx}/place/info.do?uid=${user.id}"><i class="fa fa-rebel"></i> <span class="nav-label">地址信息</span> </a></li>
+                        <li><a href="${ctx}/place/info.do?uid=${user.id}"><i class="fa fa-rebel"></i> <span class="nav-label">商户信息</span> </a></li>
                         <li><a href="${ctx}/inst/info.do?uid=${user.id}"><i class="fa fa-bank"></i> <span class="nav-label">机构信息</span> </a></li>
                         <li><a href="${ctx}/teacher/info.do?uid=${user.id}"><i class="fa fa-user-secret"></i> <span class="nav-label">师资力量</span></a></li>
                     </ul>
@@ -244,39 +244,67 @@
                                 <td>
                                     <c:choose>
                                         <c:when test="${entity.status == 1}">
-                                            <button type="button" class="btn btn-primary btn-sm">已上线</button>
+                                            <font color="#1AB394"> 已上线</font>
                                         </c:when>
                                         <c:when test="${entity.status == 2}">
-                                            <button type="button" class="btn btn-warning btn-sm">未上线</button>
+                                            <font color="#F8AC59"> 未上线</font>
                                         </c:when>
                                         <c:otherwise>
-                                            <button type="button" class="btn btn-danger btn-sm">已下线</button>
+                                            <font color="#ED5565"> 已下线</font>
                                         </c:otherwise>
                                     </c:choose>
+                                    <%--<c:choose>--%>
+                                        <%--<c:when test="${entity.status == 1}">--%>
+                                            <%--<font color="green">已上线</font>--%>
+                                        <%--</c:when>--%>
+                                        <%--<c:when test="${entity.status == 2}">--%>
+                                            <%--<font color="orange">未上线</font>--%>
+                                        <%--</c:when>--%>
+                                        <%--<c:otherwise>--%>
+                                            <%--<font color="red">已下线</font>--%>
+                                        <%--</c:otherwise>--%>
+                                    <%--</c:choose>--%>
                                 </td>
                                 <td><c:out value="${fn:substring(entity.addTime,0,19)}"></c:out></td>
                                 <td class="center">
                                     <c:choose>
                                         <c:when test="${entity.status == 1}">
-                                            <a href="${ctx}/course/upOrDown.do?uid=${user.id}&id=${entity.id}&mark=3&subid=${subid}" class="btn btn-white btn-sm"><i class="fa fa-level-down"></i> 下线 </a>
+                                            <a href="${ctx}/course/oper.do?uid=${user.id}&id=${entity.id}&mark=5&subid=${subid}" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i> 编辑 </a>
+                                            <a href="${ctx}/course/upOrDown.do?uid=${user.id}&id=${entity.id}&mark=3&subid=${subid}" class="btn btn-danger btn-sm"><i class="fa fa-level-down"></i> 下线 </a>
+                                            <%--<a href="${ctx}/course/preview.do?uid=${user.id}&id=${entity.id}&subid=${subid}" class="btn btn-white btn-sm"><i class="fa fa-eye"></i> 预览 </a>--%>
                                         </c:when>
                                         <c:otherwise>
                                             <a href="${ctx}/course/oper.do?uid=${user.id}&id=${entity.id}&mark=5&subid=${subid}" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i> 编辑 </a>
-                                            <%--<a href="${ctx}/course/del.do?uid=${user.id}&id=${entity.id}" class="btn btn-white btn-sm"><i class="fa fa-times-circle"></i> 删除 </a>--%>
-                                            <a href="javascript:void(0)" onclick="delCourse(${entity.id})" class="btn btn-white btn-sm"><i class="fa fa-times-circle"></i> 删除 </a>
-                                            <%--<a href="${ctx}/course/oper.do?uid=${user.id}&id=${entity.id}&mark=1&subid=${subid}" class="btn btn-white btn-sm"><i class="fa fa-picture-o"></i> 图文详情 </a>--%>
-                                            <a href="${ctx}/course/upOrDown.do?uid=${user.id}&id=${entity.id}&mark=1&subid=${subid}" class="btn btn-white btn-sm"><i class="fa fa-level-up"></i> 上线 </a>
+                                            <a href="${ctx}/course/upOrDown.do?uid=${user.id}&id=${entity.id}&mark=1&subid=${subid}" class="btn btn-primary btn-sm"><i class="fa fa-level-up"></i> 上线 </a>
+                                            <%--<a href="javascript:void(0)" onclick="delCourse(${entity.id})" class="btn btn-white btn-sm"><i class="fa fa-times-circle"></i> 删除 </a>--%>
                                         </c:otherwise>
                                     </c:choose>
-                                        <a href="${ctx}/course/copyOper.do?uid=${user.id}&id=${entity.id}&subid=${subid}" class="btn btn-white btn-sm"><i class="fa fa-volume-up"></i> 加入试听 </a>
                                     <c:choose>
-                                        <c:when test="${entity.flag == 0}">
-                                            <a href="${ctx}/course/oper.do?uid=${user.id}&id=${entity.id}&mark=1&subid=${subid}" class="btn btn-white btn-sm"><i class="fa fa-volume-up"></i> 推荐课程 </a>
+                                        <c:when test="${entity.copyFlag == 0}">
+                                            <a href="${ctx}/course/copyOper.do?uid=${user.id}&id=${entity.id}&subid=${subid}" class="btn btn-white btn-sm"><i class="fa fa-volume-up"></i> 加入试听 </a>
                                         </c:when>
                                         <c:otherwise>
-                                            <a href="javascript:void(0)" onclick="cancelCourse(${entity.id})" class="btn btn-white btn-sm"><i class="fa fa-volume-up"></i> 取消推荐 </a>
+                                            <a href="javascript:void(0)" onclick="cancelTrialCourse(${entity.id})" class="btn btn-white btn-sm"><i class="fa fa-volume-off"></i> 取消试听 </a>
                                         </c:otherwise>
                                     </c:choose>
+
+                                    <c:choose>
+                                        <c:when test="${entity.flag == 0}">
+                                            <a href="${ctx}/course/oper.do?uid=${user.id}&id=${entity.id}&mark=1&subid=${subid}" class="btn btn-white btn-sm"><i class="fa fa-thumbs-up"></i> 推荐课程 </a>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <a href="javascript:void(0)" onclick="cancelCourse(${entity.id})" class="btn btn-white btn-sm"><i class="fa fa-thumbs-down"></i> 取消推荐 </a>
+                                        </c:otherwise>
+                                    </c:choose>
+                                    <c:choose>
+                                        <c:when test="${entity.status == 1}">
+                                            <a href="${ctx}/course/preview.do?uid=${user.id}&id=${entity.id}&subid=${subid}" class="btn btn-white btn-sm"><i class="fa fa-eye"></i> 预览 </a>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <a href="javascript:void(0)" onclick="delCourse(${entity.id})" class="btn btn-white btn-sm"><i class="fa fa-times-circle"></i> 删除 </a>
+                                        </c:otherwise>
+                                    </c:choose>
+
                                 </td>
                             </tr>
                         </c:forEach>
@@ -322,6 +350,13 @@
     function cancelCourse(id){
         layer.confirm('您确定要取消此课程推荐吗？', function(index){
             window.location.href="${ctx}/course/cancelCourse.do?uid=${user.id}&id="+id+"&subid=${subid}";
+            layer.close(index);
+        });
+
+    }
+    function cancelTrialCourse(id){
+        layer.confirm('您确定要取消此试听课吗？', function(index){
+            window.location.href="${ctx}/course/cancelCopy.do?uid=${user.id}&id="+id+"&subid=${subid}";
             layer.close(index);
         });
 

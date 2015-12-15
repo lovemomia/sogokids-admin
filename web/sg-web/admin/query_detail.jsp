@@ -96,7 +96,7 @@
                     <ul class="nav nav-second-level">
                         <li><a href="${ctx}/city/info.do?uid=${user.id}"><i class="fa fa-hacker-news"></i> <span class="nav-label">城市信息</span> </a></li>
                         <li><a href="${ctx}/region/info.do?uid=${user.id}"><i class="fa fa-map-marker"></i> <span class="nav-label">区域信息</span> </a></li>
-                        <li><a href="${ctx}/place/info.do?uid=${user.id}"><i class="fa fa-rebel"></i> <span class="nav-label">地址信息</span> </a></li>
+                        <li><a href="${ctx}/place/info.do?uid=${user.id}"><i class="fa fa-rebel"></i> <span class="nav-label">商户信息</span> </a></li>
                         <li><a href="${ctx}/inst/info.do?uid=${user.id}"><i class="fa fa-bank"></i> <span class="nav-label">机构信息</span> </a></li>
                         <li><a href="${ctx}/teacher/info.do?uid=${user.id}"><i class="fa fa-user-secret"></i> <span class="nav-label">师资力量</span></a></li>
                     </ul>
@@ -230,89 +230,32 @@
         </div>
         <div class="row">
             <div class="ibox-content">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                基本信息
-                            </div>
-                            <div class="panel-body">
-                                <p>
-                                    <table class="table table-striped table-bordered table-hover dataTables-example">
-                                        <tr>
-                                            <td>课程编号</td>
-                                            <td>${course.id}</td>
-                                            <td>课程名称</td>
-                                            <td>${course.title}</td>
-                                            <td>添加时间</td>
-                                            <td>${course.addTime}</td>
-                                        </tr>
-                                    </table>
-                                </p>
-                            </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    课程SKU详情
-                                </div>
-                                <div class="panel-body">
-                                    <c:forEach items="${course.courseSkus}" var="sku">
-                                    <div class="row">
-                                        <div class="col-lg-12">
-                                            <div class="panel panel-default">
-                                                <div class="panel-heading">
-                                                    SKU编号:<c:out value="${sku.id}"></c:out>
-                                                </div>
-                                                <div class="panel-body">
-                                                    <p>
-                                                    <div>
-                                                        <ul>
-                                                            <li>开始时间:<c:out value="${sku.startTime}"></c:out></li>
-                                                            <li>地址:<c:out value="${sku.placeName}"></c:out></li>
-                                                            <li>报名人数:<c:out value="${sku.sum}"></c:out></li>
-                                                        </ul>
-                                                    </div>
-                                                    <p>
-                                                    <table class="table table-striped table-bordered table-hover dataTables-example">
-                                                        <thead>
-                                                        <tr>
-                                                            <th>编号</th>
-                                                            <th>用户昵称</th>
-                                                            <th>联系方式</th>
-                                                        </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                        <c:choose>
-                                                            <c:when test="${sku.customers.size() > 0}">
-                                                                <c:forEach items="${sku.customers}" var="customer">
-                                                                    <tr>
-                                                                        <td><c:out value="${customer.id}"></c:out></td>
-                                                                        <td><c:out value="${customer.nickName}"></c:out></td>
-                                                                        <td><c:out value="${customer.mobile}"></c:out></td>
-                                                                    </tr>
-                                                                </c:forEach>
-                                                            </c:when>
-                                                            <c:otherwise>
-                                                                <tr><td colspan="4" align="center">没有报名用户!</td></tr>
-                                                            </c:otherwise>
-                                                        </c:choose>
-
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    </c:forEach>
-                                </div>
-                            </div>
-                        </div>
+                <p><h3>${courseName}</h3></p>
+                <%--<p>&numsp;</p>--%>
+                <br>
+                <form>
+                    <table class="table table-striped table-bordered table-hover">
+                        <thead>
+                        <tr class="gradeX">
+                            <th>编号</th>
+                            <th>用户昵称</th>
+                            <th>联系方式</th>
+                            <th>购买来源</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <c:forEach items="${courseUser}" var="entity">
+                            <tr>
+                                <td><c:out value="${entity.code}"></c:out></td>
+                                <td><c:out value="${entity.nickName}"></c:out></td>
+                                <td><c:out value="${entity.mobile}"></c:out></td>
+                                <td><c:out value="${entity.origin}"></c:out></td>
+                            </tr>
+                        </c:forEach>
+                        </tbody>
+                    </table>
+                </form>
             </div>
-        </div>
         <div class="footer">
             <div class="pull-right">
                 By：<a href="http://www.duolaqinzi.com" target="_blank">sg home</a>

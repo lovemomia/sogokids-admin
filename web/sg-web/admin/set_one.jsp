@@ -96,7 +96,7 @@
                     <ul class="nav nav-second-level">
                         <li><a href="${ctx}/city/info.do?uid=${user.id}"><i class="fa fa-hacker-news"></i> <span class="nav-label">城市信息</span> </a></li>
                         <li><a href="${ctx}/region/info.do?uid=${user.id}"><i class="fa fa-map-marker"></i> <span class="nav-label">区域信息</span> </a></li>
-                        <li><a href="${ctx}/place/info.do?uid=${user.id}"><i class="fa fa-rebel"></i> <span class="nav-label">地址信息</span> </a></li>
+                        <li><a href="${ctx}/place/info.do?uid=${user.id}"><i class="fa fa-rebel"></i> <span class="nav-label">商户信息</span> </a></li>
                         <li><a href="${ctx}/inst/info.do?uid=${user.id}"><i class="fa fa-bank"></i> <span class="nav-label">机构信息</span> </a></li>
                         <li><a href="${ctx}/teacher/info.do?uid=${user.id}"><i class="fa fa-user-secret"></i> <span class="nav-label">师资力量</span></a></li>
                     </ul>
@@ -243,67 +243,62 @@
                                 <input id="sub_id" name="sub_id" type="hidden" value="${subid}">
                             </div>
                         </div>
-                        <div class="hr-line-dashed"></div>
+                        <%--<div class="hr-line-dashed"></div>--%>
+                        <%--<div class="form-group">--%>
+                            <%--<label class="col-sm-2 control-label">推荐顺序 </label>--%>
+                            <%--<div class="col-sm-3">--%>
+                                <%--<input id="weight" name="weight" type="text" class="form-control" value="0" >--%>
+                            <%--</div>--%>
+                        <%--</div>--%>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">所占权重 </label>
-                            <div class="col-sm-3">
-                                <input id="weight" name="weight" type="text" class="form-control" value="0" >
-                            </div>
-                            <label class="col-sm-2 control-label">购买须知 </label>
-                            <div class="col-sm-3">
-                                <textarea id="notice" name="notice" class="form-control"></textarea>
+                            <%--<label class="col-sm-2 control-label">原始价格</label>--%>
+                            <%--<div class="col-sm-3">--%>
+                                <%--<input id="originalPrice" name="originalPrice" type="text" class="form-control">--%>
+                            <%--</div>--%>
+                            <label class="col-sm-2 control-label">出售价格</label>
+                            <div class="col-sm-2">
+                                <input id="price" name="price" type="text" class="form-control" style="width: 80%;">
                             </div>
                         </div>
-                        <div class="hr-line-dashed"></div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">课程表 </label>
+                            <label class="col-sm-2 control-label">大人数量</label>
+                            <div class="col-sm-1">
+                                <input id="adult" name="adult" type="text" class="form-control" value="1">
+                            </div>
+                            <label class="col-sm-1 control-label">儿童数量</label>
+                            <div class="col-sm-1">
+                                <input id="child" name="child" type="text" class="form-control" value="1">
+                                <%--<input id="courseCount" name="courseCount" type="hidden" value="1">--%>
+                            </div>
                         </div>
-                        <div class="hr-line-dashed"></div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">sku描述</label>
-                            <div class="col-sm-8">
-                                <textarea id="desc" name="desc" class="form-control"></textarea>
+                            <label class="col-sm-2 control-label">规则描述</label>
+                            <div class="col-sm-3">
+                                <textarea id="desc" name="desc" class="form-control" rows="3" style="resize:none;">${gzms}</textarea>
                                 <input id="sku_id" name="sku_id" type="hidden" value="0"></td>
                             </div>
                         </div>
-                        <div class="hr-line-dashed"></div>
+
+                        <%--<div class="form-group">--%>
+                            <%--<label class="col-sm-2 control-label">时间数量</label>--%>
+                            <%--<div class="col-sm-3">--%>
+                                <%--<input id="time" name="time" type="text" class="form-control">--%>
+                            <%--</div>--%>
+                            <%--<label class="col-sm-2 control-label">时间单位</label>--%>
+                            <%--<div class="col-sm-3">--%>
+                                <%--<div id="div_time">--%>
+                                    <%--<select id="timeUnit" name="timeUnit" class="form-control m-b">--%>
+                                        <%--<c:forEach items="${time_unit}" var="node">--%>
+                                            <%--<option value="${node.id}">${node.name}</option>--%>
+                                        <%--</c:forEach>--%>
+                                    <%--</select>--%>
+                                <%--</div>--%>
+                            <%--</div>--%>
+                        <%--</div>--%>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">原始价格</label>
-                            <div class="col-sm-3">
-                                <input id="originalPrice" name="originalPrice" type="text" class="form-control">
-                            </div>
-                            <label class="col-sm-2 control-label">出售价格</label>
-                            <div class="col-sm-3">
-                                <input id="price" name="price" type="text" class="form-control">
-                            </div>
-                        </div>
-                        <div class="hr-line-dashed"></div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">大人数量</label>
-                            <div class="col-sm-3">
-                                <input id="adult" name="adult" type="text" class="form-control">
-                            </div>
-                            <label class="col-sm-2 control-label">儿童数量</label>
-                            <div class="col-sm-3">
-                                <input id="child" name="child" type="text" class="form-control">
-                                <input id="courseCount" name="courseCount" type="hidden" value="1">
-                            </div>
-                        </div>
-                        <div class="hr-line-dashed"></div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">时间数量</label>
-                            <div class="col-sm-3">
-                                <input id="time" name="time" type="text" class="form-control">
-                            </div>
-                            <label class="col-sm-2 control-label">时间单位</label>
-                            <div class="col-sm-3">
-                                <div id="div_time">
-                                    <select id="timeUnit" name="timeUnit" class="form-control m-b">
-                                        <c:forEach items="${time_unit}" var="node">
-                                            <option value="${node.id}">${node.name}</option>
-                                        </c:forEach>
-                                    </select>
-                                </div>
+                            <label class="col-sm-2 control-label">购买须知 </label>
+                            <div class="col-sm-8">
+                                <textarea id="notice" name="notice" class="form-control" rows="5" style="resize:none;width: 70%;">${gmxz}</textarea>
                             </div>
                         </div>
                         <div class="hr-line-dashed"></div>
@@ -338,10 +333,13 @@
             $.post("/course/setOneCourse.do", $("#set_form").serialize(),
                     function(data){
                         if(data.success == 0){
-                            $("#set_id").attr("value",data.set_id);
-                            $("#sku_id").attr("value",data.sku_id);
+//                            $("#set_id").attr("value",data.set_id);
+//                            $("#sku_id").attr("value",data.sku_id);
+//                            layer.alert(data.msg,10,'提示信息');
+                            window.location.href="${ctx}/one/info.do?uid=${user.id}";
+                        }else{
+                            layer.alert(data.msg,10,'提示信息');
                         }
-                        layer.alert(data.msg,10,'提示信息');
                     }, "json");
 
         });

@@ -131,7 +131,7 @@
                     <ul class="nav nav-second-level">
                         <li><a href="${ctx}/city/info.do?uid=${user.id}"><i class="fa fa-hacker-news"></i> <span class="nav-label">城市信息</span> </a></li>
                         <li><a href="${ctx}/region/info.do?uid=${user.id}"><i class="fa fa-map-marker"></i> <span class="nav-label">区域信息</span> </a></li>
-                        <li><a href="${ctx}/place/info.do?uid=${user.id}"><i class="fa fa-rebel"></i> <span class="nav-label">地址信息</span> </a></li>
+                        <li><a href="${ctx}/place/info.do?uid=${user.id}"><i class="fa fa-rebel"></i> <span class="nav-label">商户信息</span> </a></li>
                         <li><a href="${ctx}/inst/info.do?uid=${user.id}"><i class="fa fa-bank"></i> <span class="nav-label">机构信息</span> </a></li>
                         <li><a href="${ctx}/teacher/info.do?uid=${user.id}"><i class="fa fa-user-secret"></i> <span class="nav-label">师资力量</span></a></li>
                     </ul>
@@ -279,10 +279,10 @@
                             <ul class="nav nav-tabs">
                                 <li id="tab_li_1" class="active"><a id="tab1" data-toggle="tab" href="tabs_panels.html#tab-1"><i class="fa fa-laptop"></i>基本信息</a></li>
                                 <li id="tab_li_2" class=""><a id="tab2" data-toggle="tab" href="tabs_panels.html#tab-2"><i class="fa fa-picture-o"></i>轮播图片</a></li>
-                                <li id="tab_li_3" class=""><a id="tab3" data-toggle="tab" href="tabs_panels.html#tab-3"><i class="fa fa-book"></i>课前绘本</a></li>
+                                <li id="tab_li_3" class=""><a id="tab3" data-toggle="tab" href="tabs_panels.html#tab-3"><i class="fa fa-book"></i>讲师团</a></li>
                                 <li id="tab_li_4" class=""><a id="tab4" data-toggle="tab" href="tabs_panels.html#tab-4"><i class="fa fa-gears"></i>课程表</a></li>
-                                <li id="tab_li_5" class=""><a id="tab5" data-toggle="tab" href="tabs_panels.html#tab-5"><i class="fa fa-reddit"></i>讲师团</a></li>
-                                <li id="tab_li_6" class=""><a id="tab6" data-toggle="tab" href="tabs_panels.html#tab-6"><i class="fa fa-newspaper-o"></i>图文详情</a></li>
+                                <li id="tab_li_5" class=""><a id="tab5" data-toggle="tab" href="tabs_panels.html#tab-5"><i class="fa fa-reddit"></i>图文详情</a></li>
+                                <%--<li id="tab_li_6" class=""><a id="tab6" data-toggle="tab" href="tabs_panels.html#tab-6"><i class="fa fa-newspaper-o"></i>课前绘本</a></li>--%>
                             </ul>
                         </div>
                     </div>
@@ -298,20 +298,20 @@
                                                 <div class="form-group">
                                                     <label class="col-sm-2 control-label">标题</label>
                                                     <div class="col-sm-3">
-                                                        <textarea id="title" name="title" class="form-control" rows="8">${model.title}</textarea>
+                                                        <textarea id="title" name="title" class="form-control" rows="5" style="resize:none;">${model.title}</textarea>
                                                         <input id="course_id" name="course_id" type="hidden" value="${model.id}">
                                                         <input id="subjectId" name="subjectId" type="hidden" value="${model.subjectId}">
                                                     </div>
-                                                    <label class="col-sm-2 control-label"></label>
+                                                    <label class="col-sm-2 control-label">上传图片</label>
                                                     <div class="col-sm-3">
-                                                        <input id="img_path" name="img_path" type="file" class="form-control" style="width: 200px;">
-                                                        <img id="img_a" src="${filepath}${model.cover}" style="width: 200px;height: 100px"/>
+                                                        <img id="img_a" src="${filepath}${model.cover}" style="width: 200px;height: 100px;border: 1px solid #999;"/>
+                                                        <input id="img_path" name="img_path" type="file" style="opacity: 0;filter:alpha(opacity=0);">
                                                         <input id="cover" name="cover" value="${model.cover}" type="hidden">
                                                         <input id="filepath" name="filepath" type="hidden" value="${filepath}">
                                                     </div>
-                                                    <div class="col-sm-3 col-sm-offset-3">
-                                                        <button class="btn btn-primary" type="button" id="btn_img_save" name="btn_img_save">上传</button>
-                                                    </div>
+                                                    <%--<div class="col-sm-3 col-sm-offset-3">--%>
+                                                        <%--<button class="btn btn-primary" type="button" id="btn_img_save" name="btn_img_save">上传</button>--%>
+                                                    <%--</div>--%>
                                                 </div>
                                                 <div class="hr-line-dashed"></div>
                                                 <div class="form-group">
@@ -365,25 +365,25 @@
                                                     </div>
                                                     <div class="col-sm-1">岁</div>
                                                 </div>
-                                                <div class="hr-line-dashed"></div>
-                                                <div class="form-group">
-                                                    <label class="col-sm-2 control-label">课程目标</label>
-                                                    <div class="col-sm-8">
-                                                        <textarea id="goal" name="goal" class="form-control" rows="5">${model.goal}</textarea>
-                                                    </div>
-                                                </div>
-                                                <div class="hr-line-dashed"></div>
-                                                <div class="form-group">
-                                                    <label class="col-sm-2 control-label">上课流程</label>
-                                                    <div class="col-sm-8">
-                                                        <textarea id="flow" name="flow" class="form-control" rows="5">${model.flow}</textarea>
-                                                    </div>
-                                                </div>
+                                                <%--<div class="hr-line-dashed"></div>--%>
+                                                <%--<div class="form-group">--%>
+                                                    <%--<label class="col-sm-2 control-label">课程目标</label>--%>
+                                                    <%--<div class="col-sm-8">--%>
+                                                        <%--<textarea id="goal" name="goal" class="form-control" rows="5">${model.goal}</textarea>--%>
+                                                    <%--</div>--%>
+                                                <%--</div>--%>
+                                                <%--<div class="hr-line-dashed"></div>--%>
+                                                <%--<div class="form-group">--%>
+                                                    <%--<label class="col-sm-2 control-label">上课流程</label>--%>
+                                                    <%--<div class="col-sm-8">--%>
+                                                        <%--<textarea id="flow" name="flow" class="form-control" rows="5">${model.flow}</textarea>--%>
+                                                    <%--</div>--%>
+                                                <%--</div>--%>
                                                 <div class="hr-line-dashed"></div>
                                                 <div class="form-group">
                                                     <label class="col-sm-2 control-label">特别提示</label>
                                                     <div class="col-sm-8">
-                                                        <textarea id="tips" name="tips" class="form-control" rows="5">${model.tips}</textarea>
+                                                        <textarea id="tips" name="tips" class="form-control" rows="8" style="resize:none;">${model.tips}</textarea>
                                                     </div>
                                                 </div>
 
@@ -403,7 +403,7 @@
 
                             <div id="tab-2" class="tab-pane">
                                 <div class="ibox-content">
-                                    <div class="list-group">
+                                    <div class="row">
                                         <form class="form-horizontal" id="img_form" action="" method="post">
                                             <div class="form-group">
                                                 <label class="col-sm-3 control-label">轮播图片</label>
@@ -415,71 +415,130 @@
                                                 </div>
                                             </div>
                                         </form>
-                                        <form>
-                                            <div class="hr-line-dashed"></div>
-                                            <div class="row">
-                                                <div class="col-lg-12">
-                                                    <div class="ibox float-e-margins">
-                                                        <div class="ibox-title">
-                                                            <h5>轮播图片</h5>
-                                                        </div>
-                                                        <div class="ibox-content">
-                                                            <div id="img_div" class="main">
-                                                                ${imageJson}
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </form>
                                     </div>
                                     <div class="hr-line-dashed"></div>
-                                    <div class="form-group">
+                                    <div class="row">
+                                        <div id="img_div" class="main">
+                                            ${imageJson}
+                                        </div>
+                                    </div>
+                                    <div class="hr-line-dashed"></div>
+                                    <div class="row">
                                         <div class="col-sm-5 col-sm-offset-5">
                                             <button class="btn btn-warning" type="button" id="btn_pic_next_save" name="btn_pic_next_save">下一步</button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                            <%--<div id="tab-3" class="tab-pane">--%>
+                                <%--<div class="ibox-content">--%>
+                                    <%--<div class="list-group">--%>
+                                        <%--<form class="form-horizontal" id="book_form" action="" method="post">--%>
+                                            <%--<fieldset>--%>
+                                                <%--<div class="form-group">--%>
+                                                    <%--<label class="col-sm-3 control-label">绘本图片</label>--%>
+                                                    <%--<div class="col-sm-6">--%>
+                                                        <%--<input type="file" id="hb_img" name="hb_img" class="form-control">--%>
+                                                    <%--</div>--%>
+                                                    <%--<div class="col-sm-3">--%>
+                                                        <%--<button class="btn btn-primary" type="button" id="btn_book_save" name="btn_book_save">上传</button>--%>
+                                                    <%--</div>--%>
+                                                <%--</div>--%>
+                                            <%--</fieldset>--%>
+                                        <%--</form>--%>
+                                        <%--<form>--%>
+                                            <%--<div class="hr-line-dashed"></div>--%>
+                                            <%--<div class="row">--%>
+                                                <%--<div class="col-lg-12">--%>
+                                                    <%--<div class="ibox float-e-margins">--%>
+                                                        <%--<div class="ibox-title">--%>
+                                                            <%--<h5>绘本图片</h5>--%>
+                                                        <%--</div>--%>
+                                                        <%--<div class="ibox-content">--%>
+                                                            <%--<div id="book_div" class="main">--%>
+                                                                <%--${bookJson}--%>
+                                                            <%--</div>--%>
+                                                        <%--</div>--%>
+                                                    <%--</div>--%>
+                                                <%--</div>--%>
+
+                                            <%--</div>--%>
+                                        <%--</form>--%>
+                                    <%--</div>--%>
+                                    <%--<div class="hr-line-dashed"></div>--%>
+                                    <%--<div class="form-group">--%>
+                                        <%--<div class="col-sm-5 col-sm-offset-5">--%>
+                                            <%--<button class="btn btn-warning" type="button" id="btn_book_next_save" name="btn_book_next_save">下一步</button>--%>
+                                        <%--</div>--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
+                            <%--</div>--%>
                             <div id="tab-3" class="tab-pane">
-                                <div class="ibox-content">
-                                    <div class="list-group">
-                                        <form class="form-horizontal" id="book_form" action="" method="post">
-                                            <fieldset>
-                                                <div class="form-group">
-                                                    <label class="col-sm-3 control-label">绘本图片</label>
-                                                    <div class="col-sm-6">
-                                                        <input type="file" id="hb_img" name="hb_img" class="form-control">
-                                                    </div>
-                                                    <div class="col-sm-3">
-                                                        <button class="btn btn-primary" type="button" id="btn_book_save" name="btn_book_save">上传</button>
-                                                    </div>
-                                                </div>
-                                            </fieldset>
-                                        </form>
-                                        <form>
-                                            <div class="hr-line-dashed"></div>
-                                            <div class="row">
-                                                <div class="col-lg-12">
-                                                    <div class="ibox float-e-margins">
-                                                        <div class="ibox-title">
-                                                            <h5>绘本图片</h5>
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="ibox">
+                                            <div class="ibox-title">
+                                                <h5>讲师团</h5>
+                                            </div>
+                                            <div class="ibox-content">
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+                                                        <div class="panel panel-default">
+                                                            <div class="panel-heading">
+                                                                <h5>未选讲师</h5>
+                                                            </div>
+                                                            <div class="panel-body">
+                                                                <div class="list-group" style="height:700px;overflow:auto;">
+                                                                    <form id="w_form" action="" method="">
+                                                                        <%--<table class="table table-striped table-bordered table-hover dataTables-example">--%>
+                                                                        <div id="w-teacher">
+                                                                            ${w_teacher}
+                                                                        </div>
+                                                                        <%--</table>--%>
+                                                                    </form>
+                                                                </div>
+                                                            </div>
                                                         </div>
-                                                        <div class="ibox-content">
-                                                            <div id="book_div" class="main">
-                                                                ${bookJson}
+                                                    </div>
+
+                                                    <div class="col-lg-2">
+                                                        <div class="panel panel-default">
+                                                            <div class="panel-heading"><h5>操作</h5>
+                                                            </div>
+                                                            <div class="panel-body">
+                                                                <div class="list-group" style="height:700px;overflow:auto;">
+                                                                    <p align="center"><button id="add_teacher" name="add_teacher" type="button" class="btn btn-primary btn-sm"> 添加 <i class="fa fa-mail-forward"></i></button></p>
+                                                                    <p>&numsp;</p><p>&numsp;</p>
+                                                                    <p align="center"><button id="del_teacher" name="del_teacher" type="button" class="btn btn-danger btn-sm"><i class="fa fa-mail-reply"></i> 取消 </button></p>
+                                                                    <p>&numsp;</p><p>&numsp;</p>
+                                                                    <p align="center"><button id="btn_teacher_next_save" name="btn_teacher_next_save" type="button" class="btn btn-warning btn-sm"> 下一步 </button></p>
+                                                                    <p>&numsp;</p><p>&numsp;</p><p>&numsp;</p><p>&numsp;</p>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-lg-4">
+                                                        <div class="panel panel-default">
+                                                            <div class="panel-heading">
+                                                                <h5>已选讲师</h5>
+                                                            </div>
+                                                            <div class="panel-body">
+                                                                <div class="list-group" style="height:700px;overflow:auto;">
+                                                                    <form id="y_form" action="" method="">
+                                                                        <%--<table class="table table-striped table-bordered table-hover dataTables-example">--%>
+                                                                        <div id="y-teacher">
+                                                                            ${y_teacher}
+                                                                        </div>
+                                                                        <%--</table>--%>
+                                                                    </form>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-
                                             </div>
-                                        </form>
-                                    </div>
-                                    <div class="hr-line-dashed"></div>
-                                    <div class="form-group">
-                                        <div class="col-sm-5 col-sm-offset-5">
-                                            <button class="btn btn-warning" type="button" id="btn_book_next_save" name="btn_book_next_save">下一步</button>
                                         </div>
                                     </div>
                                 </div>
@@ -501,15 +560,15 @@
                                                                     <fieldset>
                                                                         <div class="form-group">
                                                                             <label class="col-sm-3 control-label">上课地址</label>
-                                                                            <div class="col-sm-6">
-                                                                                <div id="course_placeId" class="col-sm-7">
-                                                                                    <select id="placeId" name="placeId" class="form-control m-b" style="width: 200px" >
+                                                                            <%--<div class="col-sm-6">--%>
+                                                                                <div id="course_placeId" class="col-sm-6">
+                                                                                    <select id="placeId" name="placeId" class="form-control" style="width: 210px;" >
                                                                                         <c:forEach items="${places}" var="node">
                                                                                             <option value="${node.id}">${node.name} ${node.address}</option>
                                                                                         </c:forEach>
                                                                                     </select>
                                                                                 </div>
-                                                                            </div>
+                                                                            <%--</div>--%>
                                                                             <div class="col-sm-1">
                                                                                 <button class="btn btn-primary" data-toggle="modal" data-target="#myModal4" type="button" id="btn_place_add" name="btn_place_add">+</button>
                                                                             </div>
@@ -549,7 +608,7 @@
                                                                         </div>
                                                                         <div class="hr-line-dashed"></div>
                                                                         <div class="form-group">
-                                                                            <label class="col-sm-3 control-label">下线时间</label>
+                                                                            <label class="col-sm-3 control-label">报名截止</label>
                                                                             <div class="col-sm-7">
                                                                                 <input id="deadline" name="deadline" type="text" class="form-control layer-date" placeholder="YYYY-MM-DD hh:mm:ss" onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" readonly>
                                                                             </div>
@@ -586,7 +645,7 @@
                                                                     <div class="modal-header">
                                                                         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                                                                         <%--<i class="fa fa-picture-o modal-icon"></i>--%>
-                                                                        <h4 class="modal-title">添加地址</h4>
+                                                                        <h4 class="modal-title">添加商家地址</h4>
                                                                         <%--<small>这里可以显示副标题。</small>--%>
                                                                     </div>
                                                                     <div class="modal-body">
@@ -618,14 +677,14 @@
                                                                                         </div>
                                                                                     </div>
                                                                                     <div class="form-group">
-                                                                                        <label class="col-sm-2 control-label">地址名称 </label>
+                                                                                        <label class="col-sm-2 control-label">商家地址名称 </label>
                                                                                         <div class="col-sm-8">
                                                                                             <input id="name" name="name" type="text" class="form-control" >
                                                                                         </div>
                                                                                     </div>
 
                                                                                     <div class="form-group">
-                                                                                        <label class="col-sm-2 control-label">地址详情 </label>
+                                                                                        <label class="col-sm-2 control-label">商家地址详情 </label>
                                                                                         <div class="col-sm-8">
                                                                                             <input id="ads" name="ads" type="text" class="form-control" >
                                                                                         </div>
@@ -640,7 +699,13 @@
                                                                                         </div>
                                                                                     </div>
                                                                                     <div class="form-group">
-                                                                                        <label class="col-sm-2 control-label">地址描述 </label>
+                                                                                        <label class="col-sm-2 control-label">交通路线 </label>
+                                                                                        <div class="col-sm-8">
+                                                                                            <textarea id="route" name="route" type="text" class="form-control"></textarea>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="form-group">
+                                                                                        <label class="col-sm-2 control-label">商家地址描述 </label>
                                                                                         <div class="col-sm-8">
                                                                                             <textarea id="desc_place" name="desc_place" type="text" class="form-control"></textarea>
                                                                                         </div>
@@ -652,6 +717,39 @@
                                                                     <div class="modal-footer">
                                                                         <button type="button" class="btn btn-primary" id="btn_place_save" name="btn_place_save">保存</button>
                                                                         <button type="button" class="btn btn-white" data-dismiss="modal" id="btn_place_close" name="btn_place_close">关闭</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!--创建群组弹出层-->
+                                                        <div class="modal inmodal" id="myQz" tabindex="-1" role="dialog"  aria-hidden="true">
+                                                            <div class="modal-dialog">
+                                                                <div class="modal-content animated fadeIn">
+                                                                    <div class="modal-header">
+                                                                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                                                        <%--<i class="fa fa-picture-o modal-icon"></i>--%>
+                                                                        <h4 class="modal-title">创建群组关信息</h4>
+                                                                        <%--<small>这里可以显示副标题。</small>--%>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <form class="form-horizontal" id="qz_form" action="" method="post">
+                                                                            <fieldset>
+                                                                                <div class="selectList">
+                                                                                    <div class="form-group">
+                                                                                        <label class="col-sm-2 control-label">课程名称 </label>
+                                                                                        <div class="col-sm-8">
+                                                                                            <input id="qzid" name="qzid" type="hidden" class="form-control" >
+                                                                                            <input id="qzname" name="qzname" type="text" class="form-control" >
+                                                                                            (填写课程关键字,例如:消防员、牙医、马术等)
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </fieldset>
+                                                                        </form>
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-primary" id="btn_qz_save" name="btn_qz_save">保存</button>
+                                                                        <button type="button" class="btn btn-white" data-dismiss="modal" id="btn_qz_close" name="btn_qz_close">关闭</button>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -672,78 +770,6 @@
                                 </div>
                             </div>
                             <div id="tab-5" class="tab-pane">
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <div class="ibox">
-                                            <div class="ibox-title">
-                                                <h5>讲师团</h5>
-                                            </div>
-                                            <div class="ibox-content">
-                                                <div class="row">
-                                                    <div class="col-lg-5">
-                                                        <div class="panel panel-default">
-                                                            <div class="panel-heading">
-                                                                <h5>未选讲师</h5>
-                                                            </div>
-                                                            <div class="panel-body">
-                                                                <div class="list-group" style="height:700px;overflow:auto;">
-                                                                    <form id="w_form" action="" method="">
-                                                                        <%--<table class="table table-striped table-bordered table-hover dataTables-example">--%>
-                                                                            <div id="w-teacher">
-                                                                                ${w_teacher}
-                                                                            </div>
-                                                                        <%--</table>--%>
-                                                                    </form>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-lg-2">
-                                                        <div class="panel panel-default">
-                                                            <div class="panel-heading"><h5>操作</h5>
-                                                            </div>
-                                                            <div class="panel-body">
-                                                                <div class="list-group" style="height:700px;overflow:auto;">
-                                                                    <p>&numsp;</p><p>&numsp;</p><p>&numsp;</p><p>&numsp;</p><p>&numsp;</p><p>&numsp;</p><p>&numsp;</p>
-                                                                    <p>&numsp;</p><p>&numsp;</p><p>&numsp;</p><p>&numsp;</p>
-                                                                    <p align="center"><button id="add_teacher" name="add_teacher" type="button" class="btn btn-primary btn-sm"> 添加 <i class="fa fa-mail-forward"></i></button></p>
-                                                                    <p>&numsp;</p><p>&numsp;</p>
-                                                                    <p align="center"><button id="del_teacher" name="del_teacher" type="button" class="btn btn-danger btn-sm"><i class="fa fa-mail-reply"></i> 取消 </button></p>
-                                                                    <p>&numsp;</p><p>&numsp;</p>
-                                                                    <p align="center"><button id="btn_teacher_next_save" name="btn_teacher_next_save" type="button" class="btn btn-warning btn-sm"> 下一步 </button></p>
-                                                                    <p>&numsp;</p><p>&numsp;</p><p>&numsp;</p><p>&numsp;</p>
-                                                                </div>
-                                                            </div>
-
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-lg-5">
-                                                        <div class="panel panel-default">
-                                                            <div class="panel-heading">
-                                                                <h5>已选讲师</h5>
-                                                            </div>
-                                                            <div class="panel-body">
-                                                                <div class="list-group" style="height:700px;overflow:auto;">
-                                                                    <form id="y_form" action="" method="">
-                                                                        <%--<table class="table table-striped table-bordered table-hover dataTables-example">--%>
-                                                                            <div id="y-teacher">
-                                                                                ${y_teacher}
-                                                                            </div>
-                                                                        <%--</table>--%>
-                                                                    </form>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div id="tab-6" class="tab-pane">
                                 <div class="col-lg-12">
                                     <div class="ibox"></div>
                                     <div class="ibox-content">
@@ -758,7 +784,7 @@
                                                         </div>
                                                         <div class="form-group">
                                                             <div class="col-sm-12">
-                                                                <textarea id="abstracts" name="abstracts" class="form-control" style="width: 1000px;" rows="3">${detail.abstracts}</textarea>
+                                                                <textarea id="abstracts" name="abstracts" class="form-control" rows="3">${detail.abstracts}</textarea>
                                                                 <input id="d_id" name="d_id" type="hidden" value="${detail.id}">
                                                             </div>
                                                         </div>
@@ -904,6 +930,7 @@
             "bSort": false //排序功能
         });
 
+
         $(".selectList").each(function(){
             var url = "/place/datajson.do?id=0";
             var areaJson;
@@ -1011,22 +1038,6 @@
                         }
                         layer.alert(data.msg,10,'提示信息');
                     }, "json");
-
-//            var obj = new createObject(title,content);
-//            alert(obj.title + ", " + obj.content);
-//            var inti = $('#inti').val();
-//            if(inti < 0){
-//                content_array.push(obj);
-//            }else{
-//                content_array[inti] = obj;
-//            }
-//
-//            arrayData();
-//
-//            $('#d_title').val("");
-//            editor.setContent("");
-//            $('#inti').val(-1);
-
         });
 
         $("#btn_clear").click(function(){
@@ -1035,6 +1046,62 @@
             $('#inti').val(-1);
 
         });
+
+        $('#img_a').click(function (){
+            document.getElementById("img_path").click();
+        });
+
+        $('#img_path').change(function (){
+            var pathUrl = $('#img_path').val();
+            if(pathUrl != null || pathUrl != ""){
+                //创建FormData对象
+                var data = new FormData();
+                //为FormData对象添加数据
+                $.each($('#img_path')[0].files, function(i, file) {
+                    data.append('upload_file', file);
+                });
+
+                $.ajax({
+                    url:'/upload/jsonImg.do',
+                    type:'POST',
+                    data:data,
+                    cache: false,
+                    contentType: false,    //不可缺
+                    processData: false,    //不可缺
+                    success:function(data){
+                        var obj = $.parseJSON(data);
+                        if(obj.success == 0){
+                            $("#cover").val(obj.path);
+                            $("#img_a").attr("src", $("#filepath").val() + obj.path);
+                        }else{
+                            layer.alert(obj.msg,10,'提示信息');
+                        }
+                    }
+                });
+            }
+        });
+
+        $("#btn_qz_save").click(function(){
+            var courseId = $('#course_id').val();
+            var qz_name = $('#qzname').val();
+            if(qz_name == null || qz_name == ""){
+                layer.alert('请填写群组名字信息！',3,'提示信息');
+                return false;
+            }else{
+                $.post("/course/createQz.do?courseId="+courseId, $("#qz_form").serialize(),
+                        function(data){
+                            if(data.success == 0){
+                                layer.alert(data.msg,10,'提示信息');
+                                $('#qzname').val("");
+                                $('#myQz').modal('hide');
+                            }else{
+                                $('#qzname').val("");
+                                layer.alert(data.msg,10,'提示信息');
+                            }
+                        }, "json");
+            }
+        });
+
     });
 
     function editDetail(i){
@@ -1090,6 +1157,20 @@
         divshow.text("");
         divshow.append(html);
     }
+
+    function createQz(id){
+        $('#qzid').val(id);
+    }
+
+//    function laydate_click(){
+//        laydate({
+//            istime: true,
+//            format: 'YYYY-MM-DD hh:mm:ss',
+//            choose:function(dates){
+//
+//            }
+//        });
+//    }
 
 </script>
 

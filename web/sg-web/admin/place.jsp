@@ -85,7 +85,7 @@
                     <ul class="nav nav-second-level">
                         <li><a href="${ctx}/city/info.do?uid=${user.id}"><i class="fa fa-hacker-news"></i> <span class="nav-label">城市信息</span> </a></li>
                         <li><a href="${ctx}/region/info.do?uid=${user.id}"><i class="fa fa-map-marker"></i> <span class="nav-label">区域信息</span> </a></li>
-                        <li class="active"><a href="${ctx}/place/info.do?uid=${user.id}"><i class="fa fa-rebel"></i> <span class="nav-label">地址信息</span> </a></li>
+                        <li class="active"><a href="${ctx}/place/info.do?uid=${user.id}"><i class="fa fa-rebel"></i> <span class="nav-label">商户信息</span> </a></li>
                         <li><a href="${ctx}/inst/info.do?uid=${user.id}"><i class="fa fa-bank"></i> <span class="nav-label">机构信息</span> </a></li>
                         <li><a href="${ctx}/teacher/info.do?uid=${user.id}"><i class="fa fa-user-secret"></i> <span class="nav-label">师资力量</span></a></li>
                     </ul>
@@ -200,13 +200,13 @@
         </div>
         <div class="row wrapper border-bottom white-bg page-heading">
             <div class="col-lg-10">
-                <h2>地址列表</h2>
+                <h2>商户信息列表</h2>
                 <ol class="breadcrumb">
                     <li>
                         <a href="${ctx}/user/index.do?uid=${user.id}">主页</a>
                     </li>
                     <li>
-                        <a href="${ctx}/place/info.do?uid=${user.id}">地址信息</a>
+                        <a href="${ctx}/place/info.do?uid=${user.id}">商户信息</a>
                     </li>
                     <li>
                         <strong>数据列表</strong>
@@ -223,9 +223,9 @@
                     <table class="table table-striped table-bordered table-hover dataTables-example">
                         <thead>
                         <tr class="gradeX">
-                            <th>地址编号</th>
-                            <th>地址名称</th>
-                            <th>地址详情</th>
+                            <th>编号</th>
+                            <th>商户地址名称</th>
+                            <th>商户地址详情</th>
                             <th>操作</th>
                         </tr>
                         </thead>
@@ -236,7 +236,7 @@
                                 <td><c:out value="${entity.name}"></c:out></td>
                                 <td><c:out value="${entity.address}"></c:out></td>
                                 <td class="center">
-                                    <a href="${ctx}/place/oper.do?uid=${user.id}&id=${entity.id}&mark=1" class="btn btn-white btn-sm"><i class="fa fa-file-image-o"></i> 图片 </a>
+                                    <%--<a href="${ctx}/place/oper.do?uid=${user.id}&id=${entity.id}&mark=1" class="btn btn-white btn-sm"><i class="fa fa-file-image-o"></i> 图片 </a>--%>
                                     <a href="${ctx}/place/oper.do?uid=${user.id}&id=${entity.id}&mark=2" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i> 编辑 </a>
                                     <a href="${ctx}/place/del.do?uid=${user.id}&id=${entity.id}" class="btn btn-white btn-sm"><i class="fa fa-times-circle"></i> 删除 </a>
                                 </td>

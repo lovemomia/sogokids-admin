@@ -6,16 +6,21 @@ package com.sogokids.utils.util;
  */
 public class FileUtil {
 
+    public static String SERVER_PATH = "";
+
+    public static String UPLOAD_PATH = "";
+
+//    public static String GROUP_PATH = "";
+
     public void setServerPath(String serverPath) {
         SERVER_PATH = serverPath;
     }
-
-    public static String SERVER_PATH = "";
 
     public void setUploadPath(String uploadPath) {
         UPLOAD_PATH = uploadPath;
     }
 
-    public static String UPLOAD_PATH = "";
-
+//    public static void setGroupPath(String groupPath) {
+//        GROUP_PATH = groupPath;
+//    }
 }
