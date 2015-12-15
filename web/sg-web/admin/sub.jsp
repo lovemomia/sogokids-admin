@@ -259,7 +259,7 @@
                                             <c:when test="${entity.status == 1}">
                                                 <a href="${ctx}/sub/oper.do?uid=${user.id}&id=${entity.id}" class="btn btn-primary btn-sm"><i class="fa fa-pencil"></i> 编辑 </a>&numsp;
                                                 <a href="${ctx}/sub/preview.do?uid=${user.id}&id=${entity.id}" class="btn btn-success btn-sm"><i class="fa fa-eye"></i> 预览 </a>&numsp;
-                                                <a href="${ctx}/sub/upOrDown.do?uid=${user.id}&id=${entity.id}&mark=3" class="btn btn-info btn-sm"><i class="fa fa-level-down"></i> 下线 </a>
+                                                <a href="${ctx}/sub/upOrDown.do?uid=${user.id}&id=${entity.id}&mark=4" class="btn btn-info btn-sm"><i class="fa fa-level-down"></i> 下线 </a>
                                             </c:when>
                                             <c:otherwise>
                                                 <a href="${ctx}/sub/oper.do?uid=${user.id}&id=${entity.id}" class="btn btn-primary btn-sm"><i class="fa fa-pencil"></i> 编辑 </a>&numsp;

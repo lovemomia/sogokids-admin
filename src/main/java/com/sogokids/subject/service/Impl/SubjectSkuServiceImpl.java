@@ -165,8 +165,8 @@ public class SubjectSkuServiceImpl implements SubjectSkuService {
 
     @Override
     public int insertOne(SubjectSku entity) {
-        String sql = "insert into SG_SubjectSku(SubjectId,CourseId,`Desc`,Price,OriginalPrice,Adult,Child,CourseCount,Time,TimeUnit,Status,AddTime) value(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW()) ";
-        Object [] params = new Object[]{entity.getSubjectId(), entity.getCourseId(), entity.getDesc(), entity.getPrice(), entity.getOriginalPrice(), entity.getAdult(), entity.getChild(), entity.getCourseCount(), entity.getTime(), entity.getTimeUnit(), Quantity.STATUS_ONE};
+        String sql = "insert into SG_SubjectSku(SubjectId,CourseId,`Desc`,Price,OriginalPrice,Adult,Child,CourseCount,Time,TimeUnit,`Limit`,Status,AddTime) value(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW()) ";
+        Object [] params = new Object[]{entity.getSubjectId(), entity.getCourseId(), entity.getDesc(), entity.getPrice(), entity.getOriginalPrice(), entity.getAdult(), entity.getChild(), entity.getCourseCount(), entity.getTime(), entity.getTimeUnit(), entity.getLimit(), Quantity.STATUS_ONE};
         int reDate = 0;
         try {
             reDate = jdbcTemplate.update(sql, params);
@@ -236,6 +236,7 @@ public class SubjectSkuServiceImpl implements SubjectSkuService {
         entity.setCourseCount(Quantity.STATUS_ONE);
         entity.setTime(Quantity.STATUS_ONE);
         entity.setTimeUnit(Quantity.STATUS_ONE);
+        entity.setLimit(Quantity.STATUS_ZERO);
 
         return entity;
     }

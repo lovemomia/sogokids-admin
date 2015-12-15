@@ -489,6 +489,7 @@ public class CourseServiceImpl implements CourseService {
                         sub_sku.setCourseCount(Quantity.STATUS_ONE);//设置参加试听课的课程数量1
                         sub_sku.setTime(Quantity.STATUS_ONE);////设置参加试听课的时间数量1
                         sub_sku.setTimeUnit(Quantity.STATUS_ONE);//设置参加试听课的时间单位1个月
+                        sub_sku.setLimit(Quantity.STATUS_ONE);//限购次数
                         int int_sub_sku = subjectSkuService.insertOne(sub_sku);//新增sku信息
                         if (int_sub_sku > 0){
                             String[] course_sku_id = req.getParameterValues("course_sku_id");//获取页面勾选的父级sku信息集合

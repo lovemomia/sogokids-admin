@@ -17,6 +17,7 @@ public class SubjectSku {
     private int courseCount;
     private int time;
     private int timeUnit;
+    private int limit;
     private int status;
     private String addTime;
     private String updateTime;
@@ -109,6 +110,14 @@ public class SubjectSku {
 
     public void setTimeUnit(int timeUnit) {
         this.timeUnit = timeUnit;
+    }
+
+    public int getLimit() {
+        return limit;
+    }
+
+    public void setLimit(int limit) {
+        this.limit = limit;
     }
 
     public int getStatus() {

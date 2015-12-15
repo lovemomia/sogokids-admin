@@ -270,7 +270,7 @@
                                     <c:choose>
                                         <c:when test="${entity.status == 1}">
                                             <a href="${ctx}/course/oper.do?uid=${user.id}&id=${entity.id}&mark=5&subid=${subid}" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i> 编辑 </a>
-                                            <a href="${ctx}/course/upOrDown.do?uid=${user.id}&id=${entity.id}&mark=3&subid=${subid}" class="btn btn-danger btn-sm"><i class="fa fa-level-down"></i> 下线 </a>
+                                            <a href="${ctx}/course/upOrDown.do?uid=${user.id}&id=${entity.id}&mark=4&subid=${subid}" class="btn btn-danger btn-sm"><i class="fa fa-level-down"></i> 下线 </a>
                                             <%--<a href="${ctx}/course/preview.do?uid=${user.id}&id=${entity.id}&subid=${subid}" class="btn btn-white btn-sm"><i class="fa fa-eye"></i> 预览 </a>--%>
                                         </c:when>
                                         <c:otherwise>

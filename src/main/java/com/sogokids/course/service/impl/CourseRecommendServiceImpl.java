@@ -238,7 +238,6 @@ public class CourseRecommendServiceImpl implements CourseRecommendService {
         jdbcTemplate.query(sql, new RowCallbackHandler(){
             public void processRow(ResultSet rs) throws SQLException {
                 reData.put("weight", rs.getInt("weight"));
-//                System.out.print("============="+rs.getInt("weight"));
             }
         });
 

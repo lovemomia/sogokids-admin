@@ -342,7 +342,7 @@ public class BookedController {
     public ModelAndView cancelTrialCourse(@RequestParam("uid") int uid,@RequestParam("id") int id,HttpServletRequest req){
         Map<String, Object> context = new HashMap<String, Object>();
 
-        int reData = courseService.deleteTrialCourse(id);
+        int reData = courseService.deleteTrialCourse(courseService.get(id).getParentId());
 
         if (reData > 0) {
             context.put(Quantity.RETURN_SUCCESS, 0);
@@ -352,11 +352,9 @@ public class BookedController {
             context.put(Quantity.RETURN_MSG,"取消试听课失败!");
         }
 
-        int sub_id = Integer.parseInt(req.getParameter("subid"));
-        context.put(Quantity.RETURN_ENTITY_LIST, courseService.getCoursesBySubId(sub_id));
+        context.put(Quantity.RETURN_ENTITY_LIST, subjectService.getCoursesBySubjects());
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
-        context.put("subid", sub_id);
-        return new ModelAndView(JumpPage.COURSE,context);
+        return new ModelAndView(JumpPage.BOOKED,context);
     }
 
     @RequestMapping("/preview")
