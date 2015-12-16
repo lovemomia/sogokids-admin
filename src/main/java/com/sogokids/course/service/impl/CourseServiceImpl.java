@@ -28,6 +28,7 @@ import com.sogokids.system.model.Teacher;
 import com.sogokids.system.service.InstitutionService;
 import com.sogokids.system.service.PlaceService;
 import com.sogokids.system.service.RegionService;
+import com.sogokids.system.service.TeacherService;
 import com.sogokids.utils.entity.QzResult;
 import com.sogokids.utils.util.DateUtil;
 import com.sogokids.utils.util.Quantity;
@@ -111,6 +112,9 @@ public class CourseServiceImpl implements CourseService {
 
     @Autowired
     private Configuration configuration;
+
+    @Autowired
+    private TeacherService teacherService;
 
     @Resource
     private JdbcTemplate jdbcTemplate;
@@ -694,7 +698,8 @@ public class CourseServiceImpl implements CourseService {
         QzResult qzResult = new QzResult();
         if (courseTeachers.size() > 0){
             for (CourseTeacher courseTeacher : courseTeachers){
-                teacher_ids = teacher_ids + courseTeacher.getTeacherId() + ",";
+                Teacher teacher = teacherService.get(courseTeacher.getTeacherId());
+                teacher_ids = teacher_ids + teacher.getUserId() + ",";
             }
             teacher_ids = teacher_ids.substring(0,teacher_ids.length()-1);
             CourseSku courseSku = courseSkuService.get(sku_id);
@@ -753,7 +758,7 @@ public class CourseServiceImpl implements CourseService {
         List<CourseSku> courseSkus = courseSkuService.getModelsByCourse_Key(course_id);
         List<CourseImg> courseImgs = courseImgService.getModelsBySub_Key(course_id);
         List<Teacher> teachers = courseTeacherService.getByCourseId(course_id);
-        List<CourseBook> courseBooks = courseBookService.getEntitys(course_id);
+//        List<CourseBook> courseBooks = courseBookService.getEntitys(course_id);
         List<CourseDetail> courseDetails = courseDetailService.getModelsByCourse_Key(course_id);
         sb.append("<div class='ibox-title'>");
         sb.append("<h5>"+course.getTitle()+"</h5>");
@@ -825,21 +830,23 @@ public class CourseServiceImpl implements CourseService {
         }
         sb.append("</div>");
 
-        sb.append("<div class='well'>");
-        sb.append("<h3>特别提示</h3>");
-        sb.append("<p>").append(course.getTips().replace("\r\n","<br>")).append("</p>");
-        sb.append("</div>");
+            sb.append("<div class='well'>");
+            sb.append("<h3>特别提示</h3>");
+            sb.append("<p>").append(course.getTips().replace("\r\n", "<br>")).append("</p>");
+            sb.append("</div>");
 
-        sb.append("<div class='well'>");
-        sb.append("<h3>合作机构</h3>");
-        sb.append("<h4>").append(course.getInstitution().getName()).append("</h4>");
-        String in_url = course.getInstitution().getCover();
-        if (in_url != null && !in_url.equals("")) {
-            String img_url = configuration.getString(Quantity.DISPLAY_IMAGE) + in_url;
-            sb.append("<p  align='center'><img src='" + img_url + "' style='width: 300px;height: 200px'></p>");
-        }
-        sb.append("<p>").append(course.getInstitution().getIntro().replace("\r\n","<br>")).append("</p>");
-        sb.append("</div>");
+            sb.append("<div class='well'>");
+            sb.append("<h3>合作机构</h3>");
+            if (course.getInstitution().getId() > 0) {
+                sb.append("<h4>").append(course.getInstitution().getName()).append("</h4>");
+                String in_url = course.getInstitution().getCover();
+                if (in_url != null && !in_url.equals("")) {
+                    String img_url = configuration.getString(Quantity.DISPLAY_IMAGE) + in_url;
+                    sb.append("<p  align='center'><img src='" + img_url + "' style='width: 300px;height: 200px'></p>");
+                }
+                sb.append("<p>").append(course.getInstitution().getIntro().replace("\r\n", "<br>")).append("</p>");
+            }
+            sb.append("</div>");
 
         sb.append("<div class='well'>");
         sb.append("<h3>轮播图片</h3>");

@@ -141,6 +141,7 @@ public class TeacherController {
         Map<String, Object> context = new HashMap<String, Object>();
         int reDate = teacherService.update(teacherService.formEntity(req, id));
         if (reDate > 0){
+            customerService.updateCustomer(Integer.parseInt(req.getParameter("userId")));
             context.put(Quantity.RETURN_MSG,"修改讲师数据成功!");
         }else{
             context.put(Quantity.RETURN_MSG,"修改讲师数据失败!");
