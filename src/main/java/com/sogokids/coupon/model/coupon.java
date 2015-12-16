@@ -176,3 +176,4 @@ public class Coupon {
         this.offlineTime = offlineTime;
     }
 }
+

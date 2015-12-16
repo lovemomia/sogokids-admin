@@ -66,7 +66,6 @@ public class CourseTimeQueryServiceImpl implements CourseTimeQueryService {
             where = where + " and b.AddTime <= " + "'" + endDate + "' ";
         }
         String sql = "SELECT a.id,a.ParentId,a.SubjectId,a.Title,a.Cover,b.id as skuId,b.ParentId as skuParentId,b.CourseId,b.StartTime,b.EndTime,b.Deadline,b.PlaceId FROM SG_Course as a, SG_CourseSku as b  where a.Id = b.CourseId and a.Status > 0 and a.Status != 3 and a.ParentId = 0 and b.Status > 0 and b.Status != 3 " + where + " order by b.StartTime desc ";
-
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         if(list.size() > 0){
             for (int i = 0; i < list.size(); i++) {
@@ -103,12 +102,10 @@ public class CourseTimeQueryServiceImpl implements CourseTimeQueryService {
      * @return
      */
     private CourseTimeQuery getCourseTimeQueryCount(CourseTimeQuery courseTimeQuery){
-        int p_count = getCount(courseTimeQuery.getCourseId(), courseTimeQuery.getSkuId());
-        CourseSku courseSku = getSku(courseTimeQuery.getSkuId());
-        if (courseSku != null){
-            if (courseSku.getId() > 0){
-                p_count = p_count + getCount(courseSku.getCourseId(), courseSku.getId());
-            }
+        int p_count = getCount(courseTimeQuery.getCourseId(), courseTimeQuery.getSkuId());//获取当前课程的报名总数量
+        CourseSku courseSku = getSku(courseTimeQuery.getSkuId());//获取试听课的sku信息
+        if (courseSku != null && courseSku.getId() != 0){
+            p_count = p_count + getCount(courseSku.getCourseId(), courseSku.getId());
         }
         courseTimeQuery.setUserCount(p_count);
 
@@ -172,14 +169,13 @@ public class CourseTimeQueryServiceImpl implements CourseTimeQueryService {
         List<CourseUser> courseUsers = new ArrayList<CourseUser>();
         List<CourseUser> p_courseUsers = this.getSkuChildCourseUsers(Quantity.STATUS_ONE, courseId, skuId);
         courseUsers.addAll(p_courseUsers);
-        if (p_courseUsers.size() > 0){
+        CourseSku courseSku = this.getSku(skuId);
+        if (courseSku.getId() > 0){
             int int_id = p_courseUsers.size() + 1;
-            for (CourseUser courseUser : p_courseUsers) {
-                CourseSku courseSku = this.getSku(courseUser.getCourseSkuId());
-                List<CourseUser> c_courseUsers = this.getSkuChildCourseUsers(int_id, courseSku.getCourseId(), courseSku.getId());
-                courseUsers.addAll(c_courseUsers);
-            }
+            List<CourseUser> c_courseUsers = this.getSkuChildCourseUsers(int_id, courseSku.getCourseId(), courseSku.getId());
+            courseUsers.addAll(c_courseUsers);
         }
+
         return courseUsers;
     }
 
@@ -265,7 +261,6 @@ public class CourseTimeQueryServiceImpl implements CourseTimeQueryService {
             where = where + " and a.Mobile = " + mobile;
         }
         String sql = "SELECT c.NickName,a.Mobile,d.Title,b.PackageId,e.StartTime,e.PlaceId FROM SG_SubjectOrder a,SG_BookedCourse b, SG_User c, SG_Course d, SG_CourseSku e where a.id = b.OrderId and a.UserId = b.UserId and b.UserId = c.id and b.CourseId = d.Id and b.CourseSkuId = e.Id and a.Status > 0 and b.Status > 0 and c.Status > 0 and d.Status > 0 and e.Status > 0 and e.Status != 3 " + where;
-
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         if(list.size() > 0){
             for (int i = 0; i < list.size(); i++) {
