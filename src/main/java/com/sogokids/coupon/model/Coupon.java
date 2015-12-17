@@ -1,7 +1,7 @@
 package com.sogokids.coupon.model;
 
 /**
- * Created by hoze on 15/11/15.
+ * Created by hoze on 15/12/17.
  */
 public class Coupon {
     private int id;
