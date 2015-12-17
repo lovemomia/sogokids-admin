@@ -298,7 +298,7 @@
                                                 <div class="form-group">
                                                     <label class="col-sm-2 control-label">标题</label>
                                                     <div class="col-sm-3">
-                                                        <textarea id="title" name="title" class="form-control" rows="5" style="resize:none;">${model.title}</textarea>
+                                                        <textarea id="title" name="title" class="form-control" rows="3" style="resize:none;">${model.title}</textarea>
                                                         <input id="course_id" name="course_id" type="hidden" value="${model.id}">
                                                         <input id="subjectId" name="subjectId" type="hidden" value="${model.subjectId}">
                                                     </div>
@@ -313,11 +313,11 @@
                                                         <%--<button class="btn btn-primary" type="button" id="btn_img_save" name="btn_img_save">上传</button>--%>
                                                     <%--</div>--%>
                                                 </div>
-                                                <div class="hr-line-dashed"></div>
+                                                <%--<div class="hr-line-dashed"></div>--%>
                                                 <div class="form-group">
                                                     <label class="col-sm-2 control-label">所属机构</label>
                                                     <div class="col-sm-3">
-                                                        <select id="institutionId" name="institutionId" class="form-control m-b" >
+                                                        <select id="institutionId" name="institutionId" class="form-control" >
                                                             <c:forEach items="${insts}" var="node">
                                                                 <c:choose>
                                                                     <c:when test="${node.id == model.institutionId}">
@@ -330,7 +330,9 @@
                                                             </c:forEach>
                                                         </select>
                                                     </div>
-                                                    <label class="col-sm-2 control-label">售卖价格</label>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-sm-2 control-label">原价</label>
                                                     <div class="col-sm-3">
                                                         <input id="price" name="price" type="text" class="form-control" value="${model.price}">
                                                     </div>
@@ -353,17 +355,25 @@
                                                         <%--</select>--%>
                                                     <%--</div>--%>
                                                 <%--</div>--%>
-                                                <div class="hr-line-dashed"></div>
+                                                <%--<div class="hr-line-dashed"></div>--%>
                                                 <div class="form-group">
                                                     <label class="col-sm-2 control-label">年龄范围</label>
                                                     <div class="col-sm-3">
-                                                        <input id="minAge" name="minAge" type="text" class="form-control" value="${model.minAge}">
+                                                        <table>
+                                                            <tr>
+                                                                <td style="width: 40%;"><input id="minAge" name="minAge" type="text" class="form-control" style="width:80%;" value="${model.minAge}"></td>
+                                                                <td style="width: 10%;align-content: center">至</td>
+                                                                <td style="width: 40%;"><input id="maxAge" name="maxAge" type="text" class="form-control" style="width:80%;" value="${model.maxAge}"></td>
+                                                                <td style="width: 10%;">岁</td>
+                                                            </tr>
+                                                        </table>
                                                     </div>
-                                                    <div class="col-sm-1">至</div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-sm-2 control-label">关键字</label>
                                                     <div class="col-sm-3">
-                                                        <input id="maxAge" name="maxAge" type="text" class="form-control" value="${model.maxAge}">
+                                                        <input id="keyWord" name="keyWord" type="text" class="form-control" value="${model.keyWord}">
                                                     </div>
-                                                    <div class="col-sm-1">岁</div>
                                                 </div>
                                                 <%--<div class="hr-line-dashed"></div>--%>
                                                 <%--<div class="form-group">--%>
@@ -379,7 +389,8 @@
                                                         <%--<textarea id="flow" name="flow" class="form-control" rows="5">${model.flow}</textarea>--%>
                                                     <%--</div>--%>
                                                 <%--</div>--%>
-                                                <div class="hr-line-dashed"></div>
+                                                <%--<div class="hr-line-dashed"></div>--%>
+                                                <%--<p>&numsp;</p>--%>
                                                 <div class="form-group">
                                                     <label class="col-sm-2 control-label">特别提示</label>
                                                     <div class="col-sm-8">
@@ -555,25 +566,38 @@
                                                             录入信息
                                                         </div>
                                                         <div class="panel-body">
-                                                            <div class="list-group" style="height:500px;">
+                                                            <div class="list-group" style="height:420px;">
                                                                 <form class="form-horizontal" id="sku_form" action="" method="post">
-                                                                    <fieldset>
+                                                                    <%--<fieldset>--%>
+                                                                        <%--<div class="form-group">--%>
+                                                                            <%--<label class="col-sm-3 control-label">上课地址</label>--%>
+                                                                            <%--&lt;%&ndash;<div class="col-sm-6">&ndash;%&gt;--%>
+                                                                                <%--<div id="course_placeId" class="col-sm-6">--%>
+                                                                                    <%--<select id="placeId" name="placeId" class="form-control" style="width: 210px;" >--%>
+                                                                                        <%--<c:forEach items="${places}" var="node">--%>
+                                                                                            <%--<option value="${node.id}">${node.name} ${node.address}</option>--%>
+                                                                                        <%--</c:forEach>--%>
+                                                                                    <%--</select>--%>
+                                                                                <%--</div>--%>
+                                                                            <%--&lt;%&ndash;</div>&ndash;%&gt;--%>
+                                                                            <%--<div class="col-sm-1">--%>
+                                                                                <%--<button class="btn btn-primary" data-toggle="modal" data-target="#myModal4" type="button" id="btn_place_add" name="btn_place_add">+</button>--%>
+                                                                            <%--</div>--%>
+                                                                        <%--</div>--%>
                                                                         <div class="form-group">
                                                                             <label class="col-sm-3 control-label">上课地址</label>
-                                                                            <%--<div class="col-sm-6">--%>
-                                                                                <div id="course_placeId" class="col-sm-6">
-                                                                                    <select id="placeId" name="placeId" class="form-control" style="width: 210px;" >
-                                                                                        <c:forEach items="${places}" var="node">
-                                                                                            <option value="${node.id}">${node.name} ${node.address}</option>
-                                                                                        </c:forEach>
-                                                                                    </select>
-                                                                                </div>
-                                                                            <%--</div>--%>
+                                                                            <div class="col-sm-7">
+                                                                                <select id="placeId" name="placeId" class="form-control" >
+                                                                                    <c:forEach items="${places}" var="node">
+                                                                                        <option value="${node.id}">${node.name} ${node.address}</option>
+                                                                                    </c:forEach>
+                                                                                </select>
+                                                                            </div>
                                                                             <div class="col-sm-1">
                                                                                 <button class="btn btn-primary" data-toggle="modal" data-target="#myModal4" type="button" id="btn_place_add" name="btn_place_add">+</button>
                                                                             </div>
                                                                         </div>
-                                                                        <div class="hr-line-dashed"></div>
+                                                                        <%--<div class="hr-line-dashed"></div>--%>
                                                                         <div class="form-group">
                                                                             <label class="col-sm-3 control-label">库存数量</label>
                                                                             <div class="col-sm-7">
@@ -581,45 +605,54 @@
                                                                                 <input id="stock" name="stock" type="text" value="20" class="form-control">
                                                                             </div>
                                                                         </div>
-                                                                        <div class="hr-line-dashed"></div>
+                                                                        <%--<div class="hr-line-dashed"></div>--%>
                                                                         <div class="form-group">
                                                                             <label class="col-sm-3 control-label">大人数量</label>
-                                                                            <div class="col-sm-3">
-                                                                                <input id="adult" name="adult" type="text" class="form-control">
+                                                                            <div class="col-sm-7">
+                                                                                <table>
+                                                                                    <tr>
+                                                                                        <td style="width: 35%;"><input id="adult" name="adult" type="text" class="form-control" style="width:100%;" ></td>
+                                                                                        <td style="width: 30%;align-content: left;">&numsp;<b>儿童数量</b></td>
+                                                                                        <td style="width: 35%;"><input id="child" name="child" type="text" class="form-control" style="width:100%;" ></td>
+                                                                                    </tr>
+                                                                                </table>
+                                                                                <%--<input id="adult" name="adult" type="text" class="form-control">--%>
                                                                             </div>
-                                                                            <label class="col-sm-3 control-label">儿童数量</label>
-                                                                            <div class="col-sm-3">
-                                                                                <input id="child" name="child" type="text" class="form-control">
-                                                                            </div>
+                                                                            <%--<label class="col-sm-3 control-label">儿童数量</label>--%>
+                                                                            <%--<div class="col-sm-3">--%>
+                                                                                <%--<input id="child" name="child" type="text" class="form-control">--%>
+                                                                            <%--</div>--%>
                                                                         </div>
-                                                                        <div class="hr-line-dashed"></div>
+                                                                        <%--<div class="hr-line-dashed"></div>--%>
                                                                         <div class="form-group">
                                                                             <label class="col-sm-3 control-label">开始时间</label>
                                                                             <div class="col-sm-7">
                                                                                 <input id="startTime" name="startTime" type="text" class="form-control layer-date" placeholder="YYYY-MM-DD hh:mm:ss" onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" readonly>
                                                                             </div>
                                                                         </div>
-                                                                        <div class="hr-line-dashed"></div>
+                                                                        <%--<div class="hr-line-dashed"></div>--%>
                                                                         <div class="form-group">
                                                                             <label class="col-sm-3 control-label">结束时间</label>
                                                                             <div class="col-sm-7">
                                                                                 <input id="endTime" name="endTime" type="text" class="form-control layer-date" placeholder="YYYY-MM-DD hh:mm:ss" onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" readonly>
                                                                             </div>
                                                                         </div>
-                                                                        <div class="hr-line-dashed"></div>
-                                                                        <div class="form-group">
-                                                                            <label class="col-sm-3 control-label">报名截止</label>
-                                                                            <div class="col-sm-7">
-                                                                                <input id="deadline" name="deadline" type="text" class="form-control layer-date" placeholder="YYYY-MM-DD hh:mm:ss" onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" readonly>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="hr-line-dashed"></div>
+                                                                        <%--<div class="hr-line-dashed"></div>--%>
+                                                                        <%--<div class="form-group">--%>
+                                                                            <%--<label class="col-sm-3 control-label">报名截止</label>--%>
+                                                                            <%--<div class="col-sm-7">--%>
+                                                                                <%--<input id="deadline" name="deadline" type="text" class="form-control layer-date" placeholder="YYYY-MM-DD hh:mm:ss" onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" readonly>--%>
+                                                                            <%--</div>--%>
+                                                                        <%--</div>--%>
+                                                                        <%--<div class="hr-line-dashed"></div>--%>
                                                                         <div class="form-group">
                                                                             <div class="col-sm-4 col-sm-offset-4">
-                                                                                <button class="btn btn-primary" type="button" id="btn_sku_save" name="btn_sku_save">保存内容</button>
+                                                                                <div style="margin-bottom: 10px;margin-top: 70px;">
+                                                                                    <button class="btn btn-primary" type="button" id="btn_sku_save" name="btn_sku_save">保存内容</button>
+                                                                                </div>
                                                                             </div>
                                                                         </div>
-                                                                    </fieldset>
+                                                                    <%--</fieldset>--%>
                                                                 </form>
                                                             </div>
                                                         </div>
@@ -631,7 +664,7 @@
                                                             显示列表
                                                         </div>
                                                         <div class="panel-body">
-                                                            <div class="list-group" style="height:500px;overflow:auto;">
+                                                            <div class="list-group" style="height:420px;overflow:auto;">
                                                                 <form>
                                                                     <div id="sku_div" class="form-group">
                                                                         ${skuHtml}
@@ -758,7 +791,7 @@
 
                                                 </div>
 
-                                                <div class="hr-line-dashed"></div>
+                                                <%--<div class="hr-line-dashed"></div>--%>
                                                 <div class="form-group">
                                                     <div class="col-sm-5 col-sm-offset-5">
                                                         <button class="btn btn-warning" type="button" id="btn_sku_next_save" name="btn_sku_next_save">&numsp;&numsp;下一步&numsp;&numsp;</button>

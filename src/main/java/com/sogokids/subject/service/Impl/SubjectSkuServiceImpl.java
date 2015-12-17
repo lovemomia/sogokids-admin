@@ -208,7 +208,7 @@ public class SubjectSkuServiceImpl implements SubjectSkuService {
         entity.setSubjectId(sub_id);
         entity.setDesc(request.getParameter("desc"));
         entity.setPrice(new BigDecimal(request.getParameter("price")));
-        entity.setOriginalPrice(new BigDecimal(request.getParameter("originalPrice")));
+        entity.setOriginalPrice(new BigDecimal(request.getParameter("price")));
         entity.setAdult(Integer.parseInt(request.getParameter("adult")));
         entity.setChild(Integer.parseInt(request.getParameter("child")));
         String courseCount = request.getParameter("courseCount");
@@ -276,6 +276,7 @@ public class SubjectSkuServiceImpl implements SubjectSkuService {
                     sb.append("时间:"+sku.getTime()+timeUnitName+"<br>");
 
                     String sku_value = "'"+sku.getId()+"'";
+                sb.append("<br>");
                 if (status == 2) {
                     sb.append("<a class='btn btn-success btn-sm' href='javascript:void(0)' onclick=\"skuEdit(" + sku_value + ")\"><i class='fa fa-pencil'></i>编辑</a>");
                     sb.append("&nbsp;&nbsp;");

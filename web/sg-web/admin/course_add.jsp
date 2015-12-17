@@ -296,7 +296,7 @@
                                                 <div class="form-group">
                                                     <label class="col-sm-2 control-label">标题</label>
                                                     <div class="col-sm-3">
-                                                        <textarea id="title" name="title" class="form-control" rows="5" style="resize:none;"></textarea>
+                                                        <textarea id="title" name="title" class="form-control" rows="3" style="resize:none;"></textarea>
                                                         <input id="course_id" name="course_id" type="hidden" value="0">
                                                         <input id="subjectId" name="subjectId" type="hidden" value="${subid}">
                                                     </div>
@@ -312,17 +312,19 @@
                                                     </div>
 
                                                 </div>
-                                                <div class="hr-line-dashed"></div>
+                                                <%--<div class="hr-line-dashed"></div>--%>
                                                 <div class="form-group">
                                                     <label class="col-sm-2 control-label">所属机构</label>
                                                     <div class="col-sm-3">
-                                                        <select id="institutionId" name="institutionId" class="form-control m-b" >
+                                                        <select id="institutionId" name="institutionId" class="form-control" >
                                                             <c:forEach items="${insts}" var="node">
                                                                 <option value="${node.id}">${node.name}</option>
                                                             </c:forEach>
                                                         </select>
                                                     </div>
-                                                    <label class="col-sm-2 control-label">售卖价格</label>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-sm-2 control-label">原价</label>
                                                     <div class="col-sm-3">
                                                         <input id="price" name="price" type="text" class="form-control">
                                                     </div>
@@ -338,17 +340,25 @@
                                                 <%--</select>--%>
                                                 <%--</div>--%>
                                                 <%--</div>--%>
-                                                <div class="hr-line-dashed"></div>
+                                                <%--<div class="hr-line-dashed"></div>--%>
                                                 <div class="form-group">
                                                     <label class="col-sm-2 control-label">年龄范围</label>
                                                     <div class="col-sm-3">
-                                                        <input id="minAge" name="minAge" type="text" class="form-control">
+                                                        <table>
+                                                            <tr>
+                                                                <td style="width: 40%;"><input id="minAge" name="minAge" type="text" class="form-control" style="width:80%;" ></td>
+                                                                <td style="width: 10%;align-content: center">至</td>
+                                                                <td style="width: 40%;"><input id="maxAge" name="maxAge" type="text" class="form-control" style="width:80%;" ></td>
+                                                                <td style="width: 10%;">岁</td>
+                                                            </tr>
+                                                        </table>
                                                     </div>
-                                                    <div class="col-sm-1">至</div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-sm-2 control-label">关键字</label>
                                                     <div class="col-sm-3">
-                                                        <input id="maxAge" name="maxAge" type="text" class="form-control">
+                                                        <input id="keyWord" name="keyWord" type="text" class="form-control" >
                                                     </div>
-                                                    <div class="col-sm-1">岁</div>
                                                 </div>
                                                 <%--<div class="hr-line-dashed"></div>--%>
                                                 <%--<div class="form-group">--%>
@@ -364,7 +374,7 @@
                                                         <%--<textarea id="flow" name="flow" class="form-control" rows="5"></textarea>--%>
                                                     <%--</div>--%>
                                                 <%--</div>--%>
-                                                <div class="hr-line-dashed"></div>
+                                                <%--<div class="hr-line-dashed"></div>--%>
                                                 <div class="form-group">
                                                     <label class="col-sm-2 control-label">特别提示</label>
                                                     <div class="col-sm-8">
@@ -598,7 +608,9 @@
                                                                         <div class="hr-line-dashed"></div>
                                                                         <div class="form-group">
                                                                             <div class="col-sm-4 col-sm-offset-4">
-                                                                                <button class="btn btn-primary" type="button" id="btn_sku_save" name="btn_sku_save">保存内容</button>
+                                                                                <div style="margin-bottom: 10px;margin-top: 30px;">
+                                                                                    <button class="btn btn-primary" type="button" id="btn_sku_save" name="btn_sku_save">保存内容</button>
+                                                                                    </div>
                                                                             </div>
                                                                         </div>
                                                                     </fieldset>

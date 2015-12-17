@@ -39,18 +39,22 @@ $(function () {
     });
 
     /**
-     * 添加课程包的基本信息
+     * 添加课程的基本信息
      */
     $('#btn_cour_save').click(function(){
         //var re = /^[-]{0,1}[0-9]{1,}$/;
         var course_id = $('#course_id').val();
         var title = $('#title').val();
         var cover = $('#cover').val();
+        var keyWord = $('#keyWord').val();
         if(title == null || title == ""){
             layer.alert('请填写标题信息！',3,'提示信息');
             return false;
         }else if(cover == null || cover == ""){
             layer.alert('请上传封面图！',3,'提示信息');
+            return false;
+        }else if(keyWord == null || keyWord == ""){
+            layer.alert('请填写关键字信息！',3,'提示信息');
             return false;
         }else{
             if(course_id == 0){

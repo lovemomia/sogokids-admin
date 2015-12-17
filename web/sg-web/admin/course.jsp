@@ -229,17 +229,24 @@
                     <table class="table table-striped table-bordered table-hover dataTables-example">
                         <thead>
                         <tr class="gradeX">
-                            <th>项目</th>
-                            <th>年龄</th>
-                            <th>状态</th>
-                            <th>添加时间</th>
+                            <th style="width: 30%">项目</th>
+                            <th style="width: 10%">年龄</th>
+                            <th style="width: 10%">状态</th>
+                            <%--<th>课程体系</th>--%>
                             <th>操作</th>
                         </tr>
                         </thead>
                         <tbody>
                         <c:forEach items="${entitys}" var="entity">
                             <tr>
-                                <td><img src="${filepath}${entity.cover}" style="width: 100px;height: 50px"/>&nbsp;&nbsp;&nbsp;&nbsp;<c:out value="${entity.title}"></c:out></td>
+                                <td>
+                                    <div class="chat">
+                                        <img src="${filepath}${entity.cover}" class="chat-avatar" style="width: 100px;height: 50px;"/>
+                                        <div>
+                                            <c:out value="${entity.title}"></c:out>
+                                        </div>
+                                    </div>
+                                </td>
                                 <td><c:out value="${entity.minAge}"></c:out>至<c:out value="${entity.maxAge}"></c:out>岁</td>
                                 <td>
                                     <c:choose>
@@ -253,19 +260,9 @@
                                             <font color="#ED5565"> 已下线</font>
                                         </c:otherwise>
                                     </c:choose>
-                                    <%--<c:choose>--%>
-                                        <%--<c:when test="${entity.status == 1}">--%>
-                                            <%--<font color="green">已上线</font>--%>
-                                        <%--</c:when>--%>
-                                        <%--<c:when test="${entity.status == 2}">--%>
-                                            <%--<font color="orange">未上线</font>--%>
-                                        <%--</c:when>--%>
-                                        <%--<c:otherwise>--%>
-                                            <%--<font color="red">已下线</font>--%>
-                                        <%--</c:otherwise>--%>
-                                    <%--</c:choose>--%>
                                 </td>
-                                <td><c:out value="${fn:substring(entity.addTime,0,19)}"></c:out></td>
+                                <%--<td><c:out value="${fn:substring(entity.addTime,0,19)}"></c:out></td>--%>
+                                <%--<td><c:out value="${entity.subTitle}"></c:out></td>--%>
                                 <td class="center">
                                     <c:choose>
                                         <c:when test="${entity.status == 1}">
