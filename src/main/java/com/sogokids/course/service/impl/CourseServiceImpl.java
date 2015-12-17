@@ -457,6 +457,23 @@ public class CourseServiceImpl implements CourseService {
         return entity;
     }
 
+    @Override
+    public Course formEntityTrial(HttpServletRequest request, Course entity) {
+
+        entity.setTitle(request.getParameter("title"));
+        entity.setCover(request.getParameter("cover"));
+        entity.setMinAge(Integer.parseInt(request.getParameter("minAge")));
+        entity.setMaxAge(Integer.parseInt(request.getParameter("maxAge")));
+        entity.setPrice(new BigDecimal(request.getParameter("price")));
+        entity.setGoal("");
+        entity.setFlow("");
+        entity.setTips(request.getParameter("tips"));
+        entity.setNotice("");
+        entity.setInstitutionId(Integer.parseInt(request.getParameter("institutionId")));
+
+        return entity;
+    }
+
     /**
      * 复制试听课程
      * @param req
