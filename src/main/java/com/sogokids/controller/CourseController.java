@@ -193,8 +193,8 @@ public class CourseController {
             List<Course> courses = courseService.getEntitysById(course_id);
             if (courses.size() > 0){
                 Course course = courses.get(0);
-                int st_course = courseService.update(courseService.formEntity(req, courses.get(0).getId()));
-                if (reDate > 0) {
+                int st_course = courseService.update(courseService.formEntityTrial(req, course));
+                if (st_course > 0) {
                     context.put(Quantity.RETURN_SUCCESS, 0);
                     context.put(Quantity.RETURN_MSG, "课程基本信息修改成功!");
                 }else{

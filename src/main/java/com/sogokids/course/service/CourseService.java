@@ -24,6 +24,7 @@ public interface CourseService {
     public int updateNotice(int course_id, String notice);
     public int delete(int id);
     public Course formEntity(HttpServletRequest request, int id);
+    public Course formEntityTrial(HttpServletRequest request, Course entity);
 
     //推荐课程
     public Map<String,Object> insert_setOneCourse(HttpServletRequest req);
