@@ -39,7 +39,7 @@ public class RegionController {
         Map<String, Object> context = new HashMap<String, Object>();
         context.put(Quantity.RETURN_ENTITY_LIST, regionService.getEntities(regionService.getEntitys()));
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
-        return new ModelAndView(JumpPage.REGION,context);
+        return new ModelAndView(adminUserService.isUserFunc(req,JumpPage.REGION),context);
     }
 
     @RequestMapping("/oper")

@@ -34,7 +34,7 @@ public class RoleFuncServiceImpl implements RoleFuncService {
 
     @Override
     public RoleFunc get(int id) {
-        String sql = "select Id,RoleId,FuncId from SG_RoleFunc where Id = ? ";
+        String sql = "select Id,RoleId,FuncId from SG_RoleFunc where Id = ? and Status > ? ";
         final Object [] params = new Object[]{id, Quantity.STATUS_ZERO};
         final RoleFunc entity = new RoleFunc();
         jdbcTemplate.query(sql,params, new RowCallbackHandler(){
@@ -86,9 +86,9 @@ public class RoleFuncServiceImpl implements RoleFuncService {
     }
 
     @Override
-    public int delete(int id) {
-        String sql = "delete from SG_RoleFunc where AdminId = ? ";
-        Object [] params = new Object[]{id};
+    public int delete(RoleFunc entity) {
+        String sql = "delete from SG_RoleFunc where RoleId = ? and FuncId = ? ";
+        Object [] params = new Object[]{entity.getRoleId(), entity.getFuncId()};
         int reData = jdbcTemplate.update(sql,params);
         return reData;
     }

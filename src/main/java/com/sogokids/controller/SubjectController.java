@@ -62,7 +62,7 @@ public class SubjectController {
         Map<String, Object> context = new HashMap<String, Object>();
         context.put(Quantity.RETURN_ENTITY_LIST, subjectService.getEntitys(Quantity.STATUS_ONE));
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
-        return new ModelAndView(JumpPage.SUB,context);
+        return new ModelAndView(adminUserService.isUserFunc(req,JumpPage.SUB),context);
     }
 
     @RequestMapping("/oper")

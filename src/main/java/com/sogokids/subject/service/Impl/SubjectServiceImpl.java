@@ -290,14 +290,7 @@ public class SubjectServiceImpl implements SubjectService {
 
     @Override
     public List<Course> getCoursesBySubjects(){
-        List<Course> courses = new ArrayList<Course>();
-        List<Subject> subjects = this.getEntitys(Quantity.STATUS_TWO);
-        if (subjects.size() > 0){
-            for(Subject subject : subjects){
-                courses.addAll(courseService.getEntitysBySubId(subject.getId()));
-            }
-        }
-        return courses;
+        return courseService.getCoursesTrialBySubId();
     }
 
 

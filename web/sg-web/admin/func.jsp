@@ -88,6 +88,7 @@
                         <li><a href="${ctx}/place/info.do?uid=${user.id}"><i class="fa fa-rebel"></i> <span class="nav-label">商户信息</span> </a></li>
                         <li><a href="${ctx}/inst/info.do?uid=${user.id}"><i class="fa fa-bank"></i> <span class="nav-label">机构信息</span> </a></li>
                         <li><a href="${ctx}/teacher/info.do?uid=${user.id}"><i class="fa fa-user-secret"></i> <span class="nav-label">师资力量</span></a></li>
+                        <li><a href="${ctx}/app/info.do?uid=${user.id}"><i class="fa fa-mobile-phone"></i> <span class="nav-label">APP版本</span></a></li>
                     </ul>
                 </li>
                 <li><a href="${ctx}/coupon/info.do?uid=${user.id}"><i class="fa fa-cc-paypal"></i> <span class="nav-label">优惠设置</span></a></li>
@@ -224,7 +225,6 @@
                         <thead>
                         <tr class="gradeX">
                             <th>ID</th>
-                            <th>权限编号</th>
                             <th>权限名称</th>
                             <th>权限描述</th>
                             <th>添加时间</th>
@@ -235,7 +235,6 @@
                         <c:forEach items="${entitys}" var="entity">
                             <tr>
                                 <td><c:out value="${entity.id}"></c:out></td>
-                                <td><c:out value="${entity.code}"></c:out></td>
                                 <td><c:out value="${entity.name}"></c:out></td>
                                 <td><c:out value="${entity.desc}"></c:out></td>
                                 <td><c:out value="${fn:substring(entity.addTime,0,19)}"></c:out></td>

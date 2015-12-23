@@ -15,6 +15,7 @@ public interface CourseSkuService {
     public List<CourseSku> getCourseSkuById(int course_id, int parentId);
     public CourseSku get(int id);
     public int insert(CourseSku entity);
+    public int insertKey(CourseSku courseSku);
     public int update(CourseSku entity);
     public int delete(int id);
     public CourseSku formEntity(HttpServletRequest request, int course_id, int id);

@@ -106,4 +106,43 @@ public class RoleServiceImpl implements RoleService{
 
         return entity;
     }
+
+    @Override
+    public List<Role> getYList(int uid) {
+        List<Role> reData = new ArrayList<Role>();
+        String sql = "select * from sogokids.SG_Role where status > 0 and Id in (select b.RoleId from sogokids.SG_Admin a,sogokids.SG_AdminRole b where a.status > 0 and a.Id = b.AdminId and a.Id = ? )  ";
+        Object [] params = new Object[]{uid};
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sql,params);
+        if(list.size() > 0){
+            for (int i = 0; i < list.size(); i++) {
+                Role entity = new Role();
+                entity.setId(Integer.parseInt(list.get(i).get("Id").toString()));
+                entity.setName(list.get(i).get("Name").toString());
+                entity.setDesc(list.get(i).get("Desc").toString());
+                reData.add(entity);
+            }
+        }
+
+        return reData;
+    }
+
+
+    @Override
+    public List<Role> getWList(int uid) {
+        List<Role> reData = new ArrayList<Role>();
+        String sql = "select * from sogokids.SG_Role where status > 0 and Id not in (select b.RoleId from sogokids.SG_Admin a,sogokids.SG_AdminRole b where a.status > 0 and a.Id = b.AdminId and a.Id = ? ) ";
+        Object [] params = new Object[]{uid};
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sql,params);
+        if(list.size() > 0){
+            for (int i = 0; i < list.size(); i++) {
+                Role entity = new Role();
+                entity.setId(Integer.parseInt(list.get(i).get("Id").toString()));
+                entity.setName(list.get(i).get("Name").toString());
+                entity.setDesc(list.get(i).get("Desc").toString());
+                reData.add(entity);
+            }
+        }
+
+        return reData;
+    }
 }

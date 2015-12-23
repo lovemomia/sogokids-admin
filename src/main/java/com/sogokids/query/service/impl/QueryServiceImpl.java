@@ -66,9 +66,11 @@ public class QueryServiceImpl implements QueryService {
         List<Course> reData = new ArrayList<Course>();
         String where = "where Status > 0 and ParentId = 0 ";
         if (!startDate.equals("") && startDate != null){
+            startDate = startDate + " 00:00:00";
             where = where + " and AddTime > " + "'" + startDate + "'";
         }
         if (!endDate.equals("") && endDate != null){
+            endDate = endDate + " 23:59:59";
             where = where + " and AddTime < " + "'" + endDate + "'";
         }
         if (!course_title.equals("") && course_title != null){

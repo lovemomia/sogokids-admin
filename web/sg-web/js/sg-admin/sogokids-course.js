@@ -107,30 +107,27 @@ $(function () {
     });
 
     $('#btn_sku_save').click(function () {
+        var re = /^[-]{0,1}[0-9]{1,}$/;
         var courseId = $('#course_id').val();
         var stock = $('#stock').val();
         var startTime = $('#startTime').val();
         var endTime = $('#endTime').val();
-        var deadline = $('#deadline').val();
         var adult = $('#adult').val();
         var child = $('#child').val();
         if (courseId == 0) {
             layer.alert('请先保存基本信息！', 5, '提示信息');
             return false;
-        }else if(stock == null || stock == ""){
-            layer.alert('请填写库存信息！',3,'提示信息');
+        }else if(stock == null || stock == "" || !re.test(stock)){
+            layer.alert('没有填写库存信息或格式不正确(只能填写整数值)！',3,'提示信息');
+            return false;
+        }else if(adult == null || adult == "" || child == null || child == "" || !re.test(adult) || !re.test(child) ){
+            layer.alert('没有填写成人或者儿童数量信息或格式不正确(只能填写整数值)！',3,'提示信息');
             return false;
         }else if(startTime == null || startTime == ""){
             layer.alert('请填写开始时间信息！',3,'提示信息');
             return false;
         }else if(endTime == null || endTime == ""){
             layer.alert('请填写结束时间信息！',3,'提示信息');
-            return false;
-        }else if(deadline == null || deadline == ""){
-            layer.alert('请填写下线时间信息！',3,'提示信息');
-            return false;
-        }else if(adult == null || adult == "" || child == null || child == "" ){
-            layer.alert('请填写成人或者儿童数量信息！',3,'提示信息');
             return false;
         } else {
             $.post("/course/addSku.do?courseId=" + courseId, $("#sku_form").serialize(),
@@ -404,10 +401,9 @@ function cancelSku(id){
  */
 function clareSku(){
     $('#sku_id').val(0);
-    $('#stock').val(20);
+    $('#stock').val(10);
     $('#startTime').val("");
     $('#endTime').val("");
-    $('#deadline').val("");
     $('#adult').val("");
     $('#child').val("");
 }
@@ -422,7 +418,6 @@ function valSku(attrs){
     $('#stock').val(sku.stock);
     $('#startTime').val(sku.startTime);
     $('#endTime').val(sku.endTime);
-    $('#deadline').val(sku.deadline);
     $('#adult').val(sku.adult);
     $('#child').val(sku.child);
 }

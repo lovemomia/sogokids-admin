@@ -11,6 +11,7 @@ public class Icon {
     private String action;
     private int weight;
     private int platform;
+    private String version;
     private int status;
     private String addTime;
     private String updateTime;
@@ -71,6 +72,14 @@ public class Icon {
 
     public void setPlatform(int platform) {
         this.platform = platform;
+    }
+
+    public String getVersion() {
+        return version;
+    }
+
+    public void setVersion(String version) {
+        this.version = version;
     }
 
     public int getStatus() {

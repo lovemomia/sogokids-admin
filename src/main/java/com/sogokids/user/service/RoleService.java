@@ -18,4 +18,7 @@ public interface RoleService {
 
     public Role formEntity(HttpServletRequest req,int id);
 
+    public List<Role> getYList(int uid);
+    public List<Role> getWList(int uid);
+
 }

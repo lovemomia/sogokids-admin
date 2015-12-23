@@ -11,16 +11,22 @@ import com.sogokids.subject.model.Subject;
 import com.sogokids.subject.service.SubjectService;
 import com.sogokids.system.model.Place;
 import com.sogokids.system.service.PlaceService;
+import com.sogokids.utils.util.DateUtil;
 import com.sogokids.utils.util.Quantity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowCallbackHandler;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -202,6 +208,43 @@ public class CourseSkuServiceImpl implements CourseSkuService {
     }
 
     @Override
+    public int insertKey(CourseSku courseSku) {
+        final CourseSku entity = courseSku;
+        final String sql = "insert into SG_CourseSku(CourseId,ParentId,StartTime,EndTime,Deadline,Stock,UnlockedStock,LockedStock,PlaceId,Adult,Child,Status,AddTime) value(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW()) ";
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        int reData = 0;
+        try {
+            reData = jdbcTemplate.update(new PreparedStatementCreator() {
+                public java.sql.PreparedStatement createPreparedStatement(Connection conn) throws SQLException {
+
+                    int i = 0;
+                    java.sql.PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+                    ps.setInt(++i, entity.getCourseId());
+                    ps.setInt(++i, entity.getParentId());
+                    ps.setString(++i, entity.getStartTime());
+                    ps.setString(++i, entity.getEndTime());
+                    ps.setString(++i, entity.getDeadline());
+                    ps.setInt(++i, entity.getStock());
+                    ps.setInt(++i, entity.getUnlockedStock());
+                    ps.setInt(++i, entity.getLockedStock());
+                    ps.setInt(++i, entity.getPlaceId());
+                    ps.setInt(++i, entity.getAdult());
+                    ps.setInt(++i, entity.getChild());
+                    ps.setInt(++i, Quantity.STATUS_ONE);
+
+                    return ps;
+                }
+            }, keyHolder);
+        }catch (Exception _ex){
+            _ex.printStackTrace();
+        }
+        if (reData > 0) {
+            reData = keyHolder.getKey().intValue();
+        }
+        return reData;
+    }
+
+    @Override
     public int update(CourseSku entity) {
         String sql = "update SG_CourseSku set CourseId = ?, StartTime = ?, EndTime = ?, Deadline = ?, Stock = ?, UnlockedStock = ?, LockedStock = ?, PlaceId = ?, Adult = ?, Child = ? where Id = ? ";
         Object [] params = new Object[]{entity.getCourseId(), entity.getStartTime(), entity.getEndTime(), entity.getDeadline(), entity.getStock(), entity.getUnlockedStock(), entity.getLockedStock(), entity.getPlaceId(), entity.getAdult(), entity.getChild(), entity.getId()};
@@ -234,7 +277,7 @@ public class CourseSkuServiceImpl implements CourseSkuService {
         entity.setParentId(Quantity.STATUS_ZERO);
         entity.setStartTime(request.getParameter("startTime"));
         entity.setEndTime(request.getParameter("endTime"));
-        entity.setDeadline(request.getParameter("deadline"));
+        entity.setDeadline(DateUtil.getDateDay(request.getParameter("startTime")));
         int stock = Integer.parseInt(request.getParameter("stock"));
         entity.setStock(stock);
         if (id > 0) {
@@ -273,17 +316,17 @@ public class CourseSkuServiceImpl implements CourseSkuService {
                 sb.append("结束时间:"+sku.getEndTime()+"<br>");
                 sb.append("报名截止:"+sku.getDeadline()+"<br>");
                 sb.append("库存:"+sku.getStock()+"<br>");
-
+                sb.append("<br>");
                 String sku_value = "'"+sku.getId()+"'";
                 if (status == 2) {
                     sb.append("<a class='btn btn-success btn-sm' href='javascript:void(0)' onclick=\"skuEdit(" + sku_value + ")\"><i class='fa fa-pencil'></i>编辑</a>");
                     sb.append("&nbsp;&nbsp;");
                     sb.append("<a class='btn btn-danger btn-sm' href='javascript:void(0)' onclick=\"skuDel(" + sku_value + ")\"><i class='fa fa-trash'></i>删除</a>");
-                    sb.append("&nbsp;&nbsp;");
-                    sb.append("<a class='btn btn-primary btn-sm' data-toggle=\"modal\" data-target=\"#myQz\" href='javascript:void(0)' onclick=\"createQz(" + sku_value + ")\"><i class='fa fa-user-plus'></i>创建群组</a>");
+//                    sb.append("&nbsp;&nbsp;");
+//                    sb.append("<a class='btn btn-primary btn-sm' data-toggle=\"modal\" data-target=\"#myQz\" href='javascript:void(0)' onclick=\"createQz(" + sku_value + ")\"><i class='fa fa-user-plus'></i>创建群组</a>");
                 }else{
-                    sb.append("<a class='btn btn-primary btn-sm' data-toggle=\"modal\" data-target=\"#myQz\" href='javascript:void(0)' onclick=\"createQz(" + sku_value + ")\"><i class='fa fa-user-plus'></i>创建群组</a>");
-                    sb.append("&nbsp;&nbsp;");
+//                    sb.append("<a class='btn btn-primary btn-sm' data-toggle=\"modal\" data-target=\"#myQz\" href='javascript:void(0)' onclick=\"createQz(" + sku_value + ")\"><i class='fa fa-user-plus'></i>创建群组</a>");
+//                    sb.append("&nbsp;&nbsp;");
                     sb.append("<a class='btn btn-danger btn-sm' href='javascript:void(0)' onclick=\"cancelSku(" + sku_value + ")\"><i class='fa fa-minus-circle'></i>取消</a>");
                 }
                 sb.append(p_end);

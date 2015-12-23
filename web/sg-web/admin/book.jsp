@@ -91,6 +91,7 @@
                         <li><a href="${ctx}/place/info.do?uid=${user.id}"><i class="fa fa-rebel"></i> <span class="nav-label">商户信息</span> </a></li>
                         <li><a href="${ctx}/inst/info.do?uid=${user.id}"><i class="fa fa-bank"></i> <span class="nav-label">机构信息</span> </a></li>
                         <li><a href="${ctx}/teacher/info.do?uid=${user.id}"><i class="fa fa-user-secret"></i> <span class="nav-label">师资力量</span></a></li>
+                        <li><a href="${ctx}/app/info.do?uid=${user.id}"><i class="fa fa-mobile-phone"></i> <span class="nav-label">APP版本</span></a></li>
                     </ul>
                 </li>
                 <li><a href="${ctx}/coupon/info.do?uid=${user.id}"><i class="fa fa-cc-paypal"></i> <span class="nav-label">优惠设置</span></a></li>
@@ -229,14 +230,21 @@
                             <th>项目</th>
                             <th>年龄段</th>
                             <th>状态</th>
-                            <th>添加时间</th>
+                            <th>课程体系</th>
                             <th>操作</th>
                         </tr>
                         </thead>
                         <tbody>
                         <c:forEach items="${entitys}" var="entity">
                             <tr>
-                                <td><img id="img_a" src="${filepath}${entity.cover}" style="width: 100px;height: 50px"/>&nbsp;&nbsp;&nbsp;&nbsp;<c:out value="${entity.title}"></c:out></td>
+                                <td>
+                                    <div class="chat">
+                                        <img id="img_a" src="${filepath}${entity.cover}" class="chat-avatar" style="width: 100px;height: 50px"/>
+                                        <div>
+                                            <c:out value="${entity.title}"></c:out>
+                                        </div>
+                                    </div>
+                                </td>
                                 <td><c:out value="${entity.minAge}"></c:out>至<c:out value="${entity.maxAge}"></c:out>岁</td>
                                 <td>
                                     <c:choose>
@@ -251,7 +259,7 @@
                                         </c:otherwise>
                                     </c:choose>
                                 </td>
-                                <td><c:out value="${fn:substring(entity.addTime,0,19)}"></c:out></td>
+                                <td><c:out value="${entity.subTitle}"></c:out></td>
                                 <td class="center">
                                     <c:choose>
                                         <c:when test="${entity.status == 1}">

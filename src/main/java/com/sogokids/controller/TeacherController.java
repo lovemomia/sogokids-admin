@@ -43,7 +43,7 @@ public class TeacherController {
         Map<String, Object> context = new HashMap<String, Object>();
         context.put(Quantity.RETURN_ENTITY_LIST, teacherService.getEntitys());
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
-        return new ModelAndView(JumpPage.TEACHER,context);
+        return new ModelAndView(adminUserService.isUserFunc(req,JumpPage.TEACHER),context);
     }
 
     @RequestMapping("/query")

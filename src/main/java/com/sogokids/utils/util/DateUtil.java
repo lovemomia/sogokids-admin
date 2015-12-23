@@ -161,6 +161,23 @@ public class DateUtil {
     }
 
     /**
+     * 获取当前日期前一天的0点格式
+     * @return
+     */
+    public static String getDateDay(String dateTime){
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = StrToDate(dateTime);
+        Calendar calendar   =   new GregorianCalendar();
+        calendar.setTime(date);
+        calendar.add(calendar.DAY_OF_MONTH,-1);
+        date = calendar.getTime();
+
+        String reStr = format.format(date) + " 00:00:00";
+
+        return reStr;
+    }
+
+    /**
      * 比较两个日期之间的大小
      *
      * @param d1

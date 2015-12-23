@@ -82,15 +82,56 @@ $(document).ready(function () {
     //});
 
     $('#btn_cour_next_save').click(function(){
-        var pid = $('#course_id').val();
-        if(pid == 0){
-            layer.alert('基本信息不存在,无法进行下一步！',5,'提示信息');
+        //var pid = $('#course_id').val();
+        //if(pid == 0){
+        //    layer.alert('基本信息不存在,无法进行下一步！',5,'提示信息');
+        //    return false;
+        //}else{
+        //    $('#tab_li_1').attr('class','');
+        //    $('#tab-1').hide();
+        //    $('#tab_li_2').attr('class','active');
+        //    $('#tab-2').show();
+        //}
+        var course_id = $('#course_id').val();
+        var title = $('#title').val();
+        var cover = $('#cover').val();
+        var keyWord = $('#keyWord').val();
+        if(title == null || title == ""){
+            layer.alert('请填写标题信息！',3,'提示信息');
+            return false;
+        }else if(cover == null || cover == ""){
+            layer.alert('请上传封面图！',3,'提示信息');
+            return false;
+        }else if(keyWord == null || keyWord == ""){
+            layer.alert('请填写关键字信息！',3,'提示信息');
             return false;
         }else{
-            $('#tab_li_1').attr('class','');
-            $('#tab-1').hide();
-            $('#tab_li_2').attr('class','active');
-            $('#tab-2').show();
+            if(course_id == 0){
+                $.post("/course/add.do", $("#course_form").serialize(),
+                    function(data){
+                        if(data.success == 0){
+                            $("#course_id").attr("value",data.courseId);
+                            $('#tab_li_1').attr('class','');
+                            $('#tab-1').hide();
+                            $('#tab_li_2').attr('class','active');
+                            $('#tab-2').show();
+                        }else{
+                            layer.alert(data.msg,10,'提示信息');
+                        }
+                    }, "json");
+            }else{
+                $.post("/course/edit.do", $("#course_form").serialize(),
+                    function(data){
+                        if(data.success == 0){
+                            $('#tab_li_1').attr('class','');
+                            $('#tab-1').hide();
+                            $('#tab_li_2').attr('class','active');
+                            $('#tab-2').show();
+                        }else{
+                            layer.alert(data.msg,10,'提示信息');
+                        }
+                    }, "json");
+            }
         }
     });
 
@@ -107,7 +148,7 @@ $(document).ready(function () {
         }
     });
 
-    $('#btn_teacher_next_save').click(function(){
+    $('#btn_tw_next_save').click(function(){
         var pid = $('#course_id').val();
         if(pid == 0){
             layer.alert('基本信息不存在,无法进行下一步！',5,'提示信息');
@@ -120,7 +161,7 @@ $(document).ready(function () {
         }
     });
 
-    $('#btn_sku_next_save').click(function(){
+    $('#btn_teacher_next_save').click(function(){
         var pid = $('#course_id').val();
         if(pid == 0){
             layer.alert('基本信息不存在,无法进行下一步！',5,'提示信息');

@@ -103,7 +103,7 @@ public class CourseController {
         context.put(Quantity.RETURN_ENTITY_LIST, courseService.getCoursesBySubId(subid));
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
         context.put("subid", subid);
-        return new ModelAndView(JumpPage.COURSE,context);
+        return new ModelAndView(adminUserService.isUserFunc(req,JumpPage.COURSE),context);
     }
 
     @RequestMapping("/oper")
@@ -421,19 +421,45 @@ public class CourseController {
             }
         }else{
             if (skuId == 0) {
-                reDate = courseSkuService.insert(courseSkuService.formEntity(req, courseId, Quantity.STATUS_ZERO));
+                List<CourseTeacher> courseTeachers = courseTeacherService.getCourseTeachers(courseId);
+                if (courseTeachers.size() > 0){
+                    reDate = courseSkuService.insertKey(courseSkuService.formEntity(req, courseId, Quantity.STATUS_ZERO));
+                    if (reDate > 0){
+                        QzResult qzResult = courseService.createQz(req,courseId,reDate);
+                        if (qzResult.getErrno() == 0){
+                            if (qzResult.getData().equals("true")) {
+                                context.put(Quantity.RETURN_SUCCESS, 0);
+                                context.put(Quantity.RETURN_MSG, "创建课程表和群组成功!");
+                            }else{
+                                context.put(Quantity.RETURN_SUCCESS, 1);
+                                context.put(Quantity.RETURN_MSG, "创建群组失败!");
+                            }
+                        }else if (qzResult.getErrno() == -1){
+                            context.put(Quantity.RETURN_SUCCESS, 1);
+                            context.put(Quantity.RETURN_MSG, "创建群组失败,无讲师信息!");
+                        }else{
+                            context.put(Quantity.RETURN_SUCCESS, 1);
+                            context.put(Quantity.RETURN_MSG, "创建群组失败!");
+                        }
+                    }else{
+                        context.put(Quantity.RETURN_SUCCESS, 1);
+                        context.put(Quantity.RETURN_MSG, "课程sku信息保存失败!");
+                    }
+                }else{
+                    context.put(Quantity.RETURN_SUCCESS, 1);
+                    context.put(Quantity.RETURN_MSG, "创建群组失败,无讲师信息!");
+                }
             }else{
                 reDate = courseSkuService.update(courseSkuService.formEntity(req, courseId, skuId));
-            }
-            if (reDate > 0) {
-                context.put(Quantity.RETURN_SUCCESS, 0);
-                context.put(Quantity.RETURN_MSG, "课程sku信息保存成功!");
-            } else {
-                context.put(Quantity.RETURN_SUCCESS, 1);
-                context.put(Quantity.RETURN_MSG, "课程sku信息保存失败!");
+                if (reDate > 0) {
+                    context.put(Quantity.RETURN_SUCCESS, 0);
+                    context.put(Quantity.RETURN_MSG, "课程sku信息保存成功!");
+                } else {
+                    context.put(Quantity.RETURN_SUCCESS, 1);
+                    context.put(Quantity.RETURN_MSG, "课程sku信息保存失败!");
+                }
             }
         }
-
         context.put("skuHtml",courseSkuService.getSkuHtml(courseId));
         Writer writer = null;
         try {
@@ -833,41 +859,41 @@ public class CourseController {
         return null;
     }
 
-    @RequestMapping("/createQz")
-    public ModelAndView createQz(@RequestParam("courseId") int courseId,HttpServletRequest req, HttpServletResponse rsp){
-        rsp.setContentType("text/html; charset=UTF-8");
-        Map<String, Object> context = new HashMap<String, Object>();
-
-        QzResult qzResult = courseService.createQz(req,courseId);
-
-        if (qzResult.getErrno() == 0){
-            if (qzResult.getData().equals("true")) {
-                context.put(Quantity.RETURN_SUCCESS, 0);
-                context.put(Quantity.RETURN_MSG, "创建群组成功!");
-            }else{
-                context.put(Quantity.RETURN_SUCCESS, 1);
-                context.put(Quantity.RETURN_MSG, "创建群组失败!");
-            }
-        }else if (qzResult.getErrno() == -1){
-            context.put(Quantity.RETURN_SUCCESS, 1);
-            context.put(Quantity.RETURN_MSG, "创建群组失败,无讲师信息!");
-        }else{
-            context.put(Quantity.RETURN_SUCCESS, 1);
-            context.put(Quantity.RETURN_MSG, "创建群组失败!");
-        }
-        Writer writer = null;
-        try {
-            writer = rsp.getWriter();
-            writer.write(JSONObject.toJSONString(context));
-            writer.flush();
-            writer.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            IOUtils.closeQuietly(writer);
-        }
-        return null;
-    }
+//    @RequestMapping("/createQz")
+//    public ModelAndView createQz(@RequestParam("courseId") int courseId,HttpServletRequest req, HttpServletResponse rsp){
+//        rsp.setContentType("text/html; charset=UTF-8");
+//        Map<String, Object> context = new HashMap<String, Object>();
+//
+//        QzResult qzResult = courseService.createQz(req,courseId);
+//
+//        if (qzResult.getErrno() == 0){
+//            if (qzResult.getData().equals("true")) {
+//                context.put(Quantity.RETURN_SUCCESS, 0);
+//                context.put(Quantity.RETURN_MSG, "创建群组成功!");
+//            }else{
+//                context.put(Quantity.RETURN_SUCCESS, 1);
+//                context.put(Quantity.RETURN_MSG, "创建群组失败!");
+//            }
+//        }else if (qzResult.getErrno() == -1){
+//            context.put(Quantity.RETURN_SUCCESS, 1);
+//            context.put(Quantity.RETURN_MSG, "创建群组失败,无讲师信息!");
+//        }else{
+//            context.put(Quantity.RETURN_SUCCESS, 1);
+//            context.put(Quantity.RETURN_MSG, "创建群组失败!");
+//        }
+//        Writer writer = null;
+//        try {
+//            writer = rsp.getWriter();
+//            writer.write(JSONObject.toJSONString(context));
+//            writer.flush();
+//            writer.close();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        } finally {
+//            IOUtils.closeQuietly(writer);
+//        }
+//        return null;
+//    }
 
 
     @RequestMapping("/preview")

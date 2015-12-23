@@ -6,7 +6,7 @@ package com.sogokids.user.model;
 public class Func {
 
     private int id;
-    private String code;
+    private String link;
     private String name;
     private String desc;
     private int status;
@@ -29,12 +29,12 @@ public class Func {
         this.name = name;
     }
 
-    public String getCode() {
-        return code;
+    public String getLink() {
+        return link;
     }
 
-    public void setCode(String code) {
-        this.code = code;
+    public void setLink(String link) {
+        this.link = link;
     }
 
     public String getDesc() {

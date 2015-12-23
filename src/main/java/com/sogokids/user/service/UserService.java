@@ -22,5 +22,6 @@ public interface UserService {
 
     public List<Func> getMenuFunc(int adminId);
 
-    public String getMenus(List<Func> func_ls,String menu_code);
+    public String isUserFunc(HttpServletRequest req,String JumpStr);
+
 }
