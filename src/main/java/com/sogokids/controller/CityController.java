@@ -39,7 +39,7 @@ public class CityController {
         Map<String, Object> context = new HashMap<String, Object>();
         context.put(Quantity.RETURN_ENTITY_LIST, cityService.getEntitys());
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
-        return new ModelAndView(JumpPage.CITY,context);
+        return new ModelAndView(adminUserService.isUserFunc(req,JumpPage.CITY),context);
     }
 
     @RequestMapping("/oper")

@@ -14,7 +14,7 @@ public interface RoleFuncService {
     public List<RoleFunc> getRoleFunc(int roleId);
     public int insert(RoleFunc entity);
     public int update(RoleFunc entity);
-    public int delete(int id);
+    public int delete(RoleFunc entity);
 
     public RoleFunc formEntity(int funcId,int roleId);
 }

@@ -61,7 +61,7 @@ public class SetOneController {
         Map<String, Object> context = new HashMap<String, Object>();
         context.put(Quantity.RETURN_ENTITY_LIST, courseRecommendService.getCourses());
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
-        return new ModelAndView(JumpPage.SET_ONE,context);
+        return new ModelAndView(adminUserService.isUserFunc(req,JumpPage.SET_ONE),context);
     }
 
     @RequestMapping("/oper")
@@ -282,6 +282,18 @@ public class SetOneController {
             IOUtils.closeQuietly(writer);
         }
         return null;
+    }
+
+    @RequestMapping("/move")
+    public ModelAndView moveWeight(@RequestParam("uid") int uid,HttpServletRequest req){
+        Map<String, Object> context = new HashMap<String, Object>();
+
+        courseRecommendService.update_weight(req);
+
+        context.put(Quantity.RETURN_ENTITY_LIST, courseRecommendService.getCourses());
+        context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+
+        return new ModelAndView(JumpPage.SET_ONE,context);
     }
 
 }

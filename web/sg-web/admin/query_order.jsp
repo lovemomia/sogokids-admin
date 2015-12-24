@@ -95,6 +95,7 @@
                         <li><a href="${ctx}/place/info.do?uid=${user.id}"><i class="fa fa-rebel"></i> <span class="nav-label">商户信息</span> </a></li>
                         <li><a href="${ctx}/inst/info.do?uid=${user.id}"><i class="fa fa-bank"></i> <span class="nav-label">机构信息</span> </a></li>
                         <li><a href="${ctx}/teacher/info.do?uid=${user.id}"><i class="fa fa-user-secret"></i> <span class="nav-label">师资力量</span></a></li>
+                        <li><a href="${ctx}/app/info.do?uid=${user.id}"><i class="fa fa-mobile-phone"></i> <span class="nav-label">APP版本</span></a></li>
                     </ul>
                 </li>
                 <li><a href="${ctx}/coupon/info.do?uid=${user.id}"><i class="fa fa-cc-paypal"></i> <span class="nav-label">优惠设置</span></a></li>
@@ -269,7 +270,7 @@
                     <table class="table table-striped table-bordered table-hover dataTables-example">
                         <thead>
                         <tr class="gradeX">
-                            <th width="5%">订单号</th>
+                            <%--<th width="5%">订单号</th>--%>
                             <th width="10%">用户昵称</th>
                             <th width="10%">用户电话</th>
                             <th width="10%">订单金额</th>
@@ -281,29 +282,23 @@
                         </thead>
                         <tbody>
                             <c:forEach items="${orders}" var="entity">
-                                    <td><c:out value="${entity.id}"></c:out></td>
+                                    <%--<td><c:out value="${entity.id}"></c:out></td>--%>
                                     <td><c:out value="${entity.customer.nickName}"></c:out></td>
                                     <td><c:out value="${entity.customer.mobile}"></c:out></td>
                                     <td><c:out value="${entity.priceSum}"></c:out></td>
                                     <td>
                                         <c:choose>
-                                            <c:when test="${entity.status == 1}">
-                                                已下单未付款
+                                            <c:when test="${entity.status == 1 || entity.status == 2}">
+                                                未付款
                                             </c:when>
-                                            <c:when test="${entity.status == 2}">
-                                                准备付款
-                                            </c:when>
-                                            <c:when test="${entity.status == 3}">
+                                            <c:when test="${entity.status == 3 || entity.status == 4}">
                                                 已付款
                                             </c:when>
-                                            <c:when test="${entity.status == 4}">
-                                                已完成
-                                            </c:when>
                                             <c:when test="${entity.status == 5}">
-                                                已申请退款
+                                                退款中
                                             </c:when>
                                             <c:otherwise>
-                                                已退款完成
+                                                已退款
                                             </c:otherwise>
                                         </c:choose>
                                     </td>

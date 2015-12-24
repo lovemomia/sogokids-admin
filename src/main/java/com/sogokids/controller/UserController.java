@@ -1,7 +1,10 @@
 package com.sogokids.controller;
 
 
+import com.sogokids.user.model.AdminRole;
 import com.sogokids.user.model.User;
+import com.sogokids.user.service.AdminRoleService;
+import com.sogokids.user.service.RoleService;
 import com.sogokids.user.service.UserService;
 import com.sogokids.utils.util.JumpPage;
 import com.sogokids.utils.util.Quantity;
@@ -24,6 +27,12 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private RoleService roleService;
+
+    @Autowired
+    private AdminRoleService adminRoleService;
 
 
     @RequestMapping("/login")
@@ -66,15 +75,21 @@ public class UserController {
         Map<String, Object> context = new HashMap<String, Object>();
         context.put(Quantity.RETURN_ENTITY_LIST, userService.getEntityList(Quantity.WHERE));
         context.put(Quantity.RETURN_USER, userService.get(uid));
-        return new ModelAndView(JumpPage.USER,context);
+        return new ModelAndView(userService.isUserFunc(req,JumpPage.USER),context);
     }
 
     @RequestMapping("/oper")
     public ModelAndView operation(@RequestParam("uid") int uid,@RequestParam("id") int id, HttpServletRequest req){
         String reStr = JumpPage.USER_EDIT;
         Map<String, Object> context = new HashMap<String, Object>();
-        if (id == 0){
+        int mark = Integer.parseInt(req.getParameter("mark"));
+        if (mark == 0){
             reStr = JumpPage.USER_ADD;
+        }else if(mark == 3){
+            context.put("y_list",roleService.getYList(id));
+            context.put("w_list",roleService.getWList(id));
+            context.put(Quantity.RETURN_ENTITY,userService.get(id));
+            reStr = JumpPage.USER_ROLE;
         }else{
             context.put(Quantity.RETURN_ENTITY,userService.get(id));
         }
@@ -131,5 +146,38 @@ public class UserController {
         return new ModelAndView(JumpPage.USER,context);
     }
 
+    @RequestMapping("/userRole")
+    public ModelAndView editRole(@RequestParam("uid") int uid,@RequestParam("mark") int mark, HttpServletRequest req){
+
+        Map<String, Object> context = new HashMap<String, Object>();
+
+        int user_id = 0;
+        String [] ids = null;
+        if (mark == 1){
+            ids = req.getParameterValues("y_role");
+            user_id = Integer.parseInt(req.getParameter("y_userId"));
+        }else{
+            ids = req.getParameterValues("w_role");
+            user_id = Integer.parseInt(req.getParameter("w_userId"));
+        }
+
+        for (int i = 0; i < ids.length; i++) {
+            int role_id = Integer.parseInt(ids[i]);
+            AdminRole entity = new AdminRole();
+            entity.setAdminId(user_id);
+            entity.setRoleId(role_id);
+            if (mark == 1) {
+                adminRoleService.delete(entity);
+            }else{
+                adminRoleService.insert(entity);
+            }
+        }
+
+        context.put("y_list",roleService.getYList(user_id));
+        context.put("w_list",roleService.getWList(user_id));
+        context.put(Quantity.RETURN_ENTITY,userService.get(user_id));
+        context.put(Quantity.RETURN_USER, userService.get(uid));
+        return new ModelAndView(JumpPage.USER_ROLE,context);
+    }
 
 }

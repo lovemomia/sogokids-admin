@@ -102,6 +102,7 @@
                         <li><a href="${ctx}/place/info.do?uid=${user.id}"><i class="fa fa-rebel"></i> <span class="nav-label">商户信息</span> </a></li>
                         <li><a href="${ctx}/inst/info.do?uid=${user.id}"><i class="fa fa-bank"></i> <span class="nav-label">机构信息</span> </a></li>
                         <li><a href="${ctx}/teacher/info.do?uid=${user.id}"><i class="fa fa-user-secret"></i> <span class="nav-label">师资力量</span></a></li>
+                        <li><a href="${ctx}/app/info.do?uid=${user.id}"><i class="fa fa-mobile-phone"></i> <span class="nav-label">APP版本</span></a></li>
                     </ul>
                 </li>
                 <li><a href="${ctx}/coupon/info.do?uid=${user.id}"><i class="fa fa-cc-paypal"></i> <span class="nav-label">优惠设置</span></a></li>
@@ -281,16 +282,23 @@
                                             <table class="table table-striped table-bordered table-hover dataTables-example">
                                                 <thead>
                                                 <tr class="gradeX">
-                                                    <th>项目</th>
-                                                    <th>开课时间</th>
-                                                    <th>上课地点</th>
+                                                    <th style="width: 30%">项目</th>
+                                                    <th style="width: 20%">开课时间</th>
+                                                    <th style="width: 20%">上课地点</th>
                                                     <th>操作</th>
                                                 </tr>
                                                 </thead>
                                                 <tbody>
                                                 <c:forEach items="${courseTimeQuery}" var="entity">
                                                     <tr>
-                                                        <td><img id="img_a" src="${filepath}${entity.courseCover}" style="width: 100px;height: 50px"/>&nbsp;&nbsp;&nbsp;&nbsp;<c:out value="${entity.courseTitle}"></c:out></td>
+                                                        <td>
+                                                            <div class="chat">
+                                                                <img id="img_a" src="${filepath}${entity.courseCover}" class="chat-avatar" style="width: 100px;height: 50px"/>
+                                                                <div>
+                                                                    <c:out value="${entity.courseTitle}"></c:out>
+                                                                </div>
+                                                            </div>
+                                                        </td>
                                                         <td><c:out value="${entity.skuStartTime}"></c:out></td>
                                                         <td><c:out value="${entity.placeName}"></c:out></td>
                                                         <td><a href="${ctx}/query/queryDetail.do?uid=${user.id}&id=${entity.courseId}&skuId=${entity.skuId}&startTime=${startTime}&endTime=${endTime}&title=${title}&name=${entity.courseTitle}" class="btn btn-white btn-sm"><i class="fa fa-newspaper-o"></i> <c:out value="${entity.userCount}"></c:out>人已选 </a></td>

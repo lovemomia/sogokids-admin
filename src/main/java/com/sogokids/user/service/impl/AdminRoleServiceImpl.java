@@ -86,9 +86,9 @@ public class AdminRoleServiceImpl implements AdminRoleService {
     }
 
     @Override
-    public int delete(int id) {
-        String sql = "delete from SG_AdminRole where AdminId = ? ";
-        Object [] params = new Object[]{id};
+    public int delete(AdminRole entity) {
+        String sql = "delete from SG_AdminRole where AdminId = ? and RoleId = ? ";
+        Object [] params = new Object[]{entity.getAdminId(), entity.getRoleId()};
         int reData = jdbcTemplate.update(sql,params);
         return reData;
     }

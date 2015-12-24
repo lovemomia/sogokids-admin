@@ -137,6 +137,7 @@ public class SubjectNoticeServiceImpl implements SubjectNoticeService {
                 sb.append(p_start);
                     sb.append(sub_notice.getTitle()+"<br>");
                     sb.append(sub_notice.getContent()+"<br>");
+                    sb.append("<br>");
                     String btn_value = "'"+sub_notice.getId()+"'";
                     sb.append("<a class='btn btn-success btn-sm' href='javascript:void(0)' onclick=\"noticeEdit(" + btn_value + ")\"><i class='fa fa-pencil'></i>编辑</a>");
                     sb.append("&nbsp;&nbsp;");

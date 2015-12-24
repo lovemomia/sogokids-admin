@@ -15,7 +15,7 @@ public interface AdminRoleService {
     public List<AdminRole> getAdminRole(int adminId);
     public int insert(AdminRole entity);
     public int update(AdminRole entity);
-    public int delete(int id);
+    public int delete(AdminRole entity);
 
     public AdminRole formEntity(int adminId,int roleId);
 }

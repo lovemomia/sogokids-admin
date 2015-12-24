@@ -101,9 +101,35 @@ $(document).ready(function () {
     });
 
     $('#btn_sku_save').click(function (){
+        var strP=/^\d+(\.\d+)?$/;
+        var re = /^[-]{0,1}[0-9]{1,}$/;
         var subId = $('#sub_id').val();
+        var adult = $('#adult').val();
+        var child = $('#child').val();
+        var price = $('#price').val();
+        var courseCount = $('#courseCount').val();
+        var time = $('#time').val();
+        var desc = $('#desc').val();
         if(subId == 0){
             layer.alert('请先保存基本信息！',5,'提示信息');
+            return false;
+        }else if(adult == null || adult == "" || !re.test(adult)){
+            layer.alert('没有填写大人数量信息或格式不正确(只能填写整数值)！',3,'提示信息');
+            return false;
+        }else if(child == null || child == "" || !re.test(child)){
+            layer.alert('没有填写儿童数量信息或格式不正确(只能填写整数值)！',3,'提示信息');
+            return false;
+        }else if(price == null || price == "" || !strP.test(price)){
+            layer.alert('没有填写售卖价格信息或格式不正确(只能填写整数值或小数)！',3,'提示信息');
+            return false;
+        }else if(courseCount == null || courseCount == "" || !re.test(courseCount)){
+            layer.alert('没有填写选课次数信息或格式不正确(只能填写整数值)！',3,'提示信息');
+            return false;
+        }else if(time == null || time == "" || !re.test(time)){
+            layer.alert('没有填写选课期限信息或格式不正确(只能填写整数值)！',3,'提示信息');
+            return false;
+        }else if(desc == null || desc == ""){
+            layer.alert('没有填写规则描述信息！',3,'提示信息');
             return false;
         }else{
             $.post("/sub/addSku.do?subId="+subId, $("#sku_form").serialize(),
@@ -257,10 +283,9 @@ function cancelSku(id){
 function clareSku(){
     $('#sku_id').val(0);
     $('#desc').val("");
-    $('#originalPrice').val("");
     $('#price').val("");
-    $('#adult').val("");
-    $('#child').val("");
+    $('#adult').val(1);
+    $('#child').val(1);
     $('#courseCount').val("");
     $('#time').val("");
 }
@@ -273,7 +298,6 @@ function valSku(attrs){
     var sku = attrs.sku;
     $('#sku_id').val(sku.id);
     $('#desc').val(sku.desc);
-    $('#originalPrice').val(sku.originalPrice);
     $('#price').val(sku.price);
     $('#adult').val(sku.adult);
     $('#child').val(sku.child);

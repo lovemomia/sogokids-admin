@@ -17,6 +17,10 @@
     <link href="${ctx}/sg-web/css/style.css?v=2.2.0" rel="stylesheet">
     <link href="${ctx}/sg-web/js/plugins/layer/skin/layer.css" rel="stylesheet">
 
+    <%--<style>--%>
+        <%--table {border-collapse:separate;border-spacing:20px;width:100%; height:100%;}--%>
+    <%--</style>--%>
+
     <!-- Mainly scripts -->
     <script src="${ctx}/sg-web/js/jquery-2.1.1.min.js"></script>
     <script src="${ctx}/sg-web/js/bootstrap.min.js?v=3.4.0"></script>
@@ -85,6 +89,7 @@
                         <li><a href="${ctx}/place/info.do?uid=${user.id}"><i class="fa fa-rebel"></i> <span class="nav-label">商户信息</span> </a></li>
                         <li><a href="${ctx}/inst/info.do?uid=${user.id}"><i class="fa fa-bank"></i> <span class="nav-label">机构信息</span> </a></li>
                         <li><a href="${ctx}/teacher/info.do?uid=${user.id}"><i class="fa fa-user-secret"></i> <span class="nav-label">师资力量</span></a></li>
+                        <li><a href="${ctx}/app/info.do?uid=${user.id}"><i class="fa fa-mobile-phone"></i> <span class="nav-label">APP版本</span></a></li>
                     </ul>
                 </li>
                 <li><a href="${ctx}/coupon/info.do?uid=${user.id}"><i class="fa fa-cc-paypal"></i> <span class="nav-label">优惠设置</span></a></li>
@@ -218,11 +223,62 @@
             <div class="ibox-content">
                 <form class="form-horizontal" id="vform" action="${ctx}/banner/add.do?uid=${user.id}" method="post">
                     <fieldset>
-                        <div class="hr-line-dashed"></div>
+                        <%--<table>--%>
+                            <%--<tbody>--%>
+                                <%--<tr>--%>
+                                    <%--<td><label>选择城市 </label></td>--%>
+                                    <%--<td>--%>
+                                        <%--<select id="cityId" name="cityId" class="form-control" >--%>
+                                            <%--<c:forEach items="${citys}" var="node">--%>
+                                                <%--<option value="${node.id}">${node.name}</option>--%>
+                                            <%--</c:forEach>--%>
+                                        <%--</select>--%>
+                                    <%--</td>--%>
+                                    <%--<td rowspan="2"><label >上传图片</label></td>--%>
+                                    <%--<td rowspan="2">--%>
+                                        <%--<img id="img_a" src="${ctx}/sg-web/img/770jiahao.jpg" style="width: 200px;height: 100px;border: 1px solid #999;"/>--%>
+                                        <%--<input id="img_path" type="file" name="img_path" style="opacity: 0;filter:alpha(opacity=0);">--%>
+                                        <%--<input id="cover" name="cover" type="hidden">--%>
+                                        <%--<input id="filepath" name="filepath" type="hidden" value="${filepath}">--%>
+                                    <%--</td>--%>
+                                <%--</tr>--%>
+                                <%--<tr>--%>
+                                    <%--<td><label>排序顺序</label></td>--%>
+                                    <%--<td>--%>
+                                        <%--<input id="weight" name="weight" type="text" class="form-control">--%>
+                                    <%--</td>--%>
+                                <%--</tr>--%>
+                                <%--<tr>--%>
+                                    <%--<td><label>应用类型 </label></td>--%>
+                                    <%--<td>--%>
+                                        <%--<select id="platform" name="platform" class="form-control" style="width: 60%" >--%>
+                                            <%--<c:forEach items="${platforms}" var="node">--%>
+                                                <%--<option value="${node.id}">${node.name}</option>--%>
+                                            <%--</c:forEach>--%>
+                                        <%--</select>--%>
+                                    <%--</td>--%>
+                                    <%--<td><label>App版本 </label></td>--%>
+                                    <%--<td>--%>
+                                        <%--<select id="version" name="version" class="form-control" disabled >--%>
+                                            <%--<c:forEach items="${versions}" var="node">--%>
+                                                <%--<option value="${node.versionCode}">${node.versionDesc}</option>--%>
+                                            <%--</c:forEach>--%>
+                                        <%--</select>--%>
+                                    <%--</td>--%>
+                                <%--</tr>--%>
+                                <%--<tr>--%>
+                                    <%--<td><label>跳转连接</label></td>--%>
+                                    <%--<td colspan="3">--%>
+                                        <%--<textarea id="action" name="action" class="form-control" rows="5" style="resize:none;"></textarea>--%>
+                                    <%--</td>--%>
+                                <%--</tr>--%>
+                            <%--</tbody>--%>
+                        <%--</table>--%>
+                        <%--<div class="hr-line-dashed"></div>--%>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">选择城市 </label>
                             <div class="col-sm-3">
-                                <select id="cityId" name="cityId" class="form-control m-b" >
+                                <select id="cityId" name="cityId" class="form-control" >
                                     <c:forEach items="${citys}" var="node">
                                         <option value="${node.id}">${node.name}</option>
                                     </c:forEach>
@@ -239,22 +295,32 @@
                                 <%--<button class="btn btn-primary" type="button" id="btn_img_save" name="btn_img_save">上传</button>--%>
                             <%--</div>--%>
                         </div>
-                        <div class="hr-line-dashed"></div>
+                        <%--<div class="hr-line-dashed"></div>--%>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">应用类型 </label>
                             <div class="col-sm-3">
-                                <select id="platform" name="platform" class="form-control m-b" >
+                                <select id="platform" name="platform" class="form-control" >
                                     <c:forEach items="${platforms}" var="node">
                                         <option value="${node.id}">${node.name}</option>
                                     </c:forEach>
                                 </select>
                             </div>
-                            <label class="col-sm-2 control-label">排序顺序</label>
+                            <label class="col-sm-2 control-label">App版本 </label>
                             <div class="col-sm-3">
-                                <input id="weight" name="weight" type="text" class="form-control">
+                                <select id="version" name="version" class="form-control" disabled >
+                                    <c:forEach items="${versions}" var="node">
+                                        <option value="${node.versionCode}">${node.versionDesc}</option>
+                                    </c:forEach>
+                                </select>
                             </div>
                         </div>
-                        <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">排序顺序</label>
+                                <div class="col-sm-3">
+                                    <input id="weight" name="weight" type="text" class="form-control">
+                                </div>
+                            </div>
+                        <%--<div class="hr-line-dashed"></div>--%>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">跳转连接</label>
                             <div class="col-sm-8">
@@ -318,6 +384,16 @@
                 });
             }
         });
+
+        $('#platform').change(function(){
+            var platform_val = $(this).children('option:selected').val();
+            if(platform_val == 1){
+                $('#version').attr("disabled",false);
+            }else{
+                $('#version').attr("disabled",true);
+            }
+        });
+
     });
 </script>
 </body>

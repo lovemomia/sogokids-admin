@@ -99,4 +99,5 @@
         <aop:pointcut id="allManagerMethod" expression="execution (* com.sogokids.*.service.impl.*.*(..))" />
         <aop:advisor advice-ref="txAdvice" pointcut-ref="allManagerMethod" />
     </aop:config>
+
 </beans>

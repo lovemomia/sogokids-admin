@@ -132,6 +132,7 @@
                         <li><a href="${ctx}/place/info.do?uid=${user.id}"><i class="fa fa-rebel"></i> <span class="nav-label">商户信息</span> </a></li>
                         <li><a href="${ctx}/inst/info.do?uid=${user.id}"><i class="fa fa-bank"></i> <span class="nav-label">机构信息</span> </a></li>
                         <li><a href="${ctx}/teacher/info.do?uid=${user.id}"><i class="fa fa-user-secret"></i> <span class="nav-label">师资力量</span></a></li>
+                        <li><a href="${ctx}/app/info.do?uid=${user.id}"><i class="fa fa-mobile-phone"></i> <span class="nav-label">APP版本</span></a></li>
                     </ul>
                 </li>
                 <li><a href="${ctx}/coupon/info.do?uid=${user.id}"><i class="fa fa-cc-paypal"></i> <span class="nav-label">优惠设置</span></a></li>
@@ -277,9 +278,9 @@
                             <ul class="nav nav-tabs">
                                 <li id="tab_li_1" class="active"><a id="tab1" data-toggle="tab" href="tabs_panels.html#tab-1"><i class="fa fa-laptop"></i>基本信息</a></li>
                                 <li id="tab_li_2" class=""><a id="tab2" data-toggle="tab" href="tabs_panels.html#tab-2"><i class="fa fa-picture-o"></i>轮播图片</a></li>
-                                <li id="tab_li_3" class=""><a id="tab3" data-toggle="tab" href="tabs_panels.html#tab-3"><i class="fa fa-book"></i>讲师团</a></li>
-                                <li id="tab_li_4" class=""><a id="tab4" data-toggle="tab" href="tabs_panels.html#tab-4"><i class="fa fa-gears"></i>课程表</a></li>
-                                <li id="tab_li_5" class=""><a id="tab5" data-toggle="tab" href="tabs_panels.html#tab-5"><i class="fa fa-reddit"></i>图文详情</a></li>
+                                <li id="tab_li_3" class=""><a id="tab3" data-toggle="tab" href="tabs_panels.html#tab-3"><i class="fa fa-reddit"></i>图文详情</a></li>
+                                <li id="tab_li_4" class=""><a id="tab4" data-toggle="tab" href="tabs_panels.html#tab-4"><i class="fa fa-book"></i>讲师团</a></li>
+                                <li id="tab_li_5" class=""><a id="tab5" data-toggle="tab" href="tabs_panels.html#tab-5"><i class="fa fa-gears"></i>课程表</a></li>
                                 <%--<li id="tab_li_6" class=""><a id="tab6" data-toggle="tab" href="tabs_panels.html#tab-6"><i class="fa fa-newspaper-o"></i>课前绘本</a></li>--%>
                             </ul>
                         </div>
@@ -296,8 +297,8 @@
                                                 <div class="form-group">
                                                     <label class="col-sm-2 control-label">标题</label>
                                                     <div class="col-sm-3">
-                                                        <textarea id="title" name="title" class="form-control" rows="5" style="resize:none;"></textarea>
-                                                        <input id="course_id" name="course_id" type="hidden" value="0">
+                                                        <textarea id="title" name="title" class="form-control" rows="3" style="resize:none;"></textarea>
+                                                        <input id="course_id" name="course_id" type="hidden" value="92">
                                                         <input id="subjectId" name="subjectId" type="hidden" value="${subid}">
                                                     </div>
                                                     <label class="col-sm-2 control-label">上传图片</label>
@@ -312,17 +313,25 @@
                                                     </div>
 
                                                 </div>
-                                                <div class="hr-line-dashed"></div>
+                                                <div class="form-group">
+                                                    <label class="col-sm-2 control-label">关键字</label>
+                                                    <div class="col-sm-3">
+                                                        <input id="keyWord" name="keyWord" type="text" class="form-control" >(课程关键字,例如:消防员、牙医、马术等)
+                                                    </div>
+                                                </div>
+                                                <%--<div class="hr-line-dashed"></div>--%>
                                                 <div class="form-group">
                                                     <label class="col-sm-2 control-label">所属机构</label>
                                                     <div class="col-sm-3">
-                                                        <select id="institutionId" name="institutionId" class="form-control m-b" >
+                                                        <select id="institutionId" name="institutionId" class="form-control" >
                                                             <c:forEach items="${insts}" var="node">
                                                                 <option value="${node.id}">${node.name}</option>
                                                             </c:forEach>
                                                         </select>
                                                     </div>
-                                                    <label class="col-sm-2 control-label">售卖价格</label>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-sm-2 control-label">原价</label>
                                                     <div class="col-sm-3">
                                                         <input id="price" name="price" type="text" class="form-control">
                                                     </div>
@@ -338,17 +347,19 @@
                                                 <%--</select>--%>
                                                 <%--</div>--%>
                                                 <%--</div>--%>
-                                                <div class="hr-line-dashed"></div>
+                                                <%--<div class="hr-line-dashed"></div>--%>
                                                 <div class="form-group">
                                                     <label class="col-sm-2 control-label">年龄范围</label>
                                                     <div class="col-sm-3">
-                                                        <input id="minAge" name="minAge" type="text" class="form-control">
+                                                        <table>
+                                                            <tr>
+                                                                <td style="width: 40%;"><input id="minAge" name="minAge" type="text" class="form-control" style="width:80%;" ></td>
+                                                                <td style="width: 10%;align-content: center">至</td>
+                                                                <td style="width: 40%;"><input id="maxAge" name="maxAge" type="text" class="form-control" style="width:80%;" ></td>
+                                                                <td style="width: 10%;">岁</td>
+                                                            </tr>
+                                                        </table>
                                                     </div>
-                                                    <div class="col-sm-1">至</div>
-                                                    <div class="col-sm-3">
-                                                        <input id="maxAge" name="maxAge" type="text" class="form-control">
-                                                    </div>
-                                                    <div class="col-sm-1">岁</div>
                                                 </div>
                                                 <%--<div class="hr-line-dashed"></div>--%>
                                                 <%--<div class="form-group">--%>
@@ -364,7 +375,7 @@
                                                         <%--<textarea id="flow" name="flow" class="form-control" rows="5"></textarea>--%>
                                                     <%--</div>--%>
                                                 <%--</div>--%>
-                                                <div class="hr-line-dashed"></div>
+                                                <%--<div class="hr-line-dashed"></div>--%>
                                                 <div class="form-group">
                                                     <label class="col-sm-2 control-label">特别提示</label>
                                                     <div class="col-sm-8">
@@ -415,49 +426,114 @@
                                     </div>
                                 </div>
                             </div>
-                            <%--<div id="tab-3" class="tab-pane">--%>
-                                <%--<div class="ibox-content">--%>
-                                    <%--<div class="list-group">--%>
-                                        <%--<form class="form-horizontal" id="book_form" action="" method="post">--%>
-                                            <%--<fieldset>--%>
-                                                <%--<div class="form-group">--%>
-                                                    <%--<label class="col-sm-3 control-label">绘本图片</label>--%>
-                                                    <%--<div class="col-sm-6">--%>
-                                                        <%--<input type="file" id="hb_img" name="hb_img" class="form-control">--%>
-                                                    <%--</div>--%>
-                                                    <%--<div class="col-sm-3">--%>
-                                                        <%--<button class="btn btn-primary" type="button" id="btn_book_save" name="btn_book_save">上传</button>--%>
+
+                            <div id="tab-3" class="tab-pane">
+                                <div class="col-lg-12">
+                                    <div class="ibox"></div>
+                                    <div class="ibox-content">
+                                        <form id="t_w_xq" action="" method="">
+                                            <fieldset>
+                                                <div class="row">
+                                                    <div class="ibox-content">
+                                                        <div class="form-group">
+                                                            <div class="col-sm-12">
+                                                                <label class="col-sm-12 control-label">课程介绍 </label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <div class="col-sm-12">
+                                                                <textarea id="abstracts" name="abstracts" class="form-control" rows="3" style="resize: none;"></textarea>
+                                                                <input id="d_id" name="d_id" type="hidden" value="0">
+                                                            </div>
+                                                        </div>
+                                                        <p>&numsp;</p>
+                                                        <div class="form-group">
+                                                            <div class="col-lg-8">
+                                                                <div class="panel panel-default">
+                                                                    <div class="panel-heading">
+                                                                        录入图文
+                                                                    </div>
+                                                                    <div class="panel-body">
+                                                                        <div class="list-group" style="height:600px;">
+                                                                            <div class="form-group">
+                                                                                <label class="control-label">标题 </label>
+                                                                                <input id="d_title" name="d_title" type="text" class="form-control">
+                                                                                <input id="inti" name="inti" type="hidden" value="-1">
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <%--<div class="col-sm-12">--%>
+                                                                                <label class="control-label">正文 </label>
+                                                                                <script id="my_editor" name = "detail" type="text/plain"></script>
+                                                                                <%--</div>--%>
+                                                                            </div>
+                                                                            <p>&numsp;</p>
+                                                                            <div class="form-group">
+                                                                                <div class="col-sm-4 col-sm-offset-4">
+                                                                                    <button class="btn btn-primary" type="button" id="btn_detail_save" name="btn_detail_save">保存内容</button>
+                                                                                    <%--&numsp;&numsp;--%>
+                                                                                    <%--<button class="btn btn-danger" type="button" id="btn_clear" name="btn_clear">清空</button>--%>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-lg-4">
+                                                                <div class="panel panel-default">
+                                                                    <div class="panel-heading">
+                                                                        显示图文列表
+                                                                    </div>
+                                                                    <div class="panel-body">
+                                                                        <div class="list-group" style="height:600px;overflow:auto;">
+                                                                            <form>
+                                                                                <%--<div class="hr-line-dashed"></div>--%>
+                                                                                <div id="detail_div" class="form-group">
+                                                                                    <%--${skuHtml}--%>
+                                                                                    <p align="center">暂时没有图文详情信息!</p>
+                                                                                </div>
+                                                                            </form>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <%--<br>--%>
+                                                <%--<div class="row">--%>
+                                                    <%--<div class="ibox-content">--%>
+                                                        <%----%>
                                                     <%--</div>--%>
                                                 <%--</div>--%>
-                                            <%--</fieldset>--%>
-                                        <%--</form>--%>
-                                        <%--<form>--%>
-                                            <%--<div class="hr-line-dashed"></div>--%>
-                                            <%--<div class="row">--%>
-                                                <%--<div class="col-lg-12">--%>
-                                                    <%--<div class="ibox float-e-margins">--%>
-                                                        <%--<div class="ibox-title">--%>
-                                                            <%--<h5>绘本图片</h5>--%>
-                                                        <%--</div>--%>
-                                                        <%--<div class="ibox-content">--%>
-                                                            <%--<div id="book_div" class="main">--%>
-                                                                <%--<p align="center">暂无课前绘本信息</p>--%>
+                                                <div class="form-group">
+                                                    <div class="col-sm-5 col-sm-offset-5">
+                                                        <div style="margin-bottom: 30px;margin-top: 10px;">
+                                                            <button class="btn btn-warning" type="button" id="btn_tw_next_save" name="btn_tw_next_save">&numsp;&numsp;下一步&numsp;&numsp;</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <%--<div class="row">--%>
+                                                    <%--<div class="ibox-content">--%>
+                                                        <%--&lt;%&ndash;<div class="hr-line-dashed"></div>&ndash;%&gt;--%>
+                                                        <%--<div class="form-group">--%>
+                                                            <%--<div class="col-sm-5 col-sm-offset-4">--%>
+                                                                <%--<button class="btn btn-primary" type="button" id="btn_all_save" name="btn_all_save">保存内容</button>--%>
+                                                                <%--&lt;%&ndash;&numsp;&numsp;&numsp;&numsp;&ndash;%&gt;--%>
+                                                                <%--&lt;%&ndash;<a href="${ctx}/course/info.do?uid=${user.id}&subid=${subid}" class="btn btn-primary btn-x">完成</a>&ndash;%&gt;--%>
                                                             <%--</div>--%>
                                                         <%--</div>--%>
+                                                        <%--<p>&numsp;</p>--%>
                                                     <%--</div>--%>
                                                 <%--</div>--%>
-                                            <%--</div>--%>
-                                        <%--</form>--%>
-                                    <%--</div>--%>
-                                    <%--<div class="hr-line-dashed"></div>--%>
-                                    <%--<div class="form-group">--%>
-                                        <%--<div class="col-sm-5 col-sm-offset-5">--%>
-                                            <%--<button class="btn btn-warning" type="button" id="btn_book_next_save" name="btn_book_next_save">下一步</button>--%>
-                                        <%--</div>--%>
-                                    <%--</div>--%>
-                                <%--</div>--%>
-                            <%--</div>--%>
-                            <div id="tab-3" class="tab-pane">
+                                            </fieldset>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="tab-4" class="tab-pane">
                                 <div class="row">
                                     <div class="col-lg-12">
                                         <div class="ibox">
@@ -527,7 +603,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div id="tab-4" class="tab-pane">
+                            <div id="tab-5" class="tab-pane">
                                 <div class="col-lg-12">
                                     <div class="ibox">
                                         <div class="ibox-content">
@@ -539,12 +615,12 @@
                                                             录入信息
                                                         </div>
                                                         <div class="panel-body">
-                                                            <div class="list-group" style="height:500px;">
+                                                            <div class="list-group" style="height:420px;">
                                                                 <form class="form-horizontal" id="sku_form" action="" method="post">
                                                                     <fieldset>
                                                                         <div class="form-group">
                                                                             <label class="col-sm-3 control-label">上课地址</label>
-                                                                            <div class="col-sm-6">
+                                                                            <div class="col-sm-7">
                                                                                 <input id="sku_id" name="sku_id" type="hidden" value="0">
                                                                                 <select id="placeId" name="placeId" class="form-control">
                                                                                     <c:forEach items="${places}" var="node">
@@ -556,49 +632,52 @@
                                                                                 <button class="btn btn-primary" data-toggle="modal" data-target="#myModal4" type="button" id="btn_place_add" name="btn_place_add">+</button>
                                                                             </div>
                                                                         </div>
-                                                                        <div class="hr-line-dashed"></div>
+                                                                        <%--<div class="hr-line-dashed"></div>--%>
                                                                         <div class="form-group">
-                                                                            <label class="col-sm-3 control-label">库存数量</label>
+                                                                            <label class="col-sm-3 control-label">参与人数</label>
                                                                             <div class="col-sm-7">
-                                                                                <input id="stock" name="stock" type="text" value="20" class="form-control">
+                                                                                <input id="stock" name="stock" type="text" value="10" class="form-control">
                                                                             </div>
                                                                         </div>
-                                                                        <div class="hr-line-dashed"></div>
                                                                         <div class="form-group">
                                                                             <label class="col-sm-3 control-label">大人数量</label>
-                                                                            <div class="col-sm-3">
-                                                                                <input id="adult" name="adult" type="text" class="form-control">
-                                                                            </div>
-                                                                            <label class="col-sm-3 control-label">儿童数量</label>
-                                                                            <div class="col-sm-3">
-                                                                                <input id="child" name="child" type="text" class="form-control">
+                                                                            <div class="col-sm-7">
+                                                                                <table>
+                                                                                    <tr>
+                                                                                        <td style="width: 35%;"><input id="adult" name="adult" type="text" class="form-control" style="width:100%;" ></td>
+                                                                                        <td style="width: 30%;align-content: left;">&numsp;<b>儿童数量</b></td>
+                                                                                        <td style="width: 35%;"><input id="child" name="child" type="text" class="form-control" style="width:100%;" ></td>
+                                                                                    </tr>
+                                                                                </table>
                                                                             </div>
                                                                         </div>
-                                                                        <div class="hr-line-dashed"></div>
+                                                                        <%--<div class="hr-line-dashed"></div>--%>
                                                                         <div class="form-group">
                                                                             <label class="col-sm-3 control-label">开始时间</label>
                                                                             <div class="col-sm-7">
                                                                                 <input id="startTime" name="startTime" type="text" class="form-control layer-date" placeholder="YYYY-MM-DD hh:mm:ss" onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" readonly>
                                                                             </div>
                                                                         </div>
-                                                                        <div class="hr-line-dashed"></div>
+                                                                        <%--<div class="hr-line-dashed"></div>--%>
                                                                         <div class="form-group">
                                                                             <label class="col-sm-3 control-label">结束时间</label>
                                                                             <div class="col-sm-7">
                                                                                 <input id="endTime" name="endTime" type="text" class="form-control layer-date" placeholder="YYYY-MM-DD hh:mm:ss" onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" readonly>
                                                                             </div>
                                                                         </div>
-                                                                        <div class="hr-line-dashed"></div>
-                                                                        <div class="form-group">
-                                                                            <label class="col-sm-3 control-label">报名截止</label>
-                                                                            <div class="col-sm-7">
-                                                                                <input id="deadline" name="deadline" type="text" class="form-control layer-date" placeholder="YYYY-MM-DD hh:mm:ss" onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" readonly>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="hr-line-dashed"></div>
+                                                                        <%--<div class="hr-line-dashed"></div>--%>
+                                                                        <%--<div class="form-group">--%>
+                                                                            <%--<label class="col-sm-3 control-label">报名截止</label>--%>
+                                                                            <%--<div class="col-sm-7">--%>
+                                                                                <%--<input id="deadline" name="deadline" type="text" class="form-control layer-date" placeholder="YYYY-MM-DD hh:mm:ss" onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" readonly>--%>
+                                                                            <%--</div>--%>
+                                                                        <%--</div>--%>
+                                                                        <%--<div class="hr-line-dashed"></div>--%>
                                                                         <div class="form-group">
                                                                             <div class="col-sm-4 col-sm-offset-4">
-                                                                                <button class="btn btn-primary" type="button" id="btn_sku_save" name="btn_sku_save">保存内容</button>
+                                                                                <div style="margin-bottom: 10px;margin-top: 70px;">
+                                                                                    <button class="btn btn-primary" type="button" id="btn_sku_save" name="btn_sku_save">保存内容</button>
+                                                                                    </div>
                                                                             </div>
                                                                         </div>
                                                                     </fieldset>
@@ -613,7 +692,7 @@
                                                             显示列表
                                                         </div>
                                                         <div class="panel-body">
-                                                            <div class="list-group" style="height:500px;overflow:auto;">
+                                                            <div class="list-group" style="height:420px;overflow:auto;">
                                                                 <form>
                                                                     <div id="sku_div" class="form-group">
                                                                         <p align="center">暂无课程表信息</p>
@@ -705,148 +784,95 @@
                                                         </div>
 
                                                         <!--创建群组弹出层-->
-                                                        <div class="modal inmodal" id="myQz" tabindex="-1" role="dialog"  aria-hidden="true">
-                                                            <div class="modal-dialog">
-                                                                <div class="modal-content animated fadeIn">
-                                                                    <div class="modal-header">
-                                                                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                                                                        <%--<i class="fa fa-picture-o modal-icon"></i>--%>
-                                                                        <h4 class="modal-title">创建群组关信息</h4>
-                                                                        <%--<small>这里可以显示副标题。</small>--%>
-                                                                    </div>
-                                                                    <div class="modal-body">
-                                                                        <form class="form-horizontal" id="qz_form" action="" method="post">
-                                                                            <fieldset>
-                                                                                <div class="selectList">
-                                                                                    <div class="form-group">
-                                                                                        <label class="col-sm-2 control-label">课程名称 </label>
-                                                                                        <div class="col-sm-8">
-                                                                                            <input id="qzid" name="qzid" type="hidden" class="form-control" >
-                                                                                            <input id="qzname" name="qzname" type="text" class="form-control" >
-                                                                                            (填写课程关键字,例如:消防员、牙医、马术等)
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </fieldset>
-                                                                        </form>
-                                                                    </div>
-                                                                    <div class="modal-footer">
-                                                                        <button type="button" class="btn btn-primary" id="btn_qz_save" name="btn_qz_save">保存</button>
-                                                                        <button type="button" class="btn btn-white" data-dismiss="modal" id="btn_qz_close" name="btn_qz_close">关闭</button>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
+                                                        <%--<div class="modal inmodal" id="myQz" tabindex="-1" role="dialog"  aria-hidden="true">--%>
+                                                            <%--<div class="modal-dialog">--%>
+                                                                <%--<div class="modal-content animated fadeIn">--%>
+                                                                    <%--<div class="modal-header">--%>
+                                                                        <%--<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>--%>
+                                                                        <%--&lt;%&ndash;<i class="fa fa-picture-o modal-icon"></i>&ndash;%&gt;--%>
+                                                                        <%--<h4 class="modal-title">创建群组关信息</h4>--%>
+                                                                        <%--&lt;%&ndash;<small>这里可以显示副标题。</small>&ndash;%&gt;--%>
+                                                                    <%--</div>--%>
+                                                                    <%--<div class="modal-body">--%>
+                                                                        <%--<form class="form-horizontal" id="qz_form" action="" method="post">--%>
+                                                                            <%--<fieldset>--%>
+                                                                                <%--<div class="selectList">--%>
+                                                                                    <%--<div class="form-group">--%>
+                                                                                        <%--<label class="col-sm-2 control-label">课程名称 </label>--%>
+                                                                                        <%--<div class="col-sm-8">--%>
+                                                                                            <%--<input id="qzid" name="qzid" type="hidden" class="form-control" >--%>
+                                                                                            <%--<input id="qzname" name="qzname" type="text" class="form-control" >--%>
+                                                                                            <%--(填写课程关键字,例如:消防员、牙医、马术等)--%>
+                                                                                        <%--</div>--%>
+                                                                                    <%--</div>--%>
+                                                                                <%--</div>--%>
+                                                                            <%--</fieldset>--%>
+                                                                        <%--</form>--%>
+                                                                    <%--</div>--%>
+                                                                    <%--<div class="modal-footer">--%>
+                                                                        <%--<button type="button" class="btn btn-primary" id="btn_qz_save" name="btn_qz_save">保存</button>--%>
+                                                                        <%--<button type="button" class="btn btn-white" data-dismiss="modal" id="btn_qz_close" name="btn_qz_close">关闭</button>--%>
+                                                                    <%--</div>--%>
+                                                                <%--</div>--%>
+                                                            <%--</div>--%>
+                                                        <%--</div>--%>
                                                     </div>
                                                     <%--</div>--%>
                                                 </div>
                                             </div>
-                                            <div class="hr-line-dashed"></div>
-                                            <div class="form-group">
-                                                <div class="col-sm-5 col-sm-offset-5">
-                                                    <button class="btn btn-warning" type="button" id="btn_sku_next_save" name="btn_sku_next_save">&numsp;&numsp;下一步&numsp;&numsp;</button>
-                                                </div>
-                                            </div>
+                                            <%--<div class="hr-line-dashed"></div>--%>
+                                            <%--<div class="form-group">--%>
+                                                <%--<div class="col-sm-5 col-sm-offset-5">--%>
+                                                    <%--<button class="btn btn-warning" type="button" id="btn_sku_next_save" name="btn_sku_next_save">&numsp;&numsp;下一步&numsp;&numsp;</button>--%>
+                                                <%--</div>--%>
+                                            <%--</div>--%>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-
-                            <div id="tab-5" class="tab-pane">
-                                <div class="col-lg-12">
-                                    <div class="ibox"></div>
-                                    <div class="ibox-content">
-                                        <form id="t_w_xq" action="" method="">
-                                            <fieldset>
-                                                <div class="row">
-                                                    <div class="ibox-content">
-                                                        <div class="form-group">
-                                                            <div class="col-sm-12">
-                                                                <label class="col-sm-12 control-label">课程介绍 </label>
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <div class="col-sm-12">
-                                                                <textarea id="abstracts" name="abstracts" class="form-control" rows="3"></textarea>
-                                                                <input id="d_id" name="d_id" type="hidden" value="0">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <br>
-                                                <div class="row">
-                                                    <div class="ibox-content">
-                                                        <div class="col-lg-8">
-                                                            <div class="panel panel-default">
-                                                                <div class="panel-heading">
-                                                                    录入课程图文
-                                                                </div>
-                                                                <div class="panel-body">
-                                                                    <div class="list-group" style="height:600px;overflow:auto;">
-                                                                        <div class="form-group">
-                                                                            <label class="control-label">标题 </label>
-                                                                            <input id="d_title" name="d_title" type="text" class="form-control">
-                                                                            <input id="inti" name="inti" type="hidden" value="-1">
-                                                                        </div>
-                                                                        <div class="form-group">
-                                                                            <%--<div class="col-sm-12">--%>
-                                                                            <label class="control-label">正文 </label>
-                                                                            <script id="my_editor" name = "detail" type="text/plain"></script>
-                                                                            <%--</div>--%>
-                                                                        </div>
-                                                                        <p>&numsp;</p>
-                                                                        <div class="form-group">
-                                                                            <div class="col-sm-4 col-sm-offset-4">
-                                                                                <button class="btn btn-primary" type="button" id="btn_detail_save" name="btn_detail_save">添加</button>
-                                                                                &numsp;&numsp;
-                                                                                <button class="btn btn-danger" type="button" id="btn_clear" name="btn_clear">清空</button>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="col-lg-4">
-                                                            <div class="panel panel-default">
-                                                                <div class="panel-heading">
-                                                                    显示图文列表
-                                                                </div>
-                                                                <div class="panel-body">
-                                                                    <div class="list-group" style="height:600px;overflow:auto;">
-                                                                        <form>
-                                                                            <%--<div class="hr-line-dashed"></div>--%>
-                                                                            <div id="detail_div" class="form-group">
-                                                                                <%--${skuHtml}--%>
-                                                                                <p align="center">暂时没有图文详情信息!</p>
-                                                                            </div>
-                                                                        </form>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="ibox-content">
-                                                        <%--<div class="hr-line-dashed"></div>--%>
-                                                        <div class="form-group">
-                                                            <div class="col-sm-5 col-sm-offset-4">
-                                                                <button class="btn btn-primary" type="button" id="btn_all_save" name="btn_all_save">保存内容</button>
-                                                                <%--&numsp;&numsp;&numsp;&numsp;--%>
-                                                                <%--<a href="${ctx}/course/info.do?uid=${user.id}&subid=${subid}" class="btn btn-primary btn-x">完成</a>--%>
-                                                            </div>
-                                                        </div>
-                                                        <p>&numsp;</p>
-                                                    </div>
-                                                </div>
-                                            </fieldset>
-                                        </form>
-                                    </div>
-                                </div>
-
-                            </div> <!-- tabs end-->
+                            <%--<div id="tab-6" class="tab-pane">--%>
+                            <%--<div class="ibox-content">--%>
+                            <%--<div class="list-group">--%>
+                            <%--<form class="form-horizontal" id="book_form" action="" method="post">--%>
+                            <%--<fieldset>--%>
+                            <%--<div class="form-group">--%>
+                            <%--<label class="col-sm-3 control-label">绘本图片</label>--%>
+                            <%--<div class="col-sm-6">--%>
+                            <%--<input type="file" id="hb_img" name="hb_img" class="form-control">--%>
+                            <%--</div>--%>
+                            <%--<div class="col-sm-3">--%>
+                            <%--<button class="btn btn-primary" type="button" id="btn_book_save" name="btn_book_save">上传</button>--%>
+                            <%--</div>--%>
+                            <%--</div>--%>
+                            <%--</fieldset>--%>
+                            <%--</form>--%>
+                            <%--<form>--%>
+                            <%--<div class="hr-line-dashed"></div>--%>
+                            <%--<div class="row">--%>
+                            <%--<div class="col-lg-12">--%>
+                            <%--<div class="ibox float-e-margins">--%>
+                            <%--<div class="ibox-title">--%>
+                            <%--<h5>绘本图片</h5>--%>
+                            <%--</div>--%>
+                            <%--<div class="ibox-content">--%>
+                            <%--<div id="book_div" class="main">--%>
+                            <%--<p align="center">暂无课前绘本信息</p>--%>
+                            <%--</div>--%>
+                            <%--</div>--%>
+                            <%--</div>--%>
+                            <%--</div>--%>
+                            <%--</div>--%>
+                            <%--</form>--%>
+                            <%--</div>--%>
+                            <%--<div class="hr-line-dashed"></div>--%>
+                            <%--<div class="form-group">--%>
+                            <%--<div class="col-sm-5 col-sm-offset-5">--%>
+                            <%--<button class="btn btn-warning" type="button" id="btn_book_next_save" name="btn_book_next_save">下一步</button>--%>
+                            <%--</div>--%>
+                            <%--</div>--%>
+                            <%--</div>--%>
+                            <%--</div>--%>
+                            <!-- tabs end-->
                         </div>
                     </div>
                 </div>
@@ -980,38 +1006,36 @@
                     content_array[inti] = obj;
                 }
 
+                submit_data();
                 arrayData();
 
-                $('#d_title').val("");
-                editor.setContent("");
-                $('#inti').val(-1);
             }
 
         });
 
 
 
-        $("#btn_all_save").click(function(){
-            var courseId = $('#course_id').val();
-            var d_id = $('#d_id').val();
-            var abstracts = $('#abstracts').val();
-            var details = JSON.stringify(content_array);
-            $.post("/course/addDetail.do?courseId="+courseId, {d_id:d_id,abstracts:abstracts,details:details},
-                    function(data){
-                        if(data.success == 0){
-                            $("#d_id").attr("value",data.d_id);
-                        }
-                        layer.alert(data.msg,10,'提示信息');
-                    }, "json");
+//        $("#btn_all_save").click(function(){
+//            var courseId = $('#course_id').val();
+//            var d_id = $('#d_id').val();
+//            var abstracts = $('#abstracts').val();
+//            var details = JSON.stringify(content_array);
+//            $.post("/course/addDetail.do?courseId="+courseId, {d_id:d_id,abstracts:abstracts,details:details},
+//                    function(data){
+//                        if(data.success == 0){
+//                            $("#d_id").attr("value",data.d_id);
+//                        }
+//                        layer.alert(data.msg,10,'提示信息');
+//                    }, "json");
+//
+//        });
 
-        });
-
-        $("#btn_clear").click(function(){
-            $('#d_title').val("");
-            editor.setContent("");
-            $('#inti').val(-1);
-
-        });
+//        $("#btn_clear").click(function(){
+//            $('#d_title').val("");
+//            editor.setContent("");
+//            $('#inti').val(-1);
+//
+//        });
 
         $('#img_a').click(function (){
             document.getElementById("img_path").click();
@@ -1047,26 +1071,26 @@
             }
         });
 
-        $("#btn_qz_save").click(function(){
-            var courseId = $('#course_id').val();
-            var qz_name = $('#qzname').val();
-            if(qz_name == null || qz_name == ""){
-                layer.alert('请填写群组名字信息！',3,'提示信息');
-                return false;
-            }else{
-                $.post("/course/createQz.do?courseId="+courseId, $("#qz_form").serialize(),
-                        function(data){
-                            if(data.success == 0){
-                                layer.alert(data.msg,10,'提示信息');
-                                $('#qzname').val("");
-                                $('#myQz').modal('hide');
-                            }else{
-                                $('#qzname').val("");
-                                layer.alert(data.msg,10,'提示信息');
-                            }
-                        }, "json");
-            }
-        });
+//        $("#btn_qz_save").click(function(){
+//            var courseId = $('#course_id').val();
+//            var qz_name = $('#qzname').val();
+//            if(qz_name == null || qz_name == ""){
+//                layer.alert('请填写群组名字信息！',3,'提示信息');
+//                return false;
+//            }else{
+//                $.post("/course/createQz.do?courseId="+courseId, $("#qz_form").serialize(),
+//                        function(data){
+//                            if(data.success == 0){
+//                                layer.alert(data.msg,10,'提示信息');
+//                                $('#qzname').val("");
+//                                $('#myQz').modal('hide');
+//                            }else{
+//                                $('#qzname').val("");
+//                                layer.alert(data.msg,10,'提示信息');
+//                            }
+//                        }, "json");
+//            }
+//        });
     });
 
     function editDetail(i){
@@ -1092,6 +1116,7 @@
     function delDetail(i){
         layer.confirm('您确定要删除此图文详情内容吗？', function(index){
             content_array.remove(i);
+            submit_data();
             arrayData();
             layer.close(index);
         });
@@ -1123,9 +1148,28 @@
         divshow.append(html);
     }
 
-    function createQz(id){
-        $('#qzid').val(id);
+//    function createQz(id){
+//        $('#qzid').val(id);
+//    }
+
+    function submit_data(){
+        var courseId = $('#course_id').val();
+        var d_id = $('#d_id').val();
+        var abstracts = $('#abstracts').val();
+        var details = JSON.stringify(content_array);
+        $.post("/course/addDetail.do?courseId="+courseId, {d_id:d_id,abstracts:abstracts,details:details},
+                function(data){
+                    if(data.success == 0){
+                        $("#d_id").attr("value",data.d_id);
+                        $('#d_title').val("");
+                        editor.setContent("");
+                        $('#inti').val(-1);
+                    }else{
+                        layer.alert(data.msg,10,'提示信息');
+                    }
+                }, "json");
     }
+
 </script>
 
 </body>

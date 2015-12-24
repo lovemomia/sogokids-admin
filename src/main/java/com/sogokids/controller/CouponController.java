@@ -33,7 +33,7 @@ public class CouponController {
         Map<String, Object> context = new HashMap<String, Object>();
         context.put(Quantity.RETURN_ENTITY_LIST, couponService.getEntitys());
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
-        return new ModelAndView(JumpPage.COUPON,context);
+        return new ModelAndView(adminUserService.isUserFunc(req,JumpPage.COUPON),context);
     }
 
     @RequestMapping("/oper")

@@ -73,14 +73,7 @@ public class CourseRecommendServiceImpl implements CourseRecommendService {
 
     @Override
     public List<Course> getCourses() {
-        List<Course> courses = new ArrayList<Course>();
-        List<CourseRecommend> courseRecommends = this.getEntitys();
-        if (courseRecommends.size() > 0){
-            for (CourseRecommend courseRecommend : courseRecommends) {
-                courses.add(courseService.getRecommend(courseRecommend.getCourseId()));
-            }
-        }
-        return courses;
+        return courseService.getRecommend();
     }
 
     @Override
@@ -242,5 +235,65 @@ public class CourseRecommendServiceImpl implements CourseRecommendService {
         });
 
         return Integer.parseInt(reData.get("weight").toString());
+    }
+
+    @Override
+    public void update_weight(HttpServletRequest req){
+        int cour_id = Integer.parseInt(req.getParameter("id"));
+        int flag = Integer.parseInt(req.getParameter("flag"));
+        List<Course> courses = this.getCourses();
+
+        try{
+            update_ListIndex(courses, cour_id, flag);
+        }catch (Exception _ex){
+            _ex.printStackTrace();
+        }
+    }
+
+    private void update_ListIndex(List<Course> courses, int cour_id, int flag){
+        int list_index1 = 0;
+        int list_index2 = 0;
+        if (courses.size() > 0) {
+            for (int i = 0; i < courses.size(); i++) {
+                if (courses.get(i).getId() == cour_id) {
+                    list_index1 = i;
+                    break;
+                }
+            }
+            if (flag == 1) {
+                list_index2 = list_index1 - 1;
+                if (list_index2 >= 0) {
+                    update_exchange(courses, list_index1, list_index2);
+                }
+            } else {
+                list_index2 = list_index1 + 1;
+                if (list_index2 <= courses.size()-1) {
+                    update_exchange(courses, list_index1, list_index2);
+                }
+            }
+        }
+    }
+
+    private int update_exchange(List<Course> courses, int list_index1, int list_index2){
+        int reData = 1;
+        Course entity1 = courses.get(list_index1);
+        Course entity2 = courses.get(list_index2);
+        if (entity1.getStatus() == entity2.getStatus()) {
+            CourseRecommend recommend1 = this.getEntitysByCourseId(entity1.getId()).get(0);
+            int weight1 = recommend1.getWeight();
+            CourseRecommend recommend2 = this.getEntitysByCourseId(entity2.getId()).get(0);
+            int weight2 = recommend2.getWeight();
+            recommend1.setWeight(weight2);
+            recommend2.setWeight(weight1);
+            int index1_int = this.update(recommend1);
+            if (index1_int > 0) {
+                int index2_int = this.update(recommend2);
+                if (index2_int > 0) {
+                    reData = 0;
+                }
+            }
+        }
+
+        return reData;
     }
 }

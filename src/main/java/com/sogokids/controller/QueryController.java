@@ -52,7 +52,7 @@ public class QueryController {
         context.put("endTime", DateUtil.NowDateW());
         context.put("title", "");
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
-        return new ModelAndView(JumpPage.QUERY_COURSE,context);
+        return new ModelAndView(adminUserService.isUserFunc(req,JumpPage.QUERY_COURSE),context);
     }
 
     @RequestMapping("/query")
@@ -95,7 +95,7 @@ public class QueryController {
         context.put("mobile", "");
         context.put("new_status", 0);
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
-        return new ModelAndView(JumpPage.QUERY_ORDER,context);
+        return new ModelAndView(adminUserService.isUserFunc(req,JumpPage.QUERY_ORDER),context);
     }
 
     @RequestMapping("/queryOrder")

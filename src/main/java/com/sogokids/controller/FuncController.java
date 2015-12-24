@@ -35,7 +35,7 @@ public class FuncController {
         Map<String, Object> context = new HashMap<String, Object>();
         context.put(Quantity.RETURN_ENTITY_LIST, funcService.getEntityList());
         context.put(Quantity.RETURN_USER, userService.get(uid));
-        return new ModelAndView(JumpPage.FUNC,context);
+        return new ModelAndView(userService.isUserFunc(req,JumpPage.FUNC),context);
     }
 
     @RequestMapping("/oper")

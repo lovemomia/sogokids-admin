@@ -23,6 +23,7 @@ public class Course {
     private String tips;
     private String notice;
     private int institutionId;
+    private String keyWord;
     private int status;
     private String addTime;
     private String updateTime;
@@ -159,6 +160,14 @@ public class Course {
         this.institutionId = institutionId;
     }
 
+    public String getKeyWord() {
+        return keyWord;
+    }
+
+    public void setKeyWord(String keyWord) {
+        this.keyWord = keyWord;
+    }
+
     public int getStatus() {
         return status;
     }
@@ -230,4 +239,6 @@ public class Course {
     public void setInstitution(Institution institution) {
         this.institution = institution;
     }
+
+
 }

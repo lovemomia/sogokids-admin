@@ -60,9 +60,11 @@ public class CourseTimeQueryServiceImpl implements CourseTimeQueryService {
             where = where + " and a.Title LIKE '%" + course_title +"%' ";
         }
         if (!startDate.equals("") && startDate != null){
+            startDate = startDate + " 00:00:00";
             where = where + " and b.AddTime >= " + "'" + startDate + "' ";
         }
         if (!endDate.equals("") && endDate != null){
+            endDate = endDate + " 23:59:59";
             where = where + " and b.AddTime <= " + "'" + endDate + "' ";
         }
         String sql = "SELECT a.id,a.ParentId,a.SubjectId,a.Title,a.Cover,b.id as skuId,b.ParentId as skuParentId,b.CourseId,b.StartTime,b.EndTime,b.Deadline,b.PlaceId FROM SG_Course as a, SG_CourseSku as b  where a.Id = b.CourseId and a.Status > 0 and a.Status != 3 and a.ParentId = 0 and b.Status > 0 and b.Status != 3 " + where + " order by b.StartTime desc ";

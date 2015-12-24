@@ -9,10 +9,12 @@ public class JumpPage {
     public static final String USER = "admin/user";
     public static final String USER_ADD = "admin/user_add";
     public static final String USER_EDIT = "admin/user_edit";
+    public static final String USER_ROLE = "admin/user_role";
 
     public static final String ROLE = "admin/role";
     public static final String ROLE_ADD = "admin/role_add";
     public static final String ROLE_EDIT = "admin/role_edit";
+    public static final String ROLE_FUNC = "admin/role_func";
 
 
     public static final String FUNC = "admin/func";
@@ -102,4 +104,11 @@ public class JumpPage {
     public static final String SET_ONE_ADD = "admin/course_set_add";
     public static final String SET_ONE_EDIT = "admin/course_set_edit";
     public static final String COURSE_SET_PREVIEW = "admin/course_set_preview";
+
+    public static final String APP = "admin/app";
+    public static final String APP_ADD = "admin/app_add";
+    public static final String APP_EDIT = "admin/app_edit";
+
+    public static final String ERROR = "admin/error";
+
 }

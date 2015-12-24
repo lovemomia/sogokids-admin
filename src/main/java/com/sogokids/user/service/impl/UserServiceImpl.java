@@ -10,6 +10,7 @@ import com.sogokids.user.service.FuncService;
 import com.sogokids.user.service.RoleFuncService;
 import com.sogokids.user.service.RoleService;
 import com.sogokids.user.service.UserService;
+import com.sogokids.utils.util.JumpPage;
 import com.sogokids.utils.util.Menu;
 import com.sogokids.utils.util.Quantity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -162,90 +163,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String getMenus(List<Func> func_ls,String menu_code) {
-        String start_li = "<li>";
-        String start_li_class = "<li class='"+ Menu.ACTIVE+"'>";
-        String end_li = "</li>";
-        StringBuffer sb = new StringBuffer();
-        StringBuffer sy = new StringBuffer();
-        StringBuffer sm = new StringBuffer();
-        StringBuffer us = new StringBuffer();
-        if (func_ls.size() > 0){
-            if (menu_code.equals(Menu.BANNER_CODE) || menu_code.equals(Menu.EVENT_CODE) || menu_code.equals(Menu.ICON_CODE)){
-                sy.append(start_li_class);
-                sy.append("<a href='index.jsp#'><i class='fa fa-home'></i> <span class='nav-label'>首页配置</span><span class='fa arrow'></span></a>");
-                sy.append("<ul class='nav nav-second-level'>");
-            }else{
-                sy.append(start_li_class);
-                sy.append("<a href='index.jsp#'><i class='fa fa-home'></i> <span class='nav-label'>首页配置</span><span class='fa arrow'></span></a>");
-                sy.append("<ul class='nav nav-second-level'>");
-            }
-            for (Func func : func_ls){
-                if (func.getCode().equals(Menu.HOME_CODE)){
-                    if (menu_code.equals(Menu.HOME_CODE)){
-                        sb.append(start_li_class);
-                        sb.append("<a href='${ctx}/user/index.do?uid=${user.id}'><i class='fa fa-th-large'></i> <span class='nav-label'>主页</span> </a>");
-                        sb.append(end_li);
-                    }else{
-                        sb.append(start_li);
-                        sb.append("<a href='${ctx}/user/index.do?uid=${user.id}'><i class='fa fa-th-large'></i> <span class='nav-label'>主页</span> </a>");
-                        sb.append(end_li);
-                    }
-                }else if(func.getCode().equals(Menu.SUB_CODE)){
-                    if (menu_code.equals(Menu.SUB_CODE)){
-                        sb.append(start_li_class);
-                        sb.append("<a href='${ctx}/sub/info.do?uid=${user.id}'><i class='fa fa-connectdevelop'></i> <span class='nav-label'>课程体系</span> </a>");
-                        sb.append(end_li);
-                    }else{
-                        sb.append(start_li);
-                        sb.append("<a href='${ctx}/sub/info.do?uid=${user.id}'><i class='fa fa-connectdevelop'></i> <span class='nav-label'>课程体系</span> </a>");
-                        sb.append(end_li);
-                    }
-                }else if(func.getCode().equals(Menu.COURSE_CODE)){
-                    if (menu_code.equals(Menu.COURSE_CODE)){
-                        sb.append(start_li_class);
-                        sb.append("<a href='${ctx}/course/info.do?uid=${user.id}'><i class='fa fa-leanpub'></i> <span class='nav-label'>课程内容</span> </a>");
-                        sb.append(end_li);
-                    }else{
-                        sb.append(start_li);
-                        sb.append("<a href='${ctx}/course/info.do?uid=${user.id}'><i class='fa fa-leanpub'></i> <span class='nav-label'>课程内容</span> </a>");
-                        sb.append(end_li);
-                    }
-                }else if(func.getCode().equals(Menu.BANNER_CODE)){
-                    if (menu_code.equals(Menu.BANNER_CODE)){
-                        sy.append(start_li_class);
-                        sy.append("<a href='${ctx}/course/info.do?uid=${user.id}'><i class='fa fa-star'></i> <span class='nav-label'>banner设置</span> </a>");
-                        sb.append(end_li);
-                    }else{
-                        sy.append(start_li);
-                        sy.append("<a href='${ctx}/course/info.do?uid=${user.id}'><i class='fa fa-star'></i> <span class='nav-label'>banner设置</span> </a>");
-                        sy.append(end_li);
-                    }
-                }else if(func.getCode().equals(Menu.EVENT_CODE)){
-                    if (menu_code.equals(Menu.EVENT_CODE)){
-                        sy.append(start_li_class);
-                        sy.append("<a href='${ctx}/event/info.do?uid=${user.id}'><i class='fa fa-globe'></i> <span class='nav-label'>event设置</span> </a>");
-                        sb.append(end_li);
-                    }else{
-                        sy.append(start_li);
-                        sy.append("<a href='${ctx}/event/info.do?uid=${user.id}'><i class='fa fa-globe'></i> <span class='nav-label'>event设置</span> </a>");
-                        sy.append(end_li);
-                    }
-                }else if(func.getCode().equals(Menu.ICON_CODE)){
-                    if (menu_code.equals(Menu.ICON_CODE)){
-                        sy.append(start_li_class);
-                        sy.append("<a href='${ctx}/icon/info.do?uid=${user.id}'><i class='fa fa-picture-o'></i> <span class='nav-label'>icon设置</span> </a>");
-                        sb.append(end_li);
-                    }else{
-                        sy.append(start_li);
-                        sy.append("<a href='${ctx}/icon/info.do?uid=${user.id}'><i class='fa fa-picture-o'></i> <span class='nav-label'>icon设置</span> </a>");
-                        sy.append(end_li);
-                    }
-                }
-            }
+    public String isUserFunc(HttpServletRequest req,String JumpStr){
+        String reData = JumpPage.ERROR;
+        String requestUri = req.getRequestURI();
+        int uid = Integer.parseInt(req.getParameter("uid"));
+        if (funcService.isFunc(uid,requestUri)){
+            reData = JumpStr;
         }
-        return null;
-    }
 
+        return reData;
+    }
 
 }

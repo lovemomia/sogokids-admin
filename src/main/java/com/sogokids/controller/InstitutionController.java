@@ -32,7 +32,7 @@ public class InstitutionController {
         Map<String, Object> context = new HashMap<String, Object>();
         context.put(Quantity.RETURN_ENTITY_LIST, institutionService.getEntitys());
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
-        return new ModelAndView(JumpPage.INST,context);
+        return new ModelAndView(adminUserService.isUserFunc(req,JumpPage.INST),context);
     }
 
     @RequestMapping("/oper")

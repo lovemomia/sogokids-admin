@@ -85,6 +85,7 @@
                         <li><a href="${ctx}/place/info.do?uid=${user.id}"><i class="fa fa-rebel"></i> <span class="nav-label">商户信息</span> </a></li>
                         <li><a href="${ctx}/inst/info.do?uid=${user.id}"><i class="fa fa-bank"></i> <span class="nav-label">机构信息</span> </a></li>
                         <li class="active"><a href="${ctx}/teacher/info.do?uid=${user.id}"><i class="fa fa-user-secret"></i> <span class="nav-label">师资力量</span></a></li>
+                        <li><a href="${ctx}/app/info.do?uid=${user.id}"><i class="fa fa-mobile-phone"></i> <span class="nav-label">APP版本</span></a></li>
                     </ul>
                 </li>
                 <li><a href="${ctx}/coupon/info.do?uid=${user.id}"><i class="fa fa-cc-paypal"></i> <span class="nav-label">优惠设置</span></a></li>
@@ -218,7 +219,7 @@
             <div class="ibox-content">
                 <form class="form-horizontal" id="teacher_form" action="${ctx}/teacher/edit.do?uid=${user.id}&id=${model.id}" method="post">
                     <fieldset>
-                        <div class="hr-line-dashed"></div>
+                        <%--<div class="hr-line-dashed"></div>--%>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">讲师姓名 </label>
                             <div class="col-sm-3">
@@ -235,11 +236,11 @@
                                 <%--</div>--%>
                             </div>
                         </div>
-                        <div class="hr-line-dashed"></div>
+                        <%--<div class="hr-line-dashed"></div>--%>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">讲师性别 </label>
                             <div class="col-sm-3">
-                                <select id="sex" name="sex" class="form-control m-b" >
+                                <select id="sex" name="sex" class="form-control" >
                                     <c:forEach items="${sexs}" var="node">
                                         <c:choose>
                                             <c:when test="${node.id == model.sex}">
@@ -258,11 +259,11 @@
                                 <input id="userId" name="userId" type="hidden" value="${model.userId}">
                             </div>
                         </div>
-                        <div class="hr-line-dashed"></div>
+                        <%--<div class="hr-line-dashed"></div>--%>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">讲师职称 </label>
                             <div class="col-sm-3">
-                                <select id="job" name="job" class="form-control m-b" >
+                                <select id="job" name="job" class="form-control" >
                                     <c:forEach items="${jobs}" var="node">
                                         <c:choose>
                                             <c:when test="${node.id == model.job}">
@@ -276,14 +277,14 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="hr-line-dashed"></div>
+                        <%--<div class="hr-line-dashed"></div>--%>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">个人简介</label>
                             <div class="col-sm-8">
                                 <textarea id="experience" name="experience" class="form-control" rows="8" style="resize:none;">${model.experience}</textarea>
                             </div>
                         </div>
-                        <div class="hr-line-dashed"></div>
+                        <%--<div class="hr-line-dashed"></div>--%>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">教育背景</label>
                             <div class="col-sm-8">

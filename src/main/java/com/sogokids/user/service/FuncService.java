@@ -16,4 +16,10 @@ public interface FuncService {
     public int delete(int id);
 
     public Func formEntity(HttpServletRequest req,int id);
+
+    public boolean isFunc(int uid,String link);
+
+    public List<Func> getYList(int r_id);
+
+    public List<Func> getWList(int r_id);
 }

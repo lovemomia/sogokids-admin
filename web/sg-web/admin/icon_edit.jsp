@@ -88,6 +88,7 @@
                         <li><a href="${ctx}/place/info.do?uid=${user.id}"><i class="fa fa-rebel"></i> <span class="nav-label">商户信息</span> </a></li>
                         <li><a href="${ctx}/inst/info.do?uid=${user.id}"><i class="fa fa-bank"></i> <span class="nav-label">机构信息</span> </a></li>
                         <li><a href="${ctx}/teacher/info.do?uid=${user.id}"><i class="fa fa-user-secret"></i> <span class="nav-label">师资力量</span></a></li>
+                        <li><a href="${ctx}/app/info.do?uid=${user.id}"><i class="fa fa-mobile-phone"></i> <span class="nav-label">APP版本</span></a></li>
                     </ul>
                 </li>
                 <li><a href="${ctx}/coupon/info.do?uid=${user.id}"><i class="fa fa-cc-paypal"></i> <span class="nav-label">优惠设置</span></a></li>
@@ -221,36 +222,46 @@
             <div class="ibox-content">
                 <form class="form-horizontal" id="vform" action="${ctx}/icon/edit.do?uid=${user.id}&id=${model.id}" method="post">
                     <fieldset>
-                        <div class="hr-line-dashed"></div>
+                        <%--<div class="hr-line-dashed"></div>--%>
                         <div class="form-group">
-                            <div class="row">
-                                <label class="col-sm-2 control-label">icon标题 </label>
-                                <div class="col-sm-3">
-                                    <input id="title" name="title" type="text" class="form-control" value="${model.title}">
-                                </div>
-                                <label class="col-sm-2 control-label">选择城市 </label>
-                                <div class="col-sm-3">
-                                    <select id="cityId" name="cityId" class="form-control m-b" >
-                                        <c:forEach items="${citys}" var="node">
-                                            <c:choose>
-                                                <c:when test="${node.id == model.cityId}">
-                                                    <option value="${node.id}" selected>${node.name}</option>
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <option value="${node.id}"  >${node.name}</option>
-                                                </c:otherwise>
-                                            </c:choose>
-                                        </c:forEach>
-                                    </select>
-                                </div>
+                            <label class="col-sm-2 control-label">标题 </label>
+                            <div class="col-sm-3">
+                                <input id="title" name="title" type="text" class="form-control" value="${model.title}">
+                            </div>
+                            <label class="col-sm-2 control-label">上传图片</label>
+                            <div class="col-sm-2">
+                                <img id="img_a" src="${filepath}${model.img}" style="width: 100px;height: 100px;border: 1px solid #999;" />
+                                <input id="img_path" type="file" name="img_path" style="opacity: 0;filter:alpha(opacity=0);">
+                                <input id="cover" name="cover" type="hidden" value="${model.img}">
+                                <input id="filepath" name="filepath" type="hidden" value="${filepath}">
                             </div>
                         </div>
-                        <div class="hr-line-dashed"></div>
+                        <%--<div class="hr-line-dashed"></div>--%>
                         <div class="form-group">
-                            <div class="row">
+                            <label class="col-sm-2 control-label">选择城市 </label>
+                            <div class="col-sm-3">
+                                <select id="cityId" name="cityId" class="form-control" >
+                                    <c:forEach items="${citys}" var="node">
+                                        <c:choose>
+                                            <c:when test="${node.id == model.cityId}">
+                                                <option value="${node.id}" selected>${node.name}</option>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <option value="${node.id}"  >${node.name}</option>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </c:forEach>
+                                </select>
+                            </div>
+                            <label class="col-sm-2 control-label">排序顺序</label>
+                            <div class="col-sm-3">
+                                <input id="weight" name="weight" type="text" class="form-control" value="${model.weight}">
+                            </div>
+                        </div>
+                            <div class="form-group">
                                 <label class="col-sm-2 control-label">应用类型 </label>
                                 <div class="col-sm-3">
-                                    <select id="platform" name="platform" class="form-control m-b" >
+                                    <select id="platform" name="platform" class="form-control" >
                                         <c:forEach items="${platforms}" var="node">
                                             <c:choose>
                                                 <c:when test="${node.id == model.platform}">
@@ -263,31 +274,45 @@
                                         </c:forEach>
                                     </select>
                                 </div>
-                                <label class="col-sm-2 control-label">上传图片</label>
-                                <div class="col-sm-2">
-                                    <img id="img_a" src="${filepath}${model.img}" style="width: 100px;height: 100px;border: 1px solid #999;" />
-                                    <input id="img_path" type="file" name="img_path" style="opacity: 0;filter:alpha(opacity=0);">
-                                    <input id="cover" name="cover" type="hidden" value="${model.img}">
-                                    <input id="filepath" name="filepath" type="hidden" value="${filepath}">
-                                </div>
-                                <%--<div>--%>
-                                    <%--<button class="btn btn-primary" type="button" id="btn_img_save" name="btn_img_save">上传</button>--%>
-                                <%--</div>--%>
-                            </div>
-                            <div class="row">
-                                <label class="col-sm-2 control-label">排序顺序</label>
+                                <label class="col-sm-2 control-label">APP版本 </label>
                                 <div class="col-sm-3">
-                                    <input id="weight" name="weight" type="text" class="form-control" value="${model.weight}">
+                                    <c:choose>
+                                        <c:when test="${model.platform == 1}">
+                                            <select id="version" name="version" class="form-control" >
+                                                <c:forEach items="${versions}" var="node">
+                                                    <c:choose>
+                                                        <c:when test="${node.versionCode == model.version}">
+                                                            <option value="${node.versionCode}" selected>${node.versionDesc}</option>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <option value="${node.versionCode}"  >${node.versionDesc}</option>
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </c:forEach>
+                                            </select>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <select id="version" name="version" class="form-control" disabled >
+                                                <c:forEach items="${versions}" var="node">
+                                                    <c:choose>
+                                                        <c:when test="${node.versionCode == model.version}">
+                                                            <option value="${node.versionCode}" selected>${node.versionDesc}</option>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <option value="${node.versionCode}"  >${node.versionDesc}</option>
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </c:forEach>
+                                            </select>
+                                        </c:otherwise>
+                                    </c:choose>
                                 </div>
                             </div>
-                        </div>
-                        <div class="hr-line-dashed"></div>
+                        <%--<div class="hr-line-dashed"></div>--%>
                         <div class="form-group">
-                            <div class="row">
-                                <label class="col-sm-2 control-label">跳转连接</label>
-                                <div class="col-sm-8">
-                                    <textarea id="action" name="action" class="form-control" rows="5" style="resize:none;">${model.action}</textarea>
-                                </div>
+                            <label class="col-sm-2 control-label">跳转连接</label>
+                            <div class="col-sm-8">
+                                <textarea id="action" name="action" class="form-control" rows="5" style="resize:none;">${model.action}</textarea>
                             </div>
                         </div>
 
@@ -348,6 +373,16 @@
                 });
             }
         });
+
+        $('#platform').change(function(){
+            var platform_val = $(this).children('option:selected').val();
+            if(platform_val == 1){
+                $('#version').attr("disabled",false);
+            }else{
+                $('#version').attr("disabled",true);
+            }
+        });
+
     });
 </script>
 </body>

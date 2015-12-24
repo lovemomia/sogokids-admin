@@ -15,8 +15,9 @@ public interface CourseService {
     public List<Course> getEntitysById(int id);
     public List<Course> getEntitysBySubId(int id);
     public List<Course> getCoursesBySubId(int id);
+    public List<Course> getCoursesTrialBySubId();
     public Course get(int id);
-    public Course getRecommend(int id);
+    public List<Course> getRecommend();
     public int insert(Course entity);
     public int insertKey(Course course);
     public int update(Course entity);
@@ -39,7 +40,7 @@ public interface CourseService {
     public int deleteTrialCourse(int course_id);
 
     //创建群组
-    public QzResult createQz(HttpServletRequest req, int course_id);
+    public QzResult createQz(HttpServletRequest req, int course_id, int sku_id);
 
     /**
      * 预览

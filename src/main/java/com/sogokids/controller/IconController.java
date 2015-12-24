@@ -2,6 +2,7 @@ package com.sogokids.controller;
 
 import com.sogokids.home.service.BannerService;
 import com.sogokids.home.service.IconService;
+import com.sogokids.system.service.AppVersionService;
 import com.sogokids.system.service.CityService;
 import com.sogokids.user.service.UserService;
 import com.sogokids.utils.util.EnumUtil;
@@ -32,12 +33,15 @@ public class IconController {
     @Autowired
     private CityService cityService;
 
+    @Autowired
+    private AppVersionService appVersionService;
+
     @RequestMapping("/info")
     public ModelAndView info(@RequestParam("uid") int uid, HttpServletRequest req){
         Map<String, Object> context = new HashMap<String, Object>();
         context.put(Quantity.RETURN_ENTITY_LIST, iconService.getEntitys());
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
-        return new ModelAndView(JumpPage.ICON,context);
+        return new ModelAndView(adminUserService.isUserFunc(req,JumpPage.ICON),context);
     }
 
     @RequestMapping("/oper")
@@ -49,6 +53,7 @@ public class IconController {
         } else{
             context.put(Quantity.RETURN_ENTITY, iconService.get(id));
         }
+        context.put("versions", appVersionService.getEntitys());
         context.put("citys", cityService.getEntitys());
         context.put("platforms", EnumUtil.getEnums(Quantity.STATUS_NINE));
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));

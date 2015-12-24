@@ -120,6 +120,7 @@
                         <li><a href="${ctx}/place/info.do?uid=${user.id}"><i class="fa fa-rebel"></i> <span class="nav-label">商户信息</span> </a></li>
                         <li><a href="${ctx}/inst/info.do?uid=${user.id}"><i class="fa fa-bank"></i> <span class="nav-label">机构信息</span> </a></li>
                         <li><a href="${ctx}/teacher/info.do?uid=${user.id}"><i class="fa fa-user-secret"></i> <span class="nav-label">师资力量</span></a></li>
+                        <li><a href="${ctx}/app/info.do?uid=${user.id}"><i class="fa fa-mobile-phone"></i> <span class="nav-label">APP版本</span></a></li>
                     </ul>
                 </li>
                 <li class="active"><a href="${ctx}/coupon/info.do?uid=${user.id}"><i class="fa fa-cc-paypal"></i> <span class="nav-label">优惠设置</span></a></li>
@@ -260,16 +261,16 @@
                             </div>
                             <label class="col-sm-2 control-label">选择分类 </label>
                             <div class="col-sm-3">
-                                <select id="type" name="type" class="form-control m-b" >
+                                <select id="type" name="type" class="form-control" >
                                     <option value="1">消费满送</option>
                                 </select>
                             </div>
                         </div>
-                        <div class="hr-line-dashed"></div>
+                        <%--<div class="hr-line-dashed"></div>--%>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">红包用途 </label>
                             <div class="col-sm-3">
-                                <select id="src" name="src" class="form-control m-b" >
+                                <select id="src" name="src" class="form-control" >
                                     <option value="1">注册赠送</option>
                                 </select>
                             </div>
@@ -278,11 +279,11 @@
                                 <input id="count" name="count" type="text" class="form-control" value="${model.count}">
                             </div>
                         </div>
-                        <div class="hr-line-dashed"></div>
+                        <%--<div class="hr-line-dashed"></div>--%>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">时间类型 </label>
-                            <div class="col-sm-2">
-                                <select id="timeType" name="timeType" class="form-control m-b" >
+                            <div class="col-sm-3">
+                                <select id="timeType" name="timeType" class="form-control" >
                                     <c:forEach items="${timeTypes}" var="node">
                                         <c:choose>
                                             <c:when test="${node.id == model.timeType}">
@@ -295,13 +296,13 @@
                                     </c:forEach>
                                 </select>
                             </div>
-                            <label class="col-sm-1 control-label">时间</label>
+                            <label class="col-sm-2 control-label">优惠时效</label>
                             <div class="col-sm-2">
                                 <input id="time" name="time" type="text" class="form-control" value="${model.time}" >
                             </div>
-                            <label class="col-sm-1 control-label">单位</label>
-                            <div class="col-sm-2">
-                                <select id="timeUnit" name="timeUnit" class="form-control m-b" >
+                            <%--<label class="col-sm-1 control-label">单位</label>--%>
+                            <div class="col-sm-1">
+                                <select id="timeUnit" name="timeUnit" class="form-control" >
                                     <c:forEach items="${timeUnits}" var="node">
                                         <c:choose>
                                             <c:when test="${node.id == model.timeUnit}">
@@ -315,7 +316,7 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="hr-line-dashed"></div>
+                        <%--<div class="hr-line-dashed"></div>--%>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">消费额度 </label>
                             <div class="col-sm-3">
@@ -327,7 +328,7 @@
                             </div>
                         </div>
 
-                        <div class="hr-line-dashed"></div>
+                        <%--<div class="hr-line-dashed"></div>--%>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">有效期 </label>
                             <div class="col-sm-3">
@@ -339,7 +340,7 @@
                             </div>
                         </div>
 
-                        <div class="hr-line-dashed"></div>
+                        <%--<div class="hr-line-dashed"></div>--%>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">上下线时间 </label>
                             <div class="col-sm-3">
@@ -351,7 +352,7 @@
                             </div>
                         </div>
 
-                        <div class="hr-line-dashed"></div>
+                        <%--<div class="hr-line-dashed"></div>--%>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">红包描述 </label>
                             <div class="col-sm-8">

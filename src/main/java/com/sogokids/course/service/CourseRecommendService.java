@@ -23,5 +23,9 @@ public interface CourseRecommendService {
     public int delete(int id);
     public CourseRecommend formEntity(HttpServletRequest request, int course_id, int id);
 
+    //获取最大的权重值
     public int getWeightMax();
+
+    //上移下移
+    public void update_weight(HttpServletRequest req);
 }
