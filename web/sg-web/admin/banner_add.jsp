@@ -17,6 +17,10 @@
     <link href="${ctx}/sg-web/css/style.css?v=2.2.0" rel="stylesheet">
     <link href="${ctx}/sg-web/js/plugins/layer/skin/layer.css" rel="stylesheet">
 
+    <%--<style>--%>
+        <%--table {border-collapse:separate;border-spacing:20px;width:100%; height:100%;}--%>
+    <%--</style>--%>
+
     <!-- Mainly scripts -->
     <script src="${ctx}/sg-web/js/jquery-2.1.1.min.js"></script>
     <script src="${ctx}/sg-web/js/bootstrap.min.js?v=3.4.0"></script>
@@ -219,6 +223,57 @@
             <div class="ibox-content">
                 <form class="form-horizontal" id="vform" action="${ctx}/banner/add.do?uid=${user.id}" method="post">
                     <fieldset>
+                        <%--<table>--%>
+                            <%--<tbody>--%>
+                                <%--<tr>--%>
+                                    <%--<td><label>选择城市 </label></td>--%>
+                                    <%--<td>--%>
+                                        <%--<select id="cityId" name="cityId" class="form-control" >--%>
+                                            <%--<c:forEach items="${citys}" var="node">--%>
+                                                <%--<option value="${node.id}">${node.name}</option>--%>
+                                            <%--</c:forEach>--%>
+                                        <%--</select>--%>
+                                    <%--</td>--%>
+                                    <%--<td rowspan="2"><label >上传图片</label></td>--%>
+                                    <%--<td rowspan="2">--%>
+                                        <%--<img id="img_a" src="${ctx}/sg-web/img/770jiahao.jpg" style="width: 200px;height: 100px;border: 1px solid #999;"/>--%>
+                                        <%--<input id="img_path" type="file" name="img_path" style="opacity: 0;filter:alpha(opacity=0);">--%>
+                                        <%--<input id="cover" name="cover" type="hidden">--%>
+                                        <%--<input id="filepath" name="filepath" type="hidden" value="${filepath}">--%>
+                                    <%--</td>--%>
+                                <%--</tr>--%>
+                                <%--<tr>--%>
+                                    <%--<td><label>排序顺序</label></td>--%>
+                                    <%--<td>--%>
+                                        <%--<input id="weight" name="weight" type="text" class="form-control">--%>
+                                    <%--</td>--%>
+                                <%--</tr>--%>
+                                <%--<tr>--%>
+                                    <%--<td><label>应用类型 </label></td>--%>
+                                    <%--<td>--%>
+                                        <%--<select id="platform" name="platform" class="form-control" style="width: 60%" >--%>
+                                            <%--<c:forEach items="${platforms}" var="node">--%>
+                                                <%--<option value="${node.id}">${node.name}</option>--%>
+                                            <%--</c:forEach>--%>
+                                        <%--</select>--%>
+                                    <%--</td>--%>
+                                    <%--<td><label>App版本 </label></td>--%>
+                                    <%--<td>--%>
+                                        <%--<select id="version" name="version" class="form-control" disabled >--%>
+                                            <%--<c:forEach items="${versions}" var="node">--%>
+                                                <%--<option value="${node.versionCode}">${node.versionDesc}</option>--%>
+                                            <%--</c:forEach>--%>
+                                        <%--</select>--%>
+                                    <%--</td>--%>
+                                <%--</tr>--%>
+                                <%--<tr>--%>
+                                    <%--<td><label>跳转连接</label></td>--%>
+                                    <%--<td colspan="3">--%>
+                                        <%--<textarea id="action" name="action" class="form-control" rows="5" style="resize:none;"></textarea>--%>
+                                    <%--</td>--%>
+                                <%--</tr>--%>
+                            <%--</tbody>--%>
+                        <%--</table>--%>
                         <%--<div class="hr-line-dashed"></div>--%>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">选择城市 </label>

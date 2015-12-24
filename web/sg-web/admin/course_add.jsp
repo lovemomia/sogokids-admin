@@ -313,6 +313,12 @@
                                                     </div>
 
                                                 </div>
+                                                <div class="form-group">
+                                                    <label class="col-sm-2 control-label">关键字</label>
+                                                    <div class="col-sm-3">
+                                                        <input id="keyWord" name="keyWord" type="text" class="form-control" >(课程关键字,例如:消防员、牙医、马术等)
+                                                    </div>
+                                                </div>
                                                 <%--<div class="hr-line-dashed"></div>--%>
                                                 <div class="form-group">
                                                     <label class="col-sm-2 control-label">所属机构</label>
@@ -353,12 +359,6 @@
                                                                 <td style="width: 10%;">岁</td>
                                                             </tr>
                                                         </table>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="col-sm-2 control-label">关键字</label>
-                                                    <div class="col-sm-3">
-                                                        <input id="keyWord" name="keyWord" type="text" class="form-control" >(课程关键字,例如:消防员、牙医、马术等)
                                                     </div>
                                                 </div>
                                                 <%--<div class="hr-line-dashed"></div>--%>
