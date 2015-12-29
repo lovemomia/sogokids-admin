@@ -111,4 +111,8 @@ public class JumpPage {
 
     public static final String ERROR = "admin/error";
 
+    public static final String GROUP = "admin/group";
+    public static final String GROUP_USER = "admin/group_user";
+    public static final String GROUP_COURSE = "admin/group_course";
+
 }

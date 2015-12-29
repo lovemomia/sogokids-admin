@@ -4,9 +4,18 @@ package com.sogokids.query.model;
  * Created by hoze on 15/11/6.
  */
 public class Customer {
+    private int rowId;
     private int id;
     private String mobile;
     private String nickName;
+
+    public int getRowId() {
+        return rowId;
+    }
+
+    public void setRowId(int rowId) {
+        this.rowId = rowId;
+    }
 
     public int getId() {
         return id;
