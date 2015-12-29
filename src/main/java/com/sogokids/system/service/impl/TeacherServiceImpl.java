@@ -4,7 +4,6 @@ import cn.momia.common.config.Configuration;
 import com.sogokids.system.model.Teacher;
 import com.sogokids.system.service.TeacherService;
 import com.sogokids.utils.util.Quantity;
-import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowCallbackHandler;
