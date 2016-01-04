@@ -1,9 +1,13 @@
 package com.sogokids.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.sogokids.group.model.GroupCourse;
+import com.sogokids.group.service.GroupCourseService;
 import com.sogokids.group.service.GroupUserService;
 import com.sogokids.group.service.SelectionGroupService;
 import com.sogokids.user.service.UserService;
+import com.sogokids.utils.entity.QzResult;
+import com.sogokids.utils.util.FileUtil;
 import com.sogokids.utils.util.JumpPage;
 import com.sogokids.utils.util.Quantity;
 import org.apache.commons.io.IOUtils;
@@ -35,6 +39,9 @@ public class GroupController {
 
     @Autowired
     private GroupUserService groupUserService;
+
+    @Autowired
+    private GroupCourseService groupCourseService;
 
     @RequestMapping("/info")
     public ModelAndView info(@RequestParam("uid") int uid, HttpServletRequest req){
@@ -181,7 +188,62 @@ public class GroupController {
         context.put(Quantity.RETURN_ENTITY_LIST, selectionGroupService.getGroupCustomers(gid,where));
         context.put(Quantity.RETURN_ENTITY, selectionGroupService.get(gid));
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+
         return new ModelAndView(JumpPage.GROUP_USER,context);
+    }
+
+    @RequestMapping("/query_courses")
+    public ModelAndView queryCourse(@RequestParam("uid") int uid,@RequestParam("gid") int gid,HttpServletRequest req){
+        Map<String, Object> context = new HashMap<String, Object>();
+        String title = req.getParameter("title");
+        String dateTime = req.getParameter("dateTime");
+
+        context.put(Quantity.RETURN_ENTITY_LIST, selectionGroupService.getGroupCourses(title, dateTime));
+        context.put(Quantity.RETURN_ENTITY, selectionGroupService.get(gid));
+        context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        context.put("title",title);
+        context.put("dateTime",dateTime);
+
+        return new ModelAndView(JumpPage.GROUP_COURSE,context);
+    }
+
+    @RequestMapping("/add_courses")
+    public ModelAndView addCourse(HttpServletRequest req, HttpServletResponse rsp){
+        rsp.setContentType("text/html; charset=UTF-8");
+        Map<String, Object> context = new HashMap<String, Object>();
+        int gid = Integer.parseInt(req.getParameter("gid"));
+        if (req.getParameter("course_sku_id") == null){
+            context.put(Quantity.RETURN_SUCCESS,1);
+            context.put(Quantity.RETURN_MSG,"没有选择课程，请选择!");
+        }else{
+            int skuId = Integer.parseInt(req.getParameter("course_sku_id"));
+            QzResult qzResult = groupCourseService.insertGroupCourse(gid,skuId);
+            if (qzResult.getErrno() == 1001){
+                context.put(Quantity.RETURN_SUCCESS,1);
+                context.put(Quantity.RETURN_MSG,"没有分组成员信息，请进行处理!");
+            }else if (qzResult.getErrno() == 0 && qzResult.getData().equals("")){
+                context.put(Quantity.RETURN_SUCCESS,0);
+                context.put(Quantity.RETURN_MSG,"选课成功!");
+            }else if (qzResult.getErrno() == 0 && !qzResult.getData().equals("")){
+                context.put(Quantity.RETURN_SUCCESS,0);
+                context.put(Quantity.RETURN_MSG,"选课成功,选课失败用:"+qzResult.getData()+";");
+            }else{
+                context.put(Quantity.RETURN_SUCCESS,1);
+                context.put(Quantity.RETURN_MSG,"选课失败，请与开发人员联系!");
+            }
+        }
+        Writer writer = null;
+        try {
+            writer = rsp.getWriter();
+            writer.write(JSONObject.toJSONString(context));
+            writer.flush();
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }finally {
+            IOUtils.closeQuietly(writer);
+        }
+        return null;
     }
 
 

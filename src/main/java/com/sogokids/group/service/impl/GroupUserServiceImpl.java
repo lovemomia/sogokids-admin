@@ -59,6 +59,28 @@ public class GroupUserServiceImpl implements GroupUserService {
     }
 
     @Override
+    public List<GroupUser> getGroupUsersByGId(int gId) {
+        List<GroupUser> reData = new ArrayList<GroupUser>();
+        String sql = "select Id,GroupId,UserId,Status,AddTime from SG_GroupUser where Status > ? and GroupId = ? ";
+        Object [] params = new Object[]{Quantity.STATUS_ZERO, gId};
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sql, params);
+        if(list.size() > 0){
+            for (int i = 0; i < list.size(); i++) {
+                GroupUser entity = new GroupUser();
+                entity.setId(Integer.parseInt(list.get(i).get("Id").toString()));
+                entity.setGroupId(Integer.parseInt(list.get(i).get("GroupId").toString()));
+                entity.setUserId(Integer.parseInt(list.get(i).get("UserId").toString()));
+                entity.setStatus(Integer.parseInt(list.get(i).get("Status").toString()));
+                entity.setAddTime(list.get(i).get("AddTime").toString());
+
+                reData.add(entity);
+            }
+        }
+
+        return reData;
+    }
+
+    @Override
     public GroupUser get(int id) {
         String sql = "select Id,GroupId,UserId,Status,AddTime from SG_GroupUser where Id = ? and Status > ? ";
         final Object [] params = new Object[]{id, Quantity.STATUS_ZERO};

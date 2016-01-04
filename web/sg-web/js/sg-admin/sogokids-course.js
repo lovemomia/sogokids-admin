@@ -42,11 +42,16 @@ $(function () {
      * 添加课程的基本信息
      */
     $('#btn_cour_save').click(function(){
-        //var re = /^[-]{0,1}[0-9]{1,}$/;
+        var strP=/^\d+(\.\d+)?$/;
+        var re = /^[-]{0,1}[0-9]{1,}$/;
         var course_id = $('#course_id').val();
         var title = $('#title').val();
         var cover = $('#cover').val();
         var keyWord = $('#keyWord').val();
+        var price = $('#price').val();
+        var minAge = $('#minAge').val();
+        var maxAge = $('#maxAge').val();
+
         if(title == null || title == ""){
             layer.alert('请填写标题信息！',3,'提示信息');
             return false;
@@ -55,6 +60,12 @@ $(function () {
             return false;
         }else if(keyWord == null || keyWord == ""){
             layer.alert('请填写关键字信息！',3,'提示信息');
+            return false;
+        }else if(price == null || price == "" || !strP.test(price)){
+            layer.alert('没有填写原价信息或格式不正确(只能填写整数值或小数)！',3,'提示信息');
+            return false;
+        }else if(minAge == null || minAge == "" || !re.test(minAge) || maxAge == null || maxAge == "" || !re.test(maxAge) || parseInt(maxAge) < parseInt(minAge)){
+            layer.alert('没有填写年龄范围信息或格式不正确(只能填写整数值,举例格式"4至7岁")！',3,'提示信息');
             return false;
         }else{
             if(course_id == 0){
@@ -150,6 +161,7 @@ $(function () {
         var name= $('#name').val();
         var place_ads = $('#ads').val();
         var desc= $('#desc_place').val();
+        var route = $('#route').val();
         if(place_ads = null || place_ads == ""){
             layer.alert("地址详情不能为空,请输入",3,'提示信息');
             return false;
@@ -163,10 +175,10 @@ $(function () {
             layer.alert("输入经纬度信息格式不正确,重新输入",3,'提示信息');
             return false;
         }else{
-            $.post("/course/addplace.do", {cityId:cityId,regionId:regionId,name:name,address:$('#ads').val(),lng_lat:lng_lat,desc:desc},
+            $.post("/course/addplace.do", {cityId:cityId,regionId:regionId,name:name,address:$('#ads').val(),lng_lat:lng_lat,desc:desc,route:route},
                 function(data){
                     if(data.success == 0) {
-                        console.log(data);
+                        //console.log(data);
                         var divshow = $("#course_placeId");
                         divshow.text("");// 清空数据
                         divshow.append(data.placeHtml);

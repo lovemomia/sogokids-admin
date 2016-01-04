@@ -10,6 +10,7 @@ import java.util.List;
  */
 public interface GroupUserService {
     public List<GroupUser> getEntitys();
+    public List<GroupUser> getGroupUsersByGId(int gId);
     public GroupUser get(int id);
     public GroupUser isget(int gid, int uid);
     public int insert(GroupUser entity);

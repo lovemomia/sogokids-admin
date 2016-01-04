@@ -68,7 +68,7 @@
                 <li><a href="${ctx}/sub/info.do?uid=${user.id}"><i class="fa fa-connectdevelop"></i> <span class="nav-label">课程体系</span> </a></li>
                 <li><a href="${ctx}/book/info.do?uid=${user.id}"><i class="fa fa-leanpub"></i> <span class="nav-label">试听课程</span> </a></li>
                 <li><a href="${ctx}/one/info.do?uid=${user.id}"><i class="fa fa-drupal"></i> <span class="nav-label">推荐课程</span> </a></li>
-                <li class="active"><a href="${ctx}/group/info.do?uid=${user.id}"><i class="fa fa-drupal"></i> <span class="nav-label">批量选课</span> </a></li>
+                <li class="active"><a href="${ctx}/group/info.do?uid=${user.id}"><i class="fa fa-building"></i> <span class="nav-label">批量选课</span> </a></li>
                 <li>
                     <a href="index.jsp#"><i class="fa fa-bar-chart"></i> <span class="nav-label">查询统计</span><span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
@@ -240,11 +240,13 @@
                         <tbody>
                         <c:forEach items="${entitys}" var="entity">
                             <tr>
-                                <td><c:out value="${entity.id}"></c:out></td>
-                                <td><c:out value="${entity.name}"></c:out></td>
+                                <td style="width: 10%;"><c:out value="${entity.id}"></c:out></td>
+                                <td style="width: 30%"><c:out value="${entity.name}"></c:out></td>
                                 <td class="center">
-                                    <a href="${ctx}/group/oper.do?uid=${user.id}&id=${entity.id}&mark=2" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i> 成员 </a>
-                                    <a href="${ctx}/group/edit.do?uid=${user.id}&id=${entity.id}" class="btn btn-white btn-sm"><i class="fa fa-times-circle"></i> 选课 </a>
+                                    <a href="${ctx}/group/oper.do?uid=${user.id}&id=${entity.id}&mark=2" class="btn btn-white btn-sm"><i class="fa fa-user"></i> 成员 </a>
+                                    <c:if test="${entity.xkFlag == 0}">
+                                        <a href="${ctx}/group/oper.do?uid=${user.id}&id=${entity.id}&mark=1" class="btn btn-white btn-sm"><i class="fa fa-check-circle"></i> 选课 </a>
+                                    </c:if>
                                     <button class="btn btn-white btn-sm" data-toggle="modal" data-target="#myGroup2" type="button" id="btn_edit" name="btn_edit" onclick="editGroup('${entity.id}','${entity.name}')" ><i class="fa fa-pencil"></i>编辑</button>
                                     <%--<a href="${ctx}/group/oper.do?uid=${user.id}&id=${entity.id}&mark=2" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i> 编辑 </a>--%>
                                     <a href="javascript:void(0)" onclick="delGroup(${entity.id})" class="btn btn-white btn-sm"><i class="fa fa-times-circle"></i> 删除 </a>
@@ -277,15 +279,17 @@
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">成员 </label>
                                 <div class="col-sm-8">
-                                    <textarea id="mobiles" name="mobiles" class="form-control" rows="4" placeholder="可以输入多个手机号,用逗号隔开" style="resize: none"></textarea>
+                                    <textarea id="mobiles" name="mobiles" class="form-control" rows="6" placeholder="可以输入多个手机号,用逗号隔开" style="resize: none"></textarea>
                                 </div>
                             </div>
                         </fieldset>
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" id="btn_create_save" name="btn_create_save">保存</button>
-                        <button type="button" class="btn btn-white" data-dismiss="modal" id="btn_create_cancel" name="btn_create_cancel">关闭</button>
+                        <div class="col-sm-8 col-sm-offset-1">
+                            <button type="button" class="btn btn-primary" id="btn_create_save" name="btn_create_save" style="width: 30%">保存</button>&numsp;&numsp;&numsp;&numsp;
+                            <button type="button" class="btn btn-warning" data-dismiss="modal" id="btn_create_cancel" name="btn_create_cancel" style="width: 30%">取消</button>
+                        </div>
                     </div>
                     </div>
                 </div>
@@ -297,7 +301,7 @@
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                             <%--<i class="fa fa-picture-o modal-icon"></i>--%>
-                            <h4 class="modal-title">编辑分组</h4>
+                            <h4 class="modal-title">编辑组名</h4>
                             <%--<small>这里可以显示副标题。</small>--%>
                         </div>
                         <div class="modal-body">
@@ -314,8 +318,10 @@
                             </form>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-primary" id="btn_upodate_save" name="btn_upodate_save">保存</button>
-                            <button type="button" class="btn btn-white" data-dismiss="modal" id="btn_upodate_cancel" name="btn_upodate_cancel">关闭</button>
+                            <div class="col-sm-8 col-sm-offset-1">
+                                <button type="button" class="btn btn-primary" id="btn_upodate_save" name="btn_upodate_save" style="width: 30%">保存</button>&numsp;&numsp;&numsp;&numsp;
+                                <button type="button" class="btn btn-warning" data-dismiss="modal" id="btn_upodate_cancel" name="btn_upodate_cancel" style="width: 30%">取消</button>
+                            </div>
                         </div>
                     </div>
                 </div>

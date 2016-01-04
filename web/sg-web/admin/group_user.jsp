@@ -68,7 +68,7 @@
                 <li><a href="${ctx}/sub/info.do?uid=${user.id}"><i class="fa fa-connectdevelop"></i> <span class="nav-label">课程体系</span> </a></li>
                 <li><a href="${ctx}/book/info.do?uid=${user.id}"><i class="fa fa-leanpub"></i> <span class="nav-label">试听课程</span> </a></li>
                 <li><a href="${ctx}/one/info.do?uid=${user.id}"><i class="fa fa-drupal"></i> <span class="nav-label">推荐课程</span> </a></li>
-                <li class="active"><a href="${ctx}/group/info.do?uid=${user.id}"><i class="fa fa-drupal"></i> <span class="nav-label">批量选课</span> </a></li>
+                <li class="active"><a href="${ctx}/group/info.do?uid=${user.id}"><i class="fa fa-building"></i> <span class="nav-label">批量选课</span> </a></li>
                 <li>
                     <a href="index.jsp#"><i class="fa fa-bar-chart"></i> <span class="nav-label">查询统计</span><span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
@@ -204,21 +204,38 @@
             </nav>
         </div>
         <div class="row wrapper border-bottom white-bg page-heading">
-            <div class="row">
-                <div class="col-lg-9">
-                    <h2>批量选课/成员管理</h2>
+            <%--<div class="row">--%>
+                <%--<div class="col-lg-9">--%>
+                    <%--<h4>批量选课/成员管理</h4>--%>
+                <%--</div>--%>
+                <%--<h2>--%>
+                    <%--<form id="q_form" action="${ctx}/group/query_users.do?uid=${user.id}&gid=${model.id}" method="post">--%>
+                        <%--<div class="col-lg-2">--%>
+                            <%--<input id="mobile" name="mobile" type="text" class="form-control" value="">--%>
+                        <%--</div>--%>
+                        <%--<div class="col-lg-1">--%>
+                            <%--<button type="submit" class="btn btn-primary btn-x">搜索</button>--%>
+                        <%--</div>--%>
+                    <%--</form>--%>
+                <%--</h2>--%>
+            <%--</div>--%>
+                <div class="col-lg-10">
+                    <h2>批量选课</h2>
+                    <ol class="breadcrumb">
+                        <li>
+                            <a href="${ctx}/user/index.do?uid=${user.id}">主页</a>
+                        </li>
+                        <li>
+                            <a href="${ctx}/group/info.do?uid=${user.id}">批量选课</a>
+                        </li>
+                        <li>
+                            <strong>成员信息</strong>
+                        </li>
+                    </ol>
                 </div>
-                <h2>
-                    <form id="q_form" action="${ctx}/group/query_users.do?uid=${user.id}&gid=${model.id}" method="post">
-                        <div class="col-lg-2">
-                            <input id="mobile" name="mobile" type="text" class="form-control" value="">
-                        </div>
-                        <div class="col-lg-1">
-                            <button type="submit" class="btn btn-primary btn-x">搜索</button>
-                        </div>
-                    </form>
-                </h2>
-            </div>
+                <div class="col-lg-2">
+                    <h2><a href="${ctx}/group/info.do?uid=${user.id}" class="btn btn-primary btn-x">返回</a></h2>
+                </div>
         </div>
         <div class="row">
             <div class="ibox-content">

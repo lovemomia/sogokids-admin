@@ -67,7 +67,7 @@
                 <li class="active"><a href="${ctx}/sub/info.do?uid=${user.id}"><i class="fa fa-connectdevelop"></i> <span class="nav-label">课程体系</span> </a></li>
                 <li><a href="${ctx}/book/info.do?uid=${user.id}"><i class="fa fa-leanpub"></i> <span class="nav-label">试听课程</span> </a></li>
                 <li><a href="${ctx}/one/info.do?uid=${user.id}"><i class="fa fa-drupal"></i> <span class="nav-label">推荐课程</span> </a></li>
-                <li class="active"><a href="${ctx}/group/info.do?uid=${user.id}"><i class="fa fa-drupal"></i> <span class="nav-label">批量选课</span> </a></li>
+                <li class="active"><a href="${ctx}/group/info.do?uid=${user.id}"><i class="fa fa-building"></i> <span class="nav-label">批量选课</span> </a></li>
                 <li>
                     <a href="index.jsp#"><i class="fa fa-bar-chart"></i> <span class="nav-label">查询统计</span><span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
@@ -204,21 +204,18 @@
         </div>
         <div class="row wrapper border-bottom white-bg page-heading">
             <div class="col-lg-10">
-                <h2>批量选课/选课</h2>
-                <%--<ol class="breadcrumb">--%>
-                    <%--<li>--%>
-                        <%--<a href="${ctx}/user/index.do?uid=${user.id}">主页</a>--%>
-                    <%--</li>--%>
-                    <%--<li>--%>
-                        <%--<a href="${ctx}/sub/info.do?uid=${user.id}&subid=${subid}">课程体系</a>--%>
-                    <%--</li>--%>
-                    <%--<li>--%>
-                        <%--<a href="${ctx}/course/info.do?uid=${user.id}&subid=${subid}">课程信息</a>--%>
-                    <%--</li>--%>
-                    <%--<li>--%>
-                        <%--<strong>设为试听课</strong>--%>
-                    <%--</li>--%>
-                <%--</ol>--%>
+                <h2>批量选课</h2>
+                <ol class="breadcrumb">
+                    <li>
+                        <a href="${ctx}/user/index.do?uid=${user.id}">主页</a>
+                    </li>
+                    <li>
+                        <a href="${ctx}/group/info.do?uid=${user.id}">批量选课</a>
+                    </li>
+                    <li>
+                        <strong>选课</strong>
+                    </li>
+                </ol>
             </div>
             <div class="col-lg-2">
                 <h2><a href="${ctx}/group/info.do?uid=${user.id}" class="btn btn-primary btn-x">返回</a></h2>
@@ -228,59 +225,73 @@
             <div class="ibox-content">
                 <div class="form-group">
                     <p><h3 align="center">${model.name}</h3></p>
+                    <p style="margin-top: 20px;margin-bottom: 25px;" align="center">
+                        <form class="form-horizontal" id="course_form" action="${ctx}/group/query_courses.do?uid=${user.id}&gid=${model.id}" method="post">
+                            <fieldset>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">选择课程</label>
+                                    <div class="col-sm-3">
+                                        <input id="title" name="title" type="text" class="form-control" placeholder="输入关键字" value="${title}">
+                                    </div>
+                                    <label class="col-sm-1 control-label">选择时间 </label>
+                                    <div class="col-sm-2">
+                                        <input id="dateTime" name="dateTime" type="text" class="form-control layer-date" value="${dateTime}" onclick="laydate({istime: true, format: 'YYYY-MM-DD'})" readonly>
+                                    </div>
+                                    <div class="col-sm-1 col-sm-offset-0">
+                                        <button class="btn btn-primary" type="submit" >查询</button>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </p>
+                    <p>
+                        <form class="form-horizontal" id="sku_form" action="${ctx}/group/add_courses.do?uid=${user.id}&gid=${model.id}" method="post">
+                            <input type="hidden" id="gid" name="gid" value="${model.id}">
+                            <table class="table table-hover" style="width:80%;" align="center">
+                                <thead>
+                                <%--<tr class="gradeX">--%>
+                                    <%--<th colspan="2">可预约课程</th>--%>
+                                <%--</tr>--%>
+                                </thead>
+                                <tbody>
+                                    <c:choose>
+                                        <c:when test="${entitys == null || entitys.size() == 0}">
+                                            <tr><td>没有数据</td></tr>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <c:forEach items="${entitys}" var="entity">
+                                                <tr>
+                                                    <td style="width: 4%;">
+                                                        <div style="margin-top: 30px;margin-bottom: 30px;margin-left: 20px;margin-right: 10px;">
+                                                            <%--<input id='course_sku' name='course_sku' type='text' value="${entity.courseSkuId}">--%>
+                                                            <input id='course_sku_id' name='course_sku_id' type='radio' value="${entity.courseSkuId}">
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="chat">
+                                                            <img src="${filepath}${entity.courseCover}" class="chat-avatar" style="width: 100px;height: 80px;"/>
+                                                            <div>
+                                                                <p><c:out value="${entity.courseTitle}"></c:out></p>
+                                                                <p><c:out value="${entity.courseSkuStartTime}"></c:out></p>
+                                                                <p><c:out value="${entity.courseSkuPlace}"></c:out></p>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </c:forEach>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </tbody>
+                            </table>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group" style="margin-top: 30px;margin-bottom: 30px;">
+                                <div class="col-sm-5 col-sm-offset-5">
+                                    <button type="button" class="btn btn-primary" id="btn_xk_save" name="btn_xk_save" style="width: 25%">保存</button>
+                                </div>
+                            </div>
+                        </form>
+                    </p>
                 </div>
-                <form class="form-horizontal" id="course_form" action="" method="post">
-                    <fieldset>
-                        <div class="form-group">
-                            <label class="col-sm-1 control-label">开始时间 </label>
-                            <div class="col-sm-2">
-                                <input id="startTime" name="startTime" type="text" value="${startTime}" class="form-control layer-date" onclick="laydate({istime: true, format: 'YYYY-MM-DD'})" readonly>
-                            </div>
-                            <label class="col-sm-1 control-label">结束时间</label>
-                            <div class="col-sm-2">
-                                <input id="endTime" name="endTime" type="text" value="${endTime}" class="form-control layer-date"  onclick="laydate({istime: true, format: 'YYYY-MM-DD'})" readonly>
-                            </div>
-                            <label class="col-sm-1 control-label">选择课程</label>
-                            <div class="col-sm-2">
-                                <input id="title" name="title" type="text" value="${title}" class="form-control">
-                            </div>
-                            <div class="col-sm-1 col-sm-offset-1">
-                                <button class="btn btn-primary" type="button" id="btn_time_query" name ="btn_time_query">查询</button>
-                            </div>
-                        </div>
-                    </fieldset>
-                </form>
-                <form>
-                    <table class="table table-striped table-bordered table-hover dataTables-example">
-                        <%--<thead>--%>
-                        <%--<tr class="gradeX">--%>
-                            <%--<th>编号</th>--%>
-                            <%--<th>用户昵称</th>--%>
-                            <%--<th>手机号</th>--%>
-                            <%--<th>操作</th>--%>
-                        <%--</tr>--%>
-                        <%--</thead>--%>
-                        <tbody>
-                        <c:choose>
-                            <c:when test="${entitys.size() == 0}">
-                                <tr><td colspan="4">没有数据</td></tr>
-                            </c:when>
-                            <c:otherwise>
-                                <c:forEach items="${entitys}" var="entity">
-                                    <tr>
-                                        <td><c:out value="${entity.rowId}"></c:out></td>
-                                        <td><c:out value="${entity.nickName}"></c:out></td>
-                                        <td><c:out value="${entity.mobile}"></c:out></td>
-                                        <td class="center">
-                                            <a href="javascript:void(0)" onclick="delUser(${entity.id})" class="btn btn-white btn-sm"><i class="fa fa-times-circle"></i> 删除 </a>
-                                        </td>
-                                    </tr>
-                                </c:forEach>
-                            </c:otherwise>
-                        </c:choose>
-                        </tbody>
-                    </table>
-                </form>
             </div>
         </div>
         <div class="footer">
@@ -296,32 +307,24 @@
 <script language="JavaScript">
 
     $(document).ready(function () {
-        $('#btn_copy_save').click(function(){
-            var course_id = $('#course_id').val();
-            var price = $('#price').val();
-            if(price == null || price == ""){
-                layer.alert('请填写售卖价格信息！',3,'提示信息');
-                return false;
-            }else{
-                $.post("/course/isCopy.do", $("#copy_form").serialize(),
-                        function(data){
-                            if(data.success == 0){
-                                $.post("/course/copy.do?uid=${user.id}", $("#copy_form").serialize(),
-                                        function(data){
-                                            if(data.success == 0){
-                                                layer.alert(data.msg,10,'提示信息');
-                                                window.location.href="${ctx}/book/info.do?uid=${user.id}";
-                                            }else{
-                                                layer.alert(data.msg,10,'提示信息');
-                                            }
-                                        }, "json");
-                            }else{
-                                layer.alert(data.msg,10,'提示信息');
-                                return false;
-                            }
-                        }, "json");
-            }
-
+        $('#btn_xk_save').click(function (){
+            var gid = $('#gid').val();
+            $.post("/group/add_courses.do", $("#sku_form").serialize(),
+                    function(data){
+                        if(data.success == 0) {
+                            $.layer({
+                                shade : ['',false],
+                                area : ['auto','auto'],
+                                dialog : {msg:data.msg, btns : 1, type : 4, btn : ['确定'],
+                                    yes : function(){
+                                        window.location.href = "${ctx}/group/info.do?uid=${user.id}";
+                                    }
+                                }
+                            });
+                        }else{
+                            layer.alert(data.msg,10,'提示信息');
+                        }
+                    }, "json");
         });
 
     });

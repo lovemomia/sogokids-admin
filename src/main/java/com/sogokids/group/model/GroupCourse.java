@@ -12,6 +12,11 @@ public class GroupCourse {
     private int status;
     private String addTime;
 
+    private String courseTitle;
+    private String courseCover;
+    private String courseSkuPlace;
+    private String courseSkuStartTime;
+
     public int getId() {
         return id;
     }
@@ -58,5 +63,37 @@ public class GroupCourse {
 
     public void setAddTime(String addTime) {
         this.addTime = addTime;
+    }
+
+    public String getCourseTitle() {
+        return courseTitle;
+    }
+
+    public void setCourseTitle(String courseTitle) {
+        this.courseTitle = courseTitle;
+    }
+
+    public String getCourseCover() {
+        return courseCover;
+    }
+
+    public void setCourseCover(String courseCover) {
+        this.courseCover = courseCover;
+    }
+
+    public String getCourseSkuPlace() {
+        return courseSkuPlace;
+    }
+
+    public void setCourseSkuPlace(String courseSkuPlace) {
+        this.courseSkuPlace = courseSkuPlace;
+    }
+
+    public String getCourseSkuStartTime() {
+        return courseSkuStartTime;
+    }
+
+    public void setCourseSkuStartTime(String courseSkuStartTime) {
+        this.courseSkuStartTime = courseSkuStartTime;
     }
 }

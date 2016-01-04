@@ -90,9 +90,6 @@ public class CourseServiceImpl implements CourseService {
     private CourseImgService courseImgService;
 
     @Autowired
-    private CourseBookService courseBookService;
-
-    @Autowired
     private CourseRecommendService courseRecommendService;
 
     @Autowired

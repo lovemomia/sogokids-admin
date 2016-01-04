@@ -7,6 +7,7 @@ public class SelectionGroup {
 
     private int id;
     private String name;
+    private int xkFlag = 0;
     private int status;
     private String addTime;
 
@@ -24,6 +25,14 @@ public class SelectionGroup {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getXkFlag() {
+        return xkFlag;
+    }
+
+    public void setXkFlag(int xkFlag) {
+        this.xkFlag = xkFlag;
     }
 
     public int getStatus() {

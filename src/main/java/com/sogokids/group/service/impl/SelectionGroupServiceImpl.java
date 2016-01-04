@@ -1,11 +1,15 @@
 package com.sogokids.group.service.impl;
 
+import com.sogokids.group.model.GroupCourse;
 import com.sogokids.group.model.GroupUser;
 import com.sogokids.group.model.SelectionGroup;
 import com.sogokids.group.service.GroupUserService;
 import com.sogokids.group.service.SelectionGroupService;
 import com.sogokids.query.model.Customer;
 import com.sogokids.query.service.CustomerService;
+import com.sogokids.system.model.Place;
+import com.sogokids.system.service.PlaceService;
+import com.sogokids.utils.util.DateUtil;
 import com.sogokids.utils.util.Quantity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,6 +45,9 @@ public class SelectionGroupServiceImpl implements SelectionGroupService {
     @Autowired
     private CustomerService customerService;
 
+    @Autowired
+    private PlaceService placeService;
+
     @Resource
     private JdbcTemplate jdbcTemplate;
 
@@ -61,10 +68,15 @@ public class SelectionGroupServiceImpl implements SelectionGroupService {
         if(list.size() > 0){
             for (int i = 0; i < list.size(); i++) {
                 SelectionGroup entity = new SelectionGroup();
-                entity.setId(Integer.parseInt(list.get(i).get("Id").toString()));
+                int g_id = Integer.parseInt(list.get(i).get("Id").toString());
+                entity.setId(g_id);
                 entity.setName(list.get(i).get("Name").toString());
                 entity.setStatus(Integer.parseInt(list.get(i).get("Status").toString()));
                 entity.setAddTime(list.get(i).get("AddTime").toString());
+                SelectionGroup selectionGroup = this.get(g_id);
+                if (selectionGroup != null || selectionGroup.getId() > 0){
+                    entity.setXkFlag(1);
+                }
 
                 reData.add(entity);
             }
@@ -247,6 +259,41 @@ public class SelectionGroupServiceImpl implements SelectionGroupService {
                 entity.setId(Integer.parseInt(list.get(i).get("Id").toString()));
                 entity.setNickName(list.get(i).get("NickName").toString());
                 entity.setMobile(list.get(i).get("Mobile").toString());
+
+                reData.add(entity);
+            }
+        }
+
+        return reData;
+    }
+
+    @Override
+    public List<GroupCourse> getGroupCourses(String title, String dateTime) {
+        String where = "";
+        String startTime = "";
+        String endTime = "";
+        if (!dateTime.equals("") && dateTime != null){
+            startTime = dateTime + " 00:00:00";
+            where = where + " and a.StartTime >= " + "'" + startTime + "'";
+            endTime = dateTime + " 23:59:59";
+            where = where + " and a.StartTime <= " + "'" + endTime + "'";
+        }
+        if (!title.equals("") && title != null){
+            where = where + " and b.Title LIKE '%" + title +"%'";
+        }
+        List<GroupCourse> reData = new ArrayList<GroupCourse>();
+        String sql = "SELECT a.Id as skuId,a.StartTime,a.PlaceId,b.Id as courseId,b.Title,b.Cover FROM sogokids.SG_CourseSku a,sogokids.SG_Course b where a.status > 0 and a.status != 3 and b.status > 0 and b.status != 3 and a.CourseId = b.Id and a.ParentId = 0 " + where + " order by a.StartTime desc ";
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
+        if(list.size() > 0){
+            for (int i = 0; i < list.size(); i++) {
+                GroupCourse entity = new GroupCourse();
+                entity.setCourseSkuId(Integer.parseInt(list.get(i).get("skuId").toString()));
+                entity.setCourseSkuStartTime(DateUtil.DateToStr_Cn(list.get(i).get("StartTime").toString()));
+                Place place = placeService.get(Integer.parseInt(list.get(i).get("PlaceId").toString()));
+                entity.setCourseSkuPlace(place.getAddress());
+                entity.setCourseId(Integer.parseInt(list.get(i).get("courseId").toString()));
+                entity.setCourseTitle(list.get(i).get("Title").toString());
+                entity.setCourseCover(list.get(i).get("Cover").toString());
 
                 reData.add(entity);
             }

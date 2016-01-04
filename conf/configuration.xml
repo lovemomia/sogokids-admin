@@ -21,6 +21,7 @@
             <DisplayPath>http://s.momia.cn</DisplayPath>
             <UploadPath>http://upload.momia.cn/upload/image</UploadPath>
             <QzPath>http://120.55.102.12:7070/im/group</QzPath>
+            <GroupCoursePath>http://120.55.102.12:7070/course/booking/batch</GroupCoursePath>
         </Tongqu>
     </Image>
 

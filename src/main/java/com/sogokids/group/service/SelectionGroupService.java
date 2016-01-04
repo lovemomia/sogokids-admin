@@ -1,5 +1,6 @@
 package com.sogokids.group.service;
 
+import com.sogokids.group.model.GroupCourse;
 import com.sogokids.group.model.SelectionGroup;
 import com.sogokids.query.model.Customer;
 
@@ -23,4 +24,6 @@ public interface SelectionGroupService {
     public String addGroupUser(int gid, String mobiles);
 
     public List<Customer> getGroupCustomers(int gId,String where);
+
+    public List<GroupCourse> getGroupCourses(String title, String dateTime);
 }
