@@ -299,7 +299,7 @@
                                                     <label class="col-sm-2 control-label">标题</label>
                                                     <div class="col-sm-3">
                                                         <textarea id="title" name="title" class="form-control" rows="3" style="resize:none;"></textarea>
-                                                        <input id="course_id" name="course_id" type="hidden" value="92">
+                                                        <input id="course_id" name="course_id" type="hidden" value="0">
                                                         <input id="subjectId" name="subjectId" type="hidden" value="${subid}">
                                                     </div>
                                                     <label class="col-sm-2 control-label">上传图片</label>

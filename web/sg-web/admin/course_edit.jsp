@@ -659,11 +659,13 @@
                                                                         <div class="form-group">
                                                                             <label class="col-sm-3 control-label">上课地址</label>
                                                                             <div id class="col-sm-7">
-                                                                                <select id="placeId" name="placeId" class="form-control" >
-                                                                                    <c:forEach items="${places}" var="node">
-                                                                                        <option value="${node.id}">${node.name} ${node.address}</option>
-                                                                                    </c:forEach>
-                                                                                </select>
+                                                                                <div id="course_placeId">
+                                                                                    <select id="placeId" name="placeId" class="form-control" >
+                                                                                        <c:forEach items="${places}" var="node">
+                                                                                            <option value="${node.id}">${node.name} ${node.address}</option>
+                                                                                        </c:forEach>
+                                                                                    </select>
+                                                                                </div>
                                                                             </div>
                                                                             <div class="col-sm-1">
                                                                                 <button class="btn btn-primary" data-toggle="modal" data-target="#myModal4" type="button" id="btn_place_add" name="btn_place_add">+</button>
