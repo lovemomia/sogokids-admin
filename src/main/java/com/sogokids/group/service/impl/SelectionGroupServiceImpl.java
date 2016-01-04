@@ -3,6 +3,7 @@ package com.sogokids.group.service.impl;
 import com.sogokids.group.model.GroupCourse;
 import com.sogokids.group.model.GroupUser;
 import com.sogokids.group.model.SelectionGroup;
+import com.sogokids.group.service.GroupCourseService;
 import com.sogokids.group.service.GroupUserService;
 import com.sogokids.group.service.SelectionGroupService;
 import com.sogokids.query.model.Customer;
@@ -46,6 +47,9 @@ public class SelectionGroupServiceImpl implements SelectionGroupService {
     private CustomerService customerService;
 
     @Autowired
+    private GroupCourseService groupCourseService;
+
+    @Autowired
     private PlaceService placeService;
 
     @Resource
@@ -73,8 +77,8 @@ public class SelectionGroupServiceImpl implements SelectionGroupService {
                 entity.setName(list.get(i).get("Name").toString());
                 entity.setStatus(Integer.parseInt(list.get(i).get("Status").toString()));
                 entity.setAddTime(list.get(i).get("AddTime").toString());
-                SelectionGroup selectionGroup = this.get(g_id);
-                if (selectionGroup != null || selectionGroup.getId() > 0){
+                GroupCourse groupCourse = groupCourseService.get(g_id);
+                if (groupCourse != null && groupCourse.getId() > 0){
                     entity.setXkFlag(1);
                 }
 

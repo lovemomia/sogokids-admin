@@ -13,7 +13,7 @@ public interface GroupCourseService {
 
     public List<GroupCourse> getEntitys();
     public GroupCourse get(int id);
-    public GroupCourse isget(int gid, int cid, int csid);
+    public GroupCourse isget(int gid);
     public int insert(GroupCourse entity);
     public int update(GroupCourse entity);
     public int delete(int id);

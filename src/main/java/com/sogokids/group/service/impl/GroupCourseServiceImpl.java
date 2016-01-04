@@ -107,9 +107,9 @@ public class GroupCourseServiceImpl implements GroupCourseService {
     }
 
     @Override
-    public GroupCourse isget(int gid, int cid, int csid) {
-        String sql = "select Id,GroupId,CourseId,CourseSkuId,Status,AddTime from SG_GroupCourse where GroupId = ? and CourseId = ? and CourseSkuId = ? and Status > ? ";
-        final Object [] params = new Object[]{gid, cid, csid, Quantity.STATUS_ZERO};
+    public GroupCourse isget(int gid) {
+        String sql = "select Id,GroupId,CourseId,CourseSkuId,Status,AddTime from SG_GroupCourse where GroupId = ? and Status > ? ";
+        final Object [] params = new Object[]{gid, Quantity.STATUS_ZERO};
         final GroupCourse entity = new GroupCourse();
         jdbcTemplate.query(sql,params, new RowCallbackHandler(){
             public void processRow(ResultSet rs) throws SQLException {
