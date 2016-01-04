@@ -266,8 +266,8 @@
                                     <a href="javascript:void(0)" onclick="cancelCourse(${entity.id})" class="btn btn-white btn-sm"><i class="fa fa-volume-up"></i> 取消推荐 </a>
                                     <a href="${ctx}/one/preview.do?uid=${user.id}&id=${entity.id}" class="btn btn-white btn-sm"><i class="fa fa-eye"></i> 预览 </a>
 
-                                    <a href="${ctx}/one/move.do?uid=${user.id}&id=${entity.id}&flag=1" class="btn btn-primary btn-sm"><i class="fa fa-arrow-circle-o-up"></i>上移</a>
-                                    <a href="${ctx}/one/move.do?uid=${user.id}&id=${entity.id}&flag=2" class="btn btn-primary btn-sm"><i class="fa fa-arrow-circle-o-down"></i>下移</a>
+                                    <a href="${ctx}/one/move.do?uid=${user.id}&id=${entity.id}&flag=1" class="btn btn-danger btn-sm"><i class="fa fa-arrow-circle-o-up"></i>上移</a>
+                                    <a href="${ctx}/one/move.do?uid=${user.id}&id=${entity.id}&flag=2" class="btn btn-warning btn-sm"><i class="fa fa-arrow-circle-o-down"></i>下移</a>
                                 </td>
                             </tr>
                         </c:forEach>
