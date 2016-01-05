@@ -95,6 +95,11 @@ public class DateUtil {
         return Integer.parseInt(String.valueOf(between_days));
     }
 
+    /**
+     * 日期时间转换中文 可以带星期
+     * @param str
+     * @return
+     */
     public static String DateToStr_Cn(String str){
         //可根据不同样式请求显示不同日期格式，要显示星期可以添加E参数
 
@@ -195,26 +200,58 @@ public class DateUtil {
             return false;
     }
 
+    /**
+     * 获取当前时间 格式 yyyy-MM-dd HH:mm:ss
+     * @return
+     */
     public static String NowDateStr() {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return df.format(new Date());
     }
 
-    public static String getDateStr(Date date) {
-        SimpleDateFormat df = new SimpleDateFormat("MM-dd");
-        return df.format(date);
-    }
-
+    /**
+     * 获取当前时间 格式 yyyy-MM-dd
+     * @return
+     */
     public static String NowDateW() {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         return df.format(new Date());
     }
 
+    /**
+     * 获取当前时间 格式 yyyyMMdd
+     * @return
+     */
     public static String NowDate() {
         SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");
         return df.format(new Date());
     }
 
+    /**
+     * 根据传入的日期转换 格式 MM-dd
+     * @param date
+     * @return
+     */
+    public static String getDateStr(Date date) {
+        SimpleDateFormat df = new SimpleDateFormat("MM-dd");
+        return df.format(date);
+    }
+
+    /**
+     * 根据传入的日期转换 格式 MM月dd日
+     * @param date
+     * @return
+     */
+    public static String getDateStr_cn(Date date) {
+        SimpleDateFormat df = new SimpleDateFormat("MM月dd日");
+        return df.format(date);
+    }
+
+    /**
+     * 计算时间的毫秒
+     * @param time
+     * @return
+     */
     public static long getDateExpired(int time) {
         Date date = new Date();
         long int_time = time * 60*1000;

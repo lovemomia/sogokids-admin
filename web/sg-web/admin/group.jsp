@@ -241,15 +241,18 @@
                         <c:forEach items="${entitys}" var="entity">
                             <tr>
                                 <td style="width: 10%;"><c:out value="${entity.id}"></c:out></td>
-                                <td style="width: 30%"><c:out value="${entity.name}"></c:out></td>
+                                <td style="width: 30%">
+                                    <c:out value="${entity.name}"></c:out>&numsp;&numsp;<c:out value="${entity.courseName}"></c:out>
+                                </td>
                                 <td class="center">
                                     <a href="${ctx}/group/oper.do?uid=${user.id}&id=${entity.id}&mark=2" class="btn btn-white btn-sm"><i class="fa fa-user"></i> 成员 </a>
                                     <c:if test="${entity.xkFlag == 0}">
                                         <a href="${ctx}/group/oper.do?uid=${user.id}&id=${entity.id}&mark=1" class="btn btn-white btn-sm"><i class="fa fa-check-circle"></i> 选课 </a>
                                     </c:if>
                                     <button class="btn btn-white btn-sm" data-toggle="modal" data-target="#myGroup2" type="button" id="btn_edit" name="btn_edit" onclick="editGroup('${entity.id}','${entity.name}')" ><i class="fa fa-pencil"></i>编辑</button>
-                                    <%--<a href="${ctx}/group/oper.do?uid=${user.id}&id=${entity.id}&mark=2" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i> 编辑 </a>--%>
-                                    <a href="javascript:void(0)" onclick="delGroup(${entity.id})" class="btn btn-white btn-sm"><i class="fa fa-times-circle"></i> 删除 </a>
+                                    <c:if test="${entity.xkFlag == 0}">
+                                        <a href="javascript:void(0)" onclick="delGroup(${entity.id})" class="btn btn-white btn-sm"><i class="fa fa-times-circle"></i> 删除 </a>
+                                    </c:if>
                                 </td>
                             </tr>
                         </c:forEach>

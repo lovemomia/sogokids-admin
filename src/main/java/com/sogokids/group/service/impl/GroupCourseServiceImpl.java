@@ -182,9 +182,7 @@ public class GroupCourseServiceImpl implements GroupCourseService {
             sb_str.append("uids=").append(user_ids);
             sb_str.append("key=").append(configuration.getString(Quantity.SERVICE_PORT_KEY));
 
-            System.out.print("\r\n"+"sb_str:"+sb_str.toString());
             String sign = StringUtil.getSign(sb_str.toString());//请求加密串
-            System.out.print("\r\n"+"sign:"+sign);
 
             String param = "coid="+courseId+"&expired="+expired+"&sid="+skuId+"&uids="+user_ids+"&sign="+sign;
             JSONObject jSONObject = httpClientService.httpPost(upload_qz_url,param);

@@ -10,6 +10,7 @@ public class SelectionGroup {
     private int xkFlag = 0;
     private int status;
     private String addTime;
+    private String courseName;
 
     public int getId() {
         return id;
@@ -49,5 +50,13 @@ public class SelectionGroup {
 
     public void setAddTime(String addTime) {
         this.addTime = addTime;
+    }
+
+    public String getCourseName() {
+        return courseName;
+    }
+
+    public void setCourseName(String courseName) {
+        this.courseName = courseName;
     }
 }
