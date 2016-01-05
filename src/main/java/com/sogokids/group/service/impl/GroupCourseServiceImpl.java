@@ -1,25 +1,19 @@
 package com.sogokids.group.service.impl;
 
 import cn.momia.common.config.Configuration;
-import com.sogokids.course.model.Course;
+import com.alibaba.fastjson.JSONObject;
 import com.sogokids.course.model.CourseSku;
-import com.sogokids.course.service.CourseService;
 import com.sogokids.course.service.CourseSkuService;
 import com.sogokids.group.model.GroupCourse;
 import com.sogokids.group.model.GroupUser;
 import com.sogokids.group.service.GroupCourseService;
 import com.sogokids.group.service.GroupUserService;
-import com.sogokids.utils.entity.QzResult;
+import com.sogokids.http.model.HttpResult;
+import com.sogokids.http.service.HttpClientService;
+import com.sogokids.utils.util.CastUtil;
+import com.sogokids.utils.util.DateUtil;
 import com.sogokids.utils.util.Quantity;
 import com.sogokids.utils.util.StringUtil;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +45,9 @@ public class GroupCourseServiceImpl implements GroupCourseService {
 
     @Autowired
     private Configuration configuration;
+
+    @Autowired
+    private HttpClientService httpClientService;
 
     @Resource
     private JdbcTemplate jdbcTemplate;
@@ -163,8 +160,8 @@ public class GroupCourseServiceImpl implements GroupCourseService {
     }
 
     @Override
-    public QzResult insertGroupCourse(int gId, int skuId){
-        QzResult qzResult = new QzResult();
+    public HttpResult insertGroupCourse(int gId, int skuId){
+        HttpResult result = new HttpResult();
         CourseSku courseSku = courseSkuService.get(skuId);
         int courseId = courseSku.getCourseId();
         List<GroupUser> groupUsers = groupUserService.getGroupUsersByGId(gId);
@@ -176,41 +173,34 @@ public class GroupCourseServiceImpl implements GroupCourseService {
             String user_ids = sb.toString();
             user_ids = user_ids.substring(0, user_ids.length()-1);
             String upload_qz_url = configuration.getString(Quantity.UPLOAD_GROUP_COURSE);
-            try{
-                HttpClient httpClient = HttpClients.createDefault();
-                HttpPost httpPost = new HttpPost(upload_qz_url);
-                StringEntity reqEntity = new StringEntity("uids="+user_ids+"&coid="+courseId+"&sid="+skuId, "utf-8");
-                reqEntity.setContentType("application/x-www-form-urlencoded");
-                httpPost.setEntity(reqEntity);
 
-                HttpResponse response = httpClient.execute(httpPost);
-//                System.out.print("=============="+response.getStatusLine().getStatusCode());
-                if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
-                    throw new RuntimeException("fail to execute request: " + httpPost);
-                }else{
-                    HttpEntity resEntity = response.getEntity();
-                    String entityStr = EntityUtils.toString(resEntity);
-                    Map<String, Object> map = StringUtil.parseJSON2Map(entityStr);
-                    qzResult.setErrno(Integer.parseInt(map.get("errno").toString()));
-                    qzResult.setErrmsg(map.get("errmsg").toString());
-                    qzResult.setTime(map.get("time").toString());
-                    qzResult.setData(map.get("data").toString());
-                    if (Integer.parseInt(map.get("errno").toString()) == 0){
-                        GroupCourse groupCourse = new GroupCourse();
-                        groupCourse.setGroupId(gId);
-                        groupCourse.setCourseId(courseId);
-                        groupCourse.setCourseSkuId(skuId);
-                        this.insert(groupCourse);
-                    }
-                }
-            }catch (Exception _ioex){
-                _ioex.printStackTrace();
+            StringBuffer sb_str = new StringBuffer();
+            sb_str.append("coid=").append(courseId);
+            long expired = DateUtil.getDateExpired(configuration.getInt(Quantity.SERVICE_PORT_TIME));//请求有效期
+            sb_str.append("expired=").append(expired);
+            sb_str.append("sid=").append(skuId);
+            sb_str.append("uids=").append(user_ids);
+            sb_str.append("key=").append(configuration.getString(Quantity.SERVICE_PORT_KEY));
+
+            System.out.print("\r\n"+"sb_str:"+sb_str.toString());
+            String sign = StringUtil.getSign(sb_str.toString());//请求加密串
+            System.out.print("\r\n"+"sign:"+sign);
+
+            String param = "coid="+courseId+"&expired="+expired+"&sid="+skuId+"&uids="+user_ids+"&sign="+sign;
+            JSONObject jSONObject = httpClientService.httpPost(upload_qz_url,param);
+            result = CastUtil.toObject(jSONObject, HttpResult.class);
+            if (result.getErrno() == 0){
+                GroupCourse groupCourse = new GroupCourse();
+                groupCourse.setGroupId(gId);
+                groupCourse.setCourseId(courseId);
+                groupCourse.setCourseSkuId(skuId);
+                this.insert(groupCourse);
             }
         }else{
-            qzResult.setErrno(1001);
+            result.setErrno(1001);
         }
 
-        return qzResult;
+        return result;
     }
 
 }

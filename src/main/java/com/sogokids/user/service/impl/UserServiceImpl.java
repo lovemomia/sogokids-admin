@@ -8,10 +8,8 @@ import com.sogokids.user.model.User;
 import com.sogokids.user.service.AdminRoleService;
 import com.sogokids.user.service.FuncService;
 import com.sogokids.user.service.RoleFuncService;
-import com.sogokids.user.service.RoleService;
 import com.sogokids.user.service.UserService;
 import com.sogokids.utils.util.JumpPage;
-import com.sogokids.utils.util.Menu;
 import com.sogokids.utils.util.Quantity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -20,7 +18,6 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.security.PublicKey;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -32,9 +29,6 @@ import java.util.Map;
  */
 @Service
 public class UserServiceImpl implements UserService {
-
-    @Autowired
-    private RoleService roleService;
 
     @Autowired
     private AdminRoleService adminRoleService;

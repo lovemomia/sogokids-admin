@@ -3,7 +3,6 @@ package com.sogokids.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.sogokids.images.model.Images;
 import com.sogokids.images.service.ImagesService;
-import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

@@ -1,7 +1,5 @@
 package com.sogokids.system.model;
 
-import java.util.List;
-
 /**
  * Created by hoze on 15/12/30.
  */

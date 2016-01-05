@@ -1,7 +1,5 @@
 package com.sogokids.utils.entity;
 
-import java.util.List;
-
 /**
  * Created by hoze on 15/11/25.
  */

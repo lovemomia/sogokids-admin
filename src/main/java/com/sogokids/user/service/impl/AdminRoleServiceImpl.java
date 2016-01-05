@@ -1,7 +1,6 @@
 package com.sogokids.user.service.impl;
 
 import com.sogokids.user.model.AdminRole;
-import com.sogokids.user.model.Role;
 import com.sogokids.user.service.AdminRoleService;
 import com.sogokids.utils.util.Quantity;
 import org.springframework.jdbc.core.JdbcTemplate;

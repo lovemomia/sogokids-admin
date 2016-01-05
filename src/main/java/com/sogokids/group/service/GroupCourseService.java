@@ -1,7 +1,7 @@
 package com.sogokids.group.service;
 
 import com.sogokids.group.model.GroupCourse;
-import com.sogokids.utils.entity.QzResult;
+import com.sogokids.http.model.HttpResult;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -19,5 +19,5 @@ public interface GroupCourseService {
     public int delete(int id);
     public GroupCourse formEntity(HttpServletRequest request, int id);
 
-    public QzResult insertGroupCourse(int gId, int skuId);
+    public HttpResult insertGroupCourse(int gId, int skuId);
 }

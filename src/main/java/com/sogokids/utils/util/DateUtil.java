@@ -1,7 +1,5 @@
 package com.sogokids.utils.util;
 
-import org.apache.commons.lang3.RandomStringUtils;
-
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -217,60 +215,14 @@ public class DateUtil {
         return df.format(new Date());
     }
 
+    public static long getDateExpired(int time) {
+        Date date = new Date();
+        long int_time = time * 60*1000;
+        long expired = date.getTime() + int_time;
+        return expired;
+    }
+
     public static void main(String[] args) {
-        String ss = "2015-12-20 11:11:10";
-        System.out.print(getDateStr(StrToDate(ss)));
-//        System.out.print(RandomStringUtils.randomNumeric(4));
-//        System.out.print(RandomStringUtils.randomNumeric(4));
-//        System.out.print(RandomStringUtils.randomNumeric(4));
-        //System.out.print(NowDateStr());
-        //Date date = new Date();
-//        String dateStr = "2015-07-18 00:00:01";
-//        String datess = "2015-07-19 23:59:59";
-//        List<Date> dates = new ArrayList<Date>();
-//        dates.add(StrToDate(dateStr));
-//        dates.add(StrToDate(datess));
-//        dates.add(StrToDate("2015-06-26 12:09:59"));
-//        dates.add(StrToDate("2015-07-26 10:09:59"));
 
-//        System.out.println("字符串转日期：" + StrToDate(dateStr));
-//        System.out.println("\r\n");
-//        System.out.println("日期转字符串：" + DateToStr(StrToDate(dateStr)));
-//        System.out.println("\r\n");
-//        System.out.println("日期相差天数：" + daysBetween(StrToDate(dateStr),StrToDate(datess)));
-//        System.out.println("\r\n");
-//        isWeek(dateStr);
-//        isWeek(datess);
-
-//        System.out.println("ssss：" + DateToStr_Cn(datess));
-//        System.out.println("\r\n");
-//        boolean ss = compareDate(StrToDate(NowDateStr()),StrToDate(datess));
-//        System.out.print(ss);
-//        System.out.print("最大时间："+Collections.max(dates));
-//        System.out.print("最小时间：" + Collections.min(dates));
-
-//        System.out.println( System.getProperty("os.name") );
-//        System.out.println( System.getProperty("os.version") );
-//        System.out.println( System.getProperty("os.arch") );
-
-//                Any("any"),
-//                Linux("Linux"),
-//                Mac_OS("Mac OS"),
-//                Mac_OS_X("Mac OS X"),
-//                Windows("Windows"),
-//                OS2("OS/2"),
-//                Solaris("Solaris"),
-//                SunOS("SunOS"),
-//                MPEiX("MPE/iX"),
-//                HP_UX("HP-UX"),
-//                AIX("AIX"),
-//                OS390("OS/390"),
-//                FreeBSD("FreeBSD"),
-//                Irix("Irix"),
-//                Digital_Unix("Digital Unix"),
-//                NetWare_411("NetWare"),
-//                OSF1("OSF1"),
-//                OpenVMS("OpenVMS"),
-//                Others("Others");
     }
 }

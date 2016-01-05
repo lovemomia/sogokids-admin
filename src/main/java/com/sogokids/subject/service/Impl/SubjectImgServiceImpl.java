@@ -4,7 +4,6 @@ import cn.momia.common.config.Configuration;
 import com.sogokids.images.model.Images;
 import com.sogokids.subject.model.SubjectImg;
 import com.sogokids.subject.service.SubjectImgService;
-import com.sogokids.user.service.UserService;
 import com.sogokids.utils.util.Quantity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;

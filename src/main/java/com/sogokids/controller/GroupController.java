@@ -1,13 +1,14 @@
 package com.sogokids.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.sogokids.group.model.GroupCourse;
 import com.sogokids.group.service.GroupCourseService;
 import com.sogokids.group.service.GroupUserService;
 import com.sogokids.group.service.SelectionGroupService;
+import com.sogokids.http.model.HttpResult;
+import com.sogokids.query.service.CustomerService;
 import com.sogokids.user.service.UserService;
-import com.sogokids.utils.entity.QzResult;
-import com.sogokids.utils.util.FileUtil;
+import com.sogokids.utils.util.CastUtil;
 import com.sogokids.utils.util.JumpPage;
 import com.sogokids.utils.util.Quantity;
 import org.apache.commons.io.IOUtils;
@@ -22,6 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -36,6 +38,9 @@ public class GroupController {
 
     @Autowired
     private UserService adminUserService;
+
+    @Autowired
+    private CustomerService customerService;
 
     @Autowired
     private GroupUserService groupUserService;
@@ -217,16 +222,17 @@ public class GroupController {
             context.put(Quantity.RETURN_MSG,"没有选择课程，请选择!");
         }else{
             int skuId = Integer.parseInt(req.getParameter("course_sku_id"));
-            QzResult qzResult = groupCourseService.insertGroupCourse(gid,skuId);
-            if (qzResult.getErrno() == 1001){
+            HttpResult result = groupCourseService.insertGroupCourse(gid,skuId);
+            if (result.getErrno() == 1001){
                 context.put(Quantity.RETURN_SUCCESS,1);
                 context.put(Quantity.RETURN_MSG,"没有分组成员信息，请进行处理!");
-            }else if (qzResult.getErrno() == 0 && qzResult.getData().equals("")){
+            }else if (result.getErrno() == 0 && result.getData().equals("")){
                 context.put(Quantity.RETURN_SUCCESS,0);
                 context.put(Quantity.RETURN_MSG,"选课成功!");
-            }else if (qzResult.getErrno() == 0 && !qzResult.getData().equals("")){
+            }else if (result.getErrno() == 0 && !result.getData().equals("")){
                 context.put(Quantity.RETURN_SUCCESS,0);
-                context.put(Quantity.RETURN_MSG,"选课成功,选课失败用:"+qzResult.getData()+";");
+                List<Long> failedUserIds = CastUtil.toList((JSON) result.getData(), Long.class);
+                context.put(Quantity.RETURN_MSG,"选课成功,选课失败用户:"+customerService.getUserInfo(failedUserIds));
             }else{
                 context.put(Quantity.RETURN_SUCCESS,1);
                 context.put(Quantity.RETURN_MSG,"选课失败，请与开发人员联系!");

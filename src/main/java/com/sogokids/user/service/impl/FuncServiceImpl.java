@@ -1,8 +1,6 @@
 package com.sogokids.user.service.impl;
 
 import com.sogokids.user.model.Func;
-import com.sogokids.user.model.Role;
-import com.sogokids.user.model.User;
 import com.sogokids.user.service.FuncService;
 import com.sogokids.utils.util.Quantity;
 import org.springframework.jdbc.core.JdbcTemplate;

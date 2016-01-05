@@ -1,12 +1,10 @@
 package com.sogokids.query.service.impl;
 
-import com.sogokids.course.model.Course;
 import com.sogokids.course.model.CourseSku;
 import com.sogokids.query.model.CourseTimeQuery;
 import com.sogokids.query.model.CourseUser;
 import com.sogokids.query.model.MobileUser;
 import com.sogokids.query.service.CourseTimeQueryService;
-import com.sogokids.system.model.Institution;
 import com.sogokids.system.model.Place;
 import com.sogokids.system.service.PlaceService;
 import com.sogokids.utils.util.DateUtil;
@@ -17,7 +15,6 @@ import org.springframework.jdbc.core.RowCallbackHandler;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;

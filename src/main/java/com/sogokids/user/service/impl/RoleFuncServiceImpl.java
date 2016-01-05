@@ -1,6 +1,5 @@
 package com.sogokids.user.service.impl;
 
-import com.sogokids.user.model.AdminRole;
 import com.sogokids.user.model.RoleFunc;
 import com.sogokids.user.service.RoleFuncService;
 import com.sogokids.utils.util.Quantity;

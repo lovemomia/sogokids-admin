@@ -1,7 +1,6 @@
 package com.sogokids.controller;
 
 import com.sogokids.home.service.EventService;
-import com.sogokids.home.service.IconService;
 import com.sogokids.system.service.AppVersionService;
 import com.sogokids.system.service.CityService;
 import com.sogokids.user.service.UserService;

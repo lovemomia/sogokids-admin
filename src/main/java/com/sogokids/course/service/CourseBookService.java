@@ -3,7 +3,6 @@ package com.sogokids.course.service;
 import com.sogokids.course.model.CourseBook;
 import com.sogokids.images.model.Images;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**

@@ -3,47 +3,34 @@ package com.sogokids.course.service.impl;
 import cn.momia.common.config.Configuration;
 import com.alibaba.fastjson.JSONObject;
 import com.sogokids.course.model.Course;
-import com.sogokids.course.model.CourseBook;
 import com.sogokids.course.model.CourseDetail;
 import com.sogokids.course.model.CourseImg;
 import com.sogokids.course.model.CourseRecommend;
 import com.sogokids.course.model.CourseSku;
 import com.sogokids.course.model.CourseTeacher;
-import com.sogokids.course.service.CourseBookService;
 import com.sogokids.course.service.CourseDetailService;
 import com.sogokids.course.service.CourseImgService;
 import com.sogokids.course.service.CourseRecommendService;
 import com.sogokids.course.service.CourseService;
 import com.sogokids.course.service.CourseSkuService;
 import com.sogokids.course.service.CourseTeacherService;
+import com.sogokids.http.model.HttpResult;
+import com.sogokids.http.service.HttpClientService;
 import com.sogokids.subject.model.Subject;
-import com.sogokids.subject.model.SubjectImg;
 import com.sogokids.subject.model.SubjectSku;
 import com.sogokids.subject.service.SubjectService;
 import com.sogokids.subject.service.SubjectSkuService;
 import com.sogokids.system.model.Institution;
 import com.sogokids.system.model.Place;
-import com.sogokids.system.model.Region;
 import com.sogokids.system.model.Teacher;
 import com.sogokids.system.service.InstitutionService;
 import com.sogokids.system.service.PlaceService;
 import com.sogokids.system.service.RegionService;
 import com.sogokids.system.service.TeacherService;
-import com.sogokids.utils.entity.QzResult;
+import com.sogokids.utils.util.CastUtil;
 import com.sogokids.utils.util.DateUtil;
 import com.sogokids.utils.util.Quantity;
 import com.sogokids.utils.util.StringUtil;
-import org.apache.commons.io.IOUtils;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.entity.mime.MultipartEntity;
-import org.apache.http.entity.mime.content.StringBody;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
@@ -51,22 +38,16 @@ import org.springframework.jdbc.core.RowCallbackHandler;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.io.Writer;
 import java.math.BigDecimal;
-import java.nio.charset.Charset;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -112,6 +93,9 @@ public class CourseServiceImpl implements CourseService {
 
     @Autowired
     private TeacherService teacherService;
+
+    @Autowired
+    private HttpClientService httpClientService;
 
     @Resource
     private JdbcTemplate jdbcTemplate;
@@ -755,20 +739,18 @@ public class CourseServiceImpl implements CourseService {
      * @return
      */
     @Override
-    public QzResult createQz(HttpServletRequest req, int course_id, int sku_id) {
+    public HttpResult createQz(HttpServletRequest req, int course_id, int sku_id) {
         String teacher_ids = "";
         String upload_qz_url = configuration.getString(Quantity.UPLOAD_QZ);
         List<CourseTeacher> courseTeachers = courseTeacherService.getCourseTeachers(course_id);
-//        int sku_id = Integer.parseInt(req.getParameter("qzid"));
-//        String qz_name = req.getParameter("qzname");
         String qz_name = this.get(course_id).getKeyWord();
-        QzResult qzResult = new QzResult();
+        HttpResult result = new HttpResult();
         if (courseTeachers.size() > 0){
             for (CourseTeacher courseTeacher : courseTeachers){
                 Teacher teacher = teacherService.get(courseTeacher.getTeacherId());
                 teacher_ids = teacher_ids + teacher.getUserId() + ",";
             }
-            teacher_ids = teacher_ids.substring(0,teacher_ids.length()-1);
+            teacher_ids = teacher_ids.substring(0,teacher_ids.length()-1);//得到讲师的id串，以","隔开
             CourseSku courseSku = courseSkuService.get(sku_id);
             String time = DateUtil.getDateStr(DateUtil.StrToDate(courseSku.getStartTime()));
             Place place = placeService.get(courseSku.getPlaceId());
@@ -776,39 +758,32 @@ public class CourseServiceImpl implements CourseService {
             if (place.getRegionId() != 0){
                 region_name = regionService.get(place.getRegionId()).getName();
             }
-            String qz = time+qz_name+region_name;
+            String qz = time+qz_name+region_name;//组装群组名称
 
+            StringBuffer sb = new StringBuffer();
+            sb.append("coid=").append(course_id);
+            long expired = DateUtil.getDateExpired(configuration.getInt(Quantity.SERVICE_PORT_TIME));//请求有效期
+            sb.append("expired=").append(expired);
+            sb.append("name=").append(qz);
+            sb.append("sid=").append(sku_id);
+            sb.append("tids=").append(teacher_ids);
+            sb.append("key=").append(configuration.getString(Quantity.SERVICE_PORT_KEY));
 
-            try{
-                HttpClient httpClient = HttpClients.createDefault();
-                HttpPost httpPost = new HttpPost(upload_qz_url);
-                StringEntity reqEntity = new StringEntity("coid="+course_id+"&sid="+sku_id+"&name="+qz+"&tids="+teacher_ids, "utf-8");
-                reqEntity.setContentType("application/x-www-form-urlencoded");
-                httpPost.setEntity(reqEntity);
+            String sign = StringUtil.getSign(sb.toString());//请求加密串
 
-                HttpResponse response = httpClient.execute(httpPost);
-                if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
-                    throw new RuntimeException("fail to execute request: " + httpPost);
-                }else{
-                    HttpEntity resEntity = response.getEntity();
-                    String entityStr = EntityUtils.toString(resEntity);
-                    Map<String, Object> map = StringUtil.parseJSON2Map(entityStr);
-                    qzResult.setErrno(Integer.parseInt(map.get("errno").toString()));
-                    qzResult.setErrmsg(map.get("errmsg").toString());
-                    qzResult.setTime(map.get("time").toString());
-                    qzResult.setData(map.get("data").toString());
-                }
-            }catch (Exception _ioex){
-                _ioex.printStackTrace();
-            }
+            String param = "coid="+course_id+"&expired="+expired+"&name="+qz+"&sid="+sku_id+"&tids="+teacher_ids+"&sign="+sign;
+
+            JSONObject jsonObject = httpClientService.httpPost(upload_qz_url, param);
+            result = CastUtil.toObject(jsonObject, HttpResult.class);
+
         }else{
-            qzResult.setErrno(-1);
-            qzResult.setErrmsg("error");
-            qzResult.setTime("");
-            qzResult.setData("false");
+            result.setErrno(-1);
+            result.setErrmsg("error");
+            result.setTime((new Date()).getTime());
+            result.setData("false");
         }
 
-        return qzResult;
+        return result;
     }
 
 

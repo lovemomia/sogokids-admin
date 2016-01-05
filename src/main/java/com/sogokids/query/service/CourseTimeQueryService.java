@@ -2,7 +2,6 @@ package com.sogokids.query.service;
 
 import com.sogokids.query.model.CourseTimeQuery;
 import com.sogokids.query.model.CourseUser;
-import com.sogokids.query.model.MobileUser;
 
 import java.util.List;
 import java.util.Map;

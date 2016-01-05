@@ -2,7 +2,6 @@ package com.sogokids.query.service;
 
 import com.sogokids.course.model.Course;
 import com.sogokids.order.model.Order;
-import com.sogokids.query.model.Customer;
 
 import java.util.List;
 

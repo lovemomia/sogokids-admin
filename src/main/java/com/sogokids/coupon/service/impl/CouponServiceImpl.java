@@ -3,7 +3,6 @@ package com.sogokids.coupon.service.impl;
 import com.sogokids.coupon.model.Coupon;
 import com.sogokids.coupon.service.CouponService;
 import com.sogokids.utils.util.Quantity;
-import org.omg.IOP.ENCODING_CDR_ENCAPS;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowCallbackHandler;
 import org.springframework.stereotype.Service;

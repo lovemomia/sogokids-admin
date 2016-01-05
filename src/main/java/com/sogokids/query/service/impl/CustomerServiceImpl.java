@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 /**
  * Created by hoze on 15/11/10.
@@ -71,5 +72,25 @@ public class CustomerServiceImpl implements CustomerService {
             _ex.printStackTrace();
         }
         return reData;
+    }
+
+    @Override
+    public String getUserInfo(List<Long> uids){
+        StringBuffer sb = new StringBuffer();
+
+        for (Long uid : uids){
+            Customer customer = this.getCustomer(Integer.parseInt(uid.toString()));
+            if (customer.getId() > 0) {
+                sb.append(customer.getNickName()).append(",");
+            }else{
+                sb.append(uid+"无用户,");
+            }
+        }
+
+        String content = sb.toString();
+        content = content.substring(0,content.length()-1);
+        content =  "[" + content + "]";
+        return content;
+
     }
 }

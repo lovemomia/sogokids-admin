@@ -1,7 +1,6 @@
 package com.sogokids.course.service;
 
 import com.sogokids.course.model.CourseSku;
-import com.sogokids.subject.model.SubjectSku;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;

@@ -1,9 +1,7 @@
 package com.sogokids.controller;
 
 
-import com.sogokids.user.model.AdminRole;
 import com.sogokids.user.model.RoleFunc;
-import com.sogokids.user.model.User;
 import com.sogokids.user.service.FuncService;
 import com.sogokids.user.service.RoleFuncService;
 import com.sogokids.user.service.RoleService;

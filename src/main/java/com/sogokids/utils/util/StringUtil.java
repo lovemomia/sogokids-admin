@@ -2,6 +2,7 @@ package com.sogokids.utils.util;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import org.apache.commons.codec.digest.DigestUtils;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -87,6 +88,10 @@ public class StringUtil {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static String getSign(String param){
+        return DigestUtils.md5Hex(param);
     }
 
     //test
