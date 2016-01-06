@@ -364,8 +364,15 @@
                             if(data.success == 0) {
 //                                console.log(data);
                                 $('#myGroup1').modal('hide');
-                                layer.alert(data.msg,10,'提示信息');
-                                window.location.href="${ctx}/group/info.do?uid=${user.id}";
+                                $.layer({
+                                    shade : ['',false],
+                                    area : ['auto','auto'],
+                                    dialog : {msg:data.msg, btns : 1, type : 4, btn : ['确定'],
+                                        yes : function(){
+                                            window.location.href="${ctx}/group/info.do?uid=${user.id}";
+                                        }
+                                    }
+                                });
                             }else{
                                 layer.alert(data.msg,10,'提示信息');
                             }

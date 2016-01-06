@@ -16,6 +16,7 @@ import com.sogokids.system.model.Place;
 import com.sogokids.system.service.PlaceService;
 import com.sogokids.utils.util.DateUtil;
 import com.sogokids.utils.util.Quantity;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -223,9 +224,7 @@ public class SelectionGroupServiceImpl implements SelectionGroupService {
         StringBuffer sb = new StringBuffer();
         String[] userMobiles = null;
         if (mobiles != null || !mobiles.equals("")) {
-            if (mobiles.indexOf(",") > 0) {
-                userMobiles = mobiles.split(",");
-            }
+            userMobiles = StringUtils.split(mobiles,",，");
         }
 
         if (userMobiles != null) {
@@ -244,23 +243,14 @@ public class SelectionGroupServiceImpl implements SelectionGroupService {
                     sb.append(userMobiles[i]).append(",");
                 }
             }
-        }else{
-            Customer customer = customerService.getCustomerByMobile(mobiles);
-            if (customer.getId() > 0) {
-                if (groupUserService.isget(gid,customer.getId()).getId() > 0) {
-                    sb.append(mobiles);
-                }else{
-                    GroupUser groupUser = new GroupUser();
-                    groupUser.setGroupId(gid);
-                    groupUser.setUserId(customer.getId());
-                    groupUserService.insert(groupUser);
-                }
-            } else {
-                sb.append(mobiles);
-            }
         }
 
-        return sb.toString();
+        String reStr = sb.toString();
+        if (!reStr.equals("") && reStr != null && reStr.indexOf(",") > 0) {
+            reStr = reStr.substring(0, reStr.length() - 1);
+        }
+
+        return reStr;
 
     }
 
