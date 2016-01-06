@@ -239,8 +239,8 @@
                                 <td><c:out value="${fn:substring(entity.addTime,0,19)}"></c:out></td>
                                 <td class="center">
                                     <a href="${ctx}/user/oper.do?uid=${user.id}&id=${entity.id}&mark=2" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i> 编辑 </a>
+                                    <a href="${ctx}/user/oper.do?uid=${user.id}&id=${entity.id}&mark=3" class="btn btn-primary btn-sm"><i class="fa fa-user"></i> 角色 </a>
                                     <a href="${ctx}/user/del.do?uid=${user.id}&id=${entity.id}" class="btn btn-white btn-sm"><i class="fa fa-times-circle"></i> 删除 </a>
-                                    <a href="${ctx}/user/oper.do?uid=${user.id}&id=${entity.id}&mark=3" class="btn btn-white btn-sm"><i class="fa fa-times-circle"></i> 用户角色 </a>
                                 </td>
                             </tr>
                         </c:forEach>
