@@ -205,8 +205,8 @@
         </div>
         <div class="row wrapper border-bottom white-bg page-heading">
             <div class="row">
-                <div class="col-lg-10">
-                <h2>批量选课</h2>
+                <div class="col-lg-10" style="margin-left: 10px;margin-right: 10px;">
+                    <h2>批量选课</h2>
                 <%--<ol class="breadcrumb">--%>
                     <%--<li>--%>
                         <%--<a href="${ctx}/user/index.do?uid=${user.id}">主页</a>--%>
@@ -221,7 +221,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-lg-10">
+                <div class="col-lg-10" style="margin-left: 10px;margin-right: 10px;">
                     <h2><button class="btn btn-primary" data-toggle="modal" data-target="#myGroup1" type="button" id="btn_create" name="btn_create">新增组</button></h2>
                 </div>
             </div>

@@ -223,20 +223,20 @@ public class GroupController {
         }else{
             int skuId = Integer.parseInt(req.getParameter("course_sku_id"));
             HttpResult result = groupCourseService.insertGroupCourse(gid,skuId);
+            List<Long> failedUserIds = CastUtil.toList((JSON) result.getData(), Long.class);
             if (result.getErrno() == 1001){
                 context.put(Quantity.RETURN_SUCCESS,1);
                 context.put(Quantity.RETURN_MSG,"对不起,没有分组成员信息!");
             }else if (result.getErrno() == 1002){
                 context.put(Quantity.RETURN_SUCCESS,0);
-                List<Long> failedUserIds = CastUtil.toList((JSON) result.getData(), Long.class);
                 context.put(Quantity.RETURN_MSG,"对不起,所有分组成员信息选课失败,用户信息:"+customerService.getUserInfo(failedUserIds));
-            }else if (result.getErrno() == 0 && result.getData().equals("")){
+            }else if (result.getErrno() == 0){
                 context.put(Quantity.RETURN_SUCCESS,0);
-                context.put(Quantity.RETURN_MSG,"课程选择成功!");
-            }else if (result.getErrno() == 0 && !result.getData().equals("")){
-                context.put(Quantity.RETURN_SUCCESS,0);
-                List<Long> failedUserIds = CastUtil.toList((JSON) result.getData(), Long.class);
-                context.put(Quantity.RETURN_MSG,"选课成功,选课失败用户:"+customerService.getUserInfo(failedUserIds));
+                if (failedUserIds.size() > 0){
+                    context.put(Quantity.RETURN_MSG,"选课成功,选课失败的用户信息:"+customerService.getUserInfo(failedUserIds));
+                }else{
+                    context.put(Quantity.RETURN_MSG,"选择课程成功!");
+                }
             }else{
                 context.put(Quantity.RETURN_SUCCESS,1);
                 context.put(Quantity.RETURN_MSG,"软件出现异常,请与开发人员联系!");

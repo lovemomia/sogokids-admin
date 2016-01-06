@@ -77,7 +77,7 @@ public class SelectionGroupServiceImpl implements SelectionGroupService {
     @Override
     public List<SelectionGroup> getEntitys() {
         List<SelectionGroup> reData = new ArrayList<SelectionGroup>();
-        String sql = "select Id,Name,Status,AddTime from SG_SelectionGroup where Status > ? ";
+        String sql = "select Id,Name,Status,AddTime from SG_SelectionGroup where Status > ? order by Id desc ";
         Object [] params = new Object[]{Quantity.STATUS_ZERO};
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql, params);
         if(list.size() > 0){
