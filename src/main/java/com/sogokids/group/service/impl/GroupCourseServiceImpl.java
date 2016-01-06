@@ -1,6 +1,7 @@
 package com.sogokids.group.service.impl;
 
 import cn.momia.common.config.Configuration;
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.sogokids.course.model.CourseSku;
 import com.sogokids.course.service.CourseSkuService;
@@ -165,6 +166,7 @@ public class GroupCourseServiceImpl implements GroupCourseService {
         CourseSku courseSku = courseSkuService.get(skuId);
         int courseId = courseSku.getCourseId();
         List<GroupUser> groupUsers = groupUserService.getGroupUsersByGId(gId);
+        int user_length = groupUsers.size();
         if (groupUsers.size() > 0) {
             StringBuffer sb = new StringBuffer();
             for (GroupUser groupUser : groupUsers) {
@@ -187,12 +189,17 @@ public class GroupCourseServiceImpl implements GroupCourseService {
             String param = "coid="+courseId+"&expired="+expired+"&sid="+skuId+"&uids="+user_ids+"&sign="+sign;
             JSONObject jSONObject = httpClientService.httpPost(upload_qz_url,param);
             result = CastUtil.toObject(jSONObject, HttpResult.class);
+            List<Long> failedUserIds = CastUtil.toList((JSON) result.getData(), Long.class);
             if (result.getErrno() == 0){
-                GroupCourse groupCourse = new GroupCourse();
-                groupCourse.setGroupId(gId);
-                groupCourse.setCourseId(courseId);
-                groupCourse.setCourseSkuId(skuId);
-                this.insert(groupCourse);
+                if (user_length > failedUserIds.size()) {
+                    GroupCourse groupCourse = new GroupCourse();
+                    groupCourse.setGroupId(gId);
+                    groupCourse.setCourseId(courseId);
+                    groupCourse.setCourseSkuId(skuId);
+                    this.insert(groupCourse);
+                }else{
+                    result.setErrno(1002);
+                }
             }
         }else{
             result.setErrno(1001);
