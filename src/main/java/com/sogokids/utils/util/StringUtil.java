@@ -2,6 +2,7 @@ package com.sogokids.utils.util;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import org.apache.commons.codec.digest.DigestUtils;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -18,6 +19,11 @@ import java.util.Map;
  */
 public class StringUtil {
 
+    /**
+     * Json转换成List
+     * @param jsonStr
+     * @return
+     */
     public static List<Map<String, Object>> parseJSON2List(String jsonStr){
         //System.out.print(jsonStr);
         JSONArray jsonArr = JSONArray.fromObject(jsonStr);
@@ -31,6 +37,11 @@ public class StringUtil {
     }
 
 
+    /**
+     * Json转换成Map
+     * @param jsonStr
+     * @return
+     */
     public static Map<String, Object> parseJSON2Map(String jsonStr){
         Map<String, Object> map = new HashMap<String, Object>();
         //最外层解析
@@ -54,6 +65,11 @@ public class StringUtil {
     }
 
 
+    /**
+     * 通过url获取Json转换成List
+     * @param url
+     * @return
+     */
     public static List<Map<String, Object>> getListByUrl(String url){
         try {
             //通过HTTP获取JSON数据
@@ -72,6 +88,11 @@ public class StringUtil {
     }
 
 
+    /**
+     * 通过url获取Json转换成Map
+     * @param url
+     * @return
+     */
     public static Map<String, Object> getMapByUrl(String url){
         try {
             //通过HTTP获取JSON数据
@@ -87,6 +108,10 @@ public class StringUtil {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static String getSign(String param){
+        return DigestUtils.md5Hex(param);
     }
 
     //test

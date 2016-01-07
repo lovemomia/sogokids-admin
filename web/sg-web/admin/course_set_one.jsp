@@ -68,6 +68,7 @@
                 <li><a href="${ctx}/sub/info.do?uid=${user.id}"><i class="fa fa-connectdevelop"></i> <span class="nav-label">课程体系</span> </a></li>
                 <li><a href="${ctx}/book/info.do?uid=${user.id}"><i class="fa fa-leanpub"></i> <span class="nav-label">试听课程</span> </a></li>
                 <li class="active"><a href="${ctx}/one/info.do?uid=${user.id}"><i class="fa fa-drupal"></i> <span class="nav-label">推荐课程</span> </a></li>
+                <li><a href="${ctx}/group/info.do?uid=${user.id}"><i class="fa fa-building"></i> <span class="nav-label">批量选课</span> </a></li>
                 <li>
                     <a href="index.jsp#"><i class="fa fa-bar-chart"></i> <span class="nav-label">查询统计</span><span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
@@ -265,8 +266,8 @@
                                     <a href="javascript:void(0)" onclick="cancelCourse(${entity.id})" class="btn btn-white btn-sm"><i class="fa fa-volume-up"></i> 取消推荐 </a>
                                     <a href="${ctx}/one/preview.do?uid=${user.id}&id=${entity.id}" class="btn btn-white btn-sm"><i class="fa fa-eye"></i> 预览 </a>
 
-                                    <a href="${ctx}/one/move.do?uid=${user.id}&id=${entity.id}&flag=1" class="btn btn-primary btn-sm"><i class="fa fa-arrow-circle-o-up"></i>上移</a>
-                                    <a href="${ctx}/one/move.do?uid=${user.id}&id=${entity.id}&flag=2" class="btn btn-primary btn-sm"><i class="fa fa-arrow-circle-o-down"></i>下移</a>
+                                    <a href="${ctx}/one/move.do?uid=${user.id}&id=${entity.id}&flag=1" class="btn btn-danger btn-sm"><i class="fa fa-arrow-circle-o-up"></i>上移</a>
+                                    <a href="${ctx}/one/move.do?uid=${user.id}&id=${entity.id}&flag=2" class="btn btn-warning btn-sm"><i class="fa fa-arrow-circle-o-down"></i>下移</a>
                                 </td>
                             </tr>
                         </c:forEach>

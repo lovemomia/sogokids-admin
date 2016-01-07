@@ -50,7 +50,11 @@ public class TeacherServiceImpl implements TeacherService {
                 entity.setUserId(Integer.parseInt(list.get(i).get("UserId").toString()));
                 entity.setName(list.get(i).get("Name").toString());
                 entity.setAvatar(list.get(i).get("Avatar").toString());
-                entity.setEducation(list.get(i).get("Education").toString());
+                if (list.get(i).get("Education") == null){
+                    entity.setEducation("");
+                }else{
+                    entity.setEducation(list.get(i).get("Education").toString());
+                }
                 if (list.get(i).get("Experience") == null){
                     entity.setExperience("");
                 }else{

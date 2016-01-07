@@ -65,6 +65,7 @@
                 <li><a href="${ctx}/sub/info.do?uid=${user.id}"><i class="fa fa-connectdevelop"></i> <span class="nav-label">课程体系</span> </a></li>
                 <li><a href="${ctx}/book/info.do?uid=${user.id}"><i class="fa fa-leanpub"></i> <span class="nav-label">试听课程</span> </a></li>
                 <li><a href="${ctx}/one/info.do?uid=${user.id}"><i class="fa fa-drupal"></i> <span class="nav-label">推荐课程</span> </a></li>
+                <li><a href="${ctx}/group/info.do?uid=${user.id}"><i class="fa fa-building"></i> <span class="nav-label">批量选课</span> </a></li>
                 <li>
                     <a href="index.jsp#"><i class="fa fa-bar-chart"></i> <span class="nav-label">查询统计</span><span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
@@ -238,8 +239,8 @@
                                 <td><c:out value="${fn:substring(entity.addTime,0,19)}"></c:out></td>
                                 <td class="center">
                                     <a href="${ctx}/user/oper.do?uid=${user.id}&id=${entity.id}&mark=2" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i> 编辑 </a>
+                                    <a href="${ctx}/user/oper.do?uid=${user.id}&id=${entity.id}&mark=3" class="btn btn-primary btn-sm"><i class="fa fa-user"></i> 角色 </a>
                                     <a href="${ctx}/user/del.do?uid=${user.id}&id=${entity.id}" class="btn btn-white btn-sm"><i class="fa fa-times-circle"></i> 删除 </a>
-                                    <a href="${ctx}/user/oper.do?uid=${user.id}&id=${entity.id}&mark=3" class="btn btn-white btn-sm"><i class="fa fa-times-circle"></i> 用户角色 </a>
                                 </td>
                             </tr>
                         </c:forEach>

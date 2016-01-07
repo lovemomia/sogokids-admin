@@ -1,6 +1,5 @@
 package com.sogokids.course.service.impl;
 
-import com.sogokids.course.model.Course;
 import com.sogokids.course.model.CourseTeacher;
 import com.sogokids.course.service.CourseTeacherService;
 import com.sogokids.system.model.Teacher;
@@ -11,7 +10,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;

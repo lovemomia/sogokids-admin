@@ -1,7 +1,5 @@
 package com.sogokids.utils.util;
 
-import org.apache.commons.lang3.RandomStringUtils;
-
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -97,6 +95,11 @@ public class DateUtil {
         return Integer.parseInt(String.valueOf(between_days));
     }
 
+    /**
+     * 日期时间转换中文 可以带星期
+     * @param str
+     * @return
+     */
     public static String DateToStr_Cn(String str){
         //可根据不同样式请求显示不同日期格式，要显示星期可以添加E参数
 
@@ -197,80 +200,66 @@ public class DateUtil {
             return false;
     }
 
+    /**
+     * 获取当前时间 格式 yyyy-MM-dd HH:mm:ss
+     * @return
+     */
     public static String NowDateStr() {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return df.format(new Date());
     }
 
-    public static String getDateStr(Date date) {
-        SimpleDateFormat df = new SimpleDateFormat("MM-dd");
-        return df.format(date);
-    }
-
+    /**
+     * 获取当前时间 格式 yyyy-MM-dd
+     * @return
+     */
     public static String NowDateW() {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         return df.format(new Date());
     }
 
+    /**
+     * 获取当前时间 格式 yyyyMMdd
+     * @return
+     */
     public static String NowDate() {
         SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");
         return df.format(new Date());
     }
 
+    /**
+     * 根据传入的日期转换 格式 MM-dd
+     * @param date
+     * @return
+     */
+    public static String getDateStr(Date date) {
+        SimpleDateFormat df = new SimpleDateFormat("MM-dd");
+        return df.format(date);
+    }
+
+    /**
+     * 根据传入的日期转换 格式 MM月dd日
+     * @param date
+     * @return
+     */
+    public static String getDateStr_cn(Date date) {
+        SimpleDateFormat df = new SimpleDateFormat("MM月dd日");
+        return df.format(date);
+    }
+
+    /**
+     * 计算时间的毫秒
+     * @param time
+     * @return
+     */
+    public static long getDateExpired(int time) {
+        Date date = new Date();
+        long int_time = time * 60*1000;
+        long expired = date.getTime() + int_time;
+        return expired;
+    }
+
     public static void main(String[] args) {
-        String ss = "2015-12-20 11:11:10";
-        System.out.print(getDateStr(StrToDate(ss)));
-//        System.out.print(RandomStringUtils.randomNumeric(4));
-//        System.out.print(RandomStringUtils.randomNumeric(4));
-//        System.out.print(RandomStringUtils.randomNumeric(4));
-        //System.out.print(NowDateStr());
-        //Date date = new Date();
-//        String dateStr = "2015-07-18 00:00:01";
-//        String datess = "2015-07-19 23:59:59";
-//        List<Date> dates = new ArrayList<Date>();
-//        dates.add(StrToDate(dateStr));
-//        dates.add(StrToDate(datess));
-//        dates.add(StrToDate("2015-06-26 12:09:59"));
-//        dates.add(StrToDate("2015-07-26 10:09:59"));
 
-//        System.out.println("字符串转日期：" + StrToDate(dateStr));
-//        System.out.println("\r\n");
-//        System.out.println("日期转字符串：" + DateToStr(StrToDate(dateStr)));
-//        System.out.println("\r\n");
-//        System.out.println("日期相差天数：" + daysBetween(StrToDate(dateStr),StrToDate(datess)));
-//        System.out.println("\r\n");
-//        isWeek(dateStr);
-//        isWeek(datess);
-
-//        System.out.println("ssss：" + DateToStr_Cn(datess));
-//        System.out.println("\r\n");
-//        boolean ss = compareDate(StrToDate(NowDateStr()),StrToDate(datess));
-//        System.out.print(ss);
-//        System.out.print("最大时间："+Collections.max(dates));
-//        System.out.print("最小时间：" + Collections.min(dates));
-
-//        System.out.println( System.getProperty("os.name") );
-//        System.out.println( System.getProperty("os.version") );
-//        System.out.println( System.getProperty("os.arch") );
-
-//                Any("any"),
-//                Linux("Linux"),
-//                Mac_OS("Mac OS"),
-//                Mac_OS_X("Mac OS X"),
-//                Windows("Windows"),
-//                OS2("OS/2"),
-//                Solaris("Solaris"),
-//                SunOS("SunOS"),
-//                MPEiX("MPE/iX"),
-//                HP_UX("HP-UX"),
-//                AIX("AIX"),
-//                OS390("OS/390"),
-//                FreeBSD("FreeBSD"),
-//                Irix("Irix"),
-//                Digital_Unix("Digital Unix"),
-//                NetWare_411("NetWare"),
-//                OSF1("OSF1"),
-//                OpenVMS("OpenVMS"),
-//                Others("Others");
     }
 }

@@ -6,7 +6,6 @@ import com.sogokids.course.service.CourseService;
 import com.sogokids.course.service.CourseSkuService;
 import com.sogokids.order.model.OrderPackage;
 import com.sogokids.order.service.OrderPackageService;
-import com.sogokids.query.model.BookedCourse;
 import com.sogokids.subject.model.SubjectSku;
 import com.sogokids.subject.service.SubjectSkuService;
 import com.sogokids.system.model.Place;

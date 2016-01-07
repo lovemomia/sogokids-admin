@@ -1,8 +1,6 @@
 package com.sogokids.subject.service.Impl;
 
-import com.sogokids.home.model.Banner;
 import com.sogokids.subject.model.Subject;
-import com.sogokids.subject.model.SubjectNotice;
 import com.sogokids.subject.model.SubjectSku;
 import com.sogokids.subject.service.SubjectService;
 import com.sogokids.subject.service.SubjectSkuService;
@@ -15,7 +13,6 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
-import java.security.PublicKey;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;

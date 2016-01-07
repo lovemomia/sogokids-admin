@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.sogokids.course.model.Course;
 import com.sogokids.course.model.CourseBook;
 import com.sogokids.course.model.CourseDetail;
-import com.sogokids.course.model.CourseImg;
 import com.sogokids.course.model.CourseRecommend;
 import com.sogokids.course.model.CourseSku;
 import com.sogokids.course.model.CourseTeacher;
@@ -15,35 +14,29 @@ import com.sogokids.course.service.CourseRecommendService;
 import com.sogokids.course.service.CourseService;
 import com.sogokids.course.service.CourseSkuService;
 import com.sogokids.course.service.CourseTeacherService;
+import com.sogokids.http.model.HttpResult;
 import com.sogokids.images.model.Images;
 import com.sogokids.images.service.ImagesService;
 import com.sogokids.subject.model.Subject;
-import com.sogokids.subject.model.SubjectSku;
 import com.sogokids.subject.service.SubjectService;
-import com.sogokids.subject.service.SubjectSkuService;
 import com.sogokids.system.model.Institution;
 import com.sogokids.system.service.InstitutionService;
 import com.sogokids.system.service.PlaceService;
 import com.sogokids.system.service.TeacherService;
 import com.sogokids.user.service.UserService;
-import com.sogokids.utils.entity.QzResult;
-import com.sogokids.utils.util.EnumUtil;
 import com.sogokids.utils.util.JumpPage;
 import com.sogokids.utils.util.Quantity;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.beans.Transient;
 import java.io.IOException;
 import java.io.Writer;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -60,9 +53,6 @@ public class CourseController {
 
     @Autowired
     private SubjectService subjectService;
-
-    @Autowired
-    private SubjectSkuService subjectSkuService;
 
     @Autowired
     private CourseService courseService;
@@ -425,16 +415,17 @@ public class CourseController {
                 if (courseTeachers.size() > 0){
                     reDate = courseSkuService.insertKey(courseSkuService.formEntity(req, courseId, Quantity.STATUS_ZERO));
                     if (reDate > 0){
-                        QzResult qzResult = courseService.createQz(req,courseId,reDate);
-                        if (qzResult.getErrno() == 0){
-                            if (qzResult.getData().equals("true")) {
+                        HttpResult result = courseService.createQz(req,courseId,reDate);
+                        if (result.getErrno() == 0){
+                            boolean data = (Boolean)result.getData();
+                            if (data) {
                                 context.put(Quantity.RETURN_SUCCESS, 0);
                                 context.put(Quantity.RETURN_MSG, "创建课程表和群组成功!");
                             }else{
                                 context.put(Quantity.RETURN_SUCCESS, 1);
                                 context.put(Quantity.RETURN_MSG, "创建群组失败!");
                             }
-                        }else if (qzResult.getErrno() == -1){
+                        }else if (result.getErrno() == -1){
                             context.put(Quantity.RETURN_SUCCESS, 1);
                             context.put(Quantity.RETURN_MSG, "创建群组失败,无讲师信息!");
                         }else{
@@ -858,43 +849,6 @@ public class CourseController {
         }
         return null;
     }
-
-//    @RequestMapping("/createQz")
-//    public ModelAndView createQz(@RequestParam("courseId") int courseId,HttpServletRequest req, HttpServletResponse rsp){
-//        rsp.setContentType("text/html; charset=UTF-8");
-//        Map<String, Object> context = new HashMap<String, Object>();
-//
-//        QzResult qzResult = courseService.createQz(req,courseId);
-//
-//        if (qzResult.getErrno() == 0){
-//            if (qzResult.getData().equals("true")) {
-//                context.put(Quantity.RETURN_SUCCESS, 0);
-//                context.put(Quantity.RETURN_MSG, "创建群组成功!");
-//            }else{
-//                context.put(Quantity.RETURN_SUCCESS, 1);
-//                context.put(Quantity.RETURN_MSG, "创建群组失败!");
-//            }
-//        }else if (qzResult.getErrno() == -1){
-//            context.put(Quantity.RETURN_SUCCESS, 1);
-//            context.put(Quantity.RETURN_MSG, "创建群组失败,无讲师信息!");
-//        }else{
-//            context.put(Quantity.RETURN_SUCCESS, 1);
-//            context.put(Quantity.RETURN_MSG, "创建群组失败!");
-//        }
-//        Writer writer = null;
-//        try {
-//            writer = rsp.getWriter();
-//            writer.write(JSONObject.toJSONString(context));
-//            writer.flush();
-//            writer.close();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        } finally {
-//            IOUtils.closeQuietly(writer);
-//        }
-//        return null;
-//    }
-
 
     @RequestMapping("/preview")
     public ModelAndView preview(@RequestParam("uid") int uid,@RequestParam("id") int id, HttpServletRequest req) {

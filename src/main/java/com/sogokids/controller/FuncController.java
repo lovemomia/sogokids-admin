@@ -1,9 +1,7 @@
 package com.sogokids.controller;
 
 
-import com.sogokids.user.model.User;
 import com.sogokids.user.service.FuncService;
-import com.sogokids.user.service.RoleService;
 import com.sogokids.user.service.UserService;
 import com.sogokids.utils.util.JumpPage;
 import com.sogokids.utils.util.Quantity;

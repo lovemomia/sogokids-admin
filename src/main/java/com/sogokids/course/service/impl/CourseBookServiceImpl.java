@@ -2,10 +2,8 @@ package com.sogokids.course.service.impl;
 
 import cn.momia.common.config.Configuration;
 import com.sogokids.course.model.CourseBook;
-import com.sogokids.course.model.CourseImg;
 import com.sogokids.course.service.CourseBookService;
 import com.sogokids.images.model.Images;
-import com.sogokids.subject.model.SubjectNotice;
 import com.sogokids.utils.util.Quantity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -13,7 +11,6 @@ import org.springframework.jdbc.core.RowCallbackHandler;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;

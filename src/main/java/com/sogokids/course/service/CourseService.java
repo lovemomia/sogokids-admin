@@ -1,7 +1,7 @@
 package com.sogokids.course.service;
 
 import com.sogokids.course.model.Course;
-import com.sogokids.utils.entity.QzResult;
+import com.sogokids.http.model.HttpResult;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -40,7 +40,7 @@ public interface CourseService {
     public int deleteTrialCourse(int course_id);
 
     //创建群组
-    public QzResult createQz(HttpServletRequest req, int course_id, int sku_id);
+    public HttpResult createQz(HttpServletRequest req, int course_id, int sku_id);
 
     /**
      * 预览

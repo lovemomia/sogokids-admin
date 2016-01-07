@@ -1,12 +1,10 @@
 package com.sogokids.query.service.impl;
 
-import com.sogokids.course.model.Course;
 import com.sogokids.course.model.CourseSku;
 import com.sogokids.query.model.CourseTimeQuery;
 import com.sogokids.query.model.CourseUser;
 import com.sogokids.query.model.MobileUser;
 import com.sogokids.query.service.CourseTimeQueryService;
-import com.sogokids.system.model.Institution;
 import com.sogokids.system.model.Place;
 import com.sogokids.system.service.PlaceService;
 import com.sogokids.utils.util.DateUtil;
@@ -17,7 +15,6 @@ import org.springframework.jdbc.core.RowCallbackHandler;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -262,7 +259,8 @@ public class CourseTimeQueryServiceImpl implements CourseTimeQueryService {
         if (!mobile.equals("") && mobile != null){
             where = where + " and a.Mobile = " + mobile;
         }
-        String sql = "SELECT c.NickName,a.Mobile,d.Title,b.PackageId,e.StartTime,e.PlaceId FROM SG_SubjectOrder a,SG_BookedCourse b, SG_User c, SG_Course d, SG_CourseSku e where a.id = b.OrderId and a.UserId = b.UserId and b.UserId = c.id and b.CourseId = d.Id and b.CourseSkuId = e.Id and a.Status > 0 and b.Status > 0 and c.Status > 0 and d.Status > 0 and e.Status > 0 and e.Status != 3 " + where;
+//        String sql = "SELECT c.NickName,a.Mobile,d.Title,b.PackageId,e.StartTime,e.PlaceId FROM SG_SubjectOrder a,SG_BookedCourse b, SG_User c, SG_Course d, SG_CourseSku e where a.id = b.OrderId and a.UserId = b.UserId and b.UserId = c.id and b.CourseId = d.Id and b.CourseSkuId = e.Id and a.Status > 0 and b.Status > 0 and c.Status > 0 and d.Status > 0 and e.Status > 0 and e.Status != 3 " + where;
+        String sql = "SELECT c.NickName,a.Mobile,d.Title,b.PackageId,e.StartTime,e.PlaceId FROM SG_SubjectOrder a,SG_BookedCourse b, SG_User c, SG_Course d, SG_CourseSku e where a.id = b.OrderId and a.UserId = b.UserId and b.UserId = c.id and b.CourseId = d.Id and b.CourseSkuId = e.Id and a.Status > 0 and b.Status > 0 and c.Status > 0 and e.Status > 0 and e.Status != 3 " + where;
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         if(list.size() > 0){
             for (int i = 0; i < list.size(); i++) {

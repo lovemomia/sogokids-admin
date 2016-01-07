@@ -1,14 +1,14 @@
-package com.sogokids.utils.entity;
+package com.sogokids.http.model;
 
 /**
- * Created by hoze on 15/12/8.
+ * Created by hoze on 16/1/4.
  */
-public class QzResult {
+public class HttpResult {
 
     private int errno;
     private String errmsg;
-    private String time;
-    private String data;
+    private long time;
+    private Object data;
 
     public int getErrno() {
         return errno;
@@ -26,19 +26,19 @@ public class QzResult {
         this.errmsg = errmsg;
     }
 
-    public String getTime() {
+    public long getTime() {
         return time;
     }
 
-    public void setTime(String time) {
+    public void setTime(long time) {
         this.time = time;
     }
 
-    public String getData() {
+    public Object getData() {
         return data;
     }
 
-    public void setData(String data) {
+    public void setData(Object data) {
         this.data = data;
     }
 }

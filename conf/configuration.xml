@@ -20,9 +20,19 @@
         <Tongqu>
             <DisplayPath>http://s.momia.cn</DisplayPath>
             <UploadPath>http://upload.momia.cn/upload/image</UploadPath>
-            <QzPath>http://120.55.102.12:7070/im/group</QzPath>
         </Tongqu>
     </Image>
+
+    <ServicePort>
+        <PortUrl>
+            <QzPath>http://i.momia.cn/admin/im/group</QzPath>
+            <GroupCoursePath>http://i.momia.cn/admin/course/booking/batch</GroupCoursePath>
+        </PortUrl>
+        <PortTime>
+            <Time>5</Time>
+        </PortTime>
+        <PortKey>578890d82212ae548d883bc7a201cdf4</PortKey>
+    </ServicePort>
 
     <Excel>
         <Tongqu>

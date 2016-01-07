@@ -1,6 +1,5 @@
 package com.sogokids.user.service;
 
-import com.sogokids.user.model.AdminRole;
 import com.sogokids.user.model.Role;
 
 import javax.servlet.http.HttpServletRequest;

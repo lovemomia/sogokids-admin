@@ -109,6 +109,7 @@
                 <li class="active"><a href="${ctx}/sub/info.do?uid=${user.id}"><i class="fa fa-connectdevelop"></i> <span class="nav-label">课程体系</span> </a></li>
                 <li><a href="${ctx}/book/info.do?uid=${user.id}"><i class="fa fa-leanpub"></i> <span class="nav-label">试听课程</span> </a></li>
                 <li><a href="${ctx}/one/info.do?uid=${user.id}"><i class="fa fa-drupal"></i> <span class="nav-label">推荐课程</span> </a></li>
+                <li><a href="${ctx}/group/info.do?uid=${user.id}"><i class="fa fa-building"></i> <span class="nav-label">批量选课</span> </a></li>
                 <li>
                     <a href="index.jsp#"><i class="fa fa-bar-chart"></i> <span class="nav-label">查询统计</span><span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
@@ -622,11 +623,13 @@
                                                                             <label class="col-sm-3 control-label">上课地址</label>
                                                                             <div class="col-sm-7">
                                                                                 <input id="sku_id" name="sku_id" type="hidden" value="0">
-                                                                                <select id="placeId" name="placeId" class="form-control">
-                                                                                    <c:forEach items="${places}" var="node">
-                                                                                        <option value="${node.id}">${node.name}</option>
-                                                                                    </c:forEach>
-                                                                                </select>
+                                                                                <div id="course_placeId">
+                                                                                    <select id="placeId" name="placeId" class="form-control">
+                                                                                        <c:forEach items="${places}" var="node">
+                                                                                            <option value="${node.id}">${node.name}</option>
+                                                                                        </c:forEach>
+                                                                                    </select>
+                                                                                </div>
                                                                             </div>
                                                                             <div class="col-sm-1">
                                                                                 <button class="btn btn-primary" data-toggle="modal" data-target="#myModal4" type="button" id="btn_place_add" name="btn_place_add">+</button>
