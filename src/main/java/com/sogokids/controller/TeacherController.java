@@ -3,7 +3,12 @@ package com.sogokids.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.sogokids.query.model.Customer;
 import com.sogokids.query.service.CustomerService;
-import com.sogokids.system.service.TeacherService;
+import com.sogokids.teacher.model.Teacher;
+import com.sogokids.teacher.service.CourseMaterialService;
+import com.sogokids.teacher.service.TeacherEducationService;
+import com.sogokids.teacher.service.TeacherExperienceService;
+import com.sogokids.teacher.service.TeacherService;
+import com.sogokids.teacher.service.CourseAssignService;
 import com.sogokids.user.service.UserService;
 import com.sogokids.utils.util.EnumUtil;
 import com.sogokids.utils.util.JumpPage;
@@ -37,6 +42,19 @@ public class TeacherController {
 
     @Autowired
     private UserService adminUserService;
+
+    @Autowired
+    private CourseAssignService courseAssignService;
+
+    @Autowired
+    private TeacherEducationService teacherEducationService;
+
+    @Autowired
+    private TeacherExperienceService teacherExperienceService;
+
+
+    @Autowired
+    private CourseMaterialService courseMaterialService;
 
     @RequestMapping("/info")
     public ModelAndView info(@RequestParam("uid") int uid, HttpServletRequest req){
@@ -165,4 +183,67 @@ public class TeacherController {
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
         return new ModelAndView(JumpPage.TEACHER,context);
     }
+
+    @RequestMapping("/assign")
+    public ModelAndView assignInfo(@RequestParam("uid") int uid, HttpServletRequest req){
+        Map<String, Object> context = new HashMap<String, Object>();
+        context.put("w_assign", courseAssignService.getCourseAssigns().get("w_assign"));
+        context.put("y_assign", courseAssignService.getCourseAssigns().get("y_assign"));
+        context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        return new ModelAndView(JumpPage.ASSIGN,context);
+    }
+
+    @RequestMapping("/material")
+    public ModelAndView materialInfo(@RequestParam("uid") int uid, HttpServletRequest req){
+        Map<String, Object> context = new HashMap<String, Object>();
+        context.put(Quantity.RETURN_ENTITY_LIST, courseMaterialService.getMaterials());
+        context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        return new ModelAndView(JumpPage.MATERIAL,context);
+    }
+
+    @RequestMapping("/check")
+    public ModelAndView checkInfo(@RequestParam("uid") int uid, HttpServletRequest req){
+        Map<String, Object> context = new HashMap<String, Object>();
+        context.put("d_check", teacherService.getTeachers().get("d_check"));
+        context.put("y_check", teacherService.getTeachers().get("y_check"));
+        context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        return new ModelAndView(JumpPage.CHECK,context);
+    }
+
+    @RequestMapping("/examineOper")
+    public ModelAndView examineOper(@RequestParam("uid") int uid,@RequestParam("tid") int tid,@RequestParam("mark") int mark, HttpServletRequest req){
+        Map<String, Object> context = new HashMap<String, Object>();
+
+//        if (mark == 1){
+//
+//        }
+        return new ModelAndView(JumpPage.CHECK_TEACHER,context);
+    }
+
+    @RequestMapping("/examineVerify")
+    public ModelAndView examineVerify(HttpServletRequest req, HttpServletResponse rsp){
+        rsp.setContentType("text/html; charset=UTF-8");
+        Map<String, Object> context = new HashMap<String, Object>();
+
+        int tid = Integer.parseInt(req.getParameter("tid"));
+        Teacher teacher = teacherService.get(tid);
+        context.put("teacher",teacher);
+        context.put("educations",teacherEducationService.getTeacherEducations(teacher.getUserId()));
+        context.put("experiences",teacherExperienceService.getTeacherExperiences(teacher.getUserId()));
+
+        context.put("courseId","");
+        Writer writer = null;
+        try {
+            writer = rsp.getWriter();
+            writer.write(JSONObject.toJSONString(context));
+            writer.flush();
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }finally {
+            IOUtils.closeQuietly(writer);
+        }
+        return null;
+    }
+
 }

@@ -1,7 +1,7 @@
-package com.sogokids.course.service;
+package com.sogokids.teacher.service;
 
-import com.sogokids.course.model.CourseTeacher;
-import com.sogokids.system.model.Teacher;
+import com.sogokids.teacher.model.CourseTeacher;
+import com.sogokids.teacher.model.Teacher;
 
 import java.util.List;
 

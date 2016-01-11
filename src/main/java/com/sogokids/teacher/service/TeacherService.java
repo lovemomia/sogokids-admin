@@ -1,9 +1,10 @@
-package com.sogokids.system.service;
+package com.sogokids.teacher.service;
 
-import com.sogokids.system.model.Teacher;
+import com.sogokids.teacher.model.Teacher;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by hoze on 15/11/13.
@@ -11,6 +12,7 @@ import java.util.List;
 public interface TeacherService {
 
     public List<Teacher> getEntitys();
+    public Map<String,List<Teacher>> getTeachers();
     public List<Teacher> getEntitysByWhere(String where);
     public Teacher get(int id);
     public int insert(Teacher entity);
@@ -20,5 +22,6 @@ public interface TeacherService {
 
     public String getY_Teachers(int course_id);
     public String getW_Teachers(int course_id);
+
 
 }

@@ -228,6 +228,16 @@ public class DateUtil {
     }
 
     /**
+     * 根据传入的日期转换 格式 MM月dd日 HH:mm
+     * @param date
+     * @return
+     */
+    public static String getDateTimeStr_cn(Date date) {
+        SimpleDateFormat df = new SimpleDateFormat("MM月dd日 HH:mm");
+        return df.format(date);
+    }
+
+    /**
      * 根据传入的日期转换 格式 MM-dd
      * @param date
      * @return
@@ -248,6 +258,16 @@ public class DateUtil {
     }
 
     /**
+     * 根据传入的日期转换 格式 HH:mm
+     * @param date
+     * @return
+     */
+    public static String getTimeStr_cn(Date date) {
+        SimpleDateFormat df = new SimpleDateFormat("HH:mm");
+        return df.format(date);
+    }
+
+    /**
      * 计算时间的毫秒
      * @param time
      * @return
@@ -259,7 +279,45 @@ public class DateUtil {
         return expired;
     }
 
-    public static void main(String[] args) {
+    /**
+     * 根据出生日期计算年龄
+     * @param birthStr
+     * @return
+     */
+    public static int getAge(String birthStr) {
+        SimpleDateFormat format_str = new SimpleDateFormat("yyyy-MM-dd");
+        Date birthDate = null;
+        try {
+            birthDate = format_str.parse(birthStr);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        int age = 0;
 
+        Date now = new Date();
+
+        SimpleDateFormat format_y = new SimpleDateFormat("yyyy");
+        SimpleDateFormat format_M = new SimpleDateFormat("MM");
+
+        String birth_year = format_y.format(birthDate);
+        String this_year = format_y.format(now);
+
+        String birth_month = format_M.format(birthDate);
+        String this_month = format_M.format(now);
+
+        // 初步，估算
+        age = Integer.parseInt(this_year) - Integer.parseInt(birth_year);
+
+        // 如果未到出生月份，则age - 1
+        if (this_month.compareTo(birth_month) < 0)
+            age -= 1;
+        if (age < 0)
+            age = 0;
+        return age;
+    }
+
+    public static void main(String[] args) {
+        String birthDate = "1983-09-01";
+        System.out.print(getAge(birthDate));
     }
 }

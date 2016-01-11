@@ -115,4 +115,14 @@ public class JumpPage {
     public static final String GROUP_USER = "admin/group_user";
     public static final String GROUP_COURSE = "admin/group_course";
 
+
+    public static final String ASSIGN = "admin/assign";
+    public static final String ASSIGN_TEACHER = "admin/assign_teacher";
+
+    public static final String MATERIAL = "admin/material";
+    public static final String MATERIAL_COURSE = "admin/material_course";
+
+    public static final String CHECK = "admin/check";
+    public static final String CHECK_TEACHER = "admin/check_teacher";
+
 }

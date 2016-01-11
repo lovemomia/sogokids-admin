@@ -1,9 +1,9 @@
-package com.sogokids.course.service.impl;
+package com.sogokids.teacher.service.impl;
 
-import com.sogokids.course.model.CourseTeacher;
-import com.sogokids.course.service.CourseTeacherService;
-import com.sogokids.system.model.Teacher;
-import com.sogokids.system.service.TeacherService;
+import com.sogokids.teacher.model.CourseTeacher;
+import com.sogokids.teacher.service.CourseTeacherService;
+import com.sogokids.teacher.model.Teacher;
+import com.sogokids.teacher.service.TeacherService;
 import com.sogokids.utils.util.Quantity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;

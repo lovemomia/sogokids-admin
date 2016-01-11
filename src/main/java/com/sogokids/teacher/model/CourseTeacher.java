@@ -1,4 +1,4 @@
-package com.sogokids.course.model;
+package com.sogokids.teacher.model;
 
 /**
  * Created by hoze on 15/11/20.
@@ -6,6 +6,8 @@ package com.sogokids.course.model;
 public class CourseTeacher {
     private int id;
     private int courseId;
+    private int courseSkuId;
+    private int userId;
     private int teacherId;
     private int status;
     private String addTime;
@@ -57,5 +59,21 @@ public class CourseTeacher {
 
     public void setUpdateTime(String updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public int getCourseSkuId() {
+        return courseSkuId;
+    }
+
+    public void setCourseSkuId(int courseSkuId) {
+        this.courseSkuId = courseSkuId;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 }
