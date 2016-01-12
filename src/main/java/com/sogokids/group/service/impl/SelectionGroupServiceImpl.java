@@ -257,13 +257,13 @@ public class SelectionGroupServiceImpl implements SelectionGroupService {
     @Override
     public List<Customer> getGroupCustomers(int gId,String where) {
         List<Customer> reData = new ArrayList<Customer>();
-        String sql = "SELECT @row := @row+1 as rowId,b.Id,c.Id as userId,c.NickName,c.Mobile FROM sogokids.SG_SelectionGroup a,sogokids.SG_GroupUser b, sogokids.SG_User c,(select @row := 0) d where a.Status > 0 and b.Status > 0 and c.Status > 0 and a.Id = b.GroupId and b.UserId = c.Id and a.Id = ? " + where;
+        String sql = "SELECT b.Id,c.Id as userId,c.NickName,c.Mobile FROM sogokids.SG_SelectionGroup a,sogokids.SG_GroupUser b, sogokids.SG_User c where a.Status > 0 and b.Status > 0 and c.Status > 0 and a.Id = b.GroupId and b.UserId = c.Id and a.Id = ? " + where;
         Object [] params = new Object[]{gId};
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql, params);
         if(list.size() > 0){
             for (int i = 0; i < list.size(); i++) {
                 Customer entity = new Customer();
-                entity.setRowId(Integer.parseInt(list.get(i).get("rowId").toString()));
+                entity.setRowId(i+1);
                 entity.setId(Integer.parseInt(list.get(i).get("Id").toString()));
                 entity.setNickName(list.get(i).get("NickName").toString());
                 entity.setMobile(list.get(i).get("Mobile").toString());
