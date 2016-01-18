@@ -26,7 +26,11 @@
     <ServicePort>
         <PortUrl>
             <QzPath>http://i.momia.cn/admin/im/group</QzPath>
+            <QzJoinPath>http://i.momia.cn/admin/im/group/join</QzJoinPath>
+            <QzLeavePath>http://i.momia.cn/admin/im/group/leave</QzLeavePath>
             <GroupCoursePath>http://i.momia.cn/admin/course/booking/batch</GroupCoursePath>
+            <AppPushPath>http://i.momia.cn/admin/push</AppPushPath>
+            <SmsPath>http://i.momia.cn/admin/sms/notify</SmsPath>
         </PortUrl>
         <PortTime>
             <Time>5</Time>

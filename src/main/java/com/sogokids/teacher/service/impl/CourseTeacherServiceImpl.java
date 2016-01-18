@@ -70,17 +70,38 @@ public class CourseTeacherServiceImpl implements CourseTeacherService {
     }
 
     @Override
-    public int insert(int course_id, int teacher_id) {
-        String sql = "insert into SG_CourseTeacher(CourseId,TeacherId,Status,AddTime) value(?, ?, ?, NOW()) ";
-        Object [] params = new Object[]{course_id, teacher_id, Quantity.STATUS_ONE};
+    public List<CourseTeacher> getCourseTeachersBySkuId(int course_id,int sku_id){
+        List<CourseTeacher> courseTeachers = new ArrayList<CourseTeacher>();
+        String sql = "select Id,CourseId,TeacherId,Status,AddTime from SG_CourseTeacher where CourseId = ? and CourseSkuId = ? and Status > ? order by Id desc";
+        Object [] params = new Object[]{course_id, sku_id, Quantity.STATUS_ZERO};
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sql, params);
+        if(list.size() > 0){
+            for (int i = 0; i < list.size(); i++) {
+                CourseTeacher entity = new CourseTeacher();
+                int id = Integer.parseInt(list.get(i).get("Id").toString());
+                entity.setCourseId(Integer.parseInt(list.get(i).get("CourseId").toString()));
+                entity.setTeacherId(Integer.parseInt(list.get(i).get("TeacherId").toString()));
+                entity.setStatus(Integer.parseInt(list.get(i).get("Status").toString()));
+                entity.setAddTime(list.get(i).get("AddTime").toString());
+                courseTeachers.add(entity);
+            }
+        }
+
+        return courseTeachers;
+    }
+
+    @Override
+    public int insert(int course_id, int course_sku_id, int user_id, int teacher_id) {
+        String sql = "insert into SG_CourseTeacher(CourseId,CourseSkuId,UserId,TeacherId,Status,AddTime) value(?, ?, ?, ?, ?, NOW()) ";
+        Object [] params = new Object[]{course_id, course_sku_id, user_id, teacher_id, Quantity.STATUS_ONE};
         int reData = jdbcTemplate.update(sql,params);
         return reData;
     }
 
     @Override
-    public int delete(int course_id, int teacher_id) {
-        String sql = "update SG_CourseTeacher set Status = ? where CourseId = ? and TeacherId = ? ";
-        Object [] params = new Object[]{Quantity.STATUS_ZERO, course_id, teacher_id};
+    public int delete(int course_id, int course_sku_id, int teacher_id) {
+        String sql = "update SG_CourseTeacher set Status = ? where CourseId = ? and CourseSkuId = ? and TeacherId = ? ";
+        Object [] params = new Object[]{Quantity.STATUS_ZERO, course_id, course_sku_id, teacher_id};
         int reData = jdbcTemplate.update(sql,params);
         return reData;
     }

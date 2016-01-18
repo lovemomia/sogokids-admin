@@ -65,6 +65,15 @@
                 <li><a href="${ctx}/book/info.do?uid=${user.id}"><i class="fa fa-leanpub"></i> <span class="nav-label">试听课程</span> </a></li>
                 <li><a href="${ctx}/one/info.do?uid=${user.id}"><i class="fa fa-drupal"></i> <span class="nav-label">推荐课程</span> </a></li>
                 <li><a href="${ctx}/group/info.do?uid=${user.id}"><i class="fa fa-building"></i> <span class="nav-label">批量选课</span> </a></li>
+                <li class="active">
+                    <a href="index.jsp#"><i class="fa fa-user-secret"></i> <span class="nav-label">老师管理</span><span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li class="active"><a href="${ctx}/teacher/check.do?uid=${user.id}"><i class="fa fa-edit"></i> <span class="nav-label">资质审核</span> </a></li>
+                        <li><a href="${ctx}/teacher/info.do?uid=${user.id}"><i class="fa fa-user-secret"></i> <span class="nav-label">师资力量</span></a></li>
+                        <li><a href="${ctx}/teacher/assign.do?uid=${user.id}"><i class="fa fa-code-fork"></i> <span class="nav-label">课程分配</span> </a></li>
+                        <li><a href="${ctx}/teacher/material.do?uid=${user.id}"><i class="fa fa-delicious"></i> <span class="nav-label">教案更新</span></a></li>
+                    </ul>
+                </li>
                 <li>
                     <a href="index.jsp#"><i class="fa fa-bar-chart"></i> <span class="nav-label">查询统计</span><span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
@@ -80,15 +89,14 @@
                         <li><a href="${ctx}/icon/info.do?uid=${user.id}"><i class="fa fa-picture-o"></i> <span class="nav-label">icon设置</span> </a></li>
                     </ul>
                 </li>
-                <li class="active">
+                <li>
                     <a href="index.jsp#"><i class="fa fa-gears"></i> <span class="nav-label">系统设置</span><span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
                         <li><a href="${ctx}/city/info.do?uid=${user.id}"><i class="fa fa-hacker-news"></i> <span class="nav-label">城市信息</span> </a></li>
                         <li><a href="${ctx}/region/info.do?uid=${user.id}"><i class="fa fa-map-marker"></i> <span class="nav-label">区域信息</span> </a></li>
                         <li><a href="${ctx}/place/info.do?uid=${user.id}"><i class="fa fa-rebel"></i> <span class="nav-label">商户信息</span> </a></li>
                         <li><a href="${ctx}/inst/info.do?uid=${user.id}"><i class="fa fa-bank"></i> <span class="nav-label">机构信息</span> </a></li>
-                        <li><a href="${ctx}/teacher/info.do?uid=${user.id}"><i class="fa fa-user-secret"></i> <span class="nav-label">师资力量</span></a></li>
-                        <li class="active"><a href="${ctx}/app/info.do?uid=${user.id}"><i class="fa fa-mobile-phone"></i> <span class="nav-label">APP版本</span></a></li>
+                        <li><a href="${ctx}/app/info.do?uid=${user.id}"><i class="fa fa-mobile-phone"></i> <span class="nav-label">APP版本</span></a></li>
                     </ul>
                 </li>
                 <li><a href="${ctx}/coupon/info.do?uid=${user.id}"><i class="fa fa-cc-paypal"></i> <span class="nav-label">优惠设置</span></a></li>
@@ -263,7 +271,14 @@
                                                 </c:choose>
                                             </td>
                                             <td class="center">
-                                                <a href="javascript:void(0)" onclick="seeResumes(${entity.id},1)" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i> 查看 </a>
+                                                <c:choose>
+                                                    <c:when test="${entity.status == 3}">
+                                                        <a href="${ctx}/teacher/examineOper.do?uid=${user.id}&tid=${entity.id}&mark=0" class="btn btn-white btn-sm" target="_blank"><i class="fa fa-pencil"></i> 查看 </a>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <a href="${ctx}/teacher/examineOper.do?uid=${user.id}&tid=${entity.id}&mark=1" class="btn btn-white btn-sm" target="_blank"><i class="fa fa-pencil"></i> 查看 </a>
+                                                    </c:otherwise>
+                                                </c:choose>
                                             </td>
                                         </tr>
                                     </c:forEach>
@@ -301,7 +316,7 @@
                                                 </c:choose>
                                             </td>
                                             <td class="center">
-                                                <a href="${ctx}/teacher/oper.do?uid=${user.id}&id=${entity.id}" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i> 查看 </a>
+                                                <a href="${ctx}/teacher/examineOper.do?uid=${user.id}&tid=${entity.id}&mark=3" class="btn btn-white btn-sm" target="_blank"><i class="fa fa-pencil"></i> 查看 </a>
                                             </td>
                                         </tr>
                                     </c:forEach>
@@ -333,9 +348,9 @@
         });
     });
 
-    function seeResumes(id,mark){
-        window.open("${ctx}/teacher/examineOper.do?uid=${user.id}&tid="+id+"&mark="+mark);
-    }
+    <%--function seeResumes(id,mark){--%>
+        <%--window.open("${ctx}/teacher/examineOper.do?uid=${user.id}&tid="+id+"&mark="+mark);--%>
+    <%--}--%>
 </script>
 </body>
 </html>

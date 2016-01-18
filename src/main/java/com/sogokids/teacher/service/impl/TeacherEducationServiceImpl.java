@@ -3,6 +3,7 @@ package com.sogokids.teacher.service.impl;
 import com.sogokids.teacher.model.TeacherEducation;
 import com.sogokids.teacher.service.TeacherEducationService;
 import com.sogokids.utils.util.Quantity;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
@@ -41,15 +42,15 @@ public class TeacherEducationServiceImpl implements TeacherEducationService {
                 if (i == 0){
                     int time = 0;
                     String year_time = list.get(i).get("Time").toString();
-                    if (year_time != null && !year_time.equals("") && year_time.indexOf("-") > 0){
-                        time =  Integer.parseInt(year_time.split("-")[0]);
+                    if (year_time != null && !year_time.equals("") && StringUtils.indexOf(year_time,"-－") > 0){
+                        time =  Integer.parseInt(StringUtils.split(year_time, "-－")[0]);
                     }
                     year = time;
                 }else{
                     int time = 0;
                     String year_time = list.get(i).get("Time").toString();
-                    if (year_time != null && !year_time.equals("") && year_time.indexOf("-") > 0){
-                        time =  Integer.parseInt(year_time.split("-")[0]);
+                    if (year_time != null && !year_time.equals("") && StringUtils.indexOf(year_time, "-－") > 0){
+                        time =  Integer.parseInt(StringUtils.split(year_time,"-－")[0]);
                     }
                     if (time > year){
                         year = time;
@@ -76,7 +77,7 @@ public class TeacherEducationServiceImpl implements TeacherEducationService {
         String sql = "SELECT Id,UserId,School,Major,Level,Time,Status,AddTime FROM SG_TeacherEducation where Status > 0 and UserId = ? ";
         Object [] params = new Object[]{userId};
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql, params);
-        for (int i = 0; i < teacherEducations.size(); i++) {
+        for (int i = 0; i < list.size(); i++) {
             TeacherEducation teacherEducation = new TeacherEducation();
             teacherEducation.setId(Integer.parseInt(list.get(i).get("Id").toString()));
             teacherEducation.setUserId(Integer.parseInt(list.get(i).get("UserId").toString()));

@@ -17,6 +17,9 @@ public class Quantity {
     public static final int STATUS_SEVEN = 7;
     public static final int STATUS_EIGHT = 8;
     public static final int STATUS_NINE = 9;
+    public static final int STATUS_TEN = 10;
+    public static final int STATUS_ELEVEN = 11;
+    public static final int STATUS_TWELVE = 12;
 
     public static final int RESULT_CODE_SUCESS = 0;
     public static final int RESULT_CODE_ERROR = -1;
@@ -26,8 +29,13 @@ public class Quantity {
 
     public static final String DISPLAY_IMAGE = "Image.Tongqu.DisplayPath";
     public static final String UPLOAD_IMAGE = "Image.Tongqu.UploadPath";
+
     public static final String UPLOAD_QZ = "ServicePort.PortUrl.QzPath";
+    public static final String UPLOAD_QZ_JOIN = "ServicePort.PortUrl.QzJoinPath";
+    public static final String UPLOAD_QZ_LEAVE = "ServicePort.PortUrl.QzLeavePath";
     public static final String UPLOAD_GROUP_COURSE = "ServicePort.PortUrl.GroupCoursePath";
+    public static final String UPLOAD_APP_PUSH = "ServicePort.PortUrl.AppPushPath";
+    public static final String UPLOAD_SMS = "ServicePort.PortUrl.SmsPath";
 
     public static final String SERVICE_PORT_TIME = "ServicePort.PortTime.Time";
     public static final String SERVICE_PORT_KEY = "ServicePort.PortKey";
@@ -62,5 +70,9 @@ public class Quantity {
             "- 购买后，请在“我的-待选课程”中预约您的课程，才算选课成功；\n" +
                     "- 预约成功的试听课不可退换，不可改期；\n" +
                     "- 预约课程，至少提前1天（例如：周六的课程，周五不能再选课）。";
+
+    public static final String MS_TEMPLATE = "xxx，您好！您已通过简历筛选，请于####，到*****进行面试。";
+    public static final String BTG_TEMPLATE = "xxx，您好！感谢您信任松果亲子，您的####与我们的要求暂不匹配，欢迎您过段时间再次申请。";
+
 
 }

@@ -12,8 +12,9 @@ public interface CourseTeacherService {
 
     public List<Teacher> getByCourseId(int course_id);
     public List<CourseTeacher> getCourseTeachers(int course_id);
+    public List<CourseTeacher> getCourseTeachersBySkuId(int course_id,int sku_id);
 
-    public int insert(int course_id,int teacher_id);
-    public int delete(int course_id, int teacher_id);
+    public int insert(int course_id, int course_sku_id, int user_id, int teacher_id);
+    public int delete(int course_id, int course_sku_id, int teacher_id);
 
 }

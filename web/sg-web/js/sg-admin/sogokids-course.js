@@ -193,62 +193,62 @@ $(function () {
     /**
      * 添加讲师
      */
-    $("#add_teacher").click(function() {
-        var courseId = $('#course_id').val();
-        if(courseId == 0){
-            layer.alert('请先保存基本信息！',5,'提示信息');
-        } else {
-            $.post("/course/teacher.do?courseId="+courseId+"&mark=1", $("#w_form").serialize(),
-                function(data){
-                    if(data.success == 0) {
-                        console.log(data);
-                        var divshow_w = $("#w-teacher");
-                        divshow_w.text("");// 清空数据
-                        divshow_w.append(data.w_teacher);
-                        var divshow_y = $("#y-teacher");
-                        divshow_y.text("");// 清空数据
-                        divshow_y.append(data.y_teacher);
-
-                        $('.dataTables-example').dataTable({
-                            "aLengthMenu":[8],
-                            //"bInfo": false,
-                            "bSort": false //排序功能
-                        });
-                    }
-                    layer.alert(data.msg,10,'提示信息');
-                }, "json");
-        }
-    });
+    //$("#add_teacher").click(function() {
+    //    var courseId = $('#course_id').val();
+    //    if(courseId == 0){
+    //        layer.alert('请先保存基本信息！',5,'提示信息');
+    //    } else {
+    //        $.post("/course/teacher.do?courseId="+courseId+"&mark=1", $("#w_form").serialize(),
+    //            function(data){
+    //                if(data.success == 0) {
+    //                    console.log(data);
+    //                    var divshow_w = $("#w-teacher");
+    //                    divshow_w.text("");// 清空数据
+    //                    divshow_w.append(data.w_teacher);
+    //                    var divshow_y = $("#y-teacher");
+    //                    divshow_y.text("");// 清空数据
+    //                    divshow_y.append(data.y_teacher);
+    //
+    //                    $('.dataTables-example').dataTable({
+    //                        "aLengthMenu":[8],
+    //                        //"bInfo": false,
+    //                        "bSort": false //排序功能
+    //                    });
+    //                }
+    //                layer.alert(data.msg,10,'提示信息');
+    //            }, "json");
+    //    }
+    //});
 
     /**
      * 取消讲师
      */
-    $("#del_teacher").click(function() {
-        var courseId = $('#course_id').val();
-        if(courseId == 0){
-            layer.alert('请先保存基本信息！',5,'提示信息');
-        } else {
-            $.post("/course/teacher.do?courseId="+courseId+"&mark=2", $("#y_form").serialize(),
-                function(data){
-                    if(data.success == 0) {
-                        console.log(data);
-                        var divshow_w = $("#w-teacher");
-                        divshow_w.text("");// 清空数据
-                        divshow_w.append(data.w_teacher);
-                        var divshow_y = $("#y-teacher");
-                        divshow_y.text("");// 清空数据
-                        divshow_y.append(data.y_teacher);
-
-                        $('.dataTables-example').dataTable({
-                            "aLengthMenu":[8],
-                            //"bInfo": false,
-                            "bSort": false //排序功能
-                        });
-                    }
-                    layer.alert(data.msg,10,'提示信息');
-                }, "json");
-        }
-    });
+    //$("#del_teacher").click(function() {
+    //    var courseId = $('#course_id').val();
+    //    if(courseId == 0){
+    //        layer.alert('请先保存基本信息！',5,'提示信息');
+    //    } else {
+    //        $.post("/course/teacher.do?courseId="+courseId+"&mark=2", $("#y_form").serialize(),
+    //            function(data){
+    //                if(data.success == 0) {
+    //                    console.log(data);
+    //                    var divshow_w = $("#w-teacher");
+    //                    divshow_w.text("");// 清空数据
+    //                    divshow_w.append(data.w_teacher);
+    //                    var divshow_y = $("#y-teacher");
+    //                    divshow_y.text("");// 清空数据
+    //                    divshow_y.append(data.y_teacher);
+    //
+    //                    $('.dataTables-example').dataTable({
+    //                        "aLengthMenu":[8],
+    //                        //"bInfo": false,
+    //                        "bSort": false //排序功能
+    //                    });
+    //                }
+    //                layer.alert(data.msg,10,'提示信息');
+    //            }, "json");
+    //    }
+    //});
 
     $('#btn_courDetail_save').click(function(){
         var courseId = $('#course_id').val();

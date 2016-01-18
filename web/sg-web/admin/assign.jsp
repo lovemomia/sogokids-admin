@@ -65,6 +65,15 @@
                 <li><a href="${ctx}/book/info.do?uid=${user.id}"><i class="fa fa-leanpub"></i> <span class="nav-label">试听课程</span> </a></li>
                 <li><a href="${ctx}/one/info.do?uid=${user.id}"><i class="fa fa-drupal"></i> <span class="nav-label">推荐课程</span> </a></li>
                 <li><a href="${ctx}/group/info.do?uid=${user.id}"><i class="fa fa-building"></i> <span class="nav-label">批量选课</span> </a></li>
+                <li class="active">
+                    <a href="index.jsp#"><i class="fa fa-user-secret"></i> <span class="nav-label">老师管理</span><span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li><a href="${ctx}/teacher/check.do?uid=${user.id}"><i class="fa fa-edit"></i> <span class="nav-label">资质审核</span> </a></li>
+                        <li><a href="${ctx}/teacher/info.do?uid=${user.id}"><i class="fa fa-user-secret"></i> <span class="nav-label">师资力量</span></a></li>
+                        <li class="active"><a href="${ctx}/teacher/assign.do?uid=${user.id}"><i class="fa fa-code-fork"></i> <span class="nav-label">课程分配</span> </a></li>
+                        <li><a href="${ctx}/teacher/material.do?uid=${user.id}"><i class="fa fa-delicious"></i> <span class="nav-label">教案更新</span></a></li>
+                    </ul>
+                </li>
                 <li>
                     <a href="index.jsp#"><i class="fa fa-bar-chart"></i> <span class="nav-label">查询统计</span><span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
@@ -80,15 +89,14 @@
                         <li><a href="${ctx}/icon/info.do?uid=${user.id}"><i class="fa fa-picture-o"></i> <span class="nav-label">icon设置</span> </a></li>
                     </ul>
                 </li>
-                <li class="active">
+                <li>
                     <a href="index.jsp#"><i class="fa fa-gears"></i> <span class="nav-label">系统设置</span><span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
                         <li><a href="${ctx}/city/info.do?uid=${user.id}"><i class="fa fa-hacker-news"></i> <span class="nav-label">城市信息</span> </a></li>
                         <li><a href="${ctx}/region/info.do?uid=${user.id}"><i class="fa fa-map-marker"></i> <span class="nav-label">区域信息</span> </a></li>
                         <li><a href="${ctx}/place/info.do?uid=${user.id}"><i class="fa fa-rebel"></i> <span class="nav-label">商户信息</span> </a></li>
                         <li><a href="${ctx}/inst/info.do?uid=${user.id}"><i class="fa fa-bank"></i> <span class="nav-label">机构信息</span> </a></li>
-                        <li><a href="${ctx}/teacher/info.do?uid=${user.id}"><i class="fa fa-user-secret"></i> <span class="nav-label">师资力量</span></a></li>
-                        <li class="active"><a href="${ctx}/app/info.do?uid=${user.id}"><i class="fa fa-mobile-phone"></i> <span class="nav-label">APP版本</span></a></li>
+                        <li><a href="${ctx}/app/info.do?uid=${user.id}"><i class="fa fa-mobile-phone"></i> <span class="nav-label">APP版本</span></a></li>
                     </ul>
                 </li>
                 <li><a href="${ctx}/coupon/info.do?uid=${user.id}"><i class="fa fa-cc-paypal"></i> <span class="nav-label">优惠设置</span></a></li>
@@ -226,8 +234,8 @@
                     </div>
                     <div class="panel-options">
                         <ul class="nav nav-tabs">
-                            <li class="active"><a data-toggle="tab" href="tabs_panels.html#tab-1">待分配</a></li>
-                            <li class=""><a data-toggle="tab" href="tabs_panels.html#tab-2">已分配</a></li>
+                            <li id="tab_li_1" class="active"><a id="tab1" data-toggle="tab" href="tabs_panels.html#tab-1">待分配</a></li>
+                            <li id="tab_li_2" class=""><a id="tab2" data-toggle="tab" href="tabs_panels.html#tab-2">已分配</a></li>
                         </ul>
                     </div>
                 </div>
@@ -252,7 +260,7 @@
                                             <td><c:out value="${entity.courseTitle}"></c:out></td>
                                             <td><c:out value="${entity.placeAddress}"></c:out></td>
                                             <td class="center">
-                                                <a href="${ctx}/teacher/oper.do?uid=${user.id}&id=${entity.courseId}&mark=2" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i> 分配讲师 </a>
+                                                <a href="${ctx}/teacher/teacherOper.do?uid=${user.id}&id=${entity.courseId}&sid=${entity.skuId}" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i> 分配讲师 </a>
                                             </td>
                                         </tr>
                                     </c:forEach>
@@ -279,7 +287,7 @@
                                             <td><c:out value="${entity.courseTitle}"></c:out></td>
                                             <td><c:out value="${entity.placeAddress}"></c:out></td>
                                             <td class="center">
-                                                <a href="${ctx}/teacher/oper.do?uid=${user.id}&id=${entity.courseId}&mark=2" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i> 修改讲师 </a>
+                                                <a href="${ctx}/teacher/teacherOper.do?uid=${user.id}&id=${entity.courseId}&sid=${entity.skuId}" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i> 修改讲师 </a>
                                             </td>
                                         </tr>
                                     </c:forEach>
@@ -310,6 +318,20 @@
             "bSort": false //排序功能
         });
     });
+
+    <%--$('#tab1').click(function (){--%>
+        <%--$('#tab-1').show();--%>
+        <%--$('#tab-2').hide();--%>
+    <%--});--%>
+
+    <%--$('#tab2').click(function (){--%>
+        <%--window.location.href="${ctx}/teacher/assign.do?uid=${user.id}";--%>
+        <%--$('#tab-1').hide();--%>
+        <%--$('#tab_li_1').attr('class','');--%>
+        <%--$('#tab-2').show();--%>
+        <%--$('#tab_li_2').attr('class','active');--%>
+    <%--});--%>
+
 </script>
 </body>
 </html>

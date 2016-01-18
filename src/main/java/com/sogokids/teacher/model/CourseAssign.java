@@ -11,6 +11,7 @@ public class CourseAssign {
     private String skuStartTime;
     private String skuEndTime;
     private String placeAddress;
+    private String courseCover;
 
     public int getCourseId() {
         return courseId;
@@ -68,4 +69,11 @@ public class CourseAssign {
         this.placeAddress = placeAddress;
     }
 
+    public String getCourseCover() {
+        return courseCover;
+    }
+
+    public void setCourseCover(String courseCover) {
+        this.courseCover = courseCover;
+    }
 }

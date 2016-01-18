@@ -10,4 +10,5 @@ import java.util.Map;
  */
 public interface CourseAssignService {
     public Map<String,List<CourseAssign>> getCourseAssigns();
+    public List<CourseAssign> getTeacherCourses(int teacher_id);
 }

@@ -117,8 +117,8 @@ public class BookedController {
 
         context.put("places", placeService.getEntitys());
         context.put("subs", subjectService.getEntitys());
-        context.put("y_teacher", teacherService.getY_Teachers(id));
-        context.put("w_teacher",teacherService.getW_Teachers(id));
+//        context.put("y_teacher", teacherService.getY_Teachers(id));
+//        context.put("w_teacher",teacherService.getW_Teachers(id));
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
         return new ModelAndView(reStr,context);
     }

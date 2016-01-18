@@ -40,6 +40,8 @@ public class Course {
 
     private int st_mark;
 
+    private int selected = 0;
+
     public int getId() {
         return id;
     }
@@ -240,5 +242,11 @@ public class Course {
         this.institution = institution;
     }
 
+    public int getSelected() {
+        return selected;
+    }
 
+    public void setSelected(int selected) {
+        this.selected = selected;
+    }
 }

@@ -85,4 +85,30 @@ public class CourseAssignServiceImpl implements CourseAssignService {
         return reDate;
     }
 
+    @Override
+    public List<CourseAssign> getTeacherCourses(int teacher_id){
+        List<CourseAssign> courseAssigns = new ArrayList<CourseAssign>();
+        String sql = "SELECT a.Id,b.title,b.cover,c.StartTime,c.EndTime,c.PlaceId FROM SG_CourseTeacher a,SG_Course b,SG_CourseSku c where a.status > 0 and b.status > 0 and b.status != 3 and c.status > 0 and c.status != 0 and b.Id = a.CourseId and c.Id = a.CourseSkuId and a.TeacherId = "+teacher_id+" order by c.StartTime desc ";
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
+        for (int i = 0; i < list.size(); i++) {
+            CourseAssign entity = new CourseAssign();
+//            int courseId = Integer.parseInt(list.get(i).get("id").toString());
+//            entity.setCourseId(courseId);
+            entity.setCourseTitle(list.get(i).get("title").toString());
+            entity.setCourseCover(list.get(i).get("cover").toString());
+//            int courseSkuId = Integer.parseInt(list.get(i).get("skuId").toString());
+//            entity.setSkuId(courseSkuId);
+            String skuStartTime = list.get(i).get("StartTime").toString();
+            entity.setSkuStartTime(DateUtil.getDateTimeStr_cn(DateUtil.StrToDate(skuStartTime)));
+            String skuEndTime = list.get(i).get("EndTime").toString();
+            entity.setSkuEndTime(DateUtil.getTimeStr_cn(DateUtil.StrToDate(skuEndTime)));
+            int placeId = Integer.parseInt(list.get(i).get("placeId").toString());
+            entity.setPlaceId(placeId);
+            entity.setPlaceAddress(placeService.get(placeId).getAddress());
+            courseAssigns.add(entity);
+        }
+
+        return courseAssigns;
+    }
+
 }

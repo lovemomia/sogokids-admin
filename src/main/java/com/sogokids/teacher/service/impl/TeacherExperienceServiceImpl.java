@@ -34,7 +34,7 @@ public class TeacherExperienceServiceImpl implements TeacherExperienceService {
         String sql = "SELECT Id,UserId,School,Post,Time,Content,Status,AddTime FROM SG_TeacherExperience where Status > 0 and UserId = ? ";
         Object [] params = new Object[]{userId};
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql, params);
-        for (int i = 0; i < teacherExperiences.size(); i++) {
+        for (int i = 0; i < list.size(); i++) {
             TeacherExperience teacherExperience = new TeacherExperience();
             teacherExperience.setId(Integer.parseInt(list.get(i).get("Id").toString()));
             teacherExperience.setUserId(Integer.parseInt(list.get(i).get("UserId").toString()));

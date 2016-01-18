@@ -319,7 +319,7 @@
                                                 <div class="panel panel-default">
                                                     <div class="panel-heading">
                                                         <h5 class="panel-title">
-                                                            <a data-toggle="collapse" data-parent="#version" href="index.html#v22">v1.0</a><code class="pull-right">2015.10.28更新</code>
+                                                            <a data-toggle="collapse" data-parent="#version" href="index.html#v22">v1.0</a><code class="pull-right">2016.01.18更新</code>
                                                         </h5>
                                                     </div>
                                                     <div id="v10" class="panel-collapse collapse in">

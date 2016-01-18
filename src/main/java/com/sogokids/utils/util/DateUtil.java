@@ -129,6 +129,20 @@ public class DateUtil {
     }
 
     /**
+     * 日期时间转换中文 不带日期
+     * @param str
+     * @return
+     */
+    public static String getTimeCn_NotWeek(String str){
+        //可根据不同样式请求显示不同日期格式，要显示星期可以添加E参数
+
+        SimpleDateFormat format = new SimpleDateFormat("yyyy年MM月dd日 kk点mm分");
+        String reStr = format.format(StrToDate(str));
+
+        return reStr;
+    }
+
+    /**
      * 获取加减之后的日期
      * @param date
      * @param day

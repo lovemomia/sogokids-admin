@@ -2,10 +2,16 @@ package com.sogokids.teacher.service.impl;
 
 import com.sogokids.teacher.model.CourseMaterial;
 import com.sogokids.teacher.service.CourseMaterialService;
+import com.sogokids.utils.util.DateUtil;
+import com.sogokids.utils.util.Quantity;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowCallbackHandler;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -50,4 +56,76 @@ public class CourseMaterialServiceImpl implements CourseMaterialService {
 
         return courseMaterials;
     }
+
+    @Override
+    public CourseMaterial get(int id) {
+
+        String sql = "select Id,CourseId,Content,Status,AddTime from SG_CourseMaterial where Id = ? and Status > ? ";
+        final Object [] params = new Object[]{id, Quantity.STATUS_ZERO};
+        final CourseMaterial entity = new CourseMaterial();
+        jdbcTemplate.query(sql,params, new RowCallbackHandler(){
+            public void processRow(ResultSet rs) throws SQLException {
+                entity.setId(rs.getInt("id"));
+                entity.setCourseId(rs.getInt("CourseId"));
+                entity.setContent(rs.getString("Content"));
+                entity.setStatus(rs.getInt("Status"));
+                entity.setAddTime(rs.getString("AddTime"));
+            }
+        });
+
+        return entity;
+    }
+
+    @Override
+    public int insert(CourseMaterial entity) {
+        String sql = "insert into SG_CourseMaterial(CourseId,Content,Status,AddTime) value(?, ?, ?, NOW()) ";
+        Object [] params = new Object[]{entity.getCourseId(), entity.getContent(), Quantity.STATUS_ONE};
+        int reData = 0;
+        reData = jdbcTemplate.update(sql,params);
+        return reData;
+    }
+
+    @Override
+    public int update(CourseMaterial entity) {
+        String sql = "update SG_CourseMaterial set CourseId = ?, Content = ?  where Id = ? ";
+        Object [] params = new Object[]{entity.getCourseId(), entity.getContent(), entity.getId()};
+        int reData = jdbcTemplate.update(sql,params);
+        return reData;
+    }
+
+    @Override
+    public int delete(int id) {
+        String sql = "update SG_CourseMaterial set Status = ? where Id = ? ";
+        Object [] params = new Object[]{Quantity.STATUS_ZERO,id};
+        int reData = jdbcTemplate.update(sql,params);
+        return reData;
+    }
+
+    @Override
+    public CourseMaterial formEntity(HttpServletRequest request, int id) {
+        CourseMaterial entity = new CourseMaterial();
+        entity.setId(id);
+        entity.setCourseId(Integer.parseInt(request.getParameter("courseId")));
+        if (request.getParameter("content") == null){
+            entity.setContent("");
+        }else{
+            entity.setContent(request.getParameter("content"));
+        }
+
+        return entity;
+    }
+
+    @Override
+    public boolean isMaterial(int courseId){
+        boolean reDate = false;
+        String sql = "select Id,CourseId,Content,Status,AddTime from SG_CourseMaterial where CourseId = ? and Status > ? ";
+        final Object [] params = new Object[]{courseId, Quantity.STATUS_ZERO};
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sql,params);
+        if(list.size() > 0){
+            reDate = true;
+        }
+
+        return reDate;
+    }
+
 }
