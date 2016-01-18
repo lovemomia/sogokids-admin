@@ -77,6 +77,15 @@
                 <li><a href="${ctx}/book/info.do?uid=${user.id}"><i class="fa fa-leanpub"></i> <span class="nav-label">试听课程</span> </a></li>
                 <li><a href="${ctx}/one/info.do?uid=${user.id}"><i class="fa fa-drupal"></i> <span class="nav-label">推荐课程</span> </a></li>
                 <li><a href="${ctx}/group/info.do?uid=${user.id}"><i class="fa fa-building"></i> <span class="nav-label">批量选课</span> </a></li>
+                <li class="active">
+                    <a href="index.jsp#"><i class="fa fa-user-secret"></i> <span class="nav-label">老师管理</span><span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li><a href="${ctx}/teacher/check.do?uid=${user.id}"><i class="fa fa-edit"></i> <span class="nav-label">资质审核</span> </a></li>
+                        <li class="active"><a href="${ctx}/teacher/info.do?uid=${user.id}"><i class="fa fa-user-secret"></i> <span class="nav-label">师资力量</span></a></li>
+                        <li><a href="${ctx}/teacher/assign.do?uid=${user.id}"><i class="fa fa-code-fork"></i> <span class="nav-label">课程分配</span> </a></li>
+                        <li><a href="${ctx}/teacher/material.do?uid=${user.id}"><i class="fa fa-delicious"></i> <span class="nav-label">教案更新</span></a></li>
+                    </ul>
+                </li>
                 <li>
                     <a href="index.jsp#"><i class="fa fa-bar-chart"></i> <span class="nav-label">查询统计</span><span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
@@ -92,14 +101,13 @@
                         <li><a href="${ctx}/icon/info.do?uid=${user.id}"><i class="fa fa-picture-o"></i> <span class="nav-label">icon设置</span> </a></li>
                     </ul>
                 </li>
-                <li class="active">
+                <li>
                     <a href="index.jsp#"><i class="fa fa-gears"></i> <span class="nav-label">系统设置</span><span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
                         <li><a href="${ctx}/city/info.do?uid=${user.id}"><i class="fa fa-hacker-news"></i> <span class="nav-label">城市信息</span> </a></li>
                         <li><a href="${ctx}/region/info.do?uid=${user.id}"><i class="fa fa-map-marker"></i> <span class="nav-label">区域信息</span> </a></li>
                         <li><a href="${ctx}/place/info.do?uid=${user.id}"><i class="fa fa-rebel"></i> <span class="nav-label">商户信息</span> </a></li>
                         <li><a href="${ctx}/inst/info.do?uid=${user.id}"><i class="fa fa-bank"></i> <span class="nav-label">机构信息</span> </a></li>
-                        <li class="active"><a href="${ctx}/teacher/info.do?uid=${user.id}"><i class="fa fa-user-secret"></i> <span class="nav-label">师资力量</span></a></li>
                         <li><a href="${ctx}/app/info.do?uid=${user.id}"><i class="fa fa-mobile-phone"></i> <span class="nav-label">APP版本</span></a></li>
                     </ul>
                 </li>
@@ -227,11 +235,11 @@
                     </form>
                 </h2>
             </div>
-            <div class="row">
-                <div class="col-lg-2">
-                    <h2><a href="${ctx}/teacher/oper.do?uid=${user.id}&id=0" class="btn btn-primary btn-x"><h3>&numsp;&numsp;增加讲师&numsp;&numsp;</h3></a></h2>
-                </div>
-            </div>
+            <%--<div class="row">--%>
+                <%--<div class="col-lg-2">--%>
+                    <%--<h2><a href="${ctx}/teacher/oper.do?uid=${user.id}&id=0" class="btn btn-primary btn-x"><h3>&numsp;&numsp;增加讲师&numsp;&numsp;</h3></a></h2>--%>
+                <%--</div>--%>
+            <%--</div>--%>
 
         </div>
         <div class="row">
@@ -262,16 +270,19 @@
                                             <c:when test="${entity.job == 2}">
                                                 培训师
                                             </c:when>
-                                            <c:otherwise>
+                                            <c:when test="${entity.job == 3}">
                                                 助教
-                                            </c:otherwise>
+                                            </c:when>
+                                            <c:otherwise></c:otherwise>
                                         </c:choose>
                                     </p>
                                         <div class="hr-line-dashed"></div>
                                     <div class="text-center">
-                                        <a class="btn btn-xs btn-primary" href="${ctx}/teacher/oper.do?uid=${user.id}&id=${entity.id}"><i class="fa fa-pencil"></i> 编辑 </a>&numsp;&numsp;
-                                        <%--<a class="btn btn-xs btn-danger" href="${ctx}/teacher/del.do?uid=${user.id}&id=${entity.id}"><i class="fa fa-times-circle"></i> 删除</a>--%>
-                                        <a href="javascript:void(0)" onclick="delTeacher(${entity.id})" class="btn btn-xs btn-danger"><i class="fa fa-times-circle"></i> 删除</a>
+                                        <a href="${ctx}/teacher/teacherCourse.do?uid=${user.id}&id=${entity.id}" class="btn btn-primary btn-sm"><i class="fa fa-pencil"></i> 课程 </a>
+                                        <a href="javascript:void(0)" onclick="seeResumes(${entity.id},2)" class="btn btn-primary btn-sm"><i class="fa fa-pencil"></i> 简历 </a>
+                                        <%--<a class="btn btn-xs btn-primary" href="${ctx}/teacher/oper.do?uid=${user.id}&id=${entity.id}"><i class="fa fa-pencil"></i> 编辑 </a>&numsp;&numsp;--%>
+                                        <%--&lt;%&ndash;<a class="btn btn-xs btn-danger" href="${ctx}/teacher/del.do?uid=${user.id}&id=${entity.id}"><i class="fa fa-times-circle"></i> 删除</a>&ndash;%&gt;--%>
+                                        <%--<a href="javascript:void(0)" onclick="delTeacher(${entity.id})" class="btn btn-xs btn-danger"><i class="fa fa-times-circle"></i> 删除</a>--%>
                                     </div>
                                 </div>
                             <%--</div>--%>
@@ -349,19 +360,23 @@
         });
     });
 
+    function seeResumes(id,mark){
+        window.open("${ctx}/teacher/examineOper.do?uid=${user.id}&tid="+id+"&mark="+mark);
+    }
+
     function queryTeacher(){
         var teacher_name = $('#name').val();
 //        alert(teacher_name);
         window.location.href="${ctx}/teacher/query.do?uid=${user.id}&name="+teacher_name;
     }
 
-    function delTeacher(id){
-        layer.confirm('您确定要删除此讲师吗？', function(index){
-            window.location.href="${ctx}/teacher/del.do?uid=${user.id}&id="+id;
-            layer.close(index);
-        });
+    <%--function delTeacher(id){--%>
+        <%--layer.confirm('您确定要删除此讲师吗？', function(index){--%>
+            <%--window.location.href="${ctx}/teacher/del.do?uid=${user.id}&id="+id;--%>
+            <%--layer.close(index);--%>
+        <%--});--%>
 
-    }
+    <%--}--%>
 </script>
 </body>
 </html>

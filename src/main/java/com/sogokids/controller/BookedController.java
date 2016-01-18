@@ -17,7 +17,7 @@ import com.sogokids.subject.service.SubjectSkuService;
 import com.sogokids.system.model.Institution;
 import com.sogokids.system.service.InstitutionService;
 import com.sogokids.system.service.PlaceService;
-import com.sogokids.system.service.TeacherService;
+import com.sogokids.teacher.service.TeacherService;
 import com.sogokids.user.service.UserService;
 import com.sogokids.utils.util.JumpPage;
 import com.sogokids.utils.util.Quantity;
@@ -117,8 +117,8 @@ public class BookedController {
 
         context.put("places", placeService.getEntitys());
         context.put("subs", subjectService.getEntitys());
-        context.put("y_teacher", teacherService.getY_Teachers(id));
-        context.put("w_teacher",teacherService.getW_Teachers(id));
+//        context.put("y_teacher", teacherService.getY_Teachers(id));
+//        context.put("w_teacher",teacherService.getW_Teachers(id));
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
         return new ModelAndView(reStr,context);
     }

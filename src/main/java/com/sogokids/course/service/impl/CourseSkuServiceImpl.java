@@ -483,7 +483,7 @@ public class CourseSkuServiceImpl implements CourseSkuService {
 
 
     /**
-     * 取消课程sku信息，暂时没有开放此功能
+     * 取消课程sku信息
      * @param course_id
      * @param id
      * @return

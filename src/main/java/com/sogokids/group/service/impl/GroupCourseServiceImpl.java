@@ -187,8 +187,12 @@ public class GroupCourseServiceImpl implements GroupCourseService {
             String sign = StringUtil.getSign(sb_str.toString());//请求加密串
 
             String param = "coid="+courseId+"&expired="+expired+"&sid="+skuId+"&uids="+user_ids+"&sign="+sign;
+            log.info("组装参数完成...");
+            log.info("开始进行选课请求...");
             JSONObject jSONObject = httpClientService.httpPost(upload_qz_url,param);
+            log.info("选课请求结束...");
             result = CastUtil.toObject(jSONObject, HttpResult.class);
+            log.info("选课请求返回errno值:"+result.getErrno());
             List<Long> failedUserIds = CastUtil.toList((JSON) result.getData(), Long.class);
             if (result.getErrno() == 0){
                 if (user_length > failedUserIds.size()) {
@@ -196,6 +200,7 @@ public class GroupCourseServiceImpl implements GroupCourseService {
                     groupCourse.setGroupId(gId);
                     groupCourse.setCourseId(courseId);
                     groupCourse.setCourseSkuId(skuId);
+                    log.info("选课纪录保存数据库...");
                     this.insert(groupCourse);
                 }else{
                     result.setErrno(1002);

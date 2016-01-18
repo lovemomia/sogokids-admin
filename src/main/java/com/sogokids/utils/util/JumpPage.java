@@ -99,6 +99,7 @@ public class JumpPage {
     public static final String TEACHER = "admin/teacher";
     public static final String TEACHER_ADD = "admin/teacher_add";
     public static final String TEACHER_EDIT = "admin/teacher_edit";
+    public static final String TEACHER_COURSE = "admin/teacher_course";
 
     public static final String SET_ONE = "admin/course_set_one";
     public static final String SET_ONE_ADD = "admin/course_set_add";
@@ -114,5 +115,19 @@ public class JumpPage {
     public static final String GROUP = "admin/group";
     public static final String GROUP_USER = "admin/group_user";
     public static final String GROUP_COURSE = "admin/group_course";
+
+
+    public static final String ASSIGN = "admin/assign";
+    public static final String ASSIGN_TEACHER = "admin/assign_teacher";
+
+    public static final String MATERIAL = "admin/material";
+    public static final String MATERIAL_ADD = "admin/material_add";
+    public static final String MATERIAL_EDIT = "admin/material_edit";
+
+    public static final String CHECK = "admin/check";
+    public static final String CHECK_TEACHER = "admin/check_teacher";
+    public static final String CHECK_TEACHER_1 = "admin/check_teacher1";
+    public static final String CHECK_TEACHER_2 = "admin/check_teacher2";
+    public static final String CHECK_TEACHER_3 = "admin/check_teacher3";
 
 }

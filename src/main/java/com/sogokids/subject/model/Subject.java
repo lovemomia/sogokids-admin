@@ -1,5 +1,9 @@
 package com.sogokids.subject.model;
 
+import com.sogokids.course.model.Course;
+
+import java.util.List;
+
 /**
  * Created by hoze on 15/10/12.
  */
@@ -19,6 +23,10 @@ public class Subject {
     private String updateTime;
 
     private String cityName;
+
+    private List<Course> courses;
+
+    private int selected = 0;
 
     public int getId() {
         return id;
@@ -122,5 +130,21 @@ public class Subject {
 
     public void setCityName(String cityName) {
         this.cityName = cityName;
+    }
+
+    public List<Course> getCourses() {
+        return courses;
+    }
+
+    public void setCourses(List<Course> courses) {
+        this.courses = courses;
+    }
+
+    public int getSelected() {
+        return selected;
+    }
+
+    public void setSelected(int selected) {
+        this.selected = selected;
     }
 }

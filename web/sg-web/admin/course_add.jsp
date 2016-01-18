@@ -111,6 +111,15 @@
                 <li><a href="${ctx}/one/info.do?uid=${user.id}"><i class="fa fa-drupal"></i> <span class="nav-label">推荐课程</span> </a></li>
                 <li><a href="${ctx}/group/info.do?uid=${user.id}"><i class="fa fa-building"></i> <span class="nav-label">批量选课</span> </a></li>
                 <li>
+                    <a href="index.jsp#"><i class="fa fa-user-secret"></i> <span class="nav-label">老师管理</span><span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li><a href="${ctx}/teacher/check.do?uid=${user.id}"><i class="fa fa-edit"></i> <span class="nav-label">资质审核</span> </a></li>
+                        <li><a href="${ctx}/teacher/info.do?uid=${user.id}"><i class="fa fa-user-secret"></i> <span class="nav-label">师资力量</span></a></li>
+                        <li><a href="${ctx}/teacher/assign.do?uid=${user.id}"><i class="fa fa-code-fork"></i> <span class="nav-label">课程分配</span> </a></li>
+                        <li><a href="${ctx}/teacher/material.do?uid=${user.id}"><i class="fa fa-delicious"></i> <span class="nav-label">教案更新</span></a></li>
+                    </ul>
+                </li>
+                <li>
                     <a href="index.jsp#"><i class="fa fa-bar-chart"></i> <span class="nav-label">查询统计</span><span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
                         <li><a href="${ctx}/query/info.do?uid=${user.id}"><i class="fa fa-pie-chart"></i> <span class="nav-label">选课查询</span> </a></li>
@@ -132,7 +141,6 @@
                         <li><a href="${ctx}/region/info.do?uid=${user.id}"><i class="fa fa-map-marker"></i> <span class="nav-label">区域信息</span> </a></li>
                         <li><a href="${ctx}/place/info.do?uid=${user.id}"><i class="fa fa-rebel"></i> <span class="nav-label">商户信息</span> </a></li>
                         <li><a href="${ctx}/inst/info.do?uid=${user.id}"><i class="fa fa-bank"></i> <span class="nav-label">机构信息</span> </a></li>
-                        <li><a href="${ctx}/teacher/info.do?uid=${user.id}"><i class="fa fa-user-secret"></i> <span class="nav-label">师资力量</span></a></li>
                         <li><a href="${ctx}/app/info.do?uid=${user.id}"><i class="fa fa-mobile-phone"></i> <span class="nav-label">APP版本</span></a></li>
                     </ul>
                 </li>
@@ -280,8 +288,8 @@
                                 <li id="tab_li_1" class="active"><a id="tab1" data-toggle="tab" href="tabs_panels.html#tab-1"><i class="fa fa-laptop"></i>基本信息</a></li>
                                 <li id="tab_li_2" class=""><a id="tab2" data-toggle="tab" href="tabs_panels.html#tab-2"><i class="fa fa-picture-o"></i>轮播图片</a></li>
                                 <li id="tab_li_3" class=""><a id="tab3" data-toggle="tab" href="tabs_panels.html#tab-3"><i class="fa fa-reddit"></i>图文详情</a></li>
-                                <li id="tab_li_4" class=""><a id="tab4" data-toggle="tab" href="tabs_panels.html#tab-4"><i class="fa fa-book"></i>讲师团</a></li>
-                                <li id="tab_li_5" class=""><a id="tab5" data-toggle="tab" href="tabs_panels.html#tab-5"><i class="fa fa-gears"></i>课程表</a></li>
+                                <%--<li id="tab_li_4" class=""><a id="tab4" data-toggle="tab" href="tabs_panels.html#tab-4"><i class="fa fa-book"></i>讲师团</a></li>--%>
+                                <li id="tab_li_4" class=""><a id="tab4" data-toggle="tab" href="tabs_panels.html#tab-4"><i class="fa fa-gears"></i>课程表</a></li>
                                 <%--<li id="tab_li_6" class=""><a id="tab6" data-toggle="tab" href="tabs_panels.html#tab-6"><i class="fa fa-newspaper-o"></i>课前绘本</a></li>--%>
                             </ul>
                         </div>
@@ -534,77 +542,77 @@
                                 </div>
                             </div>
 
+                            <%--<div id="tab-4" class="tab-pane">--%>
+                                <%--<div class="row">--%>
+                                    <%--<div class="col-lg-12">--%>
+                                        <%--<div class="ibox">--%>
+                                            <%--<div class="ibox-title">--%>
+                                                <%--<h5>讲师团</h5>--%>
+                                            <%--</div>--%>
+                                            <%--<div class="ibox-content">--%>
+                                                <%--<div class="row">--%>
+                                                    <%--<div class="col-lg-6">--%>
+                                                        <%--<div class="panel panel-default">--%>
+                                                            <%--<div class="panel-heading">--%>
+                                                                <%--<h5>未选讲师</h5>--%>
+                                                            <%--</div>--%>
+                                                            <%--<div class="panel-body">--%>
+                                                                <%--<div class="list-group" style="height:700px;overflow:auto;">--%>
+                                                                    <%--<form id="w_form" action="" method="">--%>
+                                                                        <%--&lt;%&ndash;<table class="table table-striped table-bordered table-hover dataTables-example">&ndash;%&gt;--%>
+                                                                        <%--<div id="w-teacher">--%>
+                                                                            <%--${w_teacher}--%>
+                                                                        <%--</div>--%>
+                                                                        <%--&lt;%&ndash;</table>&ndash;%&gt;--%>
+                                                                    <%--</form>--%>
+                                                                <%--</div>--%>
+                                                            <%--</div>--%>
+                                                        <%--</div>--%>
+                                                    <%--</div>--%>
+
+                                                    <%--<div class="col-lg-2">--%>
+                                                        <%--<div class="panel panel-default">--%>
+                                                            <%--<div class="panel-heading"><h5>操作</h5>--%>
+                                                            <%--</div>--%>
+                                                            <%--<div class="panel-body">--%>
+                                                                <%--<div class="list-group" style="height:700px;overflow:auto;">--%>
+                                                                    <%--<p align="center"><button id="add_teacher" name="add_teacher" type="button" class="btn btn-primary btn-sm"> 添加 <i class="fa fa-mail-forward"></i></button></p>--%>
+                                                                    <%--<p>&numsp;</p><p>&numsp;</p>--%>
+                                                                    <%--<p align="center"><button id="del_teacher" name="del_teacher" type="button" class="btn btn-danger btn-sm"><i class="fa fa-mail-reply"></i> 取消 </button></p>--%>
+                                                                    <%--<p>&numsp;</p><p>&numsp;</p>--%>
+                                                                    <%--<p align="center"><button id="btn_teacher_next_save" name="btn_teacher_next_save" type="button" class="btn btn-warning btn-sm"> 下一步 </button></p>--%>
+                                                                    <%--<p>&numsp;</p><p>&numsp;</p><p>&numsp;</p><p>&numsp;</p>--%>
+                                                                <%--</div>--%>
+                                                            <%--</div>--%>
+
+                                                        <%--</div>--%>
+                                                    <%--</div>--%>
+
+                                                    <%--<div class="col-lg-4">--%>
+                                                        <%--<div class="panel panel-default">--%>
+                                                            <%--<div class="panel-heading">--%>
+                                                                <%--<h5>已选讲师</h5>--%>
+                                                            <%--</div>--%>
+                                                            <%--<div class="panel-body">--%>
+                                                                <%--<div class="list-group" style="height:700px;overflow:auto;">--%>
+                                                                    <%--<form id="y_form" action="" method="">--%>
+                                                                        <%--&lt;%&ndash;<table class="table table-striped table-bordered table-hover dataTables-example">&ndash;%&gt;--%>
+                                                                        <%--<div id="y-teacher">--%>
+                                                                            <%--${y_teacher}--%>
+                                                                        <%--</div>--%>
+                                                                        <%--&lt;%&ndash;</table>&ndash;%&gt;--%>
+                                                                    <%--</form>--%>
+                                                                <%--</div>--%>
+                                                            <%--</div>--%>
+                                                        <%--</div>--%>
+                                                    <%--</div>--%>
+                                                <%--</div>--%>
+                                            <%--</div>--%>
+                                        <%--</div>--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
+                            <%--</div>--%>
                             <div id="tab-4" class="tab-pane">
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <div class="ibox">
-                                            <div class="ibox-title">
-                                                <h5>讲师团</h5>
-                                            </div>
-                                            <div class="ibox-content">
-                                                <div class="row">
-                                                    <div class="col-lg-6">
-                                                        <div class="panel panel-default">
-                                                            <div class="panel-heading">
-                                                                <h5>未选讲师</h5>
-                                                            </div>
-                                                            <div class="panel-body">
-                                                                <div class="list-group" style="height:700px;overflow:auto;">
-                                                                    <form id="w_form" action="" method="">
-                                                                        <%--<table class="table table-striped table-bordered table-hover dataTables-example">--%>
-                                                                        <div id="w-teacher">
-                                                                            ${w_teacher}
-                                                                        </div>
-                                                                        <%--</table>--%>
-                                                                    </form>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-lg-2">
-                                                        <div class="panel panel-default">
-                                                            <div class="panel-heading"><h5>操作</h5>
-                                                            </div>
-                                                            <div class="panel-body">
-                                                                <div class="list-group" style="height:700px;overflow:auto;">
-                                                                    <p align="center"><button id="add_teacher" name="add_teacher" type="button" class="btn btn-primary btn-sm"> 添加 <i class="fa fa-mail-forward"></i></button></p>
-                                                                    <p>&numsp;</p><p>&numsp;</p>
-                                                                    <p align="center"><button id="del_teacher" name="del_teacher" type="button" class="btn btn-danger btn-sm"><i class="fa fa-mail-reply"></i> 取消 </button></p>
-                                                                    <p>&numsp;</p><p>&numsp;</p>
-                                                                    <p align="center"><button id="btn_teacher_next_save" name="btn_teacher_next_save" type="button" class="btn btn-warning btn-sm"> 下一步 </button></p>
-                                                                    <p>&numsp;</p><p>&numsp;</p><p>&numsp;</p><p>&numsp;</p>
-                                                                </div>
-                                                            </div>
-
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-lg-4">
-                                                        <div class="panel panel-default">
-                                                            <div class="panel-heading">
-                                                                <h5>已选讲师</h5>
-                                                            </div>
-                                                            <div class="panel-body">
-                                                                <div class="list-group" style="height:700px;overflow:auto;">
-                                                                    <form id="y_form" action="" method="">
-                                                                        <%--<table class="table table-striped table-bordered table-hover dataTables-example">--%>
-                                                                        <div id="y-teacher">
-                                                                            ${y_teacher}
-                                                                        </div>
-                                                                        <%--</table>--%>
-                                                                    </form>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div id="tab-5" class="tab-pane">
                                 <div class="col-lg-12">
                                     <div class="ibox">
                                         <div class="ibox-content">

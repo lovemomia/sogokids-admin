@@ -6,14 +6,14 @@ import com.sogokids.course.model.CourseBook;
 import com.sogokids.course.model.CourseDetail;
 import com.sogokids.course.model.CourseRecommend;
 import com.sogokids.course.model.CourseSku;
-import com.sogokids.course.model.CourseTeacher;
+import com.sogokids.teacher.model.CourseTeacher;
 import com.sogokids.course.service.CourseBookService;
 import com.sogokids.course.service.CourseDetailService;
 import com.sogokids.course.service.CourseImgService;
 import com.sogokids.course.service.CourseRecommendService;
 import com.sogokids.course.service.CourseService;
 import com.sogokids.course.service.CourseSkuService;
-import com.sogokids.course.service.CourseTeacherService;
+import com.sogokids.teacher.service.CourseTeacherService;
 import com.sogokids.http.model.HttpResult;
 import com.sogokids.images.model.Images;
 import com.sogokids.images.service.ImagesService;
@@ -22,7 +22,7 @@ import com.sogokids.subject.service.SubjectService;
 import com.sogokids.system.model.Institution;
 import com.sogokids.system.service.InstitutionService;
 import com.sogokids.system.service.PlaceService;
-import com.sogokids.system.service.TeacherService;
+import com.sogokids.teacher.service.TeacherService;
 import com.sogokids.user.service.UserService;
 import com.sogokids.utils.util.JumpPage;
 import com.sogokids.utils.util.Quantity;
@@ -139,8 +139,8 @@ public class CourseController {
         context.put("insts", insts);
         context.put("places", placeService.getEntitys());
         context.put("subs", subjectService.getEntitys());
-        context.put("y_teacher", teacherService.getY_Teachers(id));
-        context.put("w_teacher",teacherService.getW_Teachers(id));
+//        context.put("y_teacher", teacherService.getY_Teachers(id));
+//        context.put("w_teacher",teacherService.getW_Teachers(id));
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
         return new ModelAndView(reStr,context);
     }
@@ -540,45 +540,6 @@ public class CourseController {
             context.put(Quantity.RETURN_MSG,"地址信息保存失败!");
         }
         context.put("placeHtml", courseSkuService.getSkuPlaceHtml(Quantity.STATUS_ZERO));
-        Writer writer = null;
-        try {
-            writer = rsp.getWriter();
-            writer.write(JSONObject.toJSONString(context));
-            writer.flush();
-            writer.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            IOUtils.closeQuietly(writer);
-        }
-        return null;
-    }
-
-    @RequestMapping("/teacher")
-    public String add_delTeacher(@RequestParam("courseId") int courseId,@RequestParam("mark") int mark, HttpServletRequest req, HttpServletResponse rsp){
-        rsp.setContentType("text/html; charset=UTF-8");
-        Map<String, Object> context = new HashMap<String, Object>();
-        int reDate = 0;
-        if (mark == 1){
-            String [] teacherIds = req.getParameterValues("w_teacher");
-            for (int i = 0; i < teacherIds.length; i++) {
-                reDate = courseTeacherService.insert(courseId, Integer.parseInt(teacherIds[i]));
-            }
-        }else{
-            String [] teacherIds = req.getParameterValues("y_teacher");
-            for (int i = 0; i < teacherIds.length; i++) {
-                reDate = courseTeacherService.delete(courseId, Integer.parseInt(teacherIds[i]));
-            }
-        }
-        if (reDate > 0){
-            context.put(Quantity.RETURN_SUCCESS, 0);
-            context.put(Quantity.RETURN_MSG,"讲师信息操作成功!");
-        }else{
-            context.put(Quantity.RETURN_SUCCESS, 1);
-            context.put(Quantity.RETURN_MSG,"讲师信息操作失败!");
-        }
-        context.put("y_teacher", teacherService.getY_Teachers(courseId));
-        context.put("w_teacher", teacherService.getW_Teachers(courseId));
         Writer writer = null;
         try {
             writer = rsp.getWriter();

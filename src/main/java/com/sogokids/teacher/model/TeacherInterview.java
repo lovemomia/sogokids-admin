@@ -1,12 +1,13 @@
-package com.sogokids.course.model;
+package com.sogokids.teacher.model;
 
 /**
- * Created by hoze on 15/11/20.
+ * Created by hoze on 16/1/12.
  */
-public class CourseTeacher {
+public class TeacherInterview {
     private int id;
-    private int courseId;
-    private int teacherId;
+    private int userId;
+    private String interviewDate;
+    private String address;
     private int status;
     private String addTime;
     private String updateTime;
@@ -19,20 +20,28 @@ public class CourseTeacher {
         this.id = id;
     }
 
-    public int getCourseId() {
-        return courseId;
+    public int getUserId() {
+        return userId;
     }
 
-    public void setCourseId(int courseId) {
-        this.courseId = courseId;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
-    public int getTeacherId() {
-        return teacherId;
+    public String getInterviewDate() {
+        return interviewDate;
     }
 
-    public void setTeacherId(int teacherId) {
-        this.teacherId = teacherId;
+    public void setInterviewDate(String interviewDate) {
+        this.interviewDate = interviewDate;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public int getStatus() {

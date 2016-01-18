@@ -7,13 +7,13 @@ import com.sogokids.course.model.CourseDetail;
 import com.sogokids.course.model.CourseImg;
 import com.sogokids.course.model.CourseRecommend;
 import com.sogokids.course.model.CourseSku;
-import com.sogokids.course.model.CourseTeacher;
+import com.sogokids.teacher.model.CourseTeacher;
 import com.sogokids.course.service.CourseDetailService;
 import com.sogokids.course.service.CourseImgService;
 import com.sogokids.course.service.CourseRecommendService;
 import com.sogokids.course.service.CourseService;
 import com.sogokids.course.service.CourseSkuService;
-import com.sogokids.course.service.CourseTeacherService;
+import com.sogokids.teacher.service.CourseTeacherService;
 import com.sogokids.http.model.HttpResult;
 import com.sogokids.http.service.HttpClientService;
 import com.sogokids.subject.model.Subject;
@@ -22,15 +22,17 @@ import com.sogokids.subject.service.SubjectService;
 import com.sogokids.subject.service.SubjectSkuService;
 import com.sogokids.system.model.Institution;
 import com.sogokids.system.model.Place;
-import com.sogokids.system.model.Teacher;
+import com.sogokids.teacher.model.Teacher;
 import com.sogokids.system.service.InstitutionService;
 import com.sogokids.system.service.PlaceService;
 import com.sogokids.system.service.RegionService;
-import com.sogokids.system.service.TeacherService;
+import com.sogokids.teacher.service.TeacherService;
 import com.sogokids.utils.util.CastUtil;
 import com.sogokids.utils.util.DateUtil;
 import com.sogokids.utils.util.Quantity;
 import com.sogokids.utils.util.StringUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
@@ -57,6 +59,8 @@ import java.util.Map;
  */
 @Service
 public class CourseServiceImpl implements CourseService {
+
+    private final Logger log = LoggerFactory.getLogger(CourseServiceImpl.class);
 
     @Autowired
     private SubjectService subjectService;
@@ -387,7 +391,12 @@ public class CourseServiceImpl implements CourseService {
     public int insert(Course entity) {
         String sql = "insert into SG_Course(ParentId,SubjectId,Title,Cover,MinAge,MaxAge,Joined,Price,Goal,Flow,Tips,Notice,InstitutionId,KeyWord,Status,AddTime) value(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW()) ";
         Object [] params = new Object[]{entity.getParentId(), entity.getSubjectId(), entity.getTitle(), entity.getCover(), entity.getMinAge(), entity.getMaxAge(), entity.getJoined(), entity.getPrice(), entity.getGoal(), entity.getFlow(), entity.getTips(), entity.getNotice(), entity.getInstitutionId(), entity.getKeyWord(), Quantity.STATUS_TWO};
-        int reData = jdbcTemplate.update(sql,params);
+        int reData = 0;
+        try {
+            reData = jdbcTemplate.update(sql, params);
+        }catch(Exception _ex){
+            log.error("CourseServiceImpl -> insert -> error info:"+_ex.getMessage());
+        }
         return reData;
     }
 
@@ -423,7 +432,7 @@ public class CourseServiceImpl implements CourseService {
                 }
             }, keyHolder);
         }catch (Exception _ex){
-            _ex.printStackTrace();
+            log.error("CourseServiceImpl -> insertKey -> error info:" +_ex.getMessage());
         }
         if (reData > 0) {
             reData = keyHolder.getKey().intValue();
@@ -439,7 +448,7 @@ public class CourseServiceImpl implements CourseService {
         try{
             reData = jdbcTemplate.update(sql,params);
         }catch (Exception _ex){
-            _ex.printStackTrace();
+            log.error("CourseServiceImpl -> update -> error info:" + _ex.getMessage());
         }
         return reData;
     }
@@ -524,13 +533,16 @@ public class CourseServiceImpl implements CourseService {
             sub.setType(Quantity.STATUS_TWO);//设置要生成的试听课的课程体系类型值为2（1:普通课程体系；2:试听课课程体系）
             sub.setTags(sub.getTitle());//设置要生成的试听课的课程体系标签为自己的标题内容
             int sub_id = subjectService.insertKey(sub);//添加新增试听课的所属课程体系并返回id值
+            log.info("CourseServiceImpl -> insert_copyCourseTrial -> info:添加试听课subject结束.");
             if (sub_id > 0){
                 cour.setParentId(cour.getId());//设置新增试听课的父级id值
                 cour.setSubjectId(sub_id);//设置新增试听课的所属课程体系id值
                 cour.setPrice(price);//设置新增试听课的价格值
                 int course_new_id = this.insertKey(cour);//添加新增试听课的内容并返回id值
+                log.info("CourseServiceImpl -> insert_copyCourseTrial -> info:添加新增试听课course结束.");
                 if (course_new_id > 0){
                     int int_notice = this.updateNotice(course_new_id,req.getParameter("notice"));//更新试听课的购买须知
+                    log.info("CourseServiceImpl -> insert_copyCourseTrial -> info:更新试听课的购买须知结束.");
                     if (int_notice > 0){
                         SubjectSku sub_sku = new SubjectSku();//创建新新增试听课的所属课程体系的sku对象
                         sub_sku.setSubjectId(sub_id);//设置sku所属课程体系id值
@@ -545,6 +557,7 @@ public class CourseServiceImpl implements CourseService {
                         sub_sku.setTimeUnit(Quantity.STATUS_ONE);//设置参加试听课的时间单位1个月
                         sub_sku.setLimit(Quantity.STATUS_ONE);//限购次数
                         int int_sub_sku = subjectSkuService.insertOne(sub_sku);//新增sku信息
+                        log.info("CourseServiceImpl -> insert_copyCourseTrial -> info:新增subject的sku信息结束.");
                         if (int_sub_sku > 0){
                             String[] course_sku_id = req.getParameterValues("course_sku_id");//获取页面勾选的父级sku信息集合
                             int sum = 0;//定义试听课所属课程体系中的stock数量，赋值为0
@@ -561,6 +574,7 @@ public class CourseServiceImpl implements CourseService {
                                 course_sku.setStock(old_stock_1);//设置父级sku的库存数量
                                 course_sku.setUnlockedStock(old_un_stock_1);//设置父级sku的剩余库存数量
                                 courseSkuService.update(course_sku);//更新父级sku信息
+                                log.info("CourseServiceImpl -> insert_copyCourseTrial -> info:更新试听课父级sku信息结束."+i);
 
                                 course_sku.setCourseId(course_new_id);//设置子级sku所属课程id值
                                 course_sku.setStock(new_stock);//设置子级sku库存数量
@@ -569,12 +583,13 @@ public class CourseServiceImpl implements CourseService {
                                 course_sku.setParentId(course_sku.getId());//设置子级sku所属父级id的值
 
                                 int int_course_sku = courseSkuService.insert(course_sku);//创建子级sku对象
+                                log.info("CourseServiceImpl -> insert_copyCourseTrial -> info:创建子级sku对象结束."+i);
 
                                 sum = sum + new_stock;//计算试听课所属课程体系中的stock数量
                             }
 
                             int update_stock = subjectService.updateStock(sub_id, sum);//更新试听课所属课程体系中的stock数量
-
+                            log.info("CourseServiceImpl -> insert_copyCourseTrial -> info:更新试听课所属课程体系中的stock数量:"+sum);
 //                            List<CourseImg> img_ls = courseImgService.getModelsBySub_Key(course_id);//获取父级课程轮播图片
 //                            for (CourseImg img : img_ls) {
 //                                img.setCourseId(course_new_id);
@@ -604,7 +619,7 @@ public class CourseServiceImpl implements CourseService {
             }
 
         }catch (Exception _ex){
-            _ex.printStackTrace();
+            log.error("CourseServiceImpl -> insert_copyCourseTrial -> error info:"+_ex.getMessage());
         }
 
         return reSuccess;
@@ -620,6 +635,7 @@ public class CourseServiceImpl implements CourseService {
         int reSuccess = 0;
         try {
             List<Course> courses = getEntitysById(course_id);
+            log.info("CourseServiceImpl -> deleteTrialCourse -> info:开始进行试听课取消操作.");
             if (courses.size() > 0) {
                 for (int i = 0; i < courses.size(); i++) {
                     Course course = courses.get(i);
@@ -646,11 +662,11 @@ public class CourseServiceImpl implements CourseService {
                     this.updateStatus(course.getId(),Quantity.STATUS_THREE);
                 }
             }
+            log.info("CourseServiceImpl -> deleteTrialCourse -> info:试听课取消操作结束.");
         }catch (Exception _ex){
             reSuccess = 1;
-            _ex.printStackTrace();
+            log.error("CourseServiceImpl -> deleteTrialCourse -> error info:"+_ex.getMessage());
         }
-
         return reSuccess;
     }
 
@@ -668,6 +684,7 @@ public class CourseServiceImpl implements CourseService {
         int sku_id = Integer.parseInt(req.getParameter("sku_id"));
         int sub_id = Integer.parseInt(req.getParameter("sub_id"));
         String noticeStr = req.getParameter("notice");
+        log.info("CourseServiceImpl -> insert_setOneCourse -> info:推荐课程操作开始.");
         try{
             if (set_id == 0){
                 set_id = courseRecommendService.insertKey(courseRecommendService.formEntity(req, id, Quantity.STATUS_ZERO));
@@ -699,8 +716,10 @@ public class CourseServiceImpl implements CourseService {
                 }
             }
         }catch (Exception _ex){
-            _ex.printStackTrace();
+            log.info("CourseServiceImpl -> insert_setOneCourse -> error info:" + _ex.getMessage());
         }
+
+        log.info("CourseServiceImpl -> insert_setOneCourse -> info:推荐课程操作结束.");
 
         map.put("success",reSuccess);
         map.put("set_id",set_id);
@@ -740,12 +759,12 @@ public class CourseServiceImpl implements CourseService {
      */
     @Override
     public HttpResult createQz(HttpServletRequest req, int course_id, int sku_id) {
-        String teacher_ids = "";
+        String teacher_ids = "10000,";
         String upload_qz_url = configuration.getString(Quantity.UPLOAD_QZ);
-        List<CourseTeacher> courseTeachers = courseTeacherService.getCourseTeachers(course_id);
+        List<CourseTeacher> courseTeachers = courseTeacherService.getCourseTeachersBySkuId(course_id,sku_id);
         String qz_name = this.get(course_id).getKeyWord();
-        HttpResult result = new HttpResult();
-        if (courseTeachers.size() > 0){
+//        HttpResult result = new HttpResult();
+//        if (courseTeachers.size() > 0){
             for (CourseTeacher courseTeacher : courseTeachers){
                 Teacher teacher = teacherService.get(courseTeacher.getTeacherId());
                 teacher_ids = teacher_ids + teacher.getUserId() + ",";
@@ -772,16 +791,18 @@ public class CourseServiceImpl implements CourseService {
             String sign = StringUtil.getSign(sb.toString());//请求加密串
 
             String param = "coid="+course_id+"&expired="+expired+"&name="+qz+"&sid="+sku_id+"&tids="+teacher_ids+"&sign="+sign;
-
+            log.info("CourseServiceImpl -> createQz -> info:创建群组组装参数结束.");
+            log.info("CourseServiceImpl -> createQz -> info:创建群组发出请求.");
             JSONObject jsonObject = httpClientService.httpPost(upload_qz_url, param);
-            result = CastUtil.toObject(jsonObject, HttpResult.class);
-
-        }else{
-            result.setErrno(-1);
-            result.setErrmsg("error");
-            result.setTime((new Date()).getTime());
-            result.setData("false");
-        }
+            log.info("CourseServiceImpl -> createQz -> info:创建群组发出请求结束.");
+        HttpResult result = CastUtil.toObject(jsonObject, HttpResult.class);
+            log.info("CourseServiceImpl -> createQz -> info:创建群组发出请求结束,返回errno:"+result.getErrno());
+//        }else{
+//            result.setErrno(-1);
+//            result.setErrmsg("error");
+//            result.setTime((new Date()).getTime());
+//            result.setData("false");
+//        }
 
         return result;
     }
@@ -867,7 +888,6 @@ public class CourseServiceImpl implements CourseService {
                         sb.append("<p  align='center'><img src='"+img_url+"' style='width: 300px;height: 200px'></p>");
                     }
                 }
-
             }
         }
         sb.append("</div>");
