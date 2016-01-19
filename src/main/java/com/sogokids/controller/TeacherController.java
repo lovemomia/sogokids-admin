@@ -351,6 +351,9 @@ public class TeacherController {
         if (mark == 1) {
             teacher.setStatus(Quantity.STATUS_ONE);
             up_teacher = teacherService.updateStatus(teacher);
+            if (up_teacher > 0){
+                customerService.updateCustomer(teacher.getUserId());
+            }
         }
         if (mark == 2) {
             teacher.setStatus(Quantity.STATUS_FIVE);

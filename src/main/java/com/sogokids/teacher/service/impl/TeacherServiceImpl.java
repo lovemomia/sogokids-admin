@@ -575,7 +575,7 @@ public class TeacherServiceImpl implements TeacherService {
         sb_str.append("key=").append(configuration.getString(Quantity.SERVICE_PORT_KEY));
 
         String sign = StringUtil.getSign(sb_str.toString());
-        String app_param = "content="+teacher.getMsg()+"&expired="+expired+"&uid="+teacher.getUserId()+"&sign="+sign;
+        String app_param = "content="+content+"&expired="+expired+"&uid="+teacher.getUserId()+"&sign="+sign;
 
         return app_param;
     }
