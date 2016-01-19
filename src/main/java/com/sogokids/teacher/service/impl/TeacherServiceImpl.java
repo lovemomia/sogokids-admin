@@ -8,6 +8,8 @@ import com.sogokids.course.service.CourseService;
 import com.sogokids.course.service.CourseSkuService;
 import com.sogokids.http.model.HttpResult;
 import com.sogokids.http.service.HttpClientService;
+import com.sogokids.query.model.Customer;
+import com.sogokids.query.service.CustomerService;
 import com.sogokids.subject.model.Subject;
 import com.sogokids.subject.service.SubjectService;
 import com.sogokids.system.service.PlaceService;
@@ -71,7 +73,7 @@ public class TeacherServiceImpl implements TeacherService {
     private HttpClientService httpClientService;
 
     @Autowired
-    private CourseTeacherService courseTeacherService;
+    private CustomerService customerService;
 
     @Autowired
     private CourseSkuService courseSkuService;
@@ -96,7 +98,7 @@ public class TeacherServiceImpl implements TeacherService {
     @Override
     public List<Teacher> getEntitys() {
         List<Teacher> reData = new ArrayList<Teacher>();
-        String sql = "select Id,UserId,Name,Avatar,Education,Experience,Gender,Job,Mobile,Status,AddTime from SG_Teacher where Status = ? ";
+        String sql = "select Id,UserId,Name,Avatar,Pic,IdNo,Gender,Address,Education,Experience,Job,Mobile,Status,AddTime from SG_Teacher where Status = ? ";
         Object [] params = new Object[]{Quantity.STATUS_ONE};
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql, params);
         if(list.size() > 0){
@@ -105,7 +107,11 @@ public class TeacherServiceImpl implements TeacherService {
                 entity.setId(Integer.parseInt(list.get(i).get("Id").toString()));
                 entity.setUserId(Integer.parseInt(list.get(i).get("UserId").toString()));
                 entity.setName(list.get(i).get("Name").toString());
-                entity.setAvatar(list.get(i).get("Avatar").toString());
+                if (list.get(i).get("Pic") == null){
+                    entity.setPic(list.get(i).get("Avatar").toString());
+                }else{
+                    entity.setPic(list.get(i).get("Pic").toString());
+                }
                 if (list.get(i).get("Education") == null){
                     entity.setEducation("");
                 }else{
@@ -117,14 +123,23 @@ public class TeacherServiceImpl implements TeacherService {
                     entity.setExperience(list.get(i).get("Experience").toString());
                 }
 
-//                entity.setSex(Integer.parseInt(list.get(i).get("Sex").toString()));
                 entity.setGender(list.get(i).get("Gender").toString());
                 if (list.get(i).get("Job") == null){
                     entity.setJob(0);
                 }else{
                     entity.setJob(Integer.parseInt(list.get(i).get("Job").toString()));
                 }
-                entity.setMobile(list.get(i).get("Mobile").toString());
+                Customer customer = customerService.getCustomer(Integer.parseInt(list.get(i).get("UserId").toString()));
+                if (list.get(i).get("Address") == null){
+                    entity.setAddress(customer.getAddress());
+                }else{
+                    entity.setAddress(list.get(i).get("Address").toString());
+                }
+                if (list.get(i).get("Mobile") == null){
+                    entity.setMobile(customer.getMobile());
+                }else{
+                    entity.setMobile(list.get(i).get("Mobile").toString());
+                }
                 entity.setStatus(Integer.parseInt(list.get(i).get("Status").toString()));
                 entity.setAddTime(list.get(i).get("AddTime").toString());
 
@@ -140,7 +155,7 @@ public class TeacherServiceImpl implements TeacherService {
         Map<String, List<Teacher>> map = new HashMap<String, List<Teacher>>();
         List<Teacher> d_check = new ArrayList<Teacher>();
         List<Teacher> y_check = new ArrayList<Teacher>();
-        String sql = "select Id,UserId,Name,Avatar,Pic,IdNo,Gender,Sex,Birthday,Job,Mobile,Status,AddTime from SG_Teacher where Status >= ? and Status <= ? ";
+        String sql = "select Id,UserId,Name,Avatar,Pic,IdNo,Gender,Address,Sex,Birthday,Job,Mobile,Status,AddTime from SG_Teacher where Status >= ? and Status <= ? ";
         Object [] params = new Object[]{Quantity.STATUS_THREE,Quantity.STATUS_SIX};
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql, params);
         if(list.size() > 0){
@@ -150,21 +165,34 @@ public class TeacherServiceImpl implements TeacherService {
                 int userId = Integer.parseInt(list.get(i).get("UserId").toString());
                 entity.setUserId(userId);
                 entity.setName(list.get(i).get("Name").toString());
-                entity.setAvatar(list.get(i).get("Avatar").toString());
-                entity.setPic(list.get(i).get("Pic").toString());
+                if (list.get(i).get("Pic") == null){
+                    entity.setPic(list.get(i).get("Avatar").toString());
+                }else{
+                    entity.setPic(list.get(i).get("Pic").toString());
+                }
                 entity.setIdNo(list.get(i).get("IdNo").toString());
                 entity.setGender(list.get(i).get("Gender").toString());
                 String birthday = list.get(i).get("Birthday").toString();
                 entity.setBirthday(birthday);
                 entity.setAge(""+DateUtil.getAge(birthday));
 
-//                entity.setSex(Integer.parseInt(list.get(i).get("Sex").toString()));
                 if (list.get(i).get("Job") == null){
                     entity.setJob(0);
                 }else{
                     entity.setJob(Integer.parseInt(list.get(i).get("Job").toString()));
                 }
-                entity.setMobile(list.get(i).get("Mobile").toString());
+//                entity.setMobile(list.get(i).get("Mobile").toString());
+                Customer customer = customerService.getCustomer(Integer.parseInt(list.get(i).get("UserId").toString()));
+                if (list.get(i).get("Address") == null){
+                    entity.setAddress(customer.getAddress());
+                }else{
+                    entity.setAddress(list.get(i).get("Address").toString());
+                }
+                if (list.get(i).get("Mobile") == null){
+                    entity.setMobile(customer.getMobile());
+                }else{
+                    entity.setMobile(list.get(i).get("Mobile").toString());
+                }
                 int status = Integer.parseInt(list.get(i).get("Status").toString());
                 entity.setStatus(status);
                 entity.setTeacherEducation(teacherEducationService.getTeacherEducation(userId));
@@ -188,7 +216,7 @@ public class TeacherServiceImpl implements TeacherService {
         String whereStr = " where Status = ? ";
         whereStr = whereStr + where;
         List<Teacher> reData = new ArrayList<Teacher>();
-        String sql = "select Id,UserId,Name,Avatar,Education,Experience,Sex,Job,Mobile,Status,AddTime from SG_Teacher " + whereStr;
+        String sql = "select Id,UserId,Name,Avatar,Pic,IdNo,Gender,Address,Education,Experience,Sex,Job,Mobile,Status,AddTime from SG_Teacher " + whereStr;
         Object [] params = new Object[]{Quantity.STATUS_ONE};
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql, params);
         if(list.size() > 0){
@@ -197,7 +225,30 @@ public class TeacherServiceImpl implements TeacherService {
                 entity.setId(Integer.parseInt(list.get(i).get("Id").toString()));
                 entity.setUserId(Integer.parseInt(list.get(i).get("UserId").toString()));
                 entity.setName(list.get(i).get("Name").toString());
-                entity.setAvatar(list.get(i).get("Avatar").toString());
+                if (list.get(i).get("Pic") == null){
+                    entity.setPic(list.get(i).get("Avatar").toString());
+                }else{
+                    entity.setPic(list.get(i).get("Pic").toString());
+                }
+                if (list.get(i).get("IdNo") == null){
+                    entity.setIdNo("");
+                }else{
+                    entity.setIdNo(list.get(i).get("IdNo").toString());
+                }
+
+                if (list.get(i).get("Gender") == null){
+                    entity.setGender("");
+                }else{
+                    entity.setGender(list.get(i).get("Gender").toString());
+                }
+
+                Customer customer = customerService.getCustomer(Integer.parseInt(list.get(i).get("UserId").toString()));
+                if (list.get(i).get("Address") == null){
+                    entity.setAddress(customer.getAddress());
+                }else{
+                    entity.setAddress(list.get(i).get("Address").toString());
+                }
+
                 entity.setEducation(list.get(i).get("Education").toString());
                 if (list.get(i).get("Experience") == null){
                     entity.setExperience("");
@@ -206,7 +257,11 @@ public class TeacherServiceImpl implements TeacherService {
                 }
                 entity.setSex(Integer.parseInt(list.get(i).get("Sex").toString()));
                 entity.setJob(Integer.parseInt(list.get(i).get("Job").toString()));
-                entity.setMobile(list.get(i).get("Mobile").toString());
+                if (list.get(i).get("Mobile") == null){
+                    entity.setMobile(customer.getMobile());
+                }else{
+                    entity.setMobile(list.get(i).get("Mobile").toString());
+                }
                 entity.setStatus(Integer.parseInt(list.get(i).get("Status").toString()));
                 entity.setAddTime(list.get(i).get("AddTime").toString());
 
@@ -219,7 +274,7 @@ public class TeacherServiceImpl implements TeacherService {
 
     @Override
     public Teacher get(int id) {
-        String sql = "select Id,UserId,Name,Avatar,Pic,IdNo,Gender,Birthday,Msg,Education,Experience,Sex,Job,Mobile,Status,AddTime from SG_Teacher where Id = ? and Status > ? ";
+        String sql = "select Id,UserId,Name,Avatar,Pic,IdNo,Gender,Birthday,Msg,Education,Experience,Sex,Job,Mobile,Status,AddTime,Address from SG_Teacher where Id = ? and Status > ? ";
         final Object [] params = new Object[]{id, Quantity.STATUS_ZERO};
         final Teacher entity = new Teacher();
         jdbcTemplate.query(sql,params, new RowCallbackHandler(){
@@ -227,8 +282,11 @@ public class TeacherServiceImpl implements TeacherService {
                 entity.setId(rs.getInt("id"));
                 entity.setUserId(rs.getInt("UserId"));
                 entity.setName(rs.getString("Name"));
-                entity.setAvatar(rs.getString("Avatar"));
-                entity.setPic(rs.getString("Pic"));
+                if (StringUtils.isNotEmpty(rs.getString("Pic").trim())){
+                    entity.setPic(rs.getString("Pic"));
+                }else{
+                    entity.setPic(rs.getString("Avatar"));
+                }
                 entity.setIdNo(rs.getString("IdNo"));
                 entity.setGender(rs.getString("Gender"));
                 entity.setBirthday(rs.getString("Birthday"));
@@ -238,9 +296,19 @@ public class TeacherServiceImpl implements TeacherService {
                 entity.setExperience(rs.getString("Experience"));
                 entity.setSex(rs.getInt("Sex"));
                 entity.setJob(rs.getInt("Job"));
-                entity.setMobile(rs.getString("Mobile"));
+                Customer customer = customerService.getCustomer(rs.getInt("UserId"));
+                if (StringUtils.isNotEmpty(rs.getString("Mobile").trim())){
+                    entity.setMobile(rs.getString("Mobile"));
+                }else{
+                    entity.setMobile(customer.getMobile());
+                }
                 entity.setStatus(rs.getInt("Status"));
                 entity.setAddTime(rs.getString("AddTime"));
+                if (StringUtils.isNotEmpty(rs.getString("Address").trim())){
+                    entity.setAddress(rs.getString("Address"));
+                }else{
+                    entity.setAddress(customer.getAddress());
+                }
             }
         });
 

@@ -1,5 +1,7 @@
 package com.sogokids.teacher.service.impl;
 
+import com.sogokids.course.model.Course;
+import com.sogokids.course.service.CourseService;
 import com.sogokids.system.model.PlaceImg;
 import com.sogokids.system.service.PlaceService;
 import com.sogokids.teacher.model.CourseAssign;
@@ -24,6 +26,9 @@ public class CourseAssignServiceImpl implements CourseAssignService {
     @Autowired
     private PlaceService placeService;
 
+    @Autowired
+    private CourseService courseService;
+
     @Resource
     private JdbcTemplate jdbcTemplate;
 
@@ -41,16 +46,19 @@ public class CourseAssignServiceImpl implements CourseAssignService {
         List<CourseAssign> courseAssigns = new ArrayList<CourseAssign>();
         List<CourseAssign> w_courseAssigns = new ArrayList<CourseAssign>();
         String startTime = "'"+DateUtil.NowDateStr()+"'";
-
-        String sql = "SELECT a.id,a.title,b.StartTime,b.EndTime,b.PlaceId,b.Id as skuId FROM SG_Course a,SG_CourseSku b where a.ParentId = 0 and a.status > 0 and a.status != 3 and b.status > 0 and b.status != 3 and a.id = b.CourseId and b.StartTime > " + startTime +" order by b.StartTime desc ";
+        String sql = "SELECT StartTime,EndTime,PlaceId,Id,CourseId FROM SG_CourseSku where Status > 0 and Status != 0 and ParentId = 0 and StartTime > " + startTime +" order by StartTime desc ";
+//        String sql = "SELECT a.id,a.title,b.StartTime,b.EndTime,b.PlaceId,b.Id as skuId FROM SG_Course a,SG_CourseSku b where a.ParentId = 0 and a.status > 0 and a.status != 3 and b.status > 0 and b.status != 3 and a.id = b.CourseId and b.StartTime > " + startTime +" order by b.StartTime desc ";
+//        System.out.print(sql);
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         if(list.size() > 0){
             for (int i = 0; i < list.size(); i++) {
                 CourseAssign entity = new CourseAssign();
-                int courseId = Integer.parseInt(list.get(i).get("id").toString());
+
+                int courseId = Integer.parseInt(list.get(i).get("CourseId").toString());
+                Course course = courseService.get(courseId);
                 entity.setCourseId(courseId);
-                entity.setCourseTitle(list.get(i).get("title").toString());
-                int courseSkuId = Integer.parseInt(list.get(i).get("skuId").toString());
+                entity.setCourseTitle(course.getTitle());
+                int courseSkuId = Integer.parseInt(list.get(i).get("Id").toString());
                 entity.setSkuId(courseSkuId);
                 String skuStartTime = list.get(i).get("StartTime").toString();
                 entity.setSkuStartTime(DateUtil.getDateTimeStr_cn(DateUtil.StrToDate(skuStartTime)));

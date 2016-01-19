@@ -251,7 +251,7 @@
                                 <div class="ibox-content text-center">
                                     <%--<h1><c:out value="${entity.name}"></c:out></h1>--%>
                                     <div class="m-b-sm">
-                                        <img alt="image" class="img-circle" src="${filepath}${entity.avatar}" style="width: 120px;height: 120px;">
+                                        <img alt="image" class="img-circle" src="${filepath}${entity.pic}" style="width: 120px;height: 120px;">
                                     </div>
                                     <p class="font-bold">
                                         <c:out value="${entity.name}"></c:out>

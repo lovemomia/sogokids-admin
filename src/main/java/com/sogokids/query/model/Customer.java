@@ -8,6 +8,7 @@ public class Customer {
     private int id;
     private String mobile;
     private String nickName;
+    private String address;
 
     public int getRowId() {
         return rowId;
@@ -41,4 +42,11 @@ public class Customer {
         this.nickName = nickName;
     }
 
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
 }
