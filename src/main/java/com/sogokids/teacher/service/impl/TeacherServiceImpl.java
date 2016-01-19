@@ -372,7 +372,7 @@ public class TeacherServiceImpl implements TeacherService {
     public String getY_Teachers(int course_id, int sku_id) {
         StringBuffer sb = new StringBuffer();
         List<Teacher> reData = new ArrayList<Teacher>();
-        String sql = "select Id,UserId,Name,Avatar,Education,Experience,Sex,Job,Mobile,Status,AddTime from SG_Teacher where Status = ? and Id in (SELECT TeacherId FROM sogokids.SG_CourseTeacher where Status > ? and CourseId = ? and CourseSkuId = ? ) ";
+        String sql = "select Id,UserId,Name,Avatar,Pic,Education,Experience,Sex,Job,Mobile,Status,AddTime from SG_Teacher where Status = ? and Id in (SELECT TeacherId FROM sogokids.SG_CourseTeacher where Status > ? and CourseId = ? and CourseSkuId = ? ) ";
         Object [] params = new Object[]{Quantity.STATUS_ONE, Quantity.STATUS_ZERO, course_id, sku_id};
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql, params);
         sb.append(getHtmlTableStrat1());
@@ -382,7 +382,13 @@ public class TeacherServiceImpl implements TeacherService {
                 sb.append("<td>");
                     sb.append("<input type='checkbox' id='y_teacher' name='y_teacher' value='"+list.get(i).get("Id")+"'>");
                 sb.append("</td>");
-                String url = configuration.getString(Quantity.DISPLAY_IMAGE) + list.get(i).get("Avatar");
+                String pic = "";
+                if (list.get(i).get("Pic") == null){
+                    pic = list.get(i).get("Avatar").toString();
+                }else{
+                    pic = list.get(i).get("Pic").toString();
+                }
+                String url = configuration.getString(Quantity.DISPLAY_IMAGE) + pic;
                 sb.append("<td>");
                     sb.append("<img class='teacher_w_h' src='" + url + "' style='width: 50px;height: 50px;' />").append("&numsp;&numsp;");
                     sb.append(list.get(i).get("Name"));
@@ -398,7 +404,7 @@ public class TeacherServiceImpl implements TeacherService {
     public String getW_Teachers(int course_id, int sku_id) {
         StringBuffer sb = new StringBuffer();
         List<Teacher> reData = new ArrayList<Teacher>();
-        String sql = "select Id,UserId,Name,Avatar,Education,Experience,Sex,Job,Mobile,Status,AddTime from SG_Teacher where Status = ? and Id not in (SELECT TeacherId FROM sogokids.SG_CourseTeacher where Status > ? and CourseId = ? and CourseSkuId = ? ) ";
+        String sql = "select Id,UserId,Name,Avatar,Pic,Education,Experience,Sex,Job,Mobile,Status,AddTime from SG_Teacher where Status = ? and Id not in (SELECT TeacherId FROM sogokids.SG_CourseTeacher where Status > ? and CourseId = ? and CourseSkuId = ? ) ";
         Object [] params = new Object[]{Quantity.STATUS_ONE, Quantity.STATUS_ZERO, course_id, sku_id};
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql, params);
         sb.append(getHtmlTableStrat());
@@ -408,7 +414,13 @@ public class TeacherServiceImpl implements TeacherService {
                 sb.append("<td>");
                 sb.append("<input type='checkbox' id='w_teacher' name='w_teacher' value='"+list.get(i).get("Id")+"'>");
                 sb.append("</td>");
-                String url = configuration.getString(Quantity.DISPLAY_IMAGE) + list.get(i).get("Avatar");
+                String pic = "";
+                if (list.get(i).get("Pic") == null){
+                    pic = list.get(i).get("Avatar").toString();
+                }else{
+                    pic = list.get(i).get("Pic").toString();
+                }
+                String url = configuration.getString(Quantity.DISPLAY_IMAGE) + pic;
                 sb.append("<td>");
                 sb.append("<img class='teacher_w_h' src='" + url + "' style='width: 50px;height: 50px;'/>").append("&numsp;&numsp;");
                 sb.append(list.get(i).get("Name"));

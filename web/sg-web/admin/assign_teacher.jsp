@@ -266,8 +266,6 @@
                                                 <p>&numsp;</p><p>&numsp;</p>
                                                 <p align="center"><button id="del_teacher" name="del_teacher" type="button" class="btn btn-danger btn-sm"><i class="fa fa-mail-reply"></i> 取消 </button></p>
                                                 <p>&numsp;</p><p>&numsp;</p>
-                                                <p align="center"><button id="btn_teacher_next_save" name="btn_teacher_next_save" type="button" class="btn btn-warning btn-sm"> 下一步 </button></p>
-                                                <p>&numsp;</p><p>&numsp;</p><p>&numsp;</p><p>&numsp;</p>
                                             </div>
                                         </div>
 
