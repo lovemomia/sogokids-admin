@@ -31,7 +31,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public Customer getCustomer(int id) {
-        String sql = "select Id,Mobile,NickName from SG_User where Id = ? and Status > ? ";
+        String sql = "select Id,Mobile,NickName,Address from SG_User where Id = ? and Status > ? ";
         final Object [] params = new Object[]{id, Quantity.STATUS_ZERO};
         final Customer entity = new Customer();
         jdbcTemplate.query(sql,params, new RowCallbackHandler(){
@@ -39,6 +39,7 @@ public class CustomerServiceImpl implements CustomerService {
                 entity.setId(rs.getInt("Id"));
                 entity.setMobile(rs.getString("Mobile"));
                 entity.setNickName(rs.getString("NickName"));
+                entity.setAddress(rs.getString("Address"));
             }
         });
 
@@ -47,7 +48,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public Customer getCustomerByMobile(String mobile){
-        String sql = "select Id,Mobile,NickName from SG_User where Mobile = ? and Status > ? ";
+        String sql = "select Id,Mobile,NickName,Address from SG_User where Mobile = ? and Status > ? ";
         final Object [] params = new Object[]{mobile, Quantity.STATUS_ZERO};
         final Customer entity = new Customer();
         jdbcTemplate.query(sql,params, new RowCallbackHandler(){
@@ -55,6 +56,7 @@ public class CustomerServiceImpl implements CustomerService {
                 entity.setId(rs.getInt("Id"));
                 entity.setMobile(rs.getString("Mobile"));
                 entity.setNickName(rs.getString("NickName"));
+                entity.setAddress(rs.getString("Address"));
             }
         });
 
