@@ -155,7 +155,7 @@ public class TeacherServiceImpl implements TeacherService {
         Map<String, List<Teacher>> map = new HashMap<String, List<Teacher>>();
         List<Teacher> d_check = new ArrayList<Teacher>();
         List<Teacher> y_check = new ArrayList<Teacher>();
-        String sql = "select Id,UserId,Name,Avatar,Pic,IdNo,Gender,Address,Sex,Birthday,Job,Mobile,Status,AddTime from SG_Teacher where Status >= ? and Status <= ? ";
+        String sql = "select Id,UserId,Name,Avatar,Pic,IdNo,Gender,Address,Sex,Birthday,Job,Mobile,Status,AddTime from SG_Teacher where Status >= ? and Status <= ? order by Status desc";
         Object [] params = new Object[]{Quantity.STATUS_THREE,Quantity.STATUS_SIX};
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql, params);
         if(list.size() > 0){
@@ -181,7 +181,6 @@ public class TeacherServiceImpl implements TeacherService {
                 }else{
                     entity.setJob(Integer.parseInt(list.get(i).get("Job").toString()));
                 }
-//                entity.setMobile(list.get(i).get("Mobile").toString());
                 Customer customer = customerService.getCustomer(Integer.parseInt(list.get(i).get("UserId").toString()));
                 if (list.get(i).get("Address") == null){
                     entity.setAddress(customer.getAddress());
