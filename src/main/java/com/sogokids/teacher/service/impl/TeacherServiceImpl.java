@@ -378,10 +378,6 @@ public class TeacherServiceImpl implements TeacherService {
         sb.append(getHtmlTableStrat1());
         if(list.size() > 0){
             for (int i = 0; i < list.size(); i++) {
-                sb.append("<tr>");
-                sb.append("<td>");
-                    sb.append("<input type='checkbox' id='y_teacher' name='y_teacher' value='"+list.get(i).get("Id")+"'>");
-                sb.append("</td>");
                 String pic = "";
                 if (list.get(i).get("Pic") == null){
                     pic = list.get(i).get("Avatar").toString();
@@ -389,7 +385,9 @@ public class TeacherServiceImpl implements TeacherService {
                     pic = list.get(i).get("Pic").toString();
                 }
                 String url = configuration.getString(Quantity.DISPLAY_IMAGE) + pic;
+                sb.append("<tr>");
                 sb.append("<td>");
+                    sb.append("<input type='checkbox' id='y_teacher' name='y_teacher' value='"+list.get(i).get("Id")+"'>").append("&numsp;&numsp;");
                     sb.append("<img class='teacher_w_h' src='" + url + "' style='width: 50px;height: 50px;' />").append("&numsp;&numsp;");
                     sb.append(list.get(i).get("Name"));
                 sb.append("</td>");
@@ -410,10 +408,6 @@ public class TeacherServiceImpl implements TeacherService {
         sb.append(getHtmlTableStrat());
         if(list.size() > 0){
             for (int i = 0; i < list.size(); i++) {
-                sb.append("<tr>");
-                sb.append("<td>");
-                sb.append("<input type='checkbox' id='w_teacher' name='w_teacher' value='"+list.get(i).get("Id")+"'>");
-                sb.append("</td>");
                 String pic = "";
                 if (list.get(i).get("Pic") == null){
                     pic = list.get(i).get("Avatar").toString();
@@ -421,7 +415,9 @@ public class TeacherServiceImpl implements TeacherService {
                     pic = list.get(i).get("Pic").toString();
                 }
                 String url = configuration.getString(Quantity.DISPLAY_IMAGE) + pic;
+                sb.append("<tr>");
                 sb.append("<td>");
+                sb.append("<input type='checkbox' id='w_teacher' name='w_teacher' value='"+list.get(i).get("Id") + "'>").append("&numsp;&numsp;");
                 sb.append("<img class='teacher_w_h' src='" + url + "' style='width: 50px;height: 50px;'/>").append("&numsp;&numsp;");
                 sb.append(list.get(i).get("Name"));
                 sb.append("</td>");
@@ -438,7 +434,6 @@ public class TeacherServiceImpl implements TeacherService {
         sb.append("<table class='table table-striped table-bordered table-hover dataTables-example'>");
         sb.append("<thead>");
         sb.append("<tr class='gradeX'>");
-        sb.append("<th>勾选</th>");
         sb.append("<th>讲师</th>");
         sb.append("</tr>");
         sb.append("</thead>");
@@ -452,7 +447,6 @@ public class TeacherServiceImpl implements TeacherService {
         sb.append("<table class='table table-striped table-bordered table-hover'>");
         sb.append("<thead>");
         sb.append("<tr class='gradeX'>");
-        sb.append("<th>勾选</th>");
         sb.append("<th>讲师</th>");
         sb.append("</tr>");
         sb.append("</thead>");
