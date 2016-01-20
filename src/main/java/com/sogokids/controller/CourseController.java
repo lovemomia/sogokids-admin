@@ -411,8 +411,8 @@ public class CourseController {
             }
         }else{
             if (skuId == 0) {
-                List<CourseTeacher> courseTeachers = courseTeacherService.getCourseTeachers(courseId);
-                if (courseTeachers.size() > 0){
+//                List<CourseTeacher> courseTeachers = courseTeacherService.getCourseTeachers(courseId);
+//                if (courseTeachers.size() > 0){
                     reDate = courseSkuService.insertKey(courseSkuService.formEntity(req, courseId, Quantity.STATUS_ZERO));
                     if (reDate > 0){
                         HttpResult result = courseService.createQz(req,courseId,reDate);
@@ -436,10 +436,11 @@ public class CourseController {
                         context.put(Quantity.RETURN_SUCCESS, 1);
                         context.put(Quantity.RETURN_MSG, "课程sku信息保存失败!");
                     }
-                }else{
-                    context.put(Quantity.RETURN_SUCCESS, 1);
-                    context.put(Quantity.RETURN_MSG, "创建群组失败,无讲师信息!");
-                }
+//                }
+//                else{
+//                    context.put(Quantity.RETURN_SUCCESS, 1);
+//                    context.put(Quantity.RETURN_MSG, "创建群组失败,无讲师信息!");
+//                }
             }else{
                 reDate = courseSkuService.update(courseSkuService.formEntity(req, courseId, skuId));
                 if (reDate > 0) {

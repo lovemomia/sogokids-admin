@@ -795,7 +795,7 @@ public class CourseServiceImpl implements CourseService {
             log.info("CourseServiceImpl -> createQz -> info:创建群组发出请求.");
             JSONObject jsonObject = httpClientService.httpPost(upload_qz_url, param);
             log.info("CourseServiceImpl -> createQz -> info:创建群组发出请求结束.");
-        HttpResult result = CastUtil.toObject(jsonObject, HttpResult.class);
+            HttpResult result = CastUtil.toObject(jsonObject, HttpResult.class);
             log.info("CourseServiceImpl -> createQz -> info:创建群组发出请求结束,返回errno:"+result.getErrno());
 //        }else{
 //            result.setErrno(-1);
