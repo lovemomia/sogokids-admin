@@ -350,6 +350,7 @@ public class TeacherController {
         Teacher teacher = teacherService.get(tid);
         if (mark == 1) {
             teacher.setStatus(Quantity.STATUS_ONE);
+            teacher.setJob(Quantity.STATUS_THREE);
             up_teacher = teacherService.updateStatus(teacher);
             if (up_teacher > 0){
                 customerService.updateCustomer(teacher.getUserId());
