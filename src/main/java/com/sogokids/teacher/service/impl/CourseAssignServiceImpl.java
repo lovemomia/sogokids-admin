@@ -56,6 +56,9 @@ public class CourseAssignServiceImpl implements CourseAssignService {
 
                 int courseId = Integer.parseInt(list.get(i).get("CourseId").toString());
                 Course course = courseService.get(courseId);
+                if (course.getStatus() == 0){
+                    continue;
+                }
                 entity.setCourseId(courseId);
                 entity.setCourseTitle(course.getTitle());
                 int courseSkuId = Integer.parseInt(list.get(i).get("Id").toString());
