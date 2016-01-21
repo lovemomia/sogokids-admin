@@ -46,7 +46,7 @@ public class CourseAssignServiceImpl implements CourseAssignService {
         List<CourseAssign> courseAssigns = new ArrayList<CourseAssign>();
         List<CourseAssign> w_courseAssigns = new ArrayList<CourseAssign>();
         String startTime = "'"+DateUtil.NowDateStr()+"'";
-        String sql = "SELECT StartTime,EndTime,PlaceId,Id,CourseId FROM SG_CourseSku where Status > 0 and Status != 0 and ParentId = 0 and StartTime > " + startTime +" order by StartTime desc ";
+        String sql = "SELECT StartTime,EndTime,PlaceId,Id,CourseId FROM SG_CourseSku where Status > 0 and Status != 3 and ParentId = 0 and StartTime > " + startTime +" order by StartTime desc ";
 //        String sql = "SELECT a.id,a.title,b.StartTime,b.EndTime,b.PlaceId,b.Id as skuId FROM SG_Course a,SG_CourseSku b where a.ParentId = 0 and a.status > 0 and a.status != 3 and b.status > 0 and b.status != 3 and a.id = b.CourseId and b.StartTime > " + startTime +" order by b.StartTime desc ";
 //        System.out.print(sql);
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
