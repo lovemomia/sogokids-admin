@@ -255,7 +255,12 @@ public class TeacherServiceImpl implements TeacherService {
                     entity.setExperience(list.get(i).get("Experience").toString());
                 }
                 entity.setSex(Integer.parseInt(list.get(i).get("Sex").toString()));
-                entity.setJob(Integer.parseInt(list.get(i).get("Job").toString()));
+
+                if (list.get(i).get("Job") == null){
+                    entity.setJob(0);
+                }else{
+                    entity.setJob(Integer.parseInt(list.get(i).get("Job").toString()));
+                }
                 if (list.get(i).get("Mobile") == null){
                     entity.setMobile(customer.getMobile());
                 }else{
@@ -332,8 +337,8 @@ public class TeacherServiceImpl implements TeacherService {
 
     @Override
     public int updateStatus(Teacher entity) {
-        String sql = "update SG_Teacher set Education = ?, Experience = ?, Msg = ?, Status = ? where Id = ? ";
-        Object [] params = new Object[]{entity.getEducation(), entity.getExperience(), entity.getMsg(), entity.getStatus(), entity.getId()};
+        String sql = "update SG_Teacher set Education = ?, Experience = ?, Msg = ?, Status = ?, Job = ? where Id = ? ";
+        Object [] params = new Object[]{entity.getEducation(), entity.getExperience(), entity.getMsg(), entity.getStatus(), entity.getJob(), entity.getId()};
         int reData = 0;
         try {
             reData = jdbcTemplate.update(sql, params);
