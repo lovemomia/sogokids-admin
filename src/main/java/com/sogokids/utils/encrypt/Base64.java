@@ -130,7 +130,7 @@ public class Base64 {
     {
         Base64 base64 = new Base64();
 
-        String testStr = "{\"name\":\"vicken\",\"age\":20}";
+        String testStr = "AdminSogoKids" ;//"{\"name\":\"vicken\",\"age\":20}";
         System.out.println("加密前：" + testStr);
 
         String encodeStr = base64.encode(testStr.getBytes());
