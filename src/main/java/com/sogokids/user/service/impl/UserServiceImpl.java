@@ -9,6 +9,7 @@ import com.sogokids.user.service.AdminRoleService;
 import com.sogokids.user.service.FuncService;
 import com.sogokids.user.service.RoleFuncService;
 import com.sogokids.user.service.UserService;
+import com.sogokids.utils.encrypt.Base64;
 import com.sogokids.utils.util.JumpPage;
 import com.sogokids.utils.util.Quantity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -114,8 +115,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User users_exist(String username, String password) {
+        String decodeStr = new Base64().encode(password.getBytes());
         String sql = "select id,username,password,status,addTime from SG_Admin where username = ? and password = ? and status > ? ";
-        final Object [] params = new Object[]{username,password,Quantity.STATUS_ZERO};
+        final Object [] params = new Object[]{username,decodeStr,Quantity.STATUS_ZERO};
         final User entity = new User();
         jdbcTemplate.query(sql,params, new RowCallbackHandler(){
             public void processRow(ResultSet rs) throws SQLException {
@@ -135,7 +137,9 @@ public class UserServiceImpl implements UserService {
         User entity = new User();
         entity.setId(id);
         entity.setUsername(req.getParameter("username"));
-        entity.setPassword(req.getParameter("password"));
+        String password = req.getParameter("password");
+        String encodeStr = new Base64().encode(password.getBytes());
+        entity.setPassword(encodeStr);
         return entity;
     }
 

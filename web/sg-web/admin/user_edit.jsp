@@ -237,7 +237,7 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label">用户密码 </label>
                             <div class="col-sm-8">
-                                <input id="password" name="password" type="text" class="form-control" value="${model.password}">
+                                <input id="password" name="password" type="password" class="form-control" value="${model.password}">
                             </div>
                         </div>
 
