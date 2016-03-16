@@ -105,7 +105,7 @@
                                     <td align='left' style='width: 80%;'>${education.school}</td>
                                     <td style='align-text:right'>${education.time}</td>
                                 </tr>
-                                <tr><td colspan='2'>&numsp;</td></tr>
+                                <%--<tr><td colspan='2'>&numsp;</td></tr>--%>
                                 <tr><td align='left' colspan='2'><font style='font-size:50%;' color='#a9a9a9'>${education.major} ${education.level}</font></td></tr>
                                 <tr><td colspan='2'>&numsp;</td></tr>
                             </c:forEach>

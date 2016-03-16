@@ -2,7 +2,6 @@ package com.sogokids.teacher.service.impl;
 
 import com.sogokids.course.model.Course;
 import com.sogokids.course.service.CourseService;
-import com.sogokids.system.model.PlaceImg;
 import com.sogokids.system.service.PlaceService;
 import com.sogokids.teacher.model.CourseAssign;
 import com.sogokids.teacher.service.CourseAssignService;

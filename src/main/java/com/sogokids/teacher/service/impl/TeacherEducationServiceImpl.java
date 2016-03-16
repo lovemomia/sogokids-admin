@@ -2,7 +2,6 @@ package com.sogokids.teacher.service.impl;
 
 import com.sogokids.teacher.model.TeacherEducation;
 import com.sogokids.teacher.service.TeacherEducationService;
-import com.sogokids.utils.util.Quantity;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;

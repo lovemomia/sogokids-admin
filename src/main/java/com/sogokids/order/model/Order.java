@@ -20,10 +20,10 @@ public class Order {
     private String addTime;
     private String updateTime;
 
-    private Customer customer;
-    private Subject subject;
-    private Payment payment;
-    private List<OrderPackage> orderPackages;
+    private Customer customer;//用户信息
+    private Subject subject;//课程包信息
+    private Payment payment;//支付信息
+    private List<OrderPackage> orderPackages;//选课信息
     private BigDecimal priceSum;
 
     private int tk_mark;

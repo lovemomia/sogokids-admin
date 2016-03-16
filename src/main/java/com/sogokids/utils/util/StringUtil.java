@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * 字符串处理类
  * Created by hoze on 15/6/15.
  */
 public class StringUtil {

@@ -13,6 +13,7 @@ public class Subject {
     private int type;
     private int cityId;
     private String title;
+    private String subTitle;
     private String cover;
     private String tags;
     private String intro;
@@ -50,6 +51,14 @@ public class Subject {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getSubTitle() {
+        return subTitle;
+    }
+
+    public void setSubTitle(String subTitle) {
+        this.subTitle = subTitle;
     }
 
     public String getCover() {

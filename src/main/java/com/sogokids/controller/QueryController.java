@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * 查询统计
  * Created by hoze on 15/10/13.
  */
 @Controller

@@ -5,20 +5,16 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.sogokids.course.model.Course;
 import com.sogokids.course.service.CourseService;
-import com.sogokids.course.service.CourseSkuService;
 import com.sogokids.http.model.HttpResult;
 import com.sogokids.http.service.HttpClientService;
 import com.sogokids.query.model.Customer;
 import com.sogokids.query.service.CustomerService;
 import com.sogokids.subject.model.Subject;
 import com.sogokids.subject.service.SubjectService;
-import com.sogokids.system.service.PlaceService;
-import com.sogokids.system.service.RegionService;
 import com.sogokids.teacher.model.CourseMaterial;
 import com.sogokids.teacher.model.Teacher;
 import com.sogokids.teacher.model.TeacherInterview;
 import com.sogokids.teacher.service.CourseMaterialService;
-import com.sogokids.teacher.service.CourseTeacherService;
 import com.sogokids.teacher.service.TeacherEducationService;
 import com.sogokids.teacher.service.TeacherInterviewService;
 import com.sogokids.teacher.service.TeacherService;
@@ -74,15 +70,6 @@ public class TeacherServiceImpl implements TeacherService {
 
     @Autowired
     private CustomerService customerService;
-
-    @Autowired
-    private CourseSkuService courseSkuService;
-
-    @Autowired
-    private PlaceService placeService;
-
-    @Autowired
-    private RegionService regionService;
 
     @Resource
     private JdbcTemplate jdbcTemplate;
@@ -398,6 +385,12 @@ public class TeacherServiceImpl implements TeacherService {
                 sb.append("</td>");
                 sb.append("</tr>");
             }
+        }else{
+            sb.append("<tr>");
+            sb.append("<td>");
+            sb.append("没有数据信息!");
+            sb.append("</td>");
+            sb.append("</tr>");
         }
         sb.append(getHtmlTableEnd());
         return sb.toString();
@@ -428,6 +421,12 @@ public class TeacherServiceImpl implements TeacherService {
                 sb.append("</td>");
                 sb.append("</tr>");
             }
+        }else{
+            sb.append("<tr>");
+            sb.append("<td>");
+            sb.append("没有数据信息!");
+            sb.append("</td>");
+            sb.append("</tr>");
         }
         sb.append(getHtmlTableEnd());
 
@@ -439,7 +438,7 @@ public class TeacherServiceImpl implements TeacherService {
         sb.append("<table class='table table-striped table-bordered table-hover dataTables-example'>");
         sb.append("<thead>");
         sb.append("<tr class='gradeX'>");
-        sb.append("<th>讲师</th>");
+        sb.append("<th></th>");
         sb.append("</tr>");
         sb.append("</thead>");
         sb.append("<tbody>");
@@ -452,7 +451,7 @@ public class TeacherServiceImpl implements TeacherService {
         sb.append("<table class='table table-striped table-bordered table-hover'>");
         sb.append("<thead>");
         sb.append("<tr class='gradeX'>");
-        sb.append("<th>讲师</th>");
+        sb.append("<th></th>");
         sb.append("</tr>");
         sb.append("</thead>");
         sb.append("<tbody>");
@@ -663,7 +662,7 @@ public class TeacherServiceImpl implements TeacherService {
             if (sms_result.getErrno() == 0){
                 log.info("TeacherServiceImpl -> addSendMsg -> info:开始进行审核不通过操作,发送短信请求成功.");
             }else{
-                log.error("TeacherServiceImpl -> addSendMsg -> error info:"+ result.getErrno() + sms_result.getErrmsg());
+                log.error("TeacherServiceImpl -> addSendMsg -> error info:"+ sms_result.getErrno() + sms_result.getErrmsg());
             }
         }
 

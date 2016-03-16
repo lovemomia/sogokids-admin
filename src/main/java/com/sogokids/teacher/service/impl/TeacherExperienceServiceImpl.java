@@ -1,6 +1,5 @@
 package com.sogokids.teacher.service.impl;
 
-import com.sogokids.teacher.model.TeacherEducation;
 import com.sogokids.teacher.model.TeacherExperience;
 import com.sogokids.teacher.service.TeacherExperienceService;
 import org.springframework.jdbc.core.JdbcTemplate;

@@ -225,7 +225,7 @@ public class CourseRecommendServiceImpl implements CourseRecommendService {
 
     @Override
     public int getWeightMax() {
-        String sql = "SELECT max(weight) as weight FROM sogokids.SG_CourseRecommend ";
+        String sql = "SELECT max(weight) as weight FROM SG_CourseRecommend ";
         final Map reData = new HashMap();
         jdbcTemplate.query(sql, new RowCallbackHandler(){
             public void processRow(ResultSet rs) throws SQLException {

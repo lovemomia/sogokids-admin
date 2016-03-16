@@ -7,6 +7,7 @@ $(document).ready(function () {
         $('#tab-2').hide();
         $('#tab-3').hide();
         $('#tab-4').hide();
+        $('#tab-5').hide();
     });
 
     $('#tab2').click(function (){
@@ -19,6 +20,7 @@ $(document).ready(function () {
         $('#tab-2').show();
         $('#tab-3').hide();
         $('#tab-4').hide();
+        $('#tab-5').hide();
     });
 
     $('#tab3').click(function (){
@@ -31,6 +33,7 @@ $(document).ready(function () {
         $('#tab-2').hide();
         $('#tab-3').show();
         $('#tab-4').hide();
+        $('#tab-5').hide();
     });
 
     $('#tab4').click(function (){
@@ -43,6 +46,20 @@ $(document).ready(function () {
         $('#tab-2').hide();
         $('#tab-3').hide();
         $('#tab-4').show();
+        $('#tab-5').hide();
+    });
+
+    $('#tab5').click(function (){
+        var pid = $('#sub_id').val();
+        if(pid == 0){
+            layer.alert('基本信息不存在,无法进行后续操作！',5,'提示信息');
+            return false;
+        }
+        $('#tab-1').hide();
+        $('#tab-2').hide();
+        $('#tab-3').hide();
+        $('#tab-4').hide();
+        $('#tab-5').show();
     });
 
     $('#btn_sub_next_save').click(function(){
@@ -51,10 +68,10 @@ $(document).ready(function () {
         var cover = $('#cover').val();
         var intro = $('#intro').val();
         if(title == null || title == ""){
-            layer.alert('请填写标题信息！',3,'提示信息');
+            layer.alert('请填写主标题信息！',3,'提示信息');
             return false;
         }else if(cover == null || cover == ""){
-            layer.alert('请上传封面图！',3,'提示信息');
+            layer.alert('请上传首页图！',3,'提示信息');
             return false;
         }else if(intro == null || intro == ""){
             layer.alert('请填写课程目标信息！',3,'提示信息');
@@ -112,6 +129,19 @@ $(document).ready(function () {
             $('#tab-3').hide();
             $('#tab_li_4').attr('class','active');
             $('#tab-4').show();
+        }
+    });
+
+    $('#btn_sku_next_save').click(function(){
+        var pid = $('#sub_id').val();
+        if(pid == 0){
+            layer.alert('基本信息不存在,无法进行下一步！',5,'提示信息');
+            return false;
+        }else{
+            $('#tab_li_4').attr('class','');
+            $('#tab-4').hide();
+            $('#tab_li_5').attr('class','active');
+            $('#tab-5').show();
         }
     });
 

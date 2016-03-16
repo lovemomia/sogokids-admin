@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * 批量选课
  * Created by hoze on 15/12/28.
  */
 @Controller
@@ -48,6 +49,12 @@ public class GroupController {
     @Autowired
     private GroupCourseService groupCourseService;
 
+    /**
+     * 批量选课－列表
+     * @param uid
+     * @param req
+     * @return
+     */
     @RequestMapping("/info")
     public ModelAndView info(@RequestParam("uid") int uid, HttpServletRequest req){
         Map<String, Object> context = new HashMap<String, Object>();
@@ -56,6 +63,14 @@ public class GroupController {
         return new ModelAndView(adminUserService.isUserFunc(req, JumpPage.GROUP),context);
     }
 
+    /**
+     * 批量选课－操作控制
+     * @param uid
+     * @param id
+     * @param mark
+     * @param req
+     * @return
+     */
     @RequestMapping("/oper")
     public ModelAndView operation(@RequestParam("uid") int uid,@RequestParam("id") int id,@RequestParam("mark") int mark,HttpServletRequest req){
         String reStr = JumpPage.GROUP_USER;
@@ -70,6 +85,12 @@ public class GroupController {
         return new ModelAndView(reStr,context);
     }
 
+    /**
+     * 批量选课－创建
+     * @param req
+     * @param rsp
+     * @return
+     */
     @RequestMapping("/add")
     public String addEntity(HttpServletRequest req, HttpServletResponse rsp){
         rsp.setContentType("text/html; charset=UTF-8");
@@ -96,6 +117,12 @@ public class GroupController {
         return null;
     }
 
+    /**
+     * 批量选课－添加用户
+     * @param req
+     * @param rsp
+     * @return
+     */
     @RequestMapping("/add_users")
     public String addGroupUser(HttpServletRequest req, HttpServletResponse rsp){
         rsp.setContentType("text/html; charset=UTF-8");
@@ -124,6 +151,12 @@ public class GroupController {
         return null;
     }
 
+    /**
+     * 批量选课－编辑
+     * @param req
+     * @param rsp
+     * @return
+     */
     @RequestMapping("/edit")
     public ModelAndView editEntity(HttpServletRequest req, HttpServletResponse rsp){
 
@@ -151,6 +184,13 @@ public class GroupController {
         return null;
     }
 
+    /**
+     * 批量选课－删除
+     * @param uid
+     * @param id
+     * @param req
+     * @return
+     */
     @RequestMapping("/del")
     public ModelAndView delEntity(@RequestParam("uid") int uid,@RequestParam("id") int id, HttpServletRequest req){
 
@@ -166,6 +206,13 @@ public class GroupController {
         return new ModelAndView(JumpPage.GROUP,context);
     }
 
+    /**
+     * 批量选课－删除用户列表
+     * @param uid
+     * @param id
+     * @param req
+     * @return
+     */
     @RequestMapping("/del_users")
     public ModelAndView delGroupUser(@RequestParam("uid") int uid,@RequestParam("id") int id, HttpServletRequest req){
         Map<String, Object> context = new HashMap<String, Object>();
@@ -182,6 +229,13 @@ public class GroupController {
         return new ModelAndView(JumpPage.GROUP_USER,context);
     }
 
+    /**
+     * 批量选课－查询用户列表
+     * @param uid
+     * @param gid
+     * @param req
+     * @return
+     */
     @RequestMapping("/query_users")
     public ModelAndView queryGroupUser(@RequestParam("uid") int uid,@RequestParam("gid") int gid, HttpServletRequest req){
         Map<String, Object> context = new HashMap<String, Object>();
@@ -197,6 +251,13 @@ public class GroupController {
         return new ModelAndView(JumpPage.GROUP_USER,context);
     }
 
+    /**
+     * 批量选课－查询课程
+     * @param uid
+     * @param gid
+     * @param req
+     * @return
+     */
     @RequestMapping("/query_courses")
     public ModelAndView queryCourse(@RequestParam("uid") int uid,@RequestParam("gid") int gid,HttpServletRequest req){
         Map<String, Object> context = new HashMap<String, Object>();
@@ -212,6 +273,12 @@ public class GroupController {
         return new ModelAndView(JumpPage.GROUP_COURSE,context);
     }
 
+    /**
+     * 批量选课－选择课程
+     * @param req
+     * @param rsp
+     * @return
+     */
     @RequestMapping("/add_courses")
     public ModelAndView addCourse(HttpServletRequest req, HttpServletResponse rsp){
         rsp.setContentType("text/html; charset=UTF-8");

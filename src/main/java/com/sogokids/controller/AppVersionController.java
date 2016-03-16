@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * 终端版本
  * Created by hoze on 15/12/21.
  */
 @Controller
@@ -27,6 +28,12 @@ public class AppVersionController {
     @Autowired
     private UserService adminUserService;
 
+    /**
+     * app版本列表
+     * @param uid
+     * @param req
+     * @return
+     */
     @RequestMapping("/info")
     public ModelAndView info(@RequestParam("uid") int uid, HttpServletRequest req){
         Map<String, Object> context = new HashMap<String, Object>();
@@ -35,6 +42,13 @@ public class AppVersionController {
         return new ModelAndView(adminUserService.isUserFunc(req,JumpPage.APP),context);
     }
 
+    /**
+     * app相关操作跳转
+     * @param uid
+     * @param id
+     * @param req
+     * @return
+     */
     @RequestMapping("/oper")
     public ModelAndView operation(@RequestParam("uid") int uid,@RequestParam("id") int id,HttpServletRequest req){
         String reStr = JumpPage.APP_EDIT;
@@ -49,6 +63,12 @@ public class AppVersionController {
         return new ModelAndView(reStr,context);
     }
 
+    /**
+     * 创建app版本信息
+     * @param uid
+     * @param req
+     * @return
+     */
     @RequestMapping("/add")
     public ModelAndView addEntity(@RequestParam("uid") int uid, HttpServletRequest req){
 
@@ -64,6 +84,13 @@ public class AppVersionController {
         return new ModelAndView(JumpPage.APP,context);
     }
 
+    /**
+     * 编辑app版本信息
+     * @param uid
+     * @param id
+     * @param req
+     * @return
+     */
     @RequestMapping("/edit")
     public ModelAndView editEntity(@RequestParam("uid") int uid,@RequestParam("id") int id, HttpServletRequest req){
 
@@ -79,6 +106,13 @@ public class AppVersionController {
         return new ModelAndView(JumpPage.APP,context);
     }
 
+    /**
+     * 删除app版本信息
+     * @param uid
+     * @param id
+     * @param req
+     * @return
+     */
     @RequestMapping("/del")
     public ModelAndView delEntity(@RequestParam("uid") int uid,@RequestParam("id") int id, HttpServletRequest req){
 

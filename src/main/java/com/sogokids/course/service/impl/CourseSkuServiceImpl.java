@@ -1,17 +1,29 @@
 package com.sogokids.course.service.impl;
 
+import cn.momia.common.config.Configuration;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.sogokids.course.model.Course;
 import com.sogokids.course.model.CourseSku;
+import com.sogokids.course.model.CourseSkuCancel;
 import com.sogokids.course.service.CourseService;
+import com.sogokids.course.service.CourseSkuCancelService;
 import com.sogokids.course.service.CourseSkuService;
-import com.sogokids.order.model.OrderPackage;
-import com.sogokids.order.service.OrderPackageService;
+import com.sogokids.http.model.HttpResult;
+import com.sogokids.http.service.HttpClientService;
+import com.sogokids.query.model.Customer;
+import com.sogokids.query.service.CustomerService;
 import com.sogokids.subject.model.Subject;
 import com.sogokids.subject.service.SubjectService;
 import com.sogokids.system.model.Place;
 import com.sogokids.system.service.PlaceService;
+import com.sogokids.system.service.RegionService;
+import com.sogokids.utils.util.CastUtil;
 import com.sogokids.utils.util.DateUtil;
 import com.sogokids.utils.util.Quantity;
+import com.sogokids.utils.util.StringUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
@@ -27,16 +39,22 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Created by hoze on 15/10/12.
  */
 @Service
 public class CourseSkuServiceImpl implements CourseSkuService {
+
+    private final Logger log = LoggerFactory.getLogger(CourseSkuServiceImpl.class);
+
+    @Autowired
+    private Configuration configuration;
+
+    @Autowired
+    private HttpClientService httpClientService;
 
     @Autowired
     private PlaceService placeService;
@@ -45,11 +63,17 @@ public class CourseSkuServiceImpl implements CourseSkuService {
     private CourseService courseService;
 
     @Autowired
-    private OrderPackageService orderPackageService;
+    private RegionService regionService;
 
 
     @Autowired
     private SubjectService subjectService;
+
+    @Autowired
+    private CustomerService customerService;
+
+    @Autowired
+    private CourseSkuCancelService courseSkuCancelService;
 
     @Resource
     private JdbcTemplate jdbcTemplate;
@@ -166,7 +190,7 @@ public class CourseSkuServiceImpl implements CourseSkuService {
 
     @Override
     public CourseSku get(int id) {
-        String sql = "select Id,CourseId,ParentId,StartTime,EndTime,Deadline,Stock,UnlockedStock,LockedStock,PlaceId,Adult,Child,Status,AddTime from SG_CourseSku where Id = ? and Status > ? ";
+        String sql = "select Id,CourseId,ParentId,StartTime,EndTime,Deadline,Stock,UnlockedStock,LockedStock,MinBooked,PlaceId,Adult,Child,Status,AddTime from SG_CourseSku where Id = ? and Status > ? ";
         final Object [] params = new Object[]{id, Quantity.STATUS_ZERO};
         final CourseSku entity = new CourseSku();
         jdbcTemplate.query(sql,params, new RowCallbackHandler(){
@@ -180,6 +204,7 @@ public class CourseSkuServiceImpl implements CourseSkuService {
                 entity.setStock(rs.getInt("Stock"));
                 entity.setUnlockedStock(rs.getInt("UnlockedStock"));
                 entity.setLockedStock(rs.getInt("LockedStock"));
+                entity.setMinBooked(rs.getInt("MinBooked"));
                 entity.setPlaceId(rs.getInt("PlaceId"));
                 entity.setAdult(rs.getInt("Adult"));
                 entity.setChild(rs.getInt("Child"));
@@ -194,8 +219,8 @@ public class CourseSkuServiceImpl implements CourseSkuService {
 
     @Override
     public int insert(CourseSku entity) {
-        String sql = "insert into SG_CourseSku(CourseId,ParentId,StartTime,EndTime,Deadline,Stock,UnlockedStock,LockedStock,PlaceId,Adult,Child,Status,AddTime) value(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW()) ";
-        Object [] params = new Object[]{entity.getCourseId(), entity.getParentId(), entity.getStartTime(), entity.getEndTime(), entity.getDeadline(), entity.getStock(), entity.getUnlockedStock(), entity.getLockedStock(), entity.getPlaceId(), entity.getAdult(), entity.getChild(), Quantity.STATUS_ONE};
+        String sql = "insert into SG_CourseSku(CourseId,ParentId,StartTime,EndTime,Deadline,Stock,UnlockedStock,LockedStock,MinBooked,PlaceId,Adult,Child,Status,AddTime) value(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW()) ";
+        Object [] params = new Object[]{entity.getCourseId(), entity.getParentId(), entity.getStartTime(), entity.getEndTime(), entity.getDeadline(), entity.getStock(), entity.getUnlockedStock(), entity.getLockedStock(), entity.getMinBooked(), entity.getPlaceId(), entity.getAdult(), entity.getChild(), Quantity.STATUS_ONE};
         int reDate = 0;
         try {
             reDate = jdbcTemplate.update(sql, params);
@@ -208,7 +233,7 @@ public class CourseSkuServiceImpl implements CourseSkuService {
     @Override
     public int insertKey(CourseSku courseSku) {
         final CourseSku entity = courseSku;
-        final String sql = "insert into SG_CourseSku(CourseId,ParentId,StartTime,EndTime,Deadline,Stock,UnlockedStock,LockedStock,PlaceId,Adult,Child,Status,AddTime) value(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW()) ";
+        final String sql = "insert into SG_CourseSku(CourseId,ParentId,StartTime,EndTime,Deadline,Stock,UnlockedStock,LockedStock,MinBooked,PlaceId,Adult,Child,Status,AddTime) value(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW()) ";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         int reData = 0;
         try {
@@ -225,6 +250,7 @@ public class CourseSkuServiceImpl implements CourseSkuService {
                     ps.setInt(++i, entity.getStock());
                     ps.setInt(++i, entity.getUnlockedStock());
                     ps.setInt(++i, entity.getLockedStock());
+                    ps.setInt(++i, entity.getMinBooked());
                     ps.setInt(++i, entity.getPlaceId());
                     ps.setInt(++i, entity.getAdult());
                     ps.setInt(++i, entity.getChild());
@@ -244,8 +270,8 @@ public class CourseSkuServiceImpl implements CourseSkuService {
 
     @Override
     public int update(CourseSku entity) {
-        String sql = "update SG_CourseSku set CourseId = ?, StartTime = ?, EndTime = ?, Deadline = ?, Stock = ?, UnlockedStock = ?, LockedStock = ?, PlaceId = ?, Adult = ?, Child = ? where Id = ? ";
-        Object [] params = new Object[]{entity.getCourseId(), entity.getStartTime(), entity.getEndTime(), entity.getDeadline(), entity.getStock(), entity.getUnlockedStock(), entity.getLockedStock(), entity.getPlaceId(), entity.getAdult(), entity.getChild(), entity.getId()};
+        String sql = "update SG_CourseSku set CourseId = ?, StartTime = ?, EndTime = ?, Deadline = ?, Stock = ?, UnlockedStock = ?, LockedStock = ?, MinBooked = ?, PlaceId = ?, Adult = ?, Child = ? where Id = ? ";
+        Object [] params = new Object[]{entity.getCourseId(), entity.getStartTime(), entity.getEndTime(), entity.getDeadline(), entity.getStock(), entity.getUnlockedStock(), entity.getLockedStock(), entity.getMinBooked(), entity.getPlaceId(), entity.getAdult(), entity.getChild(), entity.getId()};
         int reData = jdbcTemplate.update(sql,params);
         return reData;
     }
@@ -288,6 +314,7 @@ public class CourseSkuServiceImpl implements CourseSkuService {
             entity.setLockedStock(0);
         }
 
+        entity.setMinBooked(Integer.parseInt(request.getParameter("minBooked")));
         entity.setPlaceId(Integer.parseInt(request.getParameter("placeId")));
         entity.setAdult(Integer.parseInt(request.getParameter("adult")));
         entity.setChild(Integer.parseInt(request.getParameter("child")));
@@ -325,7 +352,7 @@ public class CourseSkuServiceImpl implements CourseSkuService {
                 }else{
 //                    sb.append("<a class='btn btn-primary btn-sm' data-toggle=\"modal\" data-target=\"#myQz\" href='javascript:void(0)' onclick=\"createQz(" + sku_value + ")\"><i class='fa fa-user-plus'></i>创建群组</a>");
 //                    sb.append("&nbsp;&nbsp;");
-                    sb.append("<a class='btn btn-danger btn-sm' href='javascript:void(0)' onclick=\"cancelSku(" + sku_value + ")\"><i class='fa fa-minus-circle'></i>取消</a>");
+                    sb.append("<a class='btn btn-danger btn-sm' data-toggle='modal' data-target='#myCancelGroup2' href='javascript:void(0)' onclick=\"cancelSku(" + sku_value + ")\"><i class='fa fa-minus-circle'></i>取消</a>");
                 }
                 sb.append(p_end);
                 sb.append("<div class='hr-line-dashed'></div>");
@@ -489,42 +516,136 @@ public class CourseSkuServiceImpl implements CourseSkuService {
      * @return
      */
     @Override
-    public int update_CourseSku(int course_id,int id){
-        int reSuccess = 0;
-        List<Course> courses = courseService.getEntitysById(course_id);//获取子级试听课的集合
-        if (courses.size() > 0){
-            Course c_course  = courses.get(0);//获取试听课信息
-            List<CourseSku> courseSkus = this.getCourseSkuById(c_course.getId(),id);//根据课程和sku的id获取对应的子级sku集合
-            if (courseSkus.size() > 0){
-                for (CourseSku c_courseSku : courseSkus){
-                    this.updateBookedCourseAndPackage(c_course.getId(), c_courseSku.getId());
-                    this.updateStatus(c_courseSku.getId(),Quantity.STATUS_THREE);
+    public int update_CourseSku(int course_id,int id,String content){
+        int reDate = 0;
+        String cancel_course = configuration.getString(Quantity.UPLOAD_CANCEL_COURSE);
+        StringBuffer paramStr = new StringBuffer();
+        paramStr.append("coid=").append(course_id);
+        long expired = DateUtil.getDateExpired(configuration.getInt(Quantity.SERVICE_PORT_TIME));//请求有效期
+        paramStr.append("expired=").append(expired);
+        paramStr.append("sid=").append(id);
+        paramStr.append("key=").append(configuration.getString(Quantity.SERVICE_PORT_KEY));
+
+        String sign = StringUtil.getSign(paramStr.toString());
+        String cancel_param = "coid="+course_id+"&expired="+expired+"&sid="+id+"&sign="+sign;
+        log.info("CourseSkuServiceImpl -> update_CourseSku -> info:开始进行取消课程操作,发送请求组装参数完成.");
+        JSONObject jSONObject = httpClientService.httpPost(cancel_course,cancel_param);
+        HttpResult result = CastUtil.toObject(jSONObject, HttpResult.class);
+        if(result.getErrno() == 0){
+            log.info("CourseSkuServiceImpl -> update_CourseSku -> info:开始进行取消课程操作,发送请求成功.");
+            int int_update = this.updateStatus(id,Quantity.STATUS_THREE);
+            CourseSkuCancel cancelSku = new CourseSkuCancel();
+            cancelSku.setSkuId(id);
+            cancelSku.setCancelReason(content);
+            int int_insert = courseSkuCancelService.insert(cancelSku);
+            if (int_update > 0 && int_insert > 0) {
+                reDate = 1;
+                log.info("CourseSkuServiceImpl -> update_CourseSku -> info:更新本地课程sku成功.");
+                if (result.getData() != null) {
+                    StringBuffer users_sb = new StringBuffer();
+                    List<Long> user_ids = CastUtil.toList((JSONArray) result.getData(), Long.class);
+                    if (user_ids.size() > 0) {
+                        for (int i = 0; i < user_ids.size(); i++) {
+                            int uid = Integer.parseInt(user_ids.get(i).toString());
+                            users_sb.append(uid).append(",");
+                            Customer customer = customerService.getCustomer(uid);
+                            this.sendSms(customer.getMobile(), this.getCourseOtherInfo(course_id,id,content,Quantity.STATUS_ONE));
+                        }
+                        this.sendApps(users_sb.toString().trim(), this.getCourseOtherInfo(course_id,id,content,Quantity.STATUS_ZERO));
+                    }
                 }
+            }else{
+                log.info("CourseSkuServiceImpl -> update_CourseSku -> error:更新本地课程sku失败.");
             }
+        }else{
+            log.error("CourseSkuServiceImpl -> update_CourseSku -> error info:" + result.getErrno() + result.getErrmsg());
         }
 
-        this.updateBookedCourseAndPackage(course_id, id);
-        int int_update = this.updateStatus(id,Quantity.STATUS_THREE);
-        if (int_update > 0){
-            reSuccess = int_update;
-        }
-
-        return reSuccess;
+        return reDate;
     }
 
+    /**
+     * 取消课程－取消原因
+     * @return
+     */
+    private String getCourseOtherInfo(int course_id,int id,String content,int flag){
+        String reData = "";
+        if (flag == 0){//app
+            reData = Quantity.CANCEL_COURSE_APP.replace("xxx",content);
+        }else {
+            reData = Quantity.CANCEL_COURSE_SMS.replace("xxx",content);
+            Course course = courseService.get(course_id);
+            CourseSku courseSku = this.get(id);
+            String course_date_str = DateUtil.getDateStr_cn(DateUtil.StrToDate(courseSku.getStartTime()));//几月几号
+            String course_name_str = "";
+            Place place = placeService.get(courseSku.getPlaceId());
+            if (place.getRegionId() > 0) {
+                course_name_str = regionService.get(place.getRegionId()).getName();
+            }else{
+                course_name_str = place.getAddress();
+            }
+            String course_all_str = course_date_str+course_name_str+course.getKeyWord();
+            reData = reData.replace("####",course_all_str);
+        }
+
+        return reData;
+    }
 
     /**
-     * 更新课程包的剩余课程值
-     * @param course_id
-     * @param course_sku_id
+     * 取消课程－短信发送
+     * @param mobile
+     * @param content
      */
-    public void updateBookedCourseAndPackage(int course_id, int course_sku_id){
-        Set set = orderPackageService.getOrderPackage(course_id,course_sku_id);
-        Iterator it = set.iterator();
-        while (it.hasNext()) {
-            OrderPackage orderPackage = orderPackageService.get(Integer.parseInt(it.next().toString()));
-            orderPackage.setBookableCount(orderPackage.getBookableCount()+1);
-            orderPackageService.update(orderPackage);
+    private void sendSms(String mobile, String content){
+        String sms_service_url = configuration.getString(Quantity.UPLOAD_SMS);
+
+        StringBuffer msg_sb = new StringBuffer();
+
+        long sms_expired = DateUtil.getDateExpired(configuration.getInt(Quantity.SERVICE_PORT_TIME));//请求有效期
+        msg_sb.append("expired=").append(sms_expired);
+        msg_sb.append("message=").append(content);
+        msg_sb.append("mobile=").append(mobile.trim());
+        msg_sb.append("key=").append(configuration.getString(Quantity.SERVICE_PORT_KEY));
+
+        String sms_sign = StringUtil.getSign(msg_sb.toString());
+        String sms_param = "expired="+sms_expired+"&message="+content+"&mobile="+mobile.trim()+"&sign="+sms_sign;
+
+        log.info("CourseSkuServiceImpl -> sendSms -> info:开始进行短信发送操作,发送短信请求组装参数完成.");
+        JSONObject sms_jSONObject = httpClientService.httpPost(sms_service_url,sms_param);
+        HttpResult sms_result = CastUtil.toObject(sms_jSONObject, HttpResult.class);
+        if (sms_result.getErrno() == 0){
+            log.info("CourseSkuServiceImpl -> sendSms -> info:进行短信发送操作,发送短信请求成功.");
+        }else{
+            log.error("CourseSkuServiceImpl -> sendSms -> error info:"+ sms_result.getErrno() + sms_result.getErrmsg());
+        }
+    }
+
+    /**
+     * 取消课程－app发送
+     * @param uids
+     * @param content
+     */
+    private void sendApps(String uids, String content){
+        String app_service_url = configuration.getString(Quantity.UPLOAD_USERS_APP_PUSH);
+        log.info("CourseSkuServiceImpl -> sendApps -> info:开始进行app推送操作.");
+        StringBuffer app_sb = new StringBuffer();
+        app_sb.append("content=").append(content);
+        long expired = DateUtil.getDateExpired(configuration.getInt(Quantity.SERVICE_PORT_TIME));//请求有效期
+        app_sb.append("expired=").append(expired);
+//        app_sb.append("extra=").append(Quantity.CANCEL_COURSE_URL);
+        app_sb.append("uids=").append(uids);
+        app_sb.append("key=").append(configuration.getString(Quantity.SERVICE_PORT_KEY));
+
+        String sign = StringUtil.getSign(app_sb.toString());
+//        String app_param = "content="+content+"&expired="+expired+"&extra="+Quantity.CANCEL_COURSE_URL+"&uids="+uids+"&sign="+sign;
+        String app_param = "content="+content+"&expired="+expired+"&uids="+uids+"&sign="+sign;
+        log.info("CourseSkuServiceImpl -> sendApps -> info:开始进行app推送操作,发送app推送请求组装参数完成.");
+        JSONObject jSONObject = httpClientService.httpPost(app_service_url,app_param);
+        HttpResult result = CastUtil.toObject(jSONObject, HttpResult.class);
+        if(result.getErrno() == 0){
+            log.info("CourseSkuServiceImpl -> sendApps -> info:进行app推送操作,发送app推送请求成功.");
+        }else{
+            log.error("CourseSkuServiceImpl -> sendApps -> error info:"+ result.getErrno() + result.getErrmsg());
         }
     }
 
@@ -560,11 +681,9 @@ public class CourseSkuServiceImpl implements CourseSkuService {
 
                             int subject_stock = subject.getStock() - c_old_un_stock;
                             subjectService.updateStock(subject.getId(),subject_stock);//更新试听课的课程体系stock
-
                         }
                     }
                 }
-
             }
         }
     }

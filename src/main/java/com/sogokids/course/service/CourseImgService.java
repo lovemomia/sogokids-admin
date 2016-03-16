@@ -21,4 +21,6 @@ public interface CourseImgService {
     public CourseImg formEntity(Images img, int id);
 
     public  String getImgHtml(int cou_id);
+
+    public String moveBefore(int cou_id,int imgId,int flag);
 }

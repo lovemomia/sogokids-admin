@@ -71,7 +71,14 @@
                 <li><a href="${ctx}/sub/info.do?uid=${user.id}"><i class="fa fa-connectdevelop"></i> <span class="nav-label">课程体系</span> </a></li>
                 <li><a href="${ctx}/book/info.do?uid=${user.id}"><i class="fa fa-leanpub"></i> <span class="nav-label">试听课程</span> </a></li>
                 <li class="active"><a href="${ctx}/one/info.do?uid=${user.id}"><i class="fa fa-drupal"></i> <span class="nav-label">推荐课程</span> </a></li>
-                <li><a href="${ctx}/group/info.do?uid=${user.id}"><i class="fa fa-building"></i> <span class="nav-label">批量选课</span> </a></li>
+                <li>
+                    <a href="index.jsp#"><i class="fa fa-bar-chart"></i> <span class="nav-label">查询统计</span><span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li><a href="${ctx}/query/info.do?uid=${user.id}"><i class="fa fa-pie-chart"></i> <span class="nav-label">选课查询</span> </a></li>
+                        <li><a href="${ctx}/query/order.do?uid=${user.id}"><i class="fa fa-rub"></i> <span class="nav-label">订单查询</span> </a></li>
+                    </ul>
+                </li>
+                <li><a href="${ctx}/discuss/info.do?uid=${user.id}"><i class="fa fa-comments-o"></i> <span class="nav-label">话题管理</span></a></li>
                 <li>
                     <a href="index.jsp#"><i class="fa fa-user-secret"></i> <span class="nav-label">老师管理</span><span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
@@ -81,13 +88,7 @@
                         <li><a href="${ctx}/teacher/material.do?uid=${user.id}"><i class="fa fa-delicious"></i> <span class="nav-label">教案更新</span></a></li>
                     </ul>
                 </li>
-                <li>
-                    <a href="index.jsp#"><i class="fa fa-bar-chart"></i> <span class="nav-label">查询统计</span><span class="fa arrow"></span></a>
-                    <ul class="nav nav-second-level">
-                        <li><a href="${ctx}/query/info.do?uid=${user.id}"><i class="fa fa-pie-chart"></i> <span class="nav-label">选课查询</span> </a></li>
-                        <li><a href="${ctx}/query/order.do?uid=${user.id}"><i class="fa fa-rub"></i> <span class="nav-label">订单查询</span> </a></li>
-                    </ul>
-                </li>
+                <li><a href="${ctx}/group/info.do?uid=${user.id}"><i class="fa fa-building"></i> <span class="nav-label">批量选课</span> </a></li>
                 <li>
                     <a href="index.jsp#"><i class="fa fa-home"></i> <span class="nav-label">首页配置</span><span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
@@ -278,17 +279,17 @@
                                                     <div class="form-group">
                                                         <label class="col-sm-3 control-label">大人数量</label>
                                                         <div class="col-sm-2">
-                                                            <input id="adult" name="adult" type="text" class="form-control" style="width: 190%;">
+                                                            <input id="adult" name="adult" type="text" class="form-control" style="width: 190%;" value="1">
                                                         </div>
                                                         <label class="col-sm-3 control-label">儿童数量</label>
                                                         <div class="col-sm-2">
-                                                            <input id="child" name="child" type="text" class="form-control" style="width: 190%;">
+                                                            <input id="child" name="child" type="text" class="form-control" style="width: 190%;" value="1">
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
                                                         <label class="col-sm-3 control-label">规则描述</label>
                                                         <div class="col-sm-8">
-                                                            <textarea id="desc" name="desc" class="form-control" rows="3" style="resize:none;"></textarea>
+                                                            <textarea id="desc" name="desc" class="form-control" rows="3" style="resize:none;">限1大1小参加</textarea>
                                                             <input id="sku_id" name="sku_id" type="hidden" value="0">
                                                             <%--<input id="courseCount" name="courseCount" type="hidden" value="1">--%>
                                                         </div>
@@ -352,7 +353,7 @@
                                 <div class="form-group">
                                     <label class="col-sm-1 control-label"> </label>
                                     <div class="col-sm-10">
-                                        <textarea id="notice" name="notice" class="form-control" rows="5" style="resize:none;">${course.notice}</textarea>
+                                        <textarea id="notice" name="notice" class="form-control" rows="7" style="resize:none;">${course.notice}</textarea>
                                     </div>
                                 </div>
                                 <div class="hr-line-dashed"></div>

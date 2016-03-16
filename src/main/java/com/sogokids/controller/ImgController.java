@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * 图片信息
  * Created by hoze on 15/6/15.
  */
 

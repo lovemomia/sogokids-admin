@@ -2,7 +2,6 @@ package com.sogokids.teacher.service.impl;
 
 import com.sogokids.teacher.model.CourseMaterial;
 import com.sogokids.teacher.service.CourseMaterialService;
-import com.sogokids.utils.util.DateUtil;
 import com.sogokids.utils.util.Quantity;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowCallbackHandler;

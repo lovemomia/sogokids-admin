@@ -22,13 +22,14 @@ public class Course {
     private String flow;
     private String tips;
     private String notice;
+    private String feature;
     private int institutionId;
     private String keyWord;
     private int status;
     private String addTime;
     private String updateTime;
 
-    private String subTitle;
+    private String subjectTitle;
     private int flag = 0;//是否已推荐
     private int copyFlag = 0;//是否已加入试听
 
@@ -194,14 +195,6 @@ public class Course {
         this.updateTime = updateTime;
     }
 
-    public String getSubTitle() {
-        return subTitle;
-    }
-
-    public void setSubTitle(String subTitle) {
-        this.subTitle = subTitle;
-    }
-
     public int getFlag() {
         return flag;
     }
@@ -248,5 +241,21 @@ public class Course {
 
     public void setSelected(int selected) {
         this.selected = selected;
+    }
+
+    public String getSubjectTitle() {
+        return subjectTitle;
+    }
+
+    public void setSubjectTitle(String subjectTitle) {
+        this.subjectTitle = subjectTitle;
+    }
+
+    public String getFeature() {
+        return feature;
+    }
+
+    public void setFeature(String feature) {
+        this.feature = feature;
     }
 }

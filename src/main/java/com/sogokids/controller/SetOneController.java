@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * 课程推荐
  * Created by hoze on 15/10/13.
  */
 @Controller
@@ -43,6 +44,12 @@ public class SetOneController {
     @Autowired
     private CourseRecommendService courseRecommendService;
 
+    /**
+     *推荐课程－课程列表
+     * @param uid
+     * @param req
+     * @return
+     */
     @RequestMapping("/info")
     public ModelAndView info(@RequestParam("uid") int uid, HttpServletRequest req){
         Map<String, Object> context = new HashMap<String, Object>();
@@ -51,6 +58,13 @@ public class SetOneController {
         return new ModelAndView(adminUserService.isUserFunc(req,JumpPage.SET_ONE),context);
     }
 
+    /**
+     *课程推荐－操作跳转
+     * @param uid
+     * @param id
+     * @param req
+     * @return
+     */
     @RequestMapping("/oper")
     public ModelAndView operation(@RequestParam("uid") int uid,@RequestParam("id") int id,HttpServletRequest req){
         String reStr = JumpPage.SET_ONE_EDIT;
@@ -69,6 +83,12 @@ public class SetOneController {
         return new ModelAndView(reStr,context);
     }
 
+    /**
+     *课程推荐－编辑
+     * @param req
+     * @param rsp
+     * @return
+     */
     @RequestMapping("/edit")
     public String editEntity(HttpServletRequest req, HttpServletResponse rsp){
         rsp.setContentType("text/html; charset=UTF-8");
@@ -107,6 +127,13 @@ public class SetOneController {
         return null;
     }
 
+    /**
+     *课程推荐－创建sku
+     * @param cursId
+     * @param req
+     * @param rsp
+     * @return
+     */
     @RequestMapping("/addSku")
     public String addSku(@RequestParam("courId") int cursId, HttpServletRequest req, HttpServletResponse rsp) {
         rsp.setContentType("text/html; charset=UTF-8");
@@ -145,6 +172,12 @@ public class SetOneController {
         return null;
     }
 
+    /**
+     *课程推荐－编辑sku
+     * @param req
+     * @param rsp
+     * @return
+     */
     @RequestMapping("/editSku")
     public String editSku(HttpServletRequest req, HttpServletResponse rsp) {
         rsp.setContentType("text/html; charset=UTF-8");
@@ -152,7 +185,6 @@ public class SetOneController {
         int skuId = Integer.parseInt(req.getParameter("skuId"));
         SubjectSku entity = subjectSkuService.get(skuId);
         context.put("sku",entity);
-//        context.put("placeHtml", activityService.getSkuPlaceHtml(sid));
         Writer writer = null;
         try {
             writer = rsp.getWriter();
@@ -167,6 +199,13 @@ public class SetOneController {
         return null;
     }
 
+    /**
+     *课程推荐－删除sku
+     * @param courId
+     * @param req
+     * @param rsp
+     * @return
+     */
     @RequestMapping("/delSku")
     public String delSku(@RequestParam("courId") int courId, HttpServletRequest req, HttpServletResponse rsp) {
         rsp.setContentType("text/html; charset=UTF-8");
@@ -196,6 +235,14 @@ public class SetOneController {
         return null;
     }
 
+    /**
+     *推荐课程－上下线操作
+     * @param uid
+     * @param id
+     * @param mark
+     * @param req
+     * @return
+     */
     @RequestMapping("/upOrDown")
     public ModelAndView updateStatus(@RequestParam("uid") int uid,@RequestParam("id") int id,@RequestParam("mark") int mark, HttpServletRequest req){
 
@@ -215,6 +262,13 @@ public class SetOneController {
         return new ModelAndView(JumpPage.SET_ONE,context);
     }
 
+    /**
+     *推荐课程－取消推荐
+     * @param uid
+     * @param id
+     * @param req
+     * @return
+     */
     @RequestMapping("/cancelCourse")
     public ModelAndView cancelCourse(@RequestParam("uid") int uid,@RequestParam("id") int id, HttpServletRequest req){
         Map<String, Object> context = new HashMap<String, Object>();
@@ -233,6 +287,13 @@ public class SetOneController {
         return new ModelAndView(JumpPage.SET_ONE,context);
     }
 
+    /**
+     *课程推荐－预览课程
+     * @param uid
+     * @param id
+     * @param req
+     * @return
+     */
     @RequestMapping("/preview")
     public ModelAndView preview(@RequestParam("uid") int uid,@RequestParam("id") int id, HttpServletRequest req) {
         Map<String, Object> context = new HashMap<String, Object>();
@@ -242,6 +303,13 @@ public class SetOneController {
         return new ModelAndView(JumpPage.COURSE_SET_PREVIEW,context);
     }
 
+    /**
+     *课程推荐－取消sku
+     * @param courseId
+     * @param req
+     * @param rsp
+     * @return
+     */
     @RequestMapping("/cancelSku")
     public String cancelSku(@RequestParam("courseId") int courseId, HttpServletRequest req, HttpServletResponse rsp) {
         rsp.setContentType("text/html; charset=UTF-8");
@@ -271,6 +339,12 @@ public class SetOneController {
         return null;
     }
 
+    /**
+     * 推荐课程－移动数据排序
+     * @param uid
+     * @param req
+     * @return
+     */
     @RequestMapping("/move")
     public ModelAndView moveWeight(@RequestParam("uid") int uid,HttpServletRequest req){
         Map<String, Object> context = new HashMap<String, Object>();

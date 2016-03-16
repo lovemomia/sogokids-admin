@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * banner信息
  * Created by hoze on 15/10/13.
  */
 @Controller
@@ -35,6 +36,12 @@ public class BannerController {
     @Autowired
     private AppVersionService appVersionService;
 
+    /**
+     * banner列表
+     * @param uid
+     * @param req
+     * @return
+     */
     @RequestMapping("/info")
     public ModelAndView info(@RequestParam("uid") int uid, HttpServletRequest req){
         Map<String, Object> context = new HashMap<String, Object>();
@@ -43,6 +50,13 @@ public class BannerController {
         return new ModelAndView(adminUserService.isUserFunc(req,JumpPage.BANNER),context);
     }
 
+    /**
+     * banner操作跳转
+     * @param uid
+     * @param id
+     * @param req
+     * @return
+     */
     @RequestMapping("/oper")
     public ModelAndView operation(@RequestParam("uid") int uid,@RequestParam("id") int id,HttpServletRequest req){
         String reStr = JumpPage.BANNER_EDIT;
@@ -59,6 +73,12 @@ public class BannerController {
         return new ModelAndView(reStr,context);
     }
 
+    /**
+     * 创建banner信息
+     * @param uid
+     * @param req
+     * @return
+     */
     @RequestMapping("/add")
     public ModelAndView addEntity(@RequestParam("uid") int uid, HttpServletRequest req){
 
@@ -74,6 +94,13 @@ public class BannerController {
         return new ModelAndView(JumpPage.BANNER,context);
     }
 
+    /**
+     * 编辑banner信息
+     * @param uid
+     * @param id
+     * @param req
+     * @return
+     */
     @RequestMapping("/edit")
     public ModelAndView editEntity(@RequestParam("uid") int uid,@RequestParam("id") int id, HttpServletRequest req){
 
@@ -89,6 +116,13 @@ public class BannerController {
         return new ModelAndView(JumpPage.BANNER,context);
     }
 
+    /**
+     * 删除banner信息
+     * @param uid
+     * @param id
+     * @param req
+     * @return
+     */
     @RequestMapping("/del")
     public ModelAndView delEntity(@RequestParam("uid") int uid,@RequestParam("id") int id, HttpServletRequest req){
 

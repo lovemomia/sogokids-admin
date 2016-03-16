@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * 后台用户
  * Created by hoze on 15/8/25.
  */
 @Controller
@@ -35,6 +36,11 @@ public class UserController {
     private AdminRoleService adminRoleService;
 
 
+    /**
+     *跳转登录页面
+     * @param req
+     * @return
+     */
     @RequestMapping("/login")
     public ModelAndView login(HttpServletRequest req){
         Map<String, Object> context = new HashMap<String, Object>();
@@ -42,6 +48,11 @@ public class UserController {
         return new ModelAndView(JumpPage.USER_LOGIN,context);
     }
 
+    /**
+     *验证登录信息
+     * @param req
+     * @return
+     */
     @RequestMapping("/loginpage")
     public ModelAndView loginpage(HttpServletRequest req) {
         String reStr = JumpPage.USER_LOGIN;
@@ -62,6 +73,12 @@ public class UserController {
         return new ModelAndView(reStr,context);
     }
 
+    /**
+     *登录跳转首页
+     * @param uid
+     * @param req
+     * @return
+     */
     @RequestMapping("/index")
     public ModelAndView index(@RequestParam("uid") int uid,HttpServletRequest req){
         Map<String, Object> context = new HashMap<String, Object>();
@@ -70,6 +87,12 @@ public class UserController {
         return new ModelAndView(JumpPage.INDEX,context);
     }
 
+    /**
+     * 用户列表
+     * @param uid
+     * @param req
+     * @return
+     */
     @RequestMapping("/info")
     public ModelAndView info(@RequestParam("uid") int uid,HttpServletRequest req){
         Map<String, Object> context = new HashMap<String, Object>();
@@ -78,6 +101,13 @@ public class UserController {
         return new ModelAndView(userService.isUserFunc(req,JumpPage.USER),context);
     }
 
+    /**
+     *用户操作跳转
+     * @param uid
+     * @param id
+     * @param req
+     * @return
+     */
     @RequestMapping("/oper")
     public ModelAndView operation(@RequestParam("uid") int uid,@RequestParam("id") int id, HttpServletRequest req){
         String reStr = JumpPage.USER_EDIT;
@@ -98,6 +128,12 @@ public class UserController {
         return new ModelAndView(reStr,context);
     }
 
+    /**
+     *创建用户
+     * @param uid
+     * @param req
+     * @return
+     */
     @RequestMapping("/add")
     public ModelAndView addEntity(@RequestParam("uid") int uid, HttpServletRequest req){
 
@@ -116,6 +152,13 @@ public class UserController {
         return new ModelAndView(JumpPage.USER,context);
     }
 
+    /**
+     *编辑用户
+     * @param uid
+     * @param id
+     * @param req
+     * @return
+     */
     @RequestMapping("/edit")
     public ModelAndView editEntity(@RequestParam("uid") int uid,@RequestParam("id") int id, HttpServletRequest req){
 
@@ -131,6 +174,13 @@ public class UserController {
         return new ModelAndView(JumpPage.USER,context);
     }
 
+    /**
+     * 删除用户
+     * @param uid
+     * @param id
+     * @param req
+     * @return
+     */
     @RequestMapping("/del")
     public ModelAndView delEntity(@RequestParam("uid") int uid,@RequestParam("id") int id, HttpServletRequest req){
 
@@ -146,6 +196,13 @@ public class UserController {
         return new ModelAndView(JumpPage.USER,context);
     }
 
+    /**
+     * 用户角色
+     * @param uid
+     * @param mark
+     * @param req
+     * @return
+     */
     @RequestMapping("/userRole")
     public ModelAndView editRole(@RequestParam("uid") int uid,@RequestParam("mark") int mark, HttpServletRequest req){
 

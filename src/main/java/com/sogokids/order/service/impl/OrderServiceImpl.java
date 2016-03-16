@@ -56,21 +56,24 @@ public class OrderServiceImpl implements OrderService {
     public List<Order> getOrders(String startTime, String endTime, String mobile, int status) {
         List<Order> reData = new ArrayList<Order>();
         String where = "where Status > 0 ";
-        if (status > 0){
-            int q_status = status + 1;
-            where = where + " and Status = " + status + " or Status = " + q_status;
 
-        }
         if (startTime != null && !startTime.equals("")){
+            startTime = startTime + " 00:00:00";
             where = where + " and AddTime > " + "'" + startTime + "'";
         }
         if (endTime != null && !endTime.equals("")){
+            endTime = endTime + " 23:59:59";
             where = where + " and AddTime < " + "'" + endTime + "'";
         }
         if (!mobile.equals("") && mobile != null){
             where = where + " and Mobile LIKE '%" + mobile +"%'";
         }
-        String sql = "select Id,UserId,SubjectId,Contact,Mobile,inviteCode,Status,AddTime from SG_SubjectOrder " + where + "order by AddTime desc";
+        if (status > 0){
+            int q_status = status + 1;
+            where = where + " and "+"(Status = " + status + " or Status = " + q_status+") ";
+
+        }
+        String sql = "select Id,UserId,SubjectId,Contact,Mobile,inviteCode,Status,AddTime from SG_SubjectOrder " + where + " order by AddTime desc";
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         if(list.size() > 0){
             for (int i = 0; i < list.size(); i++) {

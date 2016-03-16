@@ -2,6 +2,8 @@ package com.sogokids.subject.service.Impl;
 
 import cn.momia.common.config.Configuration;
 import com.sogokids.course.model.Course;
+import com.sogokids.course.model.CourseComment;
+import com.sogokids.course.service.CourseCommentService;
 import com.sogokids.course.service.CourseService;
 import com.sogokids.subject.model.Subject;
 import com.sogokids.subject.model.SubjectImg;
@@ -12,6 +14,7 @@ import com.sogokids.subject.service.SubjectSkuService;
 import com.sogokids.system.service.CityService;
 import com.sogokids.utils.util.Quantity;
 import com.sogokids.utils.util.StringUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
@@ -27,6 +30,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -47,6 +51,9 @@ public class SubjectServiceImpl implements SubjectService {
 
     @Autowired
     private CourseService courseService;
+
+    @Autowired
+    private CourseCommentService courseCommentService;
 
     @Autowired
     private Configuration configuration;
@@ -148,7 +155,7 @@ public class SubjectServiceImpl implements SubjectService {
 
     @Override
     public Subject get(int id) {
-        String sql = "select Id,`Type`,CityId,Title,Cover,Tags,Intro,Notice,Stock,Status,AddTime from SG_Subject where Id = ? and Status > ? ";
+        String sql = "select Id,`Type`,CityId,Title,SubTitle,Cover,Tags,Intro,Notice,Stock,Status,AddTime from SG_Subject where Id = ? and Status > ? ";
         final Object [] params = new Object[]{id, Quantity.STATUS_ZERO};
         final Subject entity = new Subject();
         jdbcTemplate.query(sql,params, new RowCallbackHandler(){
@@ -158,6 +165,7 @@ public class SubjectServiceImpl implements SubjectService {
                 entity.setCityId(rs.getInt("CityId"));
                 entity.setCover(rs.getString("Cover"));
                 entity.setTitle(rs.getString("Title"));
+                entity.setSubTitle(rs.getString("SubTitle"));
                 entity.setTags(rs.getString("Tags"));
                 entity.setIntro(rs.getString("Intro"));
                 entity.setNotice(rs.getString("Notice"));
@@ -174,8 +182,8 @@ public class SubjectServiceImpl implements SubjectService {
 
     @Override
     public int insert(Subject entity) {
-        String sql = "insert into SG_Subject(`Type`,CityId,Title,Cover,Tags,Intro,Notice,Stock,Status,AddTime) value(?, ?, ?, ?, ?, ?, ?, ?, ?, NOW()) ";
-        Object [] params = new Object[]{entity.getType(), entity.getCityId(), entity.getTitle(), entity.getCover(), entity.getTags(), entity.getIntro(), entity.getNotice(), entity.getStock(), Quantity.STATUS_TWO};
+        String sql = "insert into SG_Subject(`Type`,CityId,Title,SubTitle,Cover,Tags,Intro,Notice,Stock,Status,AddTime) value(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW()) ";
+        Object [] params = new Object[]{entity.getType(), entity.getCityId(), entity.getTitle(), entity.getSubTitle(), entity.getCover(), entity.getTags(), entity.getIntro(), entity.getNotice(), entity.getStock(), Quantity.STATUS_TWO};
         int reData = jdbcTemplate.update(sql,params);
         return reData;
     }
@@ -183,7 +191,7 @@ public class SubjectServiceImpl implements SubjectService {
     @Override
     public int insertKey(Subject subject) {
         final Subject entity = subject;
-        final String sql = "insert into SG_Subject(`Type`,CityId,Title,Cover,Tags,Intro,Notice,Stock,Status,AddTime) value(?, ?, ?, ?, ?, ?, ?, ?, ?, NOW()) ";
+        final String sql = "insert into SG_Subject(`Type`,CityId,Title,SubTitle,Cover,Tags,Intro,Notice,Stock,Status,AddTime) value(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW()) ";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         int reData = jdbcTemplate.update( new PreparedStatementCreator(){
             public java.sql.PreparedStatement createPreparedStatement(Connection conn) throws SQLException{
@@ -193,6 +201,7 @@ public class SubjectServiceImpl implements SubjectService {
                 ps.setInt(++i, entity.getType());
                 ps.setInt(++i, entity.getCityId());
                 ps.setString(++i, entity.getTitle());
+                ps.setString(++i, entity.getSubTitle());
                 ps.setString(++i, entity.getCover());
                 ps.setString(++i, entity.getTags());
                 ps.setString(++i, entity.getIntro());
@@ -211,8 +220,8 @@ public class SubjectServiceImpl implements SubjectService {
 
     @Override
     public int update(Subject entity) {
-        String sql = "update SG_Subject set `Type` = ?, CityId = ?, Title = ?, Cover = ?, Tags = ?, Intro = ? where Id = ? ";
-        Object [] params = new Object[]{entity.getType(), entity.getCityId(), entity.getTitle(), entity.getCover(), entity.getTags(), entity.getIntro(), entity.getId()};
+        String sql = "update SG_Subject set `Type` = ?, CityId = ?, Title = ?, SubTitle = ?, Cover = ?, Tags = ?, Intro = ? where Id = ? ";
+        Object [] params = new Object[]{entity.getType(), entity.getCityId(), entity.getTitle(), entity.getSubTitle(), entity.getCover(), entity.getTags(), entity.getIntro(), entity.getId()};
         int reData = 0;
         try {
             reData = jdbcTemplate.update(sql, params);
@@ -264,6 +273,7 @@ public class SubjectServiceImpl implements SubjectService {
         entity.setType(type);
         entity.setCityId(Integer.parseInt(request.getParameter("cityId")));
         entity.setTitle(request.getParameter("title"));
+        entity.setSubTitle(request.getParameter("subTitle"));
         entity.setCover(request.getParameter("cover"));
         entity.setTags("");
 //        int tags = Integer.parseInt(request.getParameter("tags"));
@@ -359,5 +369,56 @@ public class SubjectServiceImpl implements SubjectService {
 
         return sb.toString();
 
+    }
+
+    @Override
+    public Map<String,String> getCommentHtml(int sub_id){
+        Map<String,String> map = new HashMap<String, String>();
+
+        List<CourseComment> comments_t = courseCommentService.getTCourseComments(sub_id);
+        StringBuffer sb_t = new StringBuffer();
+        for (CourseComment courseComment:comments_t){
+            sb_t.append(this.getCommentStr(courseComment,1));
+        }
+
+        List<CourseComment> comments_nt = courseCommentService.getNTCourseComments(sub_id);
+        StringBuffer sb_nt = new StringBuffer();
+        for (CourseComment courseComment:comments_nt){
+            sb_nt.append(this.getCommentStr(courseComment,0));
+        }
+
+        map.put("comment_t",sb_t.toString());
+        map.put("comment_nt",sb_nt.toString());
+
+        return map;
+    }
+
+    private String getCommentStr(CourseComment entity,int flag){
+        StringBuffer sb = new StringBuffer();
+        sb.append("<div class='feed-element'>");
+        sb.append("<div class='media-body'>");
+        String time = StringUtils.isNotEmpty(entity.getAddTime())?entity.getAddTime().substring(0, 10):"";
+        sb.append("<small class='pull-right'>"+ time +"</small>");
+        sb.append("<strong>"+entity.getNickName()+"</strong>");
+        sb.append("<br>");
+        sb.append("<small class='text-muted'>"+entity.getStar()+"星评价  "+entity.getKeyWord()+"</small>");
+        sb.append("<div class='well'>"+entity.getContent()+"</div>");
+        sb.append("<div class='actions pull-right'>");
+        String id = "'"+entity.getId()+"'";
+        if (flag == 0) {
+            sb.append("<a class='btn btn-xs btn-danger' href='javascript:void(0)' onclick=\"addComment(" + id + ")\">");
+                sb.append("<i class='fa fa-heart'></i>推荐");
+            sb.append("</a>");
+        }else{
+            sb.append("<a class='btn btn-xs btn-warning' href='javascript:void(0)' onclick=\"cancelComment(" + id + ")\">");
+                sb.append("<i class='fa fa-heart'></i>取消");
+            sb.append("</a>");
+        }
+        sb.append("</div>");
+
+        sb.append("</div>");
+        sb.append("</div>");
+
+        return sb.toString();
     }
 }

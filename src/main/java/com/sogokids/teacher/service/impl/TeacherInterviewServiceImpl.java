@@ -1,6 +1,5 @@
 package com.sogokids.teacher.service.impl;
 
-import com.sogokids.teacher.model.Teacher;
 import com.sogokids.teacher.model.TeacherInterview;
 import com.sogokids.teacher.service.TeacherInterviewService;
 import com.sogokids.utils.util.DateUtil;

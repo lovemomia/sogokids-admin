@@ -22,6 +22,10 @@ public class EnumUtil {
 
     private static final String jl_final = "[{id:0,name:'教育背景'},{id:1,name:'行业经验'},{id:2,name:'年龄'},{id:3,name:'其他'}]";
 
+    private static final String event_type = "[{id:1,name:'老用户'},{id:2,name:'新用户'}]";
+
+    private static final String coupon_type = "[{id:1,name:'邀请注册红包'},{id:2,name:'首次购买红包'}]";
+
     public static List<Map<String, Object>> getEnums(int intEnum) {
         List<Map<String, Object>> ls = new ArrayList<Map<String, Object>>();
         switch (intEnum) {
@@ -54,6 +58,12 @@ public class EnumUtil {
                 break;
             case Quantity.STATUS_TEN:
                 ls.addAll(StringUtil.parseJSON2List(jl_final));
+                break;
+            case Quantity.STATUS_ELEVEN:
+                ls.addAll(StringUtil.parseJSON2List(event_type));
+                break;
+            case Quantity.STATUS_TWELVE:
+                ls.addAll(StringUtil.parseJSON2List(coupon_type));
                 break;
         }
 

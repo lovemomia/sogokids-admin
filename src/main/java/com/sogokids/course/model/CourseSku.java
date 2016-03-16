@@ -15,6 +15,7 @@ public class CourseSku {
     private String endTime;
     private String deadline;
     private int stock;
+    private int minBooked;
     private int unlockedStock;
     private int lockedStock;
     private int placeId;
@@ -87,6 +88,14 @@ public class CourseSku {
 
     public void setStock(int stock) {
         this.stock = stock;
+    }
+
+    public int getMinBooked() {
+        return minBooked;
+    }
+
+    public void setMinBooked(int minBooked) {
+        this.minBooked = minBooked;
     }
 
     public int getUnlockedStock() {

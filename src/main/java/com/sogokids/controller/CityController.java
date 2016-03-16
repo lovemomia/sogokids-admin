@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * 城市信息
  * Created by hoze on 15/7/6.
  */
 @Controller
@@ -32,6 +33,12 @@ public class CityController {
     @Autowired
     private UserService adminUserService;
 
+    /**
+     * 城市信息－列表
+     * @param uid
+     * @param req
+     * @return
+     */
     @RequestMapping("/info")
     public ModelAndView info(@RequestParam("uid") int uid, HttpServletRequest req){
         Map<String, Object> context = new HashMap<String, Object>();
@@ -40,6 +47,14 @@ public class CityController {
         return new ModelAndView(adminUserService.isUserFunc(req,JumpPage.CITY),context);
     }
 
+    /**
+     * 城市信息－操作控制
+     * @param uid
+     * @param id
+     * @param mark
+     * @param req
+     * @return
+     */
     @RequestMapping("/oper")
     public ModelAndView operation(@RequestParam("uid") int uid,@RequestParam("id") int id, @RequestParam("mark") int mark,HttpServletRequest req){
         String reStr = JumpPage.CITY_EDIT;
@@ -58,6 +73,12 @@ public class CityController {
         return new ModelAndView(reStr,context);
     }
 
+    /**
+     * 城市信息－创建
+     * @param uid
+     * @param req
+     * @return
+     */
     @RequestMapping("/add")
     public ModelAndView addEntity(@RequestParam("uid") int uid, HttpServletRequest req){
 
@@ -73,6 +94,13 @@ public class CityController {
         return new ModelAndView(JumpPage.CITY,context);
     }
 
+    /**
+     * 城市信息－编辑
+     * @param uid
+     * @param id
+     * @param req
+     * @return
+     */
     @RequestMapping("/edit")
     public ModelAndView editEntity(@RequestParam("uid") int uid,@RequestParam("id") int id, HttpServletRequest req){
 
@@ -88,6 +116,13 @@ public class CityController {
         return new ModelAndView(JumpPage.CITY,context);
     }
 
+    /**
+     * 城市信息－删除
+     * @param uid
+     * @param id
+     * @param req
+     * @return
+     */
     @RequestMapping("/del")
     public ModelAndView delEntity(@RequestParam("uid") int uid,@RequestParam("id") int id, HttpServletRequest req){
 

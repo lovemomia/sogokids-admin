@@ -6,6 +6,7 @@ package com.sogokids.home.model;
 public class Event {
 
     private int id;
+    private int type;
     private int cityId;
     private String title;
     private String img;
@@ -26,6 +27,14 @@ public class Event {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 
     public int getCityId() {

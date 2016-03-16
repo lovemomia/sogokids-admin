@@ -1,6 +1,7 @@
 package com.sogokids.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.sogokids.course.service.CourseCommentService;
 import com.sogokids.images.model.Images;
 import com.sogokids.images.service.ImagesService;
 import com.sogokids.subject.model.SubjectNotice;
@@ -29,6 +30,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * 课程体系
  * Created by hoze on 15/10/13.
  */
 @Controller
@@ -50,11 +52,20 @@ public class SubjectController {
     private SubjectSkuService subjectSkuService;
 
     @Autowired
+    private CourseCommentService courseCommentService;
+
+    @Autowired
     private ImagesService imagesService;
 
     @Autowired
     private CityService cityService;
 
+    /**
+     *课程包列表
+     * @param uid
+     * @param req
+     * @return
+     */
     @RequestMapping("/info")
     public ModelAndView info(@RequestParam("uid") int uid, HttpServletRequest req){
         Map<String, Object> context = new HashMap<String, Object>();
@@ -63,6 +74,13 @@ public class SubjectController {
         return new ModelAndView(adminUserService.isUserFunc(req,JumpPage.SUB),context);
     }
 
+    /**
+     *课程包操作跳转
+     * @param uid
+     * @param id
+     * @param req
+     * @return
+     */
     @RequestMapping("/oper")
     public ModelAndView operation(@RequestParam("uid") int uid,@RequestParam("id") int id,HttpServletRequest req){
         String reStr = JumpPage.SUB_EDIT;
@@ -81,9 +99,19 @@ public class SubjectController {
 //        context.put("tags", subjectService.getModelsByType());
         context.put("citys", cityService.getEntitys());
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        Map<String,String> comment_map = subjectService.getCommentHtml(id);
+        context.put("tComments", comment_map.get("comment_t"));
+        context.put("ntComments",comment_map.get("comment_nt"));
+
         return new ModelAndView(reStr,context);
     }
 
+    /**
+     *创建课程包
+     * @param req
+     * @param rsp
+     * @return
+     */
     @RequestMapping("/add")
     public String addEntity(HttpServletRequest req, HttpServletResponse rsp){
         rsp.setContentType("text/html; charset=UTF-8");
@@ -112,6 +140,12 @@ public class SubjectController {
         return null;
     }
 
+    /**
+     *编辑课程包基本信息
+     * @param req
+     * @param rsp
+     * @return
+     */
     @RequestMapping("/edit")
     public String editEntity(HttpServletRequest req, HttpServletResponse rsp){
         rsp.setContentType("text/html; charset=UTF-8");
@@ -140,6 +174,13 @@ public class SubjectController {
         return null;
     }
 
+    /**
+     *删除课程包基本信息
+     * @param uid
+     * @param id
+     * @param req
+     * @return
+     */
     @RequestMapping("/del")
     public ModelAndView delEntity(@RequestParam("uid") int uid,@RequestParam("id") int id, HttpServletRequest req){
 
@@ -155,6 +196,13 @@ public class SubjectController {
         return new ModelAndView(JumpPage.SUB,context);
     }
 
+    /**
+     *添加课程包活动图片
+     * @param subId
+     * @param req
+     * @param rsp
+     * @return
+     */
     @RequestMapping("/addImg")
     public String addImg(@RequestParam("subId") int subId,HttpServletRequest req, HttpServletResponse rsp) {
         rsp.setContentType("text/html; charset=UTF-8");
@@ -175,6 +223,13 @@ public class SubjectController {
         return null;
     }
 
+    /**
+     *删除课程包活动图片
+     * @param subId
+     * @param req
+     * @param rsp
+     * @return
+     */
     @RequestMapping("/delImg")
     public String delImg(@RequestParam("subId") int subId,HttpServletRequest req, HttpServletResponse rsp) {
         rsp.setContentType("text/html; charset=UTF-8");
@@ -209,6 +264,13 @@ public class SubjectController {
         return null;
     }
 
+    /**
+     *添加课程包购买须知
+     * @param subId
+     * @param req
+     * @param rsp
+     * @return
+     */
     @RequestMapping("/addNotice")
     public String addNotice(@RequestParam("subId") int subId,HttpServletRequest req, HttpServletResponse rsp) {
         rsp.setContentType("text/html; charset=UTF-8");
@@ -245,6 +307,12 @@ public class SubjectController {
         return null;
     }
 
+    /**
+     *编辑课程包购买须知
+     * @param req
+     * @param rsp
+     * @return
+     */
     @RequestMapping("/editNotice")
     public String editNotice(HttpServletRequest req, HttpServletResponse rsp) {
         rsp.setContentType("text/html; charset=UTF-8");
@@ -267,6 +335,13 @@ public class SubjectController {
         return null;
     }
 
+    /**
+     * 删除课程包购买须知
+     * @param subId
+     * @param req
+     * @param rsp
+     * @return
+     */
     @RequestMapping("/delNotice")
     public String delNotice(@RequestParam("subId") int subId, HttpServletRequest req, HttpServletResponse rsp) {
         rsp.setContentType("text/html; charset=UTF-8");
@@ -297,6 +372,13 @@ public class SubjectController {
         return null;
     }
 
+    /**
+     *添加课程包sku
+     * @param subId
+     * @param req
+     * @param rsp
+     * @return
+     */
     @RequestMapping("/addSku")
     public String addSku(@RequestParam("subId") int subId, HttpServletRequest req, HttpServletResponse rsp) {
         rsp.setContentType("text/html; charset=UTF-8");
@@ -331,6 +413,12 @@ public class SubjectController {
         return null;
     }
 
+    /**
+     *编辑课程包sku
+     * @param req
+     * @param rsp
+     * @return
+     */
     @RequestMapping("/editSku")
     public String editSku(HttpServletRequest req, HttpServletResponse rsp) {
         rsp.setContentType("text/html; charset=UTF-8");
@@ -353,6 +441,13 @@ public class SubjectController {
         return null;
     }
 
+    /**
+     * 删除课程包sku
+     * @param subId
+     * @param req
+     * @param rsp
+     * @return
+     */
     @RequestMapping("/delSku")
     public String delSku(@RequestParam("subId") int subId, HttpServletRequest req, HttpServletResponse rsp) {
         rsp.setContentType("text/html; charset=UTF-8");
@@ -382,6 +477,13 @@ public class SubjectController {
         return null;
     }
 
+    /**
+     *取消课程包
+     * @param subId
+     * @param req
+     * @param rsp
+     * @return
+     */
     @RequestMapping("/cancelSku")
     public String cancelSku(@RequestParam("subId") int subId, HttpServletRequest req, HttpServletResponse rsp) {
         rsp.setContentType("text/html; charset=UTF-8");
@@ -411,6 +513,14 @@ public class SubjectController {
         return null;
     }
 
+    /**
+     *课程包上下线
+     * @param uid
+     * @param id
+     * @param mark
+     * @param req
+     * @return
+     */
     @RequestMapping("/upOrDown")
     public ModelAndView updateStatus(@RequestParam("uid") int uid,@RequestParam("id") int id,@RequestParam("mark") int mark, HttpServletRequest req){
 
@@ -426,12 +536,58 @@ public class SubjectController {
         return new ModelAndView(JumpPage.SUB,context);
     }
 
+    /**
+     *课程包预览
+     * @param uid
+     * @param id
+     * @param req
+     * @return
+     */
     @RequestMapping("/preview")
     public ModelAndView preview(@RequestParam("uid") int uid,@RequestParam("id") int id, HttpServletRequest req) {
         Map<String, Object> context = new HashMap<String, Object>();
         context.put("previewHtml", subjectService.getPreview(id));
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
         return new ModelAndView(JumpPage.SUB_PREVIEW,context);
+    }
+
+    /**
+     * 推荐评价信息
+     * @param subId
+     * @param req
+     * @param rsp
+     * @return
+     */
+    @RequestMapping("/comment")
+    public String comment(@RequestParam("subId") int subId, HttpServletRequest req, HttpServletResponse rsp) {
+        rsp.setContentType("text/html; charset=UTF-8");
+        Map<String, Object> context = new HashMap<String, Object>();
+
+        int comment_id = Integer.parseInt(req.getParameter("comment_id"));
+        int recommended = Integer.parseInt(req.getParameter("recommended"));
+        int reDate = courseCommentService.update_Recommended(comment_id,recommended);
+        if (reDate > 0) {
+            context.put(Quantity.RETURN_SUCCESS, 0);
+            context.put(Quantity.RETURN_MSG, "推荐评价操作成功!");
+        } else {
+            context.put(Quantity.RETURN_SUCCESS, 1);
+            context.put(Quantity.RETURN_MSG, "推荐评价操作失败!");
+        }
+        Map<String,String> comment_map = subjectService.getCommentHtml(subId);
+        context.put("tComments", comment_map.get("comment_t"));
+        context.put("ntComments",comment_map.get("comment_nt"));
+        Writer writer = null;
+        try {
+            writer = rsp.getWriter();
+            writer.write(JSONObject.toJSONString(context));
+            writer.flush();
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            IOUtils.closeQuietly(writer);
+        }
+        return null;
     }
 
 

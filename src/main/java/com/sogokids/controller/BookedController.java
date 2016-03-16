@@ -17,7 +17,6 @@ import com.sogokids.subject.service.SubjectSkuService;
 import com.sogokids.system.model.Institution;
 import com.sogokids.system.service.InstitutionService;
 import com.sogokids.system.service.PlaceService;
-import com.sogokids.teacher.service.TeacherService;
 import com.sogokids.user.service.UserService;
 import com.sogokids.utils.util.JumpPage;
 import com.sogokids.utils.util.Quantity;
@@ -39,6 +38,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * 试听课信息
  * Created by hoze on 15/10/13.
  */
 @Controller
@@ -75,11 +75,14 @@ public class BookedController {
     private InstitutionService institutionService;
 
     @Autowired
-    private TeacherService teacherService;
-
-    @Autowired
     private SubjectSkuService subjectSkuService;
 
+    /**
+     *试听课列表
+     * @param uid
+     * @param req
+     * @return
+     */
     @RequestMapping("/info")
     public ModelAndView info(@RequestParam("uid") int uid, HttpServletRequest req){
         Map<String, Object> context = new HashMap<String, Object>();
@@ -88,6 +91,14 @@ public class BookedController {
         return new ModelAndView(adminUserService.isUserFunc(req,JumpPage.BOOKED),context);
     }
 
+    /**
+     *试听课相关操作跳转
+     * @param uid
+     * @param id
+     * @param mark
+     * @param req
+     * @return
+     */
     @RequestMapping("/oper")
     public ModelAndView operation(@RequestParam("uid") int uid,@RequestParam("id") int id,@RequestParam("mark") int mark,HttpServletRequest req){
         String reStr = JumpPage.BOOKED_EDIT;
@@ -123,6 +134,13 @@ public class BookedController {
         return new ModelAndView(reStr,context);
     }
 
+    /**
+     *删除试听课
+     * @param uid
+     * @param id
+     * @param req
+     * @return
+     */
     @RequestMapping("/del")
     public ModelAndView delEntity(@RequestParam("uid") int uid,@RequestParam("id") int id, HttpServletRequest req){
 
@@ -143,6 +161,14 @@ public class BookedController {
         return new ModelAndView(JumpPage.BOOKED,context);
     }
 
+    /**
+     *试听课上下线
+     * @param uid
+     * @param id
+     * @param mark
+     * @param req
+     * @return
+     */
     @RequestMapping("/upOrDown")
     public ModelAndView updateStatus(@RequestParam("uid") int uid,@RequestParam("id") int id,@RequestParam("mark") int mark, HttpServletRequest req){
 
@@ -162,6 +188,14 @@ public class BookedController {
         return new ModelAndView(JumpPage.BOOKED,context);
     }
 
+    /**
+     *获取试听课相关对象信息
+     * @param uid
+     * @param id
+     * @param mark
+     * @param req
+     * @return
+     */
     @RequestMapping("/subcopy")
     public ModelAndView sub_copy(@RequestParam("uid") int uid,@RequestParam("id") int id,@RequestParam("mark") int mark,HttpServletRequest req){
         Map<String, Object> context = new HashMap<String, Object>();
@@ -178,6 +212,12 @@ public class BookedController {
         return new ModelAndView(JumpPage.SUB_COPY,context);
     }
 
+    /**
+     *编辑试听课信息
+     * @param req
+     * @param rsp
+     * @return
+     */
     @RequestMapping("/copy")
     public ModelAndView editSubCourse(HttpServletRequest req, HttpServletResponse rsp){
         rsp.setContentType("text/html; charset=UTF-8");
@@ -331,6 +371,13 @@ public class BookedController {
         return null;
     }
 
+    /**
+     *取消试听课
+     * @param uid
+     * @param id
+     * @param req
+     * @return
+     */
     @RequestMapping("/cancelCopy")
     public ModelAndView cancelTrialCourse(@RequestParam("uid") int uid,@RequestParam("id") int id,HttpServletRequest req){
         Map<String, Object> context = new HashMap<String, Object>();
@@ -350,6 +397,13 @@ public class BookedController {
         return new ModelAndView(JumpPage.BOOKED,context);
     }
 
+    /**
+     * 试听课预览
+     * @param uid
+     * @param id
+     * @param req
+     * @return
+     */
     @RequestMapping("/preview")
     public ModelAndView preview(@RequestParam("uid") int uid,@RequestParam("id") int id, HttpServletRequest req) {
         Map<String, Object> context = new HashMap<String, Object>();

@@ -6,14 +6,12 @@ import com.sogokids.course.model.CourseBook;
 import com.sogokids.course.model.CourseDetail;
 import com.sogokids.course.model.CourseRecommend;
 import com.sogokids.course.model.CourseSku;
-import com.sogokids.teacher.model.CourseTeacher;
 import com.sogokids.course.service.CourseBookService;
 import com.sogokids.course.service.CourseDetailService;
 import com.sogokids.course.service.CourseImgService;
 import com.sogokids.course.service.CourseRecommendService;
 import com.sogokids.course.service.CourseService;
 import com.sogokids.course.service.CourseSkuService;
-import com.sogokids.teacher.service.CourseTeacherService;
 import com.sogokids.http.model.HttpResult;
 import com.sogokids.images.model.Images;
 import com.sogokids.images.service.ImagesService;
@@ -22,11 +20,11 @@ import com.sogokids.subject.service.SubjectService;
 import com.sogokids.system.model.Institution;
 import com.sogokids.system.service.InstitutionService;
 import com.sogokids.system.service.PlaceService;
-import com.sogokids.teacher.service.TeacherService;
 import com.sogokids.user.service.UserService;
 import com.sogokids.utils.util.JumpPage;
 import com.sogokids.utils.util.Quantity;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,6 +41,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * 课程信息
  * Created by hoze on 15/10/13.
  */
 @Controller
@@ -79,14 +78,15 @@ public class CourseController {
     private InstitutionService institutionService;
 
     @Autowired
-    private TeacherService teacherService;
-
-    @Autowired
-    private CourseTeacherService courseTeacherService;
-
-    @Autowired
     private CourseRecommendService courseRecommendService;
 
+    /**
+     * 课程列表
+     * @param uid
+     * @param subid
+     * @param req
+     * @return
+     */
     @RequestMapping("/info")
     public ModelAndView info(@RequestParam("uid") int uid,@RequestParam("subid") int subid, HttpServletRequest req){
         Map<String, Object> context = new HashMap<String, Object>();
@@ -96,6 +96,15 @@ public class CourseController {
         return new ModelAndView(adminUserService.isUserFunc(req,JumpPage.COURSE),context);
     }
 
+    /**
+     * 课程相关操作跳转
+     * @param uid
+     * @param id
+     * @param mark
+     * @param subid
+     * @param req
+     * @return
+     */
     @RequestMapping("/oper")
     public ModelAndView operation(@RequestParam("uid") int uid,@RequestParam("id") int id,@RequestParam("mark") int mark,@RequestParam("subid") int subid,HttpServletRequest req){
         String reStr = JumpPage.COURSE_EDIT;
@@ -145,6 +154,12 @@ public class CourseController {
         return new ModelAndView(reStr,context);
     }
 
+    /**
+     * 创建课程基本信息
+     * @param req
+     * @param rsp
+     * @return
+     */
     @RequestMapping("/add")
     public String addEntity(HttpServletRequest req, HttpServletResponse rsp){
         rsp.setContentType("text/html; charset=UTF-8");
@@ -172,6 +187,12 @@ public class CourseController {
         return null;
     }
 
+    /**
+     * 编辑课程基本信息
+     * @param req
+     * @param rsp
+     * @return
+     */
     @RequestMapping("/edit")
     public String editEntity(HttpServletRequest req, HttpServletResponse rsp){
         rsp.setContentType("text/html; charset=UTF-8");
@@ -214,6 +235,13 @@ public class CourseController {
         return null;
     }
 
+    /**
+     * 删除课程基本信息
+     * @param uid
+     * @param id
+     * @param req
+     * @return
+     */
     @RequestMapping("/del")
     public ModelAndView delEntity(@RequestParam("uid") int uid,@RequestParam("id") int id, HttpServletRequest req){
 
@@ -231,15 +259,41 @@ public class CourseController {
         return new ModelAndView(JumpPage.COURSE,context);
     }
 
+    /**
+     * 添加课程图片
+     * @param courseId
+     * @param req
+     * @param rsp
+     * @return
+     */
     @RequestMapping("/addImg")
     public String addImg(@RequestParam("courseId") int courseId,HttpServletRequest req, HttpServletResponse rsp) {
         rsp.setContentType("text/html; charset=UTF-8");
-        Images image = imagesService.uploadImg(req, 0, "","true");
-        int reDate = courseImgService.insert(courseImgService.formEntity(image, courseId));
+        Map<String, Object> context = new HashMap<String, Object>();
+        List<Images> images = imagesService.uploadMoreImg(req, 0, "", "true");
+        String errorCount = "";
+        for (int i = 0; i < images.size(); i++) {
+            Images image = images.get(i);
+            if (StringUtils.isEmpty(image.getUrl())){
+                errorCount =  (i+1) + "," +  errorCount;
+                continue;
+            }else {
+                courseImgService.insert(courseImgService.formEntity(image, courseId));
+            }
+        }
+        if (StringUtils.isEmpty(errorCount)){
+            context.put("success","0");
+            context.put("msg","上传图片成功!");
+        }else{
+            context.put("success","1");
+            errorCount = errorCount.substring(0, errorCount.length()-1);
+            context.put("msg","第"+errorCount+"张图片上传失败!");
+        }
+        context.put("imgHtml", courseImgService.getImgHtml(courseId));
         Writer writer = null;
         try {
             writer = rsp.getWriter();
-            writer.write(JSONObject.toJSONString(courseImgService.getImgHtml(courseId)).replace("\"", ""));
+            writer.write(JSONObject.toJSONString(context));
             writer.flush();
             writer.close();
         } catch (IOException e) {
@@ -251,6 +305,13 @@ public class CourseController {
         return null;
     }
 
+    /**
+     * 删除课程图片信息
+     * @param courseId
+     * @param req
+     * @param rsp
+     * @return
+     */
     @RequestMapping("/delImg")
     public String delImg(@RequestParam("courseId") int courseId,HttpServletRequest req, HttpServletResponse rsp) {
         rsp.setContentType("text/html; charset=UTF-8");
@@ -281,6 +342,44 @@ public class CourseController {
         return null;
     }
 
+    /**
+     * 移动课程图片信息
+     * @param courseId
+     * @param req
+     * @param rsp
+     * @return
+     */
+    @RequestMapping("/moveImg")
+    public String moveImg(@RequestParam("courseId") int courseId,HttpServletRequest req, HttpServletResponse rsp) {
+        rsp.setContentType("text/html; charset=UTF-8");
+        Map<String, Object> context = new HashMap<String, Object>();
+        int imgId = Integer.parseInt(req.getParameter("imgId"));
+        int flag = Integer.parseInt(req.getParameter("flag"));
+        String reDate = courseImgService.moveBefore(courseId,imgId,flag);
+        context.put(Quantity.RETURN_SUCCESS, 0);
+        context.put(Quantity.RETURN_MSG, "图片操作成功!");
+        context.put("imageJson",reDate);
+        Writer writer = null;
+        try {
+            writer = rsp.getWriter();
+            writer.write(JSONObject.toJSONString(context));
+            writer.flush();
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }finally {
+            IOUtils.closeQuietly(writer);
+        }
+        return null;
+    }
+
+    /**
+     * 添加课程绘本信息
+     * @param courseId
+     * @param req
+     * @param rsp
+     * @return
+     */
     @RequestMapping("/addBook")
     public String addNotice(@RequestParam("courseId") int courseId,HttpServletRequest req, HttpServletResponse rsp) {
         rsp.setContentType("text/html; charset=UTF-8");
@@ -301,6 +400,12 @@ public class CourseController {
         return null;
     }
 
+    /**
+     * 编辑课程绘本信息时提取绘本信息
+     * @param req
+     * @param rsp
+     * @return
+     */
     @RequestMapping("/editBook")
     public String editNotice(HttpServletRequest req, HttpServletResponse rsp) {
         rsp.setContentType("text/html; charset=UTF-8");
@@ -323,6 +428,13 @@ public class CourseController {
         return null;
     }
 
+    /**
+     * 删除课程绘本信息
+     * @param courseId
+     * @param req
+     * @param rsp
+     * @return
+     */
     @RequestMapping("/delBook")
     public String delNotice(@RequestParam("courseId") int courseId, HttpServletRequest req, HttpServletResponse rsp) {
         rsp.setContentType("text/html; charset=UTF-8");
@@ -352,6 +464,13 @@ public class CourseController {
         return null;
     }
 
+    /**
+     *创建和编辑场次信息,同时编辑相关试听课场次信息
+     * @param courseId
+     * @param req
+     * @param rsp
+     * @return
+     */
     @RequestMapping("/addSku")
     public String addSku(@RequestParam("courseId") int courseId, HttpServletRequest req, HttpServletResponse rsp) {
         rsp.setContentType("text/html; charset=UTF-8");
@@ -467,6 +586,12 @@ public class CourseController {
         return null;
     }
 
+    /**
+     * 编辑场次时获取场次信息
+     * @param req
+     * @param rsp
+     * @return
+     */
     @RequestMapping("/editSku")
     public String editSku(HttpServletRequest req, HttpServletResponse rsp) {
         rsp.setContentType("text/html; charset=UTF-8");
@@ -489,6 +614,13 @@ public class CourseController {
         return null;
     }
 
+    /**
+     * 删除场次信息
+     * @param courseId
+     * @param req
+     * @param rsp
+     * @return
+     */
     @RequestMapping("/delSku")
     public String delSku(@RequestParam("courseId") int courseId, HttpServletRequest req, HttpServletResponse rsp) {
         rsp.setContentType("text/html; charset=UTF-8");
@@ -528,6 +660,12 @@ public class CourseController {
         return null;
     }
 
+    /**
+     * 课程创建和编辑场次时添加商户地址
+     * @param req
+     * @param rsp
+     * @return
+     */
     @RequestMapping("/addplace")
     public ModelAndView addPlace(HttpServletRequest req, HttpServletResponse rsp){
         rsp.setContentType("text/html; charset=UTF-8");
@@ -555,6 +693,13 @@ public class CourseController {
         return null;
     }
 
+    /**
+     * 添加和编辑内容详情
+     * @param courseId
+     * @param req
+     * @param rsp
+     * @return
+     */
     @RequestMapping("/addDetail")
     public String addDetail(@RequestParam("courseId") int courseId,HttpServletRequest req, HttpServletResponse rsp){
         rsp.setContentType("text/html; charset=UTF-8");
@@ -590,6 +735,13 @@ public class CourseController {
         return null;
     }
 
+    /**
+     * 获取课程内容详情
+     * @param courseId
+     * @param req
+     * @param rsp
+     * @return
+     */
     @RequestMapping("/loadDetail")
     public String loadDetail(@RequestParam("courseId") int courseId,HttpServletRequest req, HttpServletResponse rsp) {
         rsp.setContentType("text/html; charset=UTF-8");
@@ -610,6 +762,14 @@ public class CourseController {
         return null;
     }
 
+    /**
+     * 课程上下线操作
+     * @param uid
+     * @param id
+     * @param mark
+     * @param req
+     * @return
+     */
     @RequestMapping("/upOrDown")
     public ModelAndView updateStatus(@RequestParam("uid") int uid,@RequestParam("id") int id,@RequestParam("mark") int mark, HttpServletRequest req){
 
@@ -627,11 +787,17 @@ public class CourseController {
         return new ModelAndView(JumpPage.COURSE,context);
     }
 
+    /**
+     * 验证试听课
+     * @param req
+     * @param rsp
+     * @return
+     */
     @RequestMapping("/isCopy")
     public ModelAndView is_copyCourse(HttpServletRequest req, HttpServletResponse rsp){
         rsp.setContentType("text/html; charset=UTF-8");
         Map<String, Object> context = new HashMap<String, Object>();
-        int id = Integer.parseInt(req.getParameter("course_id"));
+//        int id = Integer.parseInt(req.getParameter("course_id"));
         String[] course_sku_id = req.getParameterValues("course_sku_id");
         int success = 0;
         for (int i = 0; i < course_sku_id.length; i++) {
@@ -665,6 +831,15 @@ public class CourseController {
         return null;
     }
 
+    /**
+     * 加入试听课并跳转试听课列表页面
+     * @param uid
+     * @param id
+     * @param subid
+     * @param req
+     * @param rsp
+     * @return
+     */
     @RequestMapping("/copyOper")
     public ModelAndView copyInfo(@RequestParam("uid") int uid,@RequestParam("id") int id,@RequestParam("subid") int subid,HttpServletRequest req, HttpServletResponse rsp){
         String retStr = JumpPage.COURSE_COPY;
@@ -683,6 +858,13 @@ public class CourseController {
         return new ModelAndView(retStr,context);
     }
 
+    /**
+     * 拷贝试听课
+     * @param uid
+     * @param req
+     * @param rsp
+     * @return
+     */
     @RequestMapping("/copy")
     public ModelAndView copyCourse(@RequestParam("uid") int uid,HttpServletRequest req, HttpServletResponse rsp){
         rsp.setContentType("text/html; charset=UTF-8");
@@ -710,6 +892,13 @@ public class CourseController {
         return null;
     }
 
+    /**
+     * 取消试听课
+     * @param uid
+     * @param id
+     * @param req
+     * @return
+     */
     @RequestMapping("/cancelCopy")
     public ModelAndView cancelTrialCourse(@RequestParam("uid") int uid,@RequestParam("id") int id,HttpServletRequest req){
         Map<String, Object> context = new HashMap<String, Object>();
@@ -731,6 +920,12 @@ public class CourseController {
         return new ModelAndView(JumpPage.COURSE,context);
     }
 
+    /**
+     * 课程设为试听课
+     * @param req
+     * @param rsp
+     * @return
+     */
     @RequestMapping("/setOneCourse")
     public ModelAndView setOneCourse(HttpServletRequest req, HttpServletResponse rsp){
         rsp.setContentType("text/html; charset=UTF-8");
@@ -763,6 +958,13 @@ public class CourseController {
         return null;
     }
 
+    /**
+     * 取消推荐课程
+     * @param uid
+     * @param id
+     * @param req
+     * @return
+     */
     @RequestMapping("/cancelCourse")
     public ModelAndView cancelCourse(@RequestParam("uid") int uid,@RequestParam("id") int id, HttpServletRequest req){
         Map<String, Object> context = new HashMap<String, Object>();
@@ -783,13 +985,21 @@ public class CourseController {
         return new ModelAndView(JumpPage.COURSE,context);
     }
 
+    /**
+     * 取消课程场次
+     * @param courseId
+     * @param req
+     * @param rsp
+     * @return
+     */
     @RequestMapping("/cancelSku")
     public String cancelSku(@RequestParam("courseId") int courseId, HttpServletRequest req, HttpServletResponse rsp) {
         rsp.setContentType("text/html; charset=UTF-8");
         Map<String, Object> context = new HashMap<String, Object>();
 
-        int skuId = Integer.parseInt(req.getParameter("skuId"));
-        int reDate = courseSkuService.update_CourseSku(courseId,skuId);
+        int skuId = Integer.parseInt(req.getParameter("cancel_sku_id"));
+        String content = req.getParameter("sms_content");
+        int reDate = courseSkuService.update_CourseSku(courseId,skuId,content);
         if (reDate > 0) {
             context.put(Quantity.RETURN_SUCCESS, 0);
             context.put(Quantity.RETURN_MSG, "课程sku信息取消成功!");
@@ -812,6 +1022,13 @@ public class CourseController {
         return null;
     }
 
+    /**
+     * 课程信息预览
+     * @param uid
+     * @param id
+     * @param req
+     * @return
+     */
     @RequestMapping("/preview")
     public ModelAndView preview(@RequestParam("uid") int uid,@RequestParam("id") int id, HttpServletRequest req) {
         Map<String, Object> context = new HashMap<String, Object>();

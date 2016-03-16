@@ -43,10 +43,10 @@ $(document).ready(function () {
         var cover = $('#cover').val();
         var intro = $('#intro').val();
         if(title == null || title == ""){
-            layer.alert('请填写标题信息！',3,'提示信息');
+            layer.alert('请填写主标题信息！',3,'提示信息');
             return false;
         }else if(cover == null || cover == ""){
-            layer.alert('请上传封面图！',3,'提示信息');
+            layer.alert('请上传首页图！',3,'提示信息');
             return false;
         }else if(intro == null || intro == ""){
             layer.alert('请填写课程目标信息！',3,'提示信息');
@@ -317,4 +317,51 @@ function valSku(attrs){
     divshow.text("");
     divshow.append(timehtml);
 
+}
+
+/**
+ * 添加推荐信息
+ * @param id
+ */
+function addComment(id){
+    var subId = $('#sub_id').val();
+    $.post("/sub/comment.do?subId="+subId, {comment_id:id,recommended:1},
+        function(data){
+            if(data.success == 0) {
+                var divshow = $("#content_div");
+                divshow.text("");
+                divshow.append(data.ntComments);
+
+                var ntdivshow = $("#t_div");
+                ntdivshow.text("");
+                ntdivshow.append(data.tComments);
+            }else{
+                layer.alert(data.msg,3,'提示信息');
+            }
+        }, "json");
+}
+
+/**
+ * 取消推荐信息
+ * @param id
+ */
+function cancelComment(id){
+    var subId = $('#sub_id').val();
+    layer.confirm('您确定要取消此推荐吗？', function(index){
+        $.post("/sub/comment.do?subId="+subId, {comment_id:id,recommended:0},
+            function(data){
+                if(data.success == 0) {
+                    var divshow = $("#content_div");
+                    divshow.text("");
+                    divshow.append(data.ntComments);
+
+                    var ntdivshow = $("#t_div");
+                    ntdivshow.text("");
+                    ntdivshow.append(data.tComments);
+                }else{
+                    layer.alert(data.msg,3,'提示信息');
+                }
+            }, "json");
+        layer.close(index);
+    });
 }

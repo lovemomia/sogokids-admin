@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * 机构信息
  * Created by hoze on 15/10/20.
  */
 @Controller
@@ -27,6 +28,12 @@ public class InstitutionController {
     @Autowired
     private InstitutionService institutionService;
 
+    /**
+     *机构－列表
+     * @param uid
+     * @param req
+     * @return
+     */
     @RequestMapping("/info")
     public ModelAndView info(@RequestParam("uid") int uid, HttpServletRequest req){
         Map<String, Object> context = new HashMap<String, Object>();
@@ -35,6 +42,13 @@ public class InstitutionController {
         return new ModelAndView(adminUserService.isUserFunc(req,JumpPage.INST),context);
     }
 
+    /**
+     *机构－操作跳转
+     * @param uid
+     * @param id
+     * @param req
+     * @return
+     */
     @RequestMapping("/oper")
     public ModelAndView operation(@RequestParam("uid") int uid,@RequestParam("id") int id,HttpServletRequest req){
         String reStr = JumpPage.INST_EDIT;
@@ -48,6 +62,12 @@ public class InstitutionController {
         return new ModelAndView(reStr,context);
     }
 
+    /**
+     * 机构－创建
+     * @param uid
+     * @param req
+     * @return
+     */
     @RequestMapping("/add")
     public ModelAndView addEntity(@RequestParam("uid") int uid, HttpServletRequest req){
 
@@ -63,6 +83,13 @@ public class InstitutionController {
         return new ModelAndView(JumpPage.INST,context);
     }
 
+    /**
+     * 机构－编辑
+     * @param uid
+     * @param id
+     * @param req
+     * @return
+     */
     @RequestMapping("/edit")
     public ModelAndView editEntity(@RequestParam("uid") int uid,@RequestParam("id") int id, HttpServletRequest req){
 
@@ -78,6 +105,13 @@ public class InstitutionController {
         return new ModelAndView(JumpPage.INST,context);
     }
 
+    /**
+     * 机构－删除
+     * @param uid
+     * @param id
+     * @param req
+     * @return
+     */
     @RequestMapping("/del")
     public ModelAndView delEntity(@RequestParam("uid") int uid,@RequestParam("id") int id, HttpServletRequest req){
 

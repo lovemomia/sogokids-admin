@@ -81,7 +81,14 @@
                 <li><a href="${ctx}/sub/info.do?uid=${user.id}"><i class="fa fa-connectdevelop"></i> <span class="nav-label">课程体系</span> </a></li>
                 <li><a href="${ctx}/book/info.do?uid=${user.id}"><i class="fa fa-leanpub"></i> <span class="nav-label">试听课程</span> </a></li>
                 <li><a href="${ctx}/one/info.do?uid=${user.id}"><i class="fa fa-drupal"></i> <span class="nav-label">推荐课程</span> </a></li>
-                <li><a href="${ctx}/group/info.do?uid=${user.id}"><i class="fa fa-building"></i> <span class="nav-label">批量选课</span> </a></li>
+                <li class="active">
+                    <a href="index.jsp#"><i class="fa fa-bar-chart"></i> <span class="nav-label">查询统计</span><span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li><a href="${ctx}/query/info.do?uid=${user.id}"><i class="fa fa-pie-chart"></i> <span class="nav-label">选课查询</span> </a></li>
+                        <li class="active"><a href="${ctx}/query/order.do?uid=${user.id}"><i class="fa fa-rub"></i> <span class="nav-label">订单查询</span> </a></li>
+                    </ul>
+                </li>
+                <li><a href="${ctx}/discuss/info.do?uid=${user.id}"><i class="fa fa-comments-o"></i> <span class="nav-label">话题管理</span></a></li>
                 <li>
                     <a href="index.jsp#"><i class="fa fa-user-secret"></i> <span class="nav-label">老师管理</span><span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
@@ -91,13 +98,7 @@
                         <li><a href="${ctx}/teacher/material.do?uid=${user.id}"><i class="fa fa-delicious"></i> <span class="nav-label">教案更新</span></a></li>
                     </ul>
                 </li>
-                <li class="active">
-                    <a href="index.jsp#"><i class="fa fa-bar-chart"></i> <span class="nav-label">查询统计</span><span class="fa arrow"></span></a>
-                    <ul class="nav nav-second-level">
-                        <li><a href="${ctx}/query/info.do?uid=${user.id}"><i class="fa fa-pie-chart"></i> <span class="nav-label">选课查询</span> </a></li>
-                        <li class="active"><a href="${ctx}/query/order.do?uid=${user.id}"><i class="fa fa-rub"></i> <span class="nav-label">订单查询</span> </a></li>
-                    </ul>
-                </li>
+                <li><a href="${ctx}/group/info.do?uid=${user.id}"><i class="fa fa-building"></i> <span class="nav-label">批量选课</span> </a></li>
                 <li>
                     <a href="index.jsp#"><i class="fa fa-home"></i> <span class="nav-label">首页配置</span><span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
@@ -247,115 +248,107 @@
             <div class="ibox-content">
                 <div class="row">
                     <div class="col-lg-12">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                基本信息
+                        <div class="col-lg-10 col-sm-offset-1">
+                            <h4>订单详情</h4>
+                            <div class="jqGrid_wrapper">
+                                <table class="table table-striped table-bordered table-hover">
+                                    <tr>
+                                        <td>订单号</td>
+                                        <td>${order.id}</td>
+                                        <td>金额</td>
+                                        <td>${order.priceSum}元</td>
+                                    </tr>
+                                    <tr>
+                                        <td>用户名</td>
+                                        <td>${order.customer.nickName}</td>
+                                        <td>交易方式</td>
+                                        <td>
+                                            <c:choose>
+                                                <c:when test="${order.payment.payType == 21}">
+                                                    微信APP支付
+                                                </c:when>
+                                                <c:when test="${order.payment.payType == 22}">
+                                                    微信公众号支付
+                                                </c:when>
+                                                <c:when test="${order.payment.payType == 1}">
+                                                    支付宝支付
+                                                </c:when>
+                                                <c:otherwise>
+                                                    未支付
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>手机号</td>
+                                        <td>${order.customer.mobile}</td>
+                                        <td>订单状态</td>
+                                        <td>
+                                            <c:choose>
+                                                <c:when test="${order.status == 1 || order.status == 2}">
+                                                    未付款
+                                                </c:when>
+                                                <c:when test="${order.status == 3 || order.status == 4}">
+                                                    已付款
+                                                </c:when>
+                                                <c:when test="${order.status == 5}">
+                                                    退款中
+                                                </c:when>
+                                                <c:otherwise>
+                                                    已退款
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </td>
+                                    </tr>
+                                </table>
                             </div>
-                            <div class="panel-body">
-                                <p>
-                                    <table class="table table-striped table-bordered table-hover dataTables-example">
+                        </div>
+                        <div class="col-lg-10 col-sm-offset-1">
+                            <h4>课程详情</h4>
+                            <div class="jqGrid_wrapper">
+                                <c:forEach items="${order.orderPackages}" var="package">
+                                    <table class="table table-striped table-bordered table-hover">
                                         <tr>
-                                            <td>订单号</td>
-                                            <td>${order.id}</td>
-                                            <td>用户昵称</td>
-                                            <td>${order.customer.nickName}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>联系方式</td>
-                                            <td>${order.customer.mobile}</td>
-                                            <td>订单金额</td>
-                                            <td>${order.priceSum}元</td>
-                                        </tr>
-                                        <tr>
-                                            <td>交易方式</td>
-                                            <td>
+                                            <td colspan="3" style="align-content: center"><font color="#1AB394">
                                                 <c:choose>
-                                                    <c:when test="${order.payment.payType == 21}">
-                                                        微信APP支付
+                                                    <c:when test="${package.originType == 2}">
+                                                        <c:out value="${package.courses[0].keyWord}"></c:out> 试听课
                                                     </c:when>
-                                                    <c:when test="${order.payment.payType == 22}">
-                                                        微信公众号支付
-                                                    </c:when>
-                                                    <c:when test="${order.payment.payType == 1}">
-                                                        支付宝支付
+                                                    <c:when test="${package.originType == 3}">
+                                                        <c:out value="${package.courses[0].keyWord}"></c:out> 热门推荐
                                                     </c:when>
                                                     <c:otherwise>
-                                                        未支付
+                                                        <c:out value="${package.price}"></c:out>元  <c:out value="${order.subject.title}"></c:out>
                                                     </c:otherwise>
                                                 </c:choose>
-                                            </td>
-                                            <td></td>
-                                            <td></td>
+                                            </font></td>
                                         </tr>
+                                        <tr>
+                                            <td style="width: 40%;">课程名</td>
+                                            <td style="width: 30%;">上课时间</td>
+                                            <td style="width: 30%;">上课地点</td>
+                                        </tr>
+                                        <c:choose>
+                                            <c:when test="${package.courses.size() > 0}">
+                                                <c:forEach items="${package.courses}" var="course">
+                                                    <tr>
+                                                        <td><c:out value="${course.title}"></c:out></td>
+                                                        <td><c:out value="${course.courseSkus[0].startTime}"></c:out></td>
+                                                        <td><c:out value="${course.courseSkus[0].placeName}"></c:out></td>
+                                                    </tr>
+                                                </c:forEach>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <tr><td colspan="3" align="center">没有所选课程!</td></tr>
+                                            </c:otherwise>
+                                        </c:choose>
                                     </table>
-                                </p>
-                            </div>
+                                </c:forEach>
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    课程详情
-                                </div>
-                                <div class="panel-body">
-                                    <c:forEach items="${order.orderPackages}" var="package">
-                                    <div class="row">
-                                        <div class="col-lg-12">
-                                            <div class="panel panel-default">
-                                                <div class="panel-heading">
-                                                    套餐编号:<c:out value="${package.id}"></c:out>
-                                                </div>
-                                                <div class="panel-body">
-                                                    <p>
-                                                    <div>
-                                                        <ul>
-                                                            <li>总课程:<c:out value="${package.courseCount}"></c:out></li>
-                                                            <li>剩余课程:<c:out value="${package.bookableCount}"></c:out></li>
-                                                            <li>已选课程:<c:out value="${package.courseCount-package.bookableCount}"></c:out></li>
-                                                            <li>套餐金额:<c:out value="${package.price}"></c:out></li>
-                                                            <li>套餐时间:<c:out value="${package.subjectSku.dateTime}"></c:out></li>
-                                                        </ul>
-                                                    </div>
-                                                    <p>
-                                                    <table class="table table-striped table-bordered table-hover dataTables-example">
-                                                        <thead>
-                                                        <tr>
-                                                            <th>编号</th>
-                                                            <th>课程名称</th>
-                                                            <th>活动时间</th>
-                                                            <th>活动地址</th>
-                                                        </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                        <c:choose>
-                                                            <c:when test="${package.courses.size() > 0}">
-                                                                <c:forEach items="${package.courses}" var="course">
-                                                                    <tr>
-                                                                        <td><c:out value="${course.id}"></c:out></td>
-                                                                        <td><c:out value="${course.title}"></c:out></td>
-                                                                        <td><c:out value="${course.courseSkus[0].startTime}"></c:out></td>
-                                                                        <td><c:out value="${course.courseSkus[0].placeName}"></c:out></td>
-                                                                    </tr>
-                                                                </c:forEach>
-                                                            </c:when>
-                                                            <c:otherwise>
-                                                                <tr><td colspan="4" align="center">没有所选课程!</td></tr>
-                                                            </c:otherwise>
-                                                        </c:choose>
+                </div>
 
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    </c:forEach>
-                                </div>
-                            </div>
-                        </div>
-            </div>
         </div>
         <div class="footer">
             <div class="pull-right">

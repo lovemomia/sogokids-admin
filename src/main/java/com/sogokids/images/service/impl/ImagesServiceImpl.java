@@ -17,6 +17,8 @@ import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -30,6 +32,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
@@ -43,6 +46,8 @@ import java.util.Random;
  */
 @Service
 public class ImagesServiceImpl implements ImagesService {
+
+    private final Logger log = LoggerFactory.getLogger(ImagesServiceImpl.class);
 
     @Autowired
     private Configuration configuration;
@@ -177,7 +182,7 @@ public class ImagesServiceImpl implements ImagesService {
         try {
             multipartRequest = (MultipartHttpServletRequest) req;
         }catch(Exception _ex){
-            _ex.printStackTrace();
+            log.error("ImagesServiceImpl->uploadImg->error:" + _ex.getMessage());
         }
         Collection<MultipartFile> fileList = getMultipartFiles(isName, imgName, multipartRequest);//获取页面请求数据的File列表
         File file_n = null;
@@ -196,11 +201,45 @@ public class ImagesServiceImpl implements ImagesService {
             try {
                 sendHttpPost(upload_url, file_n, result, isCut);//发送文件上传请求并得到返回结果
             } catch (IOException e) {
-                e.printStackTrace();
+                log.error("ImagesServiceImpl->uploadImg->error:"+e.getMessage());
             }
         }
 
         return result;
+    }
+
+    @Override
+    public List<Images> uploadMoreImg(HttpServletRequest req,int isName,String imgName,String isCut){
+        List<Images> images = new ArrayList<Images>();
+//        int int_flag = 0;
+        String upload_url = configuration.getString(Quantity.UPLOAD_IMAGE);
+        MultipartHttpServletRequest multipartRequest = null;
+        try {
+            multipartRequest = (MultipartHttpServletRequest) req;
+        } catch (Exception _ex) {
+            log.error("ImagesServiceImpl->uploadMoreImg->error:"+_ex.getMessage());
+        }
+        Collection<MultipartFile> fileList = getMultipartFiles(isName, imgName, multipartRequest);//获取页面请求数据的File列表
+        File file_n = null;
+        for (MultipartFile file : fileList) {
+            Images result = new Images();
+            String filename = file.getOriginalFilename();
+            if (filename == null || filename.equals("")){
+                getImagesResult(result,null,0);//文件不存在时返回的images对象
+            }else{
+                CommonsMultipartFile cf= (CommonsMultipartFile)file;
+                DiskFileItem fi = (DiskFileItem)cf.getFileItem();
+                file_n = fi.getStoreLocation();
+                try {
+                    sendHttpPost(upload_url, file_n, result, isCut);//发送文件上传请求并得到返回结果
+                } catch (IOException e) {
+                    log.error("ImagesServiceImpl->uploadMoreImg->error:"+e.getMessage());
+                }
+            }
+            images.add(result);
+        }
+
+        return images;
     }
 
     /**
@@ -243,7 +282,8 @@ public class ImagesServiceImpl implements ImagesService {
 
         HttpResponse response = httpClient.execute(httpPost);
         if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
-            throw new RuntimeException("fail to execute request: " + httpPost);
+            log.error("fail to execute request: " + httpPost);
+//            throw new RuntimeException("fail to execute request: " + httpPost);
         }
         HttpEntity resEntity = response.getEntity();
         String entityStr = EntityUtils.toString(resEntity);
@@ -251,7 +291,8 @@ public class ImagesServiceImpl implements ImagesService {
         if (map.get("errmsg").equals("success")) {
             getImagesResult(result,map,1);
         } else {
-            throw new RuntimeException("image upload failure:errorCode-" + map.get("errmsg"));
+            log.error("image upload failure:errorCode->"+map.get("errmsg"));
+//            throw new RuntimeException("image upload failure:errorCode-" + map.get("errmsg"));
         }
     }
 
