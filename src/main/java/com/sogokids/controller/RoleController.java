@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * 用户角色
  * Created by hoze on 15/8/25.
  */
 @Controller
@@ -37,6 +38,12 @@ public class RoleController {
     @Autowired
     private FuncService funcService;
 
+    /**
+     *用户角色－列表
+     * @param uid
+     * @param req
+     * @return
+     */
     @RequestMapping("/info")
     public ModelAndView info(@RequestParam("uid") int uid,HttpServletRequest req){
         Map<String, Object> context = new HashMap<String, Object>();
@@ -45,6 +52,13 @@ public class RoleController {
         return new ModelAndView(userService.isUserFunc(req,JumpPage.ROLE),context);
     }
 
+    /**
+     *用户角色－操作跳转
+     * @param uid
+     * @param id
+     * @param req
+     * @return
+     */
     @RequestMapping("/oper")
     public ModelAndView operation(@RequestParam("uid") int uid,@RequestParam("id") int id, HttpServletRequest req){
         String reStr = JumpPage.ROLE_EDIT;
@@ -65,6 +79,12 @@ public class RoleController {
         return new ModelAndView(reStr,context);
     }
 
+    /**
+     *用户角色－创建
+     * @param uid
+     * @param req
+     * @return
+     */
     @RequestMapping("/add")
     public ModelAndView addEntity(@RequestParam("uid") int uid, HttpServletRequest req){
         Map<String, Object> context = new HashMap<String, Object>();
@@ -80,6 +100,13 @@ public class RoleController {
         return new ModelAndView(JumpPage.ROLE,context);
     }
 
+    /**
+     *用户角色－编辑
+     * @param uid
+     * @param id
+     * @param req
+     * @return
+     */
     @RequestMapping("/edit")
     public ModelAndView editEntity(@RequestParam("uid") int uid,@RequestParam("id") int id, HttpServletRequest req){
 
@@ -95,6 +122,13 @@ public class RoleController {
         return new ModelAndView(JumpPage.ROLE,context);
     }
 
+    /**
+     *用户角色－删除
+     * @param uid
+     * @param id
+     * @param req
+     * @return
+     */
     @RequestMapping("/del")
     public ModelAndView delEntity(@RequestParam("uid") int uid,@RequestParam("id") int id, HttpServletRequest req){
 
@@ -110,8 +144,15 @@ public class RoleController {
         return new ModelAndView(JumpPage.ROLE,context);
     }
 
+    /**
+     * 用户角色－角色权限
+     * @param uid
+     * @param mark
+     * @param req
+     * @return
+     */
     @RequestMapping("/roleFunc")
-    public ModelAndView editFunc(@RequestParam("uid") int uid,@RequestParam("mark") int mark, HttpServletRequest req){
+    public ModelAndView roleFunc(@RequestParam("uid") int uid,@RequestParam("mark") int mark, HttpServletRequest req){
 
         Map<String, Object> context = new HashMap<String, Object>();
 

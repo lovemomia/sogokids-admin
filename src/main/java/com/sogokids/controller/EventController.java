@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * event信息
  * Created by hoze on 15/10/13.
  */
 @Controller
@@ -35,6 +36,12 @@ public class EventController {
     @Autowired
     private AppVersionService appVersionService;
 
+    /**
+     * event列表
+     * @param uid
+     * @param req
+     * @return
+     */
     @RequestMapping("/info")
     public ModelAndView info(@RequestParam("uid") int uid, HttpServletRequest req){
         Map<String, Object> context = new HashMap<String, Object>();
@@ -43,6 +50,13 @@ public class EventController {
         return new ModelAndView(adminUserService.isUserFunc(req,JumpPage.EVENT),context);
     }
 
+    /**
+     * event操作跳转
+     * @param uid
+     * @param id
+     * @param req
+     * @return
+     */
     @RequestMapping("/oper")
     public ModelAndView operation(@RequestParam("uid") int uid,@RequestParam("id") int id,HttpServletRequest req){
         String reStr = JumpPage.EVENT_EDIT;
@@ -55,10 +69,17 @@ public class EventController {
         context.put("versions", appVersionService.getEntitys());
         context.put("citys", cityService.getEntitys());
         context.put("platforms", EnumUtil.getEnums(Quantity.STATUS_NINE));
+        context.put("types", EnumUtil.getEnums(Quantity.STATUS_ELEVEN));
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
         return new ModelAndView(reStr,context);
     }
 
+    /**
+     * 创建event信息
+     * @param uid
+     * @param req
+     * @return
+     */
     @RequestMapping("/add")
     public ModelAndView addEntity(@RequestParam("uid") int uid, HttpServletRequest req){
 
@@ -74,6 +95,13 @@ public class EventController {
         return new ModelAndView(JumpPage.EVENT,context);
     }
 
+    /**
+     * 编辑event信息
+     * @param uid
+     * @param id
+     * @param req
+     * @return
+     */
     @RequestMapping("/edit")
     public ModelAndView editEntity(@RequestParam("uid") int uid,@RequestParam("id") int id, HttpServletRequest req){
 
@@ -89,6 +117,13 @@ public class EventController {
         return new ModelAndView(JumpPage.EVENT,context);
     }
 
+    /**
+     * 删除event信息
+     * @param uid
+     * @param id
+     * @param req
+     * @return
+     */
     @RequestMapping("/del")
     public ModelAndView delEntity(@RequestParam("uid") int uid,@RequestParam("id") int id, HttpServletRequest req){
 

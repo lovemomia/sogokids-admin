@@ -218,7 +218,7 @@ public class CourseTimeQueryServiceImpl implements CourseTimeQueryService {
      * @return
      */
     private CourseUser getCourseUserOrigin(CourseUser courseUser){
-        String sql = "SELECT a.Id,b.id as s_skuid,b.SubjectId,b.CourseId,b.Price,c.Type,c.Title FROM sogokids.SG_SubjectOrderPackage a, sogokids.SG_SubjectSku b, sogokids.SG_Subject c where a.Id = ? and a.SkuId = b.Id and b.SubjectId = c.Id and a.Status > ? and b.Status > ? and c.Status > ? and b.Status != ? ";
+        String sql = "SELECT a.Id,b.id as s_skuid,b.SubjectId,b.CourseId,b.Price,c.Type,c.Title FROM SG_SubjectOrderPackage a, SG_SubjectSku b, SG_Subject c where a.Id = ? and a.SkuId = b.Id and b.SubjectId = c.Id and a.Status > ? and b.Status > ? and c.Status > ? and b.Status != ? ";
         Object [] params = new Object[]{courseUser.getPackageId(), Quantity.STATUS_ZERO, Quantity.STATUS_ZERO, Quantity.STATUS_ZERO, Quantity.STATUS_THREE};
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql, params);
         if (list.size() > 0){
@@ -300,7 +300,7 @@ public class CourseTimeQueryServiceImpl implements CourseTimeQueryService {
      * @return
      */
     private MobileUser getMobileUserOrigin(MobileUser mobileUser){
-        String sql = "SELECT a.Id,b.id as s_skuid,b.SubjectId,b.CourseId,b.Price,c.Type,c.Title FROM sogokids.SG_SubjectOrderPackage a, sogokids.SG_SubjectSku b, sogokids.SG_Subject c where a.Id = ? and a.SkuId = b.Id and b.SubjectId = c.Id and a.Status > ? and b.Status > ? and c.Status > ? and b.Status != ? ";
+        String sql = "SELECT a.Id,b.id as s_skuid,b.SubjectId,b.CourseId,b.Price,c.Type,c.Title FROM SG_SubjectOrderPackage a, SG_SubjectSku b, SG_Subject c where a.Id = ? and a.SkuId = b.Id and b.SubjectId = c.Id and a.Status > ? and b.Status > ? and c.Status > ? and b.Status != ? ";
         Object [] params = new Object[]{mobileUser.getPackageId(), Quantity.STATUS_ZERO, Quantity.STATUS_ZERO, Quantity.STATUS_ZERO, Quantity.STATUS_THREE};
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql, params);
         if (list.size() > 0){

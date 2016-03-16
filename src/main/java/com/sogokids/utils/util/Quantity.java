@@ -1,6 +1,7 @@
 package com.sogokids.utils.util;
 
 /**
+ * 常量值定义类
  * Created by hoze on 15/8/25.
  */
 public class Quantity {
@@ -35,7 +36,9 @@ public class Quantity {
     public static final String UPLOAD_QZ_LEAVE = "ServicePort.PortUrl.QzLeavePath";
     public static final String UPLOAD_GROUP_COURSE = "ServicePort.PortUrl.GroupCoursePath";
     public static final String UPLOAD_APP_PUSH = "ServicePort.PortUrl.AppPushPath";
+    public static final String UPLOAD_USERS_APP_PUSH = "ServicePort.PortUrl.UsersAppPushPath";
     public static final String UPLOAD_SMS = "ServicePort.PortUrl.SmsPath";
+    public static final String UPLOAD_CANCEL_COURSE = "ServicePort.PortUrl.CancelCoursePath";
 
     public static final String SERVICE_PORT_TIME = "ServicePort.PortTime.Time";
     public static final String SERVICE_PORT_KEY = "ServicePort.PortKey";
@@ -58,21 +61,32 @@ public class Quantity {
     public static final String RETURN_BUSINESS_Y_S = "yProducts";
     public static final String RETURN_BUSINESS_W_S = "wProducts";
 
+    //推荐课购买须知默认值
     public static final String GMXZ_STR =
-            "- 购买后，请在“我的-待选课程”中预约您的课程，才算选课成功；\n" +
-            "- 每组家庭限1大1小参与，增加1个孩子需再购买1个课程；\n" +
-            "- 预约课程，至少提前1天（例如：周六的课程，周五不能再选课）；\n" +
-            "- 退订或修改课程，至少提前3天（例如：周六的课程，周四不可退改）。";
+            "- 购买后，请在“我的-预约课程”中预约您喜欢的课程，预约之后才能上课哦；\n" +
+                    "- 自购买日起必须在1个月内选课，超出1个月课程作废；\n" +
+                    "- 每组家庭建议1大1小参与，每增加1个孩子需再购买1个课程；\n" +
+                    "- 很多课程非常火爆，建议您至少提前3天预约哦；\n" +
+                    "- 预约课程后，若需改期，请于开课前3天在“我的-已选课程”取消，然后重新选课；低于这个时间，就不能改期啦；\n" +
+                    "- 开课前1天不支持预约课程（如：周六开课，周五就不能预约课程了）；\n" +
+                    "- 如需申请退款，则需在开课前2天，跟客服提前申请，否则不予退款。";
 
     public static final String GZMS_STR = "限1大1小参加";
 
+    //试听课购买须知默认值
     public static final String ST_GMXZ_STR =
-            "- 购买后，请在“我的-待选课程”中预约您的课程，才算选课成功；\n" +
-                    "- 预约成功的试听课不可退换，不可改期；\n" +
-                    "- 预约课程，至少提前1天（例如：周六的课程，周五不能再选课）。";
+            "- 每个用户只有一次试听机会，限1大1小参与；\n" +
+                    "- 购买1元试听后，只能约10天之内的课程，自购买日起超出10天没约课，试听机会作废；\n" +
+                    "- 购买后，请在“我的-预约课程”中预约您的课程，预约之后才能上课哦；\n" +
+                    "- 试听课不支持退款，不支持改期；\n" +
+                    "- 开课前1天不支持预约课程（如：周六开课，周五就不能预约课程了）。";
 
+    //老师审核－消息发送
     public static final String MS_TEMPLATE = "xxx，您好！您已通过简历筛选，请于####，到*****进行面试。";
     public static final String BTG_TEMPLATE = "xxx，您好！感谢您信任松果亲子，您的####与我们的要求暂不匹配，欢迎您过段时间再次申请。";
-
+    //取消课程－取消原因
+    public static final String CANCEL_COURSE_SMS = "非常抱歉地通知您，xxx，####课程要被取消了。不过别担心，您课程包的有效期将延期一个月，再去看看其他感兴趣的课程吧~";
+    public static final String CANCEL_COURSE_APP = "嘤嘤嘤，对不起，xxx，本次课程要被取消了。不过别担心，大家课程包的有效期将延期一个月，再去看看其他感兴趣的课程吧~";
+    public static final String CANCEL_COURSE_URL = "duoladebug://book";
 
 }

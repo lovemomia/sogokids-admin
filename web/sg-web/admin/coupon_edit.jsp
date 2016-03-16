@@ -29,41 +29,9 @@
 
     <!-- layerDate plugin javascript -->
     <script src="${ctx}/sg-web/js/plugins/layer/laydate/laydate.js"></script>
+    <!-- layer javascript -->
+    <script src="${ctx}/sg-web/js/plugins/layer/layer.min.js"></script>
 
-    <script>
-        //外部js调用
-        laydate({
-            elem: '#hello', //目标元素。由于laydate.js封装了一个轻量级的选择器引擎，因此elem还允许你传入class、tag但必须按照这种方式 '#id .class'
-            event: 'focus' //响应事件。如果没有传入event，则按照默认的click
-        });
-
-        //日期范围限制
-        var start = {
-            elem: '#startTime',
-            format: 'YYYY-MM-DD hh:mm:ss',
-            min: laydate.now(), //设定最小日期为当前日期
-            max: '2099-06-16 23:59:59', //最大日期
-            istime: true,
-            istoday: false,
-            choose: function (datas) {
-                end.min = datas; //开始日选好后，重置结束日的最小日期
-                end.start = datas //将结束日的初始值设定为开始日
-            }
-        };
-        var end = {
-            elem: '#endTime',
-            format: 'YYYY-MM-DD hh:mm:ss',
-            min: laydate.now(),
-            max: '2099-06-16 23:59:59',
-            istime: true,
-            istoday: false,
-            choose: function (datas) {
-                start.max = datas; //结束日选好后，重置开始日的最大日期
-            }
-        };
-        laydate(start);
-        laydate(end);
-    </script>
 
 </head>
 
@@ -97,7 +65,14 @@
                 <li><a href="${ctx}/sub/info.do?uid=${user.id}"><i class="fa fa-connectdevelop"></i> <span class="nav-label">课程体系</span> </a></li>
                 <li><a href="${ctx}/book/info.do?uid=${user.id}"><i class="fa fa-leanpub"></i> <span class="nav-label">试听课程</span> </a></li>
                 <li><a href="${ctx}/one/info.do?uid=${user.id}"><i class="fa fa-drupal"></i> <span class="nav-label">推荐课程</span> </a></li>
-                <li><a href="${ctx}/group/info.do?uid=${user.id}"><i class="fa fa-building"></i> <span class="nav-label">批量选课</span> </a></li>
+                <li>
+                    <a href="index.jsp#"><i class="fa fa-bar-chart"></i> <span class="nav-label">查询统计</span><span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li><a href="${ctx}/query/info.do?uid=${user.id}"><i class="fa fa-pie-chart"></i> <span class="nav-label">选课查询</span> </a></li>
+                        <li><a href="${ctx}/query/order.do?uid=${user.id}"><i class="fa fa-rub"></i> <span class="nav-label">订单查询</span> </a></li>
+                    </ul>
+                </li>
+                <li><a href="${ctx}/discuss/info.do?uid=${user.id}"><i class="fa fa-comments-o"></i> <span class="nav-label">话题管理</span></a></li>
                 <li>
                     <a href="index.jsp#"><i class="fa fa-user-secret"></i> <span class="nav-label">老师管理</span><span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
@@ -107,13 +82,7 @@
                         <li><a href="${ctx}/teacher/material.do?uid=${user.id}"><i class="fa fa-delicious"></i> <span class="nav-label">教案更新</span></a></li>
                     </ul>
                 </li>
-                <li>
-                    <a href="index.jsp#"><i class="fa fa-bar-chart"></i> <span class="nav-label">查询统计</span><span class="fa arrow"></span></a>
-                    <ul class="nav nav-second-level">
-                        <li><a href="${ctx}/query/info.do?uid=${user.id}"><i class="fa fa-pie-chart"></i> <span class="nav-label">选课查询</span> </a></li>
-                        <li><a href="${ctx}/query/order.do?uid=${user.id}"><i class="fa fa-rub"></i> <span class="nav-label">订单查询</span> </a></li>
-                    </ul>
-                </li>
+                <li><a href="${ctx}/group/info.do?uid=${user.id}"><i class="fa fa-building"></i> <span class="nav-label">批量选课</span> </a></li>
                 <li>
                     <a href="index.jsp#"><i class="fa fa-home"></i> <span class="nav-label">首页配置</span><span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
@@ -261,7 +230,7 @@
         </div>
         <div class="row">
             <div class="ibox-content">
-                <form class="form-horizontal" id="vform" action="${ctx}/coupon/edit.do?uid=${user.id}&id=${model.id}" method="post">
+                <form class="form-horizontal" id="coupon_form" action="${ctx}/coupon/edit.do?uid=${user.id}&id=${model.id}" method="post">
                     <fieldset>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">红包标题</label>
@@ -280,7 +249,16 @@
                             <label class="col-sm-2 control-label">红包用途 </label>
                             <div class="col-sm-3">
                                 <select id="src" name="src" class="form-control" >
-                                    <option value="1">注册赠送</option>
+                                    <c:forEach items="${couponSrc}" var="node">
+                                        <c:choose>
+                                            <c:when test="${node.id == model.src}">
+                                                <option value="${node.id}" selected>${node.name}</option>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <option value="${node.id}">${node.name}</option>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </c:forEach>
                                 </select>
                             </div>
                             <label class="col-sm-2 control-label">红包数量</label>
@@ -372,7 +350,7 @@
                         <div class="hr-line-dashed"></div>
                         <div class="form-group">
                             <div class="col-sm-4 col-sm-offset-5">
-                                <button class="btn btn-primary" type="submit">保存内容</button>
+                                <button class="btn btn-primary" type="button" id="coupon_save" name="coupon_save">保存内容</button>
                             </div>
                         </div>
                     </fieldset>
@@ -389,6 +367,32 @@
         </div>
     </div>
 </div>
-</div>
+<script language="JavaScript">
+    $(function () {
+        $('#coupon_save').click(function(){
+            var title = $('#title').val();
+            var count= $('#count').val();
+            var startTime = $('#startTime').val();
+            var endTime= $('#endTime').val();
+            var onlineTime = $('#onlineTime').val();
+            var offlineTime = $('#offlineTime').val();
+            if(title = null || title == ""){
+                layer.alert("标题不能为空,请输入",3,'提示信息');
+                return false;
+            } else if(count == null || count == ""){
+                layer.alert("数量不能为空,请输入",3,'提示信息');
+                return false;
+            }else if(startTime == null || startTime == "" || endTime == null || endTime == ""){
+                layer.alert("有效期不能为空,请输入",3,'提示信息');
+                return false;
+            }else if(onlineTime == null || onlineTime == "" || offlineTime == null || offlineTime == ""){
+                layer.alert("上下线时间不能为空,请输入",3,'提示信息');
+                return false;
+            }else{
+                $('#coupon_form').submit();
+            }
+        });
+    });
+</script>
 </body>
 </html>

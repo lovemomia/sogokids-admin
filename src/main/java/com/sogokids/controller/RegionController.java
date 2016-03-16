@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * 区域信息
  * Created by hoze on 15/7/6.
  */
 @Controller
@@ -34,6 +35,12 @@ public class RegionController {
     @Autowired
     private UserService adminUserService;
 
+    /**
+     * 区域－列表
+     * @param uid
+     * @param req
+     * @return
+     */
     @RequestMapping("/info")
     public ModelAndView info(@RequestParam("uid") int uid, HttpServletRequest req){
         Map<String, Object> context = new HashMap<String, Object>();
@@ -42,6 +49,14 @@ public class RegionController {
         return new ModelAndView(adminUserService.isUserFunc(req,JumpPage.REGION),context);
     }
 
+    /**
+     * 区域－操作跳转
+     * @param uid
+     * @param id
+     * @param mark
+     * @param req
+     * @return
+     */
     @RequestMapping("/oper")
     public ModelAndView operation(@RequestParam("uid") int uid,@RequestParam("id") int id, @RequestParam("mark") int mark,HttpServletRequest req){
         String reStr = JumpPage.REGION_EDIT;
@@ -65,6 +80,12 @@ public class RegionController {
         return new ModelAndView(reStr,context);
     }
 
+    /**
+     * 区域－创建
+     * @param uid
+     * @param req
+     * @return
+     */
     @RequestMapping("/add")
     public ModelAndView addEntity(@RequestParam("uid") int uid, HttpServletRequest req){
 
@@ -80,6 +101,13 @@ public class RegionController {
         return new ModelAndView(JumpPage.REGION,context);
     }
 
+    /**
+     * 区域－编辑
+     * @param uid
+     * @param id
+     * @param req
+     * @return
+     */
     @RequestMapping("/edit")
     public ModelAndView editEntity(@RequestParam("uid") int uid,@RequestParam("id") int id, HttpServletRequest req){
 
@@ -95,6 +123,13 @@ public class RegionController {
         return new ModelAndView(JumpPage.REGION,context);
     }
 
+    /**
+     * 区域－删除
+     * @param uid
+     * @param id
+     * @param req
+     * @return
+     */
     @RequestMapping("/del")
     public ModelAndView delEntity(@RequestParam("uid") int uid,@RequestParam("id") int id, HttpServletRequest req){
 

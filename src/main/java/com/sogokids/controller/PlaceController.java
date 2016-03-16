@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * 商户地址信息
  * Created by hoze on 15/6/15.
  */
 @Controller
@@ -46,6 +47,12 @@ public class PlaceController {
     @Autowired
     private RegionService regionService;
 
+    /**
+     *商家地址－列表
+     * @param uid
+     * @param req
+     * @return
+     */
     @RequestMapping("/info")
     public ModelAndView info(@RequestParam("uid") int uid, HttpServletRequest req){
         Map<String, Object> context = new HashMap<String, Object>();
@@ -54,6 +61,14 @@ public class PlaceController {
         return new ModelAndView(adminUserService.isUserFunc(req,JumpPage.PLACE),context);
     }
 
+    /**
+     *商家地址－操作跳转
+     * @param uid
+     * @param id
+     * @param mark
+     * @param req
+     * @return
+     */
     @RequestMapping("/oper")
     public ModelAndView operation(@RequestParam("uid") int uid,@RequestParam("id") int id, @RequestParam("mark") int mark,HttpServletRequest req){
         String reStr = JumpPage.PLACE_EDIT;
@@ -74,6 +89,12 @@ public class PlaceController {
         return new ModelAndView(reStr,context);
     }
 
+    /**
+     *商家地址－创建
+     * @param uid
+     * @param req
+     * @return
+     */
     @RequestMapping("/add")
     public ModelAndView addEntity(@RequestParam("uid") int uid, HttpServletRequest req){
 
@@ -89,6 +110,13 @@ public class PlaceController {
         return new ModelAndView(JumpPage.PLACE,context);
     }
 
+    /**
+     *商家地址－编辑
+     * @param uid
+     * @param id
+     * @param req
+     * @return
+     */
     @RequestMapping("/edit")
     public ModelAndView editEntity(@RequestParam("uid") int uid,@RequestParam("id") int id, HttpServletRequest req){
 
@@ -104,6 +132,13 @@ public class PlaceController {
         return new ModelAndView(JumpPage.PLACE,context);
     }
 
+    /**
+     *商家地址－删除
+     * @param uid
+     * @param id
+     * @param req
+     * @return
+     */
     @RequestMapping("/del")
     public ModelAndView delEntity(@RequestParam("uid") int uid,@RequestParam("id") int id, HttpServletRequest req){
 
@@ -119,6 +154,13 @@ public class PlaceController {
         return new ModelAndView(JumpPage.PLACE,context);
     }
 
+    /**
+     *商家地址－创建图片
+     * @param uid
+     * @param pid
+     * @param req
+     * @return
+     */
     @RequestMapping("/addimg")
     public ModelAndView addimg(@RequestParam("uid") int uid,@RequestParam("pid") int pid, HttpServletRequest req){
 
@@ -137,6 +179,14 @@ public class PlaceController {
         return new ModelAndView(JumpPage.PLACE_IMG,context);
     }
 
+    /**
+     *商家地址－删除图片
+     * @param uid
+     * @param id
+     * @param pid
+     * @param req
+     * @return
+     */
     @RequestMapping("/delimg")
     public ModelAndView delimg(@RequestParam("uid") int uid,@RequestParam("id") int id,@RequestParam("pid") int pid, HttpServletRequest req){
 
@@ -153,6 +203,12 @@ public class PlaceController {
         return new ModelAndView(JumpPage.PLACE_IMG,context);
     }
 
+    /**
+     * 商家地址－获取联动Json数据
+     * @param req
+     * @param rsp
+     * @return
+     */
     @RequestMapping("/datajson")
     public String getJson(HttpServletRequest req,HttpServletResponse rsp){
         int id = Integer.parseInt(req.getParameter("id"));

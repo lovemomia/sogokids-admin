@@ -3,6 +3,7 @@ package com.sogokids.coupon.service.impl;
 import com.sogokids.coupon.model.Coupon;
 import com.sogokids.coupon.service.CouponService;
 import com.sogokids.utils.util.Quantity;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowCallbackHandler;
 import org.springframework.stereotype.Service;
@@ -103,7 +104,7 @@ public class CouponServiceImpl implements CouponService {
 
     @Override
     public int insert(Coupon entity) {
-        String sql = "insert into SG_Coupon(Type, Src, Count, Title, `Desc`, Discount, Consumption, TimeType, Time, TimeUnit, StartTime, EndTime, OnlineTime, OfflineTime, Status, AddTime) value(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW()) ";
+        String sql = "insert into SG_Coupon(Type, Src, Count, Title, `Desc`, Discount, Consumption, TimeType, Time, TimeUnit, StartTime, EndTime, OnlineTime, OfflineTime, Status, AddTime) value(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW()) ";
         Object [] params = new Object[]{entity.getType(), entity.getSrc(), entity.getCount(), entity.getTitle(), entity.getDesc(), entity.getDiscount(), entity.getConsumption(), entity.getTimeType(), entity.getTime(),entity.getTimeUnit(), entity.getStartTime(), entity.getEndTime(), entity.getOnlineTime(), entity.getOfflineTime(), Quantity.STATUS_ONE};
         int reData = jdbcTemplate.update(sql,params);
         return reData;
@@ -134,11 +135,14 @@ public class CouponServiceImpl implements CouponService {
         entity.setCount(Integer.parseInt(request.getParameter("count")));
         entity.setTitle(request.getParameter("title"));
         entity.setDesc(request.getParameter("desc"));
-        entity.setDiscount(Float.parseFloat(request.getParameter("discount")));
-        entity.setConsumption(Float.parseFloat(request.getParameter("consumption")));
+        String discount = StringUtils.isEmpty(request.getParameter("discount"))?"0":request.getParameter("discount");
+        entity.setDiscount(Float.parseFloat(discount));
+        String consumption = StringUtils.isEmpty(request.getParameter("consumption"))?"0":request.getParameter("consumption");
+        entity.setConsumption(Float.parseFloat(consumption));
 
         entity.setTimeType(Integer.parseInt(request.getParameter("timeType")));
-        entity.setTime(Integer.parseInt(request.getParameter("time")));
+        String time = StringUtils.isEmpty(request.getParameter("time"))?"0":request.getParameter("time");
+        entity.setTime(Integer.parseInt(time));
         entity.setTimeUnit(Integer.parseInt(request.getParameter("timeUnit")));
 
         entity.setStartTime(request.getParameter("startTime"));

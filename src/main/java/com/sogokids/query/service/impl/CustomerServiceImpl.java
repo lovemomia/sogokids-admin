@@ -83,7 +83,7 @@ public class CustomerServiceImpl implements CustomerService {
         for (Long uid : uids){
             Customer customer = this.getCustomer(Integer.parseInt(uid.toString()));
             if (customer.getId() > 0) {
-                sb.append(customer.getNickName()).append(",");
+                sb.append(customer.getNickName()).append("(").append(customer.getId()).append("),");
             }else{
                 sb.append(uid+"无用户,");
             }

@@ -1,6 +1,8 @@
 package com.sogokids.utils.util;
 
 /**
+ * 跳转控制类
+ *
  * Created by hoze on 15/8/27.
  */
 public class JumpPage {
@@ -129,5 +131,9 @@ public class JumpPage {
     public static final String CHECK_TEACHER_1 = "admin/check_teacher1";
     public static final String CHECK_TEACHER_2 = "admin/check_teacher2";
     public static final String CHECK_TEACHER_3 = "admin/check_teacher3";
+
+    public static final String DISCUSS = "admin/discuss";
+    public static final String DISCUSS_ADD = "admin/discuss_add";
+    public static final String DISCUSS_EDIT = "admin/discuss_edit";
 
 }

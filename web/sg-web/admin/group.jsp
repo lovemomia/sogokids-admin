@@ -68,7 +68,14 @@
                 <li><a href="${ctx}/sub/info.do?uid=${user.id}"><i class="fa fa-connectdevelop"></i> <span class="nav-label">课程体系</span> </a></li>
                 <li><a href="${ctx}/book/info.do?uid=${user.id}"><i class="fa fa-leanpub"></i> <span class="nav-label">试听课程</span> </a></li>
                 <li><a href="${ctx}/one/info.do?uid=${user.id}"><i class="fa fa-drupal"></i> <span class="nav-label">推荐课程</span> </a></li>
-                <li class="active"><a href="${ctx}/group/info.do?uid=${user.id}"><i class="fa fa-building"></i> <span class="nav-label">批量选课</span> </a></li>
+                <li>
+                    <a href="index.jsp#"><i class="fa fa-bar-chart"></i> <span class="nav-label">查询统计</span><span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li><a href="${ctx}/query/info.do?uid=${user.id}"><i class="fa fa-pie-chart"></i> <span class="nav-label">选课查询</span> </a></li>
+                        <li><a href="${ctx}/query/order.do?uid=${user.id}"><i class="fa fa-rub"></i> <span class="nav-label">订单查询</span> </a></li>
+                    </ul>
+                </li>
+                <li><a href="${ctx}/discuss/info.do?uid=${user.id}"><i class="fa fa-comments-o"></i> <span class="nav-label">话题管理</span></a></li>
                 <li>
                     <a href="index.jsp#"><i class="fa fa-user-secret"></i> <span class="nav-label">老师管理</span><span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
@@ -78,13 +85,7 @@
                         <li><a href="${ctx}/teacher/material.do?uid=${user.id}"><i class="fa fa-delicious"></i> <span class="nav-label">教案更新</span></a></li>
                     </ul>
                 </li>
-                <li>
-                    <a href="index.jsp#"><i class="fa fa-bar-chart"></i> <span class="nav-label">查询统计</span><span class="fa arrow"></span></a>
-                    <ul class="nav nav-second-level">
-                        <li><a href="${ctx}/query/info.do?uid=${user.id}"><i class="fa fa-pie-chart"></i> <span class="nav-label">选课查询</span> </a></li>
-                        <li><a href="${ctx}/query/order.do?uid=${user.id}"><i class="fa fa-rub"></i> <span class="nav-label">订单查询</span> </a></li>
-                    </ul>
-                </li>
+                <li class="active"><a href="${ctx}/group/info.do?uid=${user.id}"><i class="fa fa-building"></i> <span class="nav-label">批量选课</span> </a></li>
                 <li>
                     <a href="index.jsp#"><i class="fa fa-home"></i> <span class="nav-label">首页配置</span><span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
@@ -242,6 +243,7 @@
                         <tr class="gradeX">
                             <th>编号</th>
                             <th>组名</th>
+                            <th>创建时间</th>
                             <th>操作</th>
                         </tr>
                         </thead>
@@ -252,6 +254,7 @@
                                 <td style="width: 30%">
                                     <c:out value="${entity.name}"></c:out>&numsp;&numsp;<c:out value="${entity.courseName}"></c:out>
                                 </td>
+                                <td style="width: 15%;"><c:out value="${fn:substring(entity.addTime,0,19)}"></c:out></td>
                                 <td class="center">
                                     <a href="${ctx}/group/oper.do?uid=${user.id}&id=${entity.id}&mark=2" class="btn btn-white btn-sm"><i class="fa fa-user"></i> 成员 </a>
                                     <c:if test="${entity.xkFlag == 0}">

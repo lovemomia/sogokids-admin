@@ -24,6 +24,8 @@ public class OrderPackage {
 
     private List<Course> courses;
 
+    private int originType;
+
     public int getId() {
         return id;
     }
@@ -110,5 +112,13 @@ public class OrderPackage {
 
     public void setCourses(List<Course> courses) {
         this.courses = courses;
+    }
+
+    public int getOriginType() {
+        return originType;
+    }
+
+    public void setOriginType(int originType) {
+        this.originType = originType;
     }
 }

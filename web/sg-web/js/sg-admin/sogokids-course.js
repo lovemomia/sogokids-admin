@@ -13,25 +13,37 @@ $(function () {
     $("#btn_lb_save").click(function() {
         var course_id = $('#course_id').val();
         var imgfile = $('#file_img').val();
+        //创建FormData对象
+        var data = new FormData();
+        //为FormData对象添加数据
+        $.each($('#file_img')[0].files, function(i, file) {
+            data.append('upload_file'+i, file);
+        });
         if(course_id == 0){
             layer.alert('请先保存基本信息！',5,'提示信息');
         }else if (imgfile == "" || imgfile == null) {
             layer.alert('没有选择上传的图片！',5,'提示信息');
         } else {
-            $.ajaxFileUpload({
-                url: '/course/addImg.do?courseId=' + course_id,
-                secureuri: false,
-                fileElementId: 'file_img',
-                dataType: "text",
-                success: function (data, status) {
-                    console.log(data);
-                    var imgstr = data;
+            $.ajax({
+                url:'/course/addImg.do?courseId=' + course_id,
+                type:'POST',
+                data:data,
+                cache: false,
+                contentType: false,    //不可缺
+                processData: false,    //不可缺
+                success:function(data){
+                    var obj = $.parseJSON(data);
+                    if(obj.success == 0){
+                        //layer.alert(obj.msg,10,'提示信息');
+                    }else{
+                        layer.alert(obj.msg,3,'提示信息');
+                    }
+                    var imgstr = obj.imgHtml;
                     var divshow = $("#img_div");
                     divshow.text("");
                     divshow.append(imgstr);
-                },
-                error: function (data, status, error) {
-                    layer.alert(error,10,'提示信息');
+                    $('#file_img').val("");
+                    $("#img_preview").text("");
                 }
             });
         }
@@ -51,6 +63,7 @@ $(function () {
         var price = $('#price').val();
         var minAge = $('#minAge').val();
         var maxAge = $('#maxAge').val();
+        //var recommend = $('#recommend').val();
 
         if(title == null || title == ""){
             layer.alert('请填写标题信息！',3,'提示信息');
@@ -67,19 +80,27 @@ $(function () {
         }else if(minAge == null || minAge == "" || !re.test(minAge) || maxAge == null || maxAge == "" || !re.test(maxAge) || parseInt(maxAge) < parseInt(minAge)){
             layer.alert('没有填写年龄范围信息或格式不正确(只能填写整数值,举例格式"4至7岁")！',3,'提示信息');
             return false;
-        }else{
-            if(course_id == 0){
+        }else {
+            //$.post("/course/validation_recommend.do", {textarea_value: recommend, label_name: "推荐理由", max_row_value: 4, row_length: 20},
+            //    function (data) {
+            //        if (data.success == 0) {
+            //
+            //        } else {
+            //            layer.alert(data.msg, 10, '提示信息');
+            //        }
+            //    }, "json");
+            if (course_id == 0) {
                 $.post("/course/add.do", $("#course_form").serialize(),
-                    function(data){
-                        if(data.success == 0){
-                            $("#course_id").attr("value",data.courseId);
+                    function (data) {
+                        if (data.success == 0) {
+                            $("#course_id").attr("value", data.courseId);
                         }
-                        layer.alert(data.msg,10,'提示信息');
+                        layer.alert(data.msg, 10, '提示信息');
                     }, "json");
-            }else{
+            } else {
                 $.post("/course/edit.do", $("#course_form").serialize(),
-                    function(data){
-                        layer.alert(data.msg,10,'提示信息');
+                    function (data) {
+                        layer.alert(data.msg, 10, '提示信息');
                     }, "json");
             }
         }
@@ -270,6 +291,31 @@ $(function () {
 
     });
 
+
+    $('#btn_sku_cancel').click(function () {
+        var course_id = $('#course_id').val();
+        var sms_content = $('#sms_content').val().trim();
+        if(sms_content == null || sms_content == ""){
+            layer.alert('请填写取消原因信息！',3,'提示信息');
+            return false;
+        }else {
+            $.post("/course/cancelSku.do?courseId=" + course_id, $("#cancel_sku_form").serialize(),
+                function (data) {
+                    if (data.success == 0) {
+                        $('#cancel_sku_id').val(0);
+                        $('#sms_content').val("");
+                        var divshow = $("#sku_div");
+                        divshow.text("");
+                        divshow.append(data.skuHtml);
+                        layer.alert(data.msg, 10, '提示信息');
+                        $('#myCancelGroup2').modal('hide');
+                    } else {
+                        layer.alert(data.msg, 10, '提示信息');
+                    }
+                }, "json");
+        }
+    });
+
 });
 
 /**
@@ -392,20 +438,11 @@ function skuDel(id){
  * @param id
  */
 function cancelSku(id){
-    var courseId = $('#course_id').val();
-    layer.confirm('您确定要取消此SKU吗？', function(index){
-        $.post("/course/cancelSku.do?courseId="+courseId, {skuId:id},
-            function(data){
-                if(data.success == 0) {
-                    var divshow = $("#sku_div");
-                    divshow.text("");
-                    divshow.append(data.skuHtml);
-                }else{
-                    layer.alert(data.msg,10,'提示信息');
-                }
-            }, "json");
-        layer.close(index);
-    });
+    $('#cancel_sku_id').val(id);
+    //layer.confirm('您确定要取消课程SKU吗？', function(index){
+    //    $('#cancel_sku_id').val(id);
+    //    layer.close(index);
+    //});
 }
 
 /**
@@ -413,11 +450,12 @@ function cancelSku(id){
  */
 function clareSku(){
     $('#sku_id').val(0);
+    $('#minBooked').val(8);
     $('#stock').val(10);
     $('#startTime').val("");
     $('#endTime').val("");
-    $('#adult').val("");
-    $('#child').val("");
+    $('#adult').val(1);
+    $('#child').val(1);
 }
 
 /**
@@ -427,10 +465,134 @@ function clareSku(){
 function valSku(attrs){
     var sku = attrs.sku;
     $('#sku_id').val(sku.id);
+    $('#minBooked').val(sku.minBooked);
     $('#stock').val(sku.stock);
     $('#startTime').val(sku.startTime);
     $('#endTime').val(sku.endTime);
     $('#adult').val(sku.adult);
     $('#child').val(sku.child);
+}
+
+/**
+ * 前移课程图片
+ * @param id
+ */
+function beforeImg(id){
+    var course_id = $('#course_id').val();
+    $.post("/course/moveImg.do?courseId="+course_id, {imgId:id,flag:1},
+        function(data){
+            //console.log(data);
+            if(data.success == 0){
+                var divshow = $("#img_div");
+                divshow.text("");// 清空数据
+                divshow.append(data.imageJson);
+            }else{
+                layer.alert(data.msg,10,'提示信息');
+            }
+        }, "json");
+}
+
+/**
+ * 后移课程图片
+ * @param id
+ */
+function afterImg(id){
+    var course_id = $('#course_id').val();
+    $.post("/course/moveImg.do?courseId="+course_id, {imgId:id,flag:2},
+        function(data){
+            if(data.success == 0){
+                var divshow = $("#img_div");
+                divshow.text("");// 清空数据
+                divshow.append(data.imageJson);
+            }else{
+                layer.alert(data.msg,10,'提示信息');
+            }
+        }, "json");
+}
+
+/**
+ * 多张图片上传预览
+ * @returns {boolean}
+ */
+function setImagePreviews() {
+
+    var docObj = document.getElementById("file_img");
+
+    var dd = document.getElementById("img_preview");
+
+    dd.innerHTML = "";
+
+    var fileList = docObj.files;
+
+    for (var i = 0; i < fileList.length; i++) {
+
+        dd.innerHTML += "<div style='float:left;margin-left: 10px;margin-right: 10px;margin-top: 10px;margin-bottom: 10px;border: solid 1px #b3b3b3;' > <img id='img" + i + "'  /> </div>";
+
+        var imgObjPreview = document.getElementById("img"+i);
+
+        if (docObj.files && docObj.files[i]) {
+
+            //火狐下，直接设img属性
+
+            imgObjPreview.style.display = 'block';
+
+            imgObjPreview.style.width = '100px';
+
+            imgObjPreview.style.height = '80px';
+
+            //imgObjPreview.src = docObj.files[0].getAsDataURL();
+
+            //火狐7以上版本不能用上面的getAsDataURL()方式获取，需要一下方式
+
+            imgObjPreview.src = window.URL.createObjectURL(docObj.files[i]);
+
+        }
+
+        else {
+
+            //IE下，使用滤镜
+
+            docObj.select();
+
+            var imgSrc = document.selection.createRange().text;
+
+            //alert(imgSrc)
+
+            var localImagId = document.getElementById("img" + i);
+
+            //必须设置初始大小
+
+            localImagId.style.width = "100px";
+
+            localImagId.style.height = "80px";
+
+            //图片异常的捕捉，防止用户修改后缀来伪造图片
+
+            try {
+
+                localImagId.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale)";
+
+                localImagId.filters.item("DXImageTransform.Microsoft.AlphaImageLoader").src = imgSrc;
+
+            }
+
+            catch (e) {
+
+                alert("您上传的图片格式不正确，请重新选择!");
+
+                return false;
+
+            }
+
+            imgObjPreview.style.display = 'none';
+
+            document.selection.empty();
+
+        }
+
+    }
+
+    return true;
+
 }
 

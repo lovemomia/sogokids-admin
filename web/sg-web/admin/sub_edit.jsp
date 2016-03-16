@@ -97,7 +97,14 @@
                 <li class="active"><a href="${ctx}/sub/info.do?uid=${user.id}"><i class="fa fa-connectdevelop"></i> <span class="nav-label">课程体系</span> </a></li>
                 <li><a href="${ctx}/book/info.do?uid=${user.id}"><i class="fa fa-leanpub"></i> <span class="nav-label">试听课程</span> </a></li>
                 <li><a href="${ctx}/one/info.do?uid=${user.id}"><i class="fa fa-drupal"></i> <span class="nav-label">推荐课程</span> </a></li>
-                <li><a href="${ctx}/group/info.do?uid=${user.id}"><i class="fa fa-building"></i> <span class="nav-label">批量选课</span> </a></li>
+                <li>
+                    <a href="index.jsp#"><i class="fa fa-bar-chart"></i> <span class="nav-label">查询统计</span><span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li><a href="${ctx}/query/info.do?uid=${user.id}"><i class="fa fa-pie-chart"></i> <span class="nav-label">选课查询</span> </a></li>
+                        <li><a href="${ctx}/query/order.do?uid=${user.id}"><i class="fa fa-rub"></i> <span class="nav-label">订单查询</span> </a></li>
+                    </ul>
+                </li>
+                <li><a href="${ctx}/discuss/info.do?uid=${user.id}"><i class="fa fa-comments-o"></i> <span class="nav-label">话题管理</span></a></li>
                 <li>
                     <a href="index.jsp#"><i class="fa fa-user-secret"></i> <span class="nav-label">老师管理</span><span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
@@ -107,13 +114,7 @@
                         <li><a href="${ctx}/teacher/material.do?uid=${user.id}"><i class="fa fa-delicious"></i> <span class="nav-label">教案更新</span></a></li>
                     </ul>
                 </li>
-                <li>
-                    <a href="index.jsp#"><i class="fa fa-bar-chart"></i> <span class="nav-label">查询统计</span><span class="fa arrow"></span></a>
-                    <ul class="nav nav-second-level">
-                        <li><a href="${ctx}/query/info.do?uid=${user.id}"><i class="fa fa-pie-chart"></i> <span class="nav-label">选课查询</span> </a></li>
-                        <li><a href="${ctx}/query/order.do?uid=${user.id}"><i class="fa fa-rub"></i> <span class="nav-label">订单查询</span> </a></li>
-                    </ul>
-                </li>
+                <li><a href="${ctx}/group/info.do?uid=${user.id}"><i class="fa fa-building"></i> <span class="nav-label">批量选课</span> </a></li>
                 <li>
                     <a href="index.jsp#"><i class="fa fa-home"></i> <span class="nav-label">首页配置</span><span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
@@ -272,9 +273,10 @@
 
                             <ul class="nav nav-tabs">
                                 <li id="tab_li_1" class="active"><a id="tab1" data-toggle="tab" href="tabs_panels.html#tab-4"><i class="fa fa-laptop"></i>基本信息</a></li>
-                                <li id="tab_li_2" class=""><a id="tab2" data-toggle="tab" href="tabs_panels.html#tab-5"><i class="fa fa-picture-o"></i>轮播图片</a></li>
+                                <li id="tab_li_2" class=""><a id="tab2" data-toggle="tab" href="tabs_panels.html#tab-5"><i class="fa fa-picture-o"></i>活动图片</a></li>
                                 <li id="tab_li_3" class=""><a id="tab3" data-toggle="tab" href="tabs_panels.html#tab-6"><i class="fa fa-cart-plus"></i>购买须知</a></li>
                                 <li id="tab_li_4" class=""><a id="tab4" data-toggle="tab" href="tabs_panels.html#tab-7"><i class="fa fa-gears"></i>购买规则</a></li>
+                                <li id="tab_li_5" class=""><a id="tab5" data-toggle="tab" href="tabs_panels.html#tab-8"><i class="fa fa-angellist"></i>用户评价</a></li>
                             </ul>
                         </div>
                     </div>
@@ -287,14 +289,15 @@
                                         <form class="form-horizontal" id="sub_form" action="" method="post">
                                             <fieldset>
                                                 <div class="form-group">
-                                                    <label class="col-sm-2 control-label">标题</label>
+                                                    <label class="col-sm-2 control-label">主标题</label>
                                                     <div class="col-sm-3">
                                                         <textarea id="title" name="title" class="form-control" rows="4" style="resize:none;">${model.title}</textarea>
                                                         <input id="sub_id" name="sub_id" type="hidden" value="${model.id}">
                                                         <input id="type" name="type" type="hidden" value="${model.type}"></td>
+                                                        <input id="subTitle" name="subTitle" type="hidden" value="${model.subTitle}">
                                                     </div>
-                                                    <label class="col-sm-2 control-label">上传图片</label>
-                                                    <div class="col-sm-3">
+                                                    <label class="col-sm-2 control-label">首页图</label>
+                                                    <div class="col-sm-3" style="cursor: pointer;">
                                                         <img id="img_a" src="${filepath}${model.cover}" style="width: 200px;height: 100px;border: 1px solid #999;"/>
                                                         <input id="img_path" type="file" name="img_path" style="opacity: 0;filter:alpha(opacity=0);">
                                                         <input id="cover" name="cover" type="hidden" value="${model.cover}">
@@ -304,6 +307,12 @@
                                                         <%--</div>--%>
                                                     </div>
                                                 </div>
+                                                <%--<div class="form-group">--%>
+                                                    <%--<label class="col-sm-2 control-label">副标题</label>--%>
+                                                    <%--<div class="col-sm-3">--%>
+                                                        <%--<textarea id="subTitle" name="subTitle" class="form-control" rows="4" style="resize:none;">${model.subTitle}</textarea>--%>
+                                                    <%--</div>--%>
+                                                <%--</div>--%>
                                                 <%--<div class="hr-line-dashed"></div>--%>
                                                 <div class="form-group">
                                                     <label class="col-sm-2 control-label">所属城市 </label>
@@ -357,7 +366,7 @@
                                                 <%--</div>--%>
                                                 <%--<div class="hr-line-dashed"></div>--%>
                                                 <div class="form-group">
-                                                    <label class="col-sm-2 control-label">课程目标</label>
+                                                    <label class="col-sm-2 control-label">推荐理由</label>
                                                     <div class="col-sm-8">
                                                         <textarea id="intro" name="intro" class="form-control" rows="5" style="resize:none;">${model.intro}</textarea>
                                                     </div>
@@ -596,13 +605,70 @@
                                             <div class="row">
                                                 <div class="col-sm-12 col-sm-offset-5">
                                                     <div style="margin-bottom: 20px;margin-top: 20px;">
-                                                        <a href="${ctx}/sub/info.do?uid=${user.id}" class="btn btn-primary btn-x">&numsp;&numsp;完&numsp;&numsp;成&numsp;&numsp;</a>
+                                                        <button class="btn btn-warning" type="button" id="btn_sku_next_save" name="btn_sku_next_save">下一步</button>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     <%--</div>--%>
                                 <%--</div>--%>
+                            </div>
+
+                            <div id="tab-5" class="tab-pane">
+                                <div class="ibox-content">
+                                    <div class="row">
+                                        <div class="col-lg-5 col-sm-offset-1">
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    课程评价
+                                                </div>
+                                                <div class="panel-body">
+                                                    <div class="list-group" >
+                                                        <form id="comment_form" action="" method="post">
+                                                            <div class="row m-b-sm m-t-sm">
+                                                                <div class="col-md-12">
+                                                                    <div class="input-group" style="margin-bottom: 10px;">
+                                                                        <input type="text" placeholder="请输入项目名称" class="input-sm form-control">
+                                                                        <span class="input-group-btn"><button type="button" class="btn btn-sm btn-primary" id="btn_query" name="btn_query"> 搜索</button> </span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </form>
+                                                        <div class="feed-activity-list">
+                                                            <div id="content_div" style="height:420px;overflow:auto;">
+                                                                ${ntComments}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-5">
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    推荐评价
+                                                </div>
+                                                <div class="panel-body">
+                                                    <div class="list-group" style="height:482px;overflow:auto;">
+                                                        <form>
+                                                            <div id="t_div" class="form-group feed-activity-list">
+                                                                ${tComments}
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12 col-sm-offset-5">
+                                            <div style="margin-bottom: 20px;margin-top: 20px;">
+                                                <a href="${ctx}/sub/info.do?uid=${user.id}" class="btn btn-primary btn-x">&numsp;&numsp;完&numsp;&numsp;成&numsp;&numsp;</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 

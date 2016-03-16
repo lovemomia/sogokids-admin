@@ -109,7 +109,14 @@
                 <li class="active"><a href="${ctx}/sub/info.do?uid=${user.id}"><i class="fa fa-connectdevelop"></i> <span class="nav-label">课程体系</span> </a></li>
                 <li><a href="${ctx}/book/info.do?uid=${user.id}"><i class="fa fa-leanpub"></i> <span class="nav-label">试听课程</span> </a></li>
                 <li><a href="${ctx}/one/info.do?uid=${user.id}"><i class="fa fa-drupal"></i> <span class="nav-label">推荐课程</span> </a></li>
-                <li><a href="${ctx}/group/info.do?uid=${user.id}"><i class="fa fa-building"></i> <span class="nav-label">批量选课</span> </a></li>
+                <li>
+                    <a href="index.jsp#"><i class="fa fa-bar-chart"></i> <span class="nav-label">查询统计</span><span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li><a href="${ctx}/query/info.do?uid=${user.id}"><i class="fa fa-pie-chart"></i> <span class="nav-label">选课查询</span> </a></li>
+                        <li><a href="${ctx}/query/order.do?uid=${user.id}"><i class="fa fa-rub"></i> <span class="nav-label">订单查询</span> </a></li>
+                    </ul>
+                </li>
+                <li><a href="${ctx}/discuss/info.do?uid=${user.id}"><i class="fa fa-comments-o"></i> <span class="nav-label">话题管理</span></a></li>
                 <li>
                     <a href="index.jsp#"><i class="fa fa-user-secret"></i> <span class="nav-label">老师管理</span><span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
@@ -119,13 +126,7 @@
                         <li><a href="${ctx}/teacher/material.do?uid=${user.id}"><i class="fa fa-delicious"></i> <span class="nav-label">教案更新</span></a></li>
                     </ul>
                 </li>
-                <li>
-                    <a href="index.jsp#"><i class="fa fa-bar-chart"></i> <span class="nav-label">查询统计</span><span class="fa arrow"></span></a>
-                    <ul class="nav nav-second-level">
-                        <li><a href="${ctx}/query/info.do?uid=${user.id}"><i class="fa fa-pie-chart"></i> <span class="nav-label">选课查询</span> </a></li>
-                        <li><a href="${ctx}/query/order.do?uid=${user.id}"><i class="fa fa-rub"></i> <span class="nav-label">订单查询</span> </a></li>
-                    </ul>
-                </li>
+                <li><a href="${ctx}/group/info.do?uid=${user.id}"><i class="fa fa-building"></i> <span class="nav-label">批量选课</span> </a></li>
                 <li>
                     <a href="index.jsp#"><i class="fa fa-home"></i> <span class="nav-label">首页配置</span><span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
@@ -286,7 +287,7 @@
 
                             <ul class="nav nav-tabs">
                                 <li id="tab_li_1" class="active"><a id="tab1" data-toggle="tab" href="tabs_panels.html#tab-1"><i class="fa fa-laptop"></i>基本信息</a></li>
-                                <li id="tab_li_2" class=""><a id="tab2" data-toggle="tab" href="tabs_panels.html#tab-2"><i class="fa fa-picture-o"></i>轮播图片</a></li>
+                                <li id="tab_li_2" class=""><a id="tab2" data-toggle="tab" href="tabs_panels.html#tab-2"><i class="fa fa-picture-o"></i>活动图片</a></li>
                                 <li id="tab_li_3" class=""><a id="tab3" data-toggle="tab" href="tabs_panels.html#tab-3"><i class="fa fa-reddit"></i>图文详情</a></li>
                                 <%--<li id="tab_li_4" class=""><a id="tab4" data-toggle="tab" href="tabs_panels.html#tab-4"><i class="fa fa-book"></i>讲师团</a></li>--%>
                                 <li id="tab_li_4" class=""><a id="tab4" data-toggle="tab" href="tabs_panels.html#tab-4"><i class="fa fa-gears"></i>课程表</a></li>
@@ -310,17 +311,22 @@
                                                         <input id="course_id" name="course_id" type="hidden" value="0">
                                                         <input id="subjectId" name="subjectId" type="hidden" value="${subid}">
                                                     </div>
-                                                    <label class="col-sm-2 control-label">上传图片</label>
-                                                    <div class="col-sm-3">
+                                                    <label class="col-sm-2 control-label">首页图</label>
+                                                    <div class="col-sm-3" style="cursor: pointer;">
                                                         <img id="img_a" src="${ctx}/sg-web/img/770jiahao.jpg" style="width: 200px;height: 100px;border: 1px solid #999;"/>
                                                         <input id="img_path" name="img_path" type="file" style="opacity: 0;filter:alpha(opacity=0);">
                                                         <input id="cover" name="cover" type="hidden">
                                                         <input id="filepath" name="filepath" type="hidden" value="${filepath}">
                                                         <%--<div class="col-sm-3 col-sm-offset-3">--%>
-                                                            <%--<button class="btn btn-primary" type="button" id="btn_img_save" name="btn_img_save">上传</button>--%>
+                                                        <%--<button class="btn btn-primary" type="button" id="btn_img_save" name="btn_img_save">上传</button>--%>
                                                         <%--</div>--%>
                                                     </div>
-
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-sm-2 control-label">课程特色</label>
+                                                    <div class="col-sm-3">
+                                                        <input id="feature" name="feature" type="text" maxlength="6" class="form-control" placeholder="最多输入6个字...">
+                                                    </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="col-sm-2 control-label">关键字</label>
@@ -385,10 +391,18 @@
                                                     <%--</div>--%>
                                                 <%--</div>--%>
                                                 <%--<div class="hr-line-dashed"></div>--%>
+
+                                                <%--<div class="form-group">--%>
+                                                    <%--<label class="col-sm-2 control-label">推荐理由</label>--%>
+                                                    <%--<div class="col-sm-8">--%>
+                                                        <%--<textarea id="recommend" name="recommend" class="form-control" rows="5" placeholder="" style="resize:none;"></textarea>--%>
+                                                    <%--</div>--%>
+                                                <%--</div>--%>
                                                 <div class="form-group">
-                                                    <label class="col-sm-2 control-label">特别提示</label>
+                                                    <label class="col-sm-2 control-label">注意事项</label>
                                                     <div class="col-sm-8">
                                                         <textarea id="tips" name="tips" class="form-control" rows="8" style="resize:none;"></textarea>
+                                                        <input id="recommend" name="recommend" type="hidden" value=""><!--推荐理由-->
                                                     </div>
                                                 </div>
 
@@ -411,9 +425,9 @@
                                     <div class="row">
                                         <form class="form-horizontal" id="img_form" action="" method="post">
                                             <div class="form-group">
-                                                <label class="col-sm-2 control-label">轮播图片</label>
+                                                <label class="col-sm-2 control-label">活动图片</label>
                                                 <div class="col-sm-4">
-                                                    <input type="file" id="file_img" name="file_img" class="form-control">
+                                                    <input type="file" multiple="multiple" id="file_img" name="file_img" onchange="setImagePreviews()" class="form-control">
                                                 </div>
                                                 <div class="col-sm-4">
                                                     <button class="btn btn-primary" type="button" id="btn_lb_save" name="btn_lb_save">上传</button>
@@ -421,10 +435,13 @@
                                             </div>
                                         </form>
                                     </div>
+                                    <div class="row">
+                                        <div id="img_preview" class="main div_img" ></div>
+                                    </div>
                                     <div class="hr-line-dashed"></div>
                                     <div class="row">
                                         <div id="img_div" class="main">
-                                            <p align="center">暂无轮播图片信息</p>
+                                            <p align="center">暂无活动图片信息</p>
                                         </div>
                                     </div>
                                     <div class="hr-line-dashed"></div>
@@ -644,10 +661,22 @@
                                                                             </div>
                                                                         </div>
                                                                         <%--<div class="hr-line-dashed"></div>--%>
+                                                                        <%--<div class="form-group">--%>
+                                                                            <%--<label class="col-sm-3 control-label">参与人数</label>--%>
+                                                                            <%--<div class="col-sm-7">--%>
+                                                                                <%--<input id="stock" name="stock" type="text" value="10" class="form-control">--%>
+                                                                            <%--</div>--%>
+                                                                        <%--</div>--%>
                                                                         <div class="form-group">
-                                                                            <label class="col-sm-3 control-label">参与人数</label>
+                                                                            <label class="col-sm-3 control-label">成团人数</label>
                                                                             <div class="col-sm-7">
-                                                                                <input id="stock" name="stock" type="text" value="10" class="form-control">
+                                                                                <table>
+                                                                                    <tr>
+                                                                                        <td style="width: 35%;"><input id="minBooked" name="minBooked" type="text" value="8" class="form-control" style="width:100%;"></td>
+                                                                                        <td style="width: 30%;align-content: left;">&numsp;<b>总人数</b></td>
+                                                                                        <td style="width: 35%;"><input id="stock" name="stock" type="text" value="10" class="form-control" style="width:100%;"></td>
+                                                                                    </tr>
+                                                                                </table>
                                                                             </div>
                                                                         </div>
                                                                         <div class="form-group">
@@ -655,9 +684,9 @@
                                                                             <div class="col-sm-7">
                                                                                 <table>
                                                                                     <tr>
-                                                                                        <td style="width: 35%;"><input id="adult" name="adult" type="text" class="form-control" style="width:100%;" ></td>
+                                                                                        <td style="width: 35%;"><input id="adult" name="adult" type="text" value="1" class="form-control" style="width:100%;" ></td>
                                                                                         <td style="width: 30%;align-content: left;">&numsp;<b>儿童数量</b></td>
-                                                                                        <td style="width: 35%;"><input id="child" name="child" type="text" class="form-control" style="width:100%;" ></td>
+                                                                                        <td style="width: 35%;"><input id="child" name="child" type="text" value="1" class="form-control" style="width:100%;" ></td>
                                                                                     </tr>
                                                                                 </table>
                                                                             </div>
@@ -1133,9 +1162,25 @@
         });
     }
 
+    function upMoveDetail(i){
+        evaluation(i,i-1);
+        submit_data();
+        arrayData();
+    }
+
+    function downMoveDetail(i){
+        evaluation(i,i+1);
+        submit_data();
+        arrayData();
+    }
+
+    function evaluation(index1, index2) {
+        content_array[index1] = content_array.splice(index2, 1, content_array[index1])[0];
+    };
+
     function arrayData(){
         var html = "<div align='left'>";
-        if(content_array.length < 0){
+        if(content_array.length <= 0){
             html = html + "<p>没有图文信息!</p>";
         }else{
             for(var j=0;j<content_array.length; j++){
@@ -1146,9 +1191,19 @@
                 html = html + "<br>";
                 var btn_edit_id = "btn_detail_edit"+j;
                 var btn_del_id = "btn_detail_del"+j;
-                html = html + "<p align='center'>" + "<button class='btn btn-primary btn-sm' type='button' id='"+btn_edit_id+"' name='"+btn_edit_id+"' onclick='editDetail("+j+")'><i class='fa fa-pencil'></i>编辑</button>";
-                html = html + "&numsp;&numsp;";
-                html = html + "<button class='btn btn-danger btn-sm' type='button' id='"+btn_del_id+"' name='"+btn_del_id+"' onclick='delDetail("+j+")'><i class='fa fa-trash'></i>删除</button> "+ "</p>";
+                var btn_up_move_id = "btn_up_move_id" + j;
+                var btn_down_move_id = "btn_down_move_id" + j;
+                html = html + "<p>" + "<button class='btn btn-primary btn-sm' type='button' id='"+btn_edit_id+"' name='"+btn_edit_id+"' onclick='editDetail("+j+")'><i class='fa fa-pencil'></i>编辑</button>";
+                html = html + "&numsp;";
+                html = html + "<button class='btn btn-danger btn-sm' type='button' id='"+btn_del_id+"' name='"+btn_del_id+"' onclick='delDetail("+j+")'><i class='fa fa-trash'></i>删除</button> ";
+                if (j > 0) {
+                    html = html + "&numsp;";
+                    html = html + "<button class='btn btn-warning btn-sm' type='button' id='" + btn_up_move_id + "' name='" + btn_up_move_id + "' onclick='upMoveDetail(" + j + ")'><i class='fa fa-arrow-circle-o-up'></i>上移</button> ";
+                }
+                if (j+1!=content_array.length) {
+                    html = html + "&numsp;";
+                    html = html + "<button class='btn btn-info btn-sm' type='button' id='" + btn_down_move_id + "' name='" + btn_down_move_id + "' onclick='downMoveDetail(" + j + ")'><i class='fa fa-arrow-circle-o-down'></i>下移</button> " + "</p>";
+                }
                 html = html + "<div class='hr-line-dashed'></div>";
             }
         }

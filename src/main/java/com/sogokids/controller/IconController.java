@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * icon信息
  * Created by hoze on 15/10/13.
  */
 @Controller
@@ -35,6 +36,12 @@ public class IconController {
     @Autowired
     private AppVersionService appVersionService;
 
+    /**
+     * icon－列表
+     * @param uid
+     * @param req
+     * @return
+     */
     @RequestMapping("/info")
     public ModelAndView info(@RequestParam("uid") int uid, HttpServletRequest req){
         Map<String, Object> context = new HashMap<String, Object>();
@@ -43,6 +50,13 @@ public class IconController {
         return new ModelAndView(adminUserService.isUserFunc(req,JumpPage.ICON),context);
     }
 
+    /**
+     *icon－操作跳转
+     * @param uid
+     * @param id
+     * @param req
+     * @return
+     */
     @RequestMapping("/oper")
     public ModelAndView operation(@RequestParam("uid") int uid,@RequestParam("id") int id,HttpServletRequest req){
         String reStr = JumpPage.ICON_EDIT;
@@ -59,6 +73,12 @@ public class IconController {
         return new ModelAndView(reStr,context);
     }
 
+    /**
+     *icon－创建
+     * @param uid
+     * @param req
+     * @return
+     */
     @RequestMapping("/add")
     public ModelAndView addEntity(@RequestParam("uid") int uid, HttpServletRequest req){
 
@@ -74,6 +94,13 @@ public class IconController {
         return new ModelAndView(JumpPage.ICON,context);
     }
 
+    /**
+     *icon－编辑
+     * @param uid
+     * @param id
+     * @param req
+     * @return
+     */
     @RequestMapping("/edit")
     public ModelAndView editEntity(@RequestParam("uid") int uid,@RequestParam("id") int id, HttpServletRequest req){
 
@@ -89,6 +116,13 @@ public class IconController {
         return new ModelAndView(JumpPage.ICON,context);
     }
 
+    /**
+     *icon－删除
+     * @param uid
+     * @param id
+     * @param req
+     * @return
+     */
     @RequestMapping("/del")
     public ModelAndView delEntity(@RequestParam("uid") int uid,@RequestParam("id") int id, HttpServletRequest req){
 

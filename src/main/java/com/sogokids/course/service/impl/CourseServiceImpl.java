@@ -31,6 +31,7 @@ import com.sogokids.utils.util.CastUtil;
 import com.sogokids.utils.util.DateUtil;
 import com.sogokids.utils.util.Quantity;
 import com.sogokids.utils.util.StringUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +50,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -116,7 +116,7 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public List<Course> getEntitys() {
         List<Course> reData = new ArrayList<Course>();
-        String sql = "select Id,ParentId,SubjectId,Title,Cover,MinAge,MaxAge,Joined,Price,Goal,Flow,Tips,InstitutionId,KeyWord,Status,AddTime from SG_Course where Status > ? order by Id desc";
+        String sql = "select Id,ParentId,SubjectId,Title,Cover,MinAge,MaxAge,Joined,Price,Goal,Flow,Tips,InstitutionId,KeyWord,Feature,Status,AddTime from SG_Course where Status > ? order by Id desc";
         Object [] params = new Object[]{Quantity.STATUS_ZERO};
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql, params);
         if(list.size() > 0){
@@ -128,6 +128,7 @@ public class CourseServiceImpl implements CourseService {
                 int sub_id = Integer.parseInt(list.get(i).get("SubjectId").toString());
                 entity.setSubjectId(sub_id);
                 entity.setTitle(list.get(i).get("Title").toString());
+                entity.setFeature(list.get(i).get("Feature") == null ? "" : list.get(i).get("Feature").toString());
                 entity.setCover(list.get(i).get("Cover").toString());
                 entity.setMinAge(Integer.parseInt(list.get(i).get("MinAge").toString()));
                 entity.setMaxAge(Integer.parseInt(list.get(i).get("MaxAge").toString()));
@@ -140,15 +141,7 @@ public class CourseServiceImpl implements CourseService {
                 entity.setKeyWord(list.get(i).get("KeyWord").toString());
                 entity.setStatus(Integer.parseInt(list.get(i).get("Status").toString()));
                 entity.setAddTime(list.get(i).get("AddTime").toString());
-//                if (subjectService.get(sub_id).getType() == 2){
-//                    entity.setFlag(1);
-//                }else if(getEntitysById(id).size() > 0){
-//                    entity.setFlag(1);
-//                }else{
-//                    entity.setFlag(0);
-//                }
 
-                entity.setSubTitle(subjectService.get(Integer.parseInt(list.get(i).get("SubjectId").toString())).getTitle());
                 reData.add(entity);
             }
         }
@@ -164,7 +157,7 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public List<Course> getEntitysBySubId(int id) {
         List<Course> reData = new ArrayList<Course>();
-        String sql = "select Id,ParentId,SubjectId,Title,Cover,MinAge,MaxAge,Joined,Price,Goal,Flow,Tips,InstitutionId,KeyWord,Status,AddTime from SG_Course where SubjectId = ? and Status > ? and Status != ? ";
+        String sql = "select Id,ParentId,SubjectId,Title,Cover,MinAge,MaxAge,Joined,Price,Goal,Flow,Tips,InstitutionId,KeyWord,Feature,Status,AddTime from SG_Course where SubjectId = ? and Status > ? and Status != ? ";
         Object [] params = new Object[]{id, Quantity.STATUS_ZERO, Quantity.STATUS_THREE};
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql, params);
         if(list.size() > 0){
@@ -176,6 +169,7 @@ public class CourseServiceImpl implements CourseService {
                 int sub_id = Integer.parseInt(list.get(i).get("SubjectId").toString());
                 entity.setSubjectId(sub_id);
                 entity.setTitle(list.get(i).get("Title").toString());
+                entity.setFeature(list.get(i).get("Feature") == null ? "" : list.get(i).get("Feature").toString());
                 entity.setCover(list.get(i).get("Cover").toString());
                 entity.setMinAge(Integer.parseInt(list.get(i).get("MinAge").toString()));
                 entity.setMaxAge(Integer.parseInt(list.get(i).get("MaxAge").toString()));
@@ -203,7 +197,7 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public List<Course> getCoursesBySubId(int id) {
         List<Course> reData = new ArrayList<Course>();
-        String sql = "select * from (select Id,ParentId,SubjectId,Title,Cover,MinAge,MaxAge,Joined,Price,Goal,Flow,Tips,InstitutionId,KeyWord,Status,AddTime from SG_Course where SubjectId = ? and Status > ? order by addTime desc ) as course order by status asc ";
+        String sql = "select * from (select Id,ParentId,SubjectId,Title,Cover,MinAge,MaxAge,Joined,Price,Goal,Flow,Tips,InstitutionId,KeyWord,Feature,Status,AddTime from SG_Course where SubjectId = ? and Status > ? order by addTime desc ) as course order by status asc ";
         Object [] params = new Object[]{id, Quantity.STATUS_ZERO};
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql, params);
         if(list.size() > 0){
@@ -215,6 +209,7 @@ public class CourseServiceImpl implements CourseService {
                 int sub_id = Integer.parseInt(list.get(i).get("SubjectId").toString());
                 entity.setSubjectId(sub_id);
                 entity.setTitle(list.get(i).get("Title").toString());
+                entity.setFeature(list.get(i).get("Feature") == null ? "" : list.get(i).get("Feature").toString());
                 entity.setCover(list.get(i).get("Cover").toString());
                 entity.setMinAge(Integer.parseInt(list.get(i).get("MinAge").toString()));
                 entity.setMaxAge(Integer.parseInt(list.get(i).get("MaxAge").toString()));
@@ -242,7 +237,7 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public List<Course> getCoursesTrialBySubId() {
         List<Course> reData = new ArrayList<Course>();
-        String sql = "select * from (select a.Id,a.ParentId,a.SubjectId,a.Title,a.Cover,a.MinAge,a.MaxAge,a.Joined,a.Price,a.Goal,a.Flow,a.Tips,a.InstitutionId,a.Status,a.AddTime,a.KeyWord,b.Title as subTitle FROM sogokids.SG_Course a,sogokids.SG_Subject b where a.status > 0 and a.status != 3 and b.Status > 0 and a.SubjectId = b.Id and b.type = 2 order by a.addTime desc) as course order by status asc";
+        String sql = "select * from (select a.Id,a.ParentId,a.SubjectId,a.Title,a.Cover,a.MinAge,a.MaxAge,a.Joined,a.Price,a.Goal,a.Flow,a.Tips,a.Feature,a.InstitutionId,a.Status,a.AddTime,a.KeyWord,b.Title as subjectTitle FROM SG_Course a,SG_Subject b where a.status > 0 and a.status != 3 and b.Status > 0 and a.SubjectId = b.Id and b.type = 2 order by a.addTime desc) as course order by status asc";
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         if(list.size() > 0){
             for (int i = 0; i < list.size(); i++) {
@@ -253,6 +248,7 @@ public class CourseServiceImpl implements CourseService {
                 int sub_id = Integer.parseInt(list.get(i).get("SubjectId").toString());
                 entity.setSubjectId(sub_id);
                 entity.setTitle(list.get(i).get("Title").toString());
+                entity.setFeature(list.get(i).get("Feature") == null ? "" : list.get(i).get("Feature").toString());
                 entity.setCover(list.get(i).get("Cover").toString());
                 entity.setMinAge(Integer.parseInt(list.get(i).get("MinAge").toString()));
                 entity.setMaxAge(Integer.parseInt(list.get(i).get("MaxAge").toString()));
@@ -265,11 +261,7 @@ public class CourseServiceImpl implements CourseService {
                 entity.setKeyWord(list.get(i).get("KeyWord").toString());
                 entity.setStatus(Integer.parseInt(list.get(i).get("Status").toString()));
                 entity.setAddTime(list.get(i).get("AddTime").toString());
-                entity.setSubTitle(list.get(i).get("subTitle").toString());
-
-//                if (courseRecommendService.getEntitysByCourseId(course_id).size() > 0){entity.setFlag(1);}
-
-//                if (getEntitysById(course_id).size() > 0){entity.setCopyFlag(1);}
+                entity.setSubjectTitle(list.get(i).get("subjectTitle").toString());
 
                 reData.add(entity);
             }
@@ -281,7 +273,7 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public List<Course> getEntitysById(int id) {
         List<Course> reData = new ArrayList<Course>();
-        String sql = "select Id,ParentId,SubjectId,Title,Cover,MinAge,MaxAge,Joined,Price,Goal,Flow,Tips,InstitutionId,KeyWord,Status,AddTime from SG_Course where ParentId = ? and Status > ? and Status != ? ";
+        String sql = "select Id,ParentId,SubjectId,Title,Cover,MinAge,MaxAge,Joined,Price,Goal,Flow,Tips,InstitutionId,KeyWord,Feature,Status,AddTime from SG_Course where ParentId = ? and Status > ? and Status != ? ";
         Object [] params = new Object[]{id, Quantity.STATUS_ZERO, Quantity.STATUS_THREE};
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql, params);
         if(list.size() > 0){
@@ -292,6 +284,7 @@ public class CourseServiceImpl implements CourseService {
                 int sub_id = Integer.parseInt(list.get(i).get("SubjectId").toString());
                 entity.setSubjectId(sub_id);
                 entity.setTitle(list.get(i).get("Title").toString());
+                entity.setFeature(list.get(i).get("Feature") == null ? "" : list.get(i).get("Feature").toString());
                 entity.setCover(list.get(i).get("Cover").toString());
                 entity.setMinAge(Integer.parseInt(list.get(i).get("MinAge").toString()));
                 entity.setMaxAge(Integer.parseInt(list.get(i).get("MaxAge").toString()));
@@ -314,7 +307,7 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public Course get(int id) {
-        String sql = "select Id,ParentId,SubjectId,Title,Cover,MinAge,MaxAge,Joined,Price,Goal,Flow,Tips,Notice,InstitutionId,KeyWord,Status,AddTime from SG_Course where Id = ? and Status > ? ";
+        String sql = "select Id,ParentId,SubjectId,Title,Cover,MinAge,MaxAge,Joined,Price,Goal,Flow,Tips,Notice,InstitutionId,KeyWord,Feature,Status,AddTime from SG_Course where Id = ? and Status > ? ";
         final Object [] params = new Object[]{id, Quantity.STATUS_ZERO};
         final Course entity = new Course();
         jdbcTemplate.query(sql,params, new RowCallbackHandler(){
@@ -323,6 +316,7 @@ public class CourseServiceImpl implements CourseService {
                 entity.setParentId(rs.getInt("ParentId"));
                 entity.setSubjectId(rs.getInt("SubjectId"));
                 entity.setTitle(rs.getString("Title"));
+                entity.setFeature(rs.getString("Feature"));
                 entity.setCover(rs.getString("Cover"));
                 entity.setMinAge(rs.getInt("MinAge"));
                 entity.setMaxAge(rs.getInt("MaxAge"));
@@ -351,7 +345,7 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public List<Course> getRecommend() {
         List<Course> reData = new ArrayList<Course>();
-        String sql = "select * from (select a.Id,a.ParentId,a.SubjectId,a.Title,a.Cover,a.MinAge,a.MaxAge,a.Joined,a.Price,a.Goal,a.Flow,a.Tips,a.InstitutionId,a.Status,a.AddTime,a.KeyWord FROM sogokids.SG_Course a,sogokids.SG_CourseRecommend b where a.status > 0 and a.status != 3 and b.Status > 0 and a.Id = b.CourseId order by b.Weight desc) as course order by status asc ";
+        String sql = "select * from (select a.Id,a.ParentId,a.SubjectId,a.Title,a.Cover,a.MinAge,a.MaxAge,a.Joined,a.Price,a.Goal,a.Flow,a.Tips,a.Feature,a.InstitutionId,a.Status,a.AddTime,a.KeyWord FROM SG_Course a,SG_CourseRecommend b where a.status > 0 and a.status != 3 and b.Status > 0 and a.Id = b.CourseId order by b.Weight desc) as course order by status asc ";
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         if(list.size() > 0){
             for (int i = 0; i < list.size(); i++) {
@@ -362,6 +356,7 @@ public class CourseServiceImpl implements CourseService {
                 int sub_id = Integer.parseInt(list.get(i).get("SubjectId").toString());
                 entity.setSubjectId(sub_id);
                 entity.setTitle(list.get(i).get("Title").toString());
+                entity.setFeature(list.get(i).get("Feature") == null ? "" : list.get(i).get("Feature").toString());
                 entity.setCover(list.get(i).get("Cover").toString());
                 entity.setMinAge(Integer.parseInt(list.get(i).get("MinAge").toString()));
                 entity.setMaxAge(Integer.parseInt(list.get(i).get("MaxAge").toString()));
@@ -374,11 +369,7 @@ public class CourseServiceImpl implements CourseService {
                 entity.setKeyWord(list.get(i).get("KeyWord").toString());
                 entity.setStatus(Integer.parseInt(list.get(i).get("Status").toString()));
                 entity.setAddTime(list.get(i).get("AddTime").toString());
-                entity.setSubTitle(subjectService.get(Integer.parseInt(list.get(i).get("SubjectId").toString())).getTitle());
-
-//                if (courseRecommendService.getEntitysByCourseId(course_id).size() > 0){entity.setFlag(1);}
-
-//                if (getEntitysById(course_id).size() > 0){entity.setCopyFlag(1);}
+                entity.setSubjectTitle(subjectService.get(Integer.parseInt(list.get(i).get("SubjectId").toString())).getTitle());
 
                 reData.add(entity);
             }
@@ -389,8 +380,8 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public int insert(Course entity) {
-        String sql = "insert into SG_Course(ParentId,SubjectId,Title,Cover,MinAge,MaxAge,Joined,Price,Goal,Flow,Tips,Notice,InstitutionId,KeyWord,Status,AddTime) value(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW()) ";
-        Object [] params = new Object[]{entity.getParentId(), entity.getSubjectId(), entity.getTitle(), entity.getCover(), entity.getMinAge(), entity.getMaxAge(), entity.getJoined(), entity.getPrice(), entity.getGoal(), entity.getFlow(), entity.getTips(), entity.getNotice(), entity.getInstitutionId(), entity.getKeyWord(), Quantity.STATUS_TWO};
+        String sql = "insert into SG_Course(ParentId,SubjectId,Title,Cover,MinAge,MaxAge,Joined,Price,Goal,Flow,Tips,Notice,InstitutionId,KeyWord,Feature,Status,AddTime) value(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW()) ";
+        Object [] params = new Object[]{entity.getParentId(), entity.getSubjectId(), entity.getTitle(), entity.getCover(), entity.getMinAge(), entity.getMaxAge(), entity.getJoined(), entity.getPrice(), entity.getGoal(), entity.getFlow(), entity.getTips(), entity.getNotice(), entity.getInstitutionId(), entity.getKeyWord(), entity.getFeature(), Quantity.STATUS_TWO};
         int reData = 0;
         try {
             reData = jdbcTemplate.update(sql, params);
@@ -403,7 +394,7 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public int insertKey(Course course) {
         final Course entity = course;
-        final String sql = "insert into SG_Course(ParentId,SubjectId,Title,Cover,MinAge,MaxAge,Joined,Price,Goal,Flow,Tips,Notice,InstitutionId,KeyWord,Status,AddTime) value(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW()) ";
+        final String sql = "insert into SG_Course(ParentId,SubjectId,Title,Cover,MinAge,MaxAge,Joined,Price,Goal,Flow,Tips,Notice,InstitutionId,KeyWord,Feature,Status,AddTime) value(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW()) ";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         int reData = 0;
         try {
@@ -425,6 +416,7 @@ public class CourseServiceImpl implements CourseService {
                     ps.setString(++i, entity.getTips());
                     ps.setString(++i, entity.getNotice());
                     ps.setInt(++i, entity.getInstitutionId());
+                    ps.setString(++i, entity.getFeature());
                     ps.setString(++i, entity.getKeyWord());
                     ps.setInt(++i, Quantity.STATUS_TWO);
 
@@ -442,8 +434,8 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public int update(Course entity) {
-        String sql = "update SG_Course set SubjectId = ?, Title = ?, Cover = ?, MinAge = ?, MaxAge = ?, Price = ?, Goal = ?, Flow = ?, Tips = ?, InstitutionId = ?, keyWord = ? where Id = ? ";
-        Object [] params = new Object[]{entity.getSubjectId(), entity.getTitle(), entity.getCover(), entity.getMinAge(), entity.getMaxAge(), entity.getPrice(), entity.getGoal(), entity.getFlow(), entity.getTips(), entity.getInstitutionId(), entity.getKeyWord(), entity.getId()};
+        String sql = "update SG_Course set SubjectId = ?, Title = ?, Cover = ?, MinAge = ?, MaxAge = ?, Price = ?, Goal = ?, Flow = ?, Tips = ?, InstitutionId = ?, keyWord = ?, Feature = ? where Id = ? ";
+        Object [] params = new Object[]{entity.getSubjectId(), entity.getTitle(), entity.getCover(), entity.getMinAge(), entity.getMaxAge(), entity.getPrice(), entity.getGoal(), entity.getFlow(), entity.getTips(), entity.getInstitutionId(), entity.getKeyWord(), entity.getFeature(), entity.getId()};
         int reData = 0;
         try{
             reData = jdbcTemplate.update(sql,params);
@@ -485,6 +477,7 @@ public class CourseServiceImpl implements CourseService {
         entity.setParentId(Quantity.STATUS_ZERO);
         entity.setSubjectId(Integer.parseInt(request.getParameter("subjectId")));
         entity.setTitle(request.getParameter("title"));
+        entity.setFeature(request.getParameter("feature"));
         entity.setCover(request.getParameter("cover"));
         entity.setMinAge(Integer.parseInt(request.getParameter("minAge")));
         entity.setMaxAge(Integer.parseInt(request.getParameter("maxAge")));
@@ -503,6 +496,7 @@ public class CourseServiceImpl implements CourseService {
     public Course formEntityTrial(HttpServletRequest request, Course entity) {
 
         entity.setTitle(request.getParameter("title"));
+        entity.setFeature(request.getParameter("feature"));
         entity.setCover(request.getParameter("cover"));
         entity.setMinAge(Integer.parseInt(request.getParameter("minAge")));
         entity.setMaxAge(Integer.parseInt(request.getParameter("maxAge")));
@@ -817,8 +811,11 @@ public class CourseServiceImpl implements CourseService {
     public String getPreview(int course_id){
         StringBuffer sb = new StringBuffer();
         Course course = this.get(course_id);
+        if (course.getParentId() > 0){
+            course_id = this.get(course.getParentId()).getId();
+        }
         String fm_pic_url = configuration.getString(Quantity.DISPLAY_IMAGE) + course.getCover();
-        List<CourseSku> courseSkus = courseSkuService.getModelsByCourse_Key(course_id);
+        List<CourseSku> courseSkus = courseSkuService.getModelsByCourse_Key(course.getId());
         List<CourseImg> courseImgs = courseImgService.getModelsBySub_Key(course_id);
         List<Teacher> teachers = courseTeacherService.getByCourseId(course_id);
 //        List<CourseBook> courseBooks = courseBookService.getEntitys(course_id);
@@ -832,13 +829,16 @@ public class CourseServiceImpl implements CourseService {
         sb.append("</div>");
 
         sb.append("<div class='well'>");
-        sb.append("<h3>适合年龄</h3>");
-        sb.append("<p>").append(course.getMinAge()+"至"+course.getMaxAge()+"岁").append("</p>");
+        sb.append("<h3>活动图片</h3>");
+        for (CourseImg courseImg : courseImgs) {
+            String lb_pic_url = configuration.getString(Quantity.DISPLAY_IMAGE) + courseImg.getUrl();
+            sb.append("<p  align='center'><img src='" + lb_pic_url + "' style='width: 300px;height: 200px'></p>");
+        }
         sb.append("</div>");
 
         sb.append("<div class='well'>");
-        sb.append("<h3>课程目标</h3>");
-        sb.append("<p>").append(course.getTips().replace("\r\n", "<br>")).append("</p>");
+        sb.append("<h3>适合年龄</h3>");
+        sb.append("<p>").append(course.getMinAge()+"至"+course.getMaxAge()+"岁").append("</p>");
         sb.append("</div>");
 
         sb.append("<div class='well'>");
@@ -847,27 +847,6 @@ public class CourseServiceImpl implements CourseService {
             sb.append("<p>");
             sb.append(DateUtil.DateToStr_Cn(courseSku.getStartTime()) + " " + courseSku.getPlaceName());
             sb.append("</p>");
-        }
-        sb.append("</div>");
-
-        sb.append("<div class='well'>");
-        sb.append("<h3>讲师团</h3>");
-        for (Teacher teacher : teachers) {
-            String js_pic_url = configuration.getString(Quantity.DISPLAY_IMAGE) + teacher.getAvatar();
-            int job = teacher.getJob();
-            String job_str = "";
-            switch (job) {
-                case Quantity.STATUS_ONE:
-                    job_str = "讲师";
-                    break;
-                case Quantity.STATUS_TWO:
-                    job_str = "培训师";
-                    break;
-                case Quantity.STATUS_THREE:
-                    job_str = "助教";
-                    break;
-            }
-            sb.append("<p><img src='"+js_pic_url+"' style='width: 100px;height: 80px'>").append("&numsp;&numsp;").append(teacher.getName() + " " + job_str).append("</p>");
         }
         sb.append("</div>");
 
@@ -892,10 +871,37 @@ public class CourseServiceImpl implements CourseService {
         }
         sb.append("</div>");
 
-            sb.append("<div class='well'>");
-            sb.append("<h3>特别提示</h3>");
-            sb.append("<p>").append(course.getTips().replace("\r\n", "<br>")).append("</p>");
-            sb.append("</div>");
+        sb.append("<div class='well'>");
+        sb.append("<h3>注意事项</h3>");
+        sb.append("<p>").append(course.getTips().replace("\r\n", "<br>")).append("</p>");
+        sb.append("</div>");
+
+        sb.append("<div class='well'>");
+        sb.append("<h3>讲师团</h3>");
+        for (Teacher teacher : teachers) {
+            String pic_path = StringUtils.isEmpty(teacher.getAvatar())?teacher.getPic():teacher.getAvatar();
+            String js_pic_url = configuration.getString(Quantity.DISPLAY_IMAGE) + pic_path;
+            int job = teacher.getJob();
+            String job_str = "";
+            switch (job) {
+                case Quantity.STATUS_ONE:
+                    job_str = "讲师";
+                    break;
+                case Quantity.STATUS_TWO:
+                    job_str = "培训师";
+                    break;
+                case Quantity.STATUS_THREE:
+                    job_str = "助教";
+                    break;
+            }
+            sb.append("<p><img src='"+js_pic_url+"' style='width: 100px;height: 80px'>").append("&numsp;&numsp;").append(teacher.getName() + " " + job_str).append("</p>");
+        }
+        sb.append("</div>");
+
+//            sb.append("<div class='well'>");
+//            sb.append("<h3>特别提示</h3>");
+//            sb.append("<p>").append(course.getTips().replace("\r\n", "<br>")).append("</p>");
+//            sb.append("</div>");
 
         sb.append("<div class='well'>");
             sb.append("<h3>合作机构</h3>");
@@ -909,14 +915,6 @@ public class CourseServiceImpl implements CourseService {
                 sb.append("<p>").append(course.getInstitution().getIntro().replace("\r\n", "<br>")).append("</p>");
             }
             sb.append("</div>");
-
-        sb.append("<div class='well'>");
-        sb.append("<h3>轮播图片</h3>");
-        for (CourseImg courseImg : courseImgs) {
-            String lb_pic_url = configuration.getString(Quantity.DISPLAY_IMAGE) + courseImg.getUrl();
-            sb.append("<p  align='center'><img src='"+lb_pic_url+"' style='width: 300px;height: 200px'></p>");
-        }
-        sb.append("</div>");
 
         sb.append("</div>");
 

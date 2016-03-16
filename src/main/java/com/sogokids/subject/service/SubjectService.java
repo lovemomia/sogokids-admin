@@ -5,6 +5,7 @@ import com.sogokids.subject.model.Subject;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by hoze on 15/10/12.
@@ -26,4 +27,6 @@ public interface SubjectService {
 
     /*预览 */
     public String getPreview(int sub_id);
+
+    public Map<String,String> getCommentHtml(int sub_id);
 }

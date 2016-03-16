@@ -96,6 +96,7 @@ $(document).ready(function () {
         var title = $('#title').val();
         var cover = $('#cover').val();
         var keyWord = $('#keyWord').val();
+        //var recommend = $('#recommend').val();
         if(title == null || title == ""){
             layer.alert('请填写标题信息！',3,'提示信息');
             return false;
@@ -106,6 +107,14 @@ $(document).ready(function () {
             layer.alert('请填写关键字信息！',3,'提示信息');
             return false;
         }else{
+            //$.post("/course/validation_recommend.do", {textarea_value: recommend, label_name: "推荐理由", max_row_value: 4, row_length: 20},
+            //    function (data) {
+            //        if (data.success == 0) {
+            //
+            //        } else {
+            //            layer.alert(data.msg, 10, '提示信息');
+            //        }
+            //    }, "json");
             if(course_id == 0){
                 $.post("/course/add.do", $("#course_form").serialize(),
                     function(data){

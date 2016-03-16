@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * 优惠设置
  * Created by hoze on 15/7/14.
  */
 @Controller
@@ -28,6 +29,12 @@ public class CouponController {
     @Autowired
     private CouponService couponService;
 
+    /**
+     * 优惠设置－列表
+     * @param uid
+     * @param req
+     * @return
+     */
     @RequestMapping("/info")
     public ModelAndView info(@RequestParam("uid") int uid, HttpServletRequest req){
         Map<String, Object> context = new HashMap<String, Object>();
@@ -36,6 +43,14 @@ public class CouponController {
         return new ModelAndView(adminUserService.isUserFunc(req,JumpPage.COUPON),context);
     }
 
+    /**
+     * 优惠设置－操作控制
+     * @param uid
+     * @param id
+     * @param mark
+     * @param req
+     * @return
+     */
     @RequestMapping("/oper")
     public ModelAndView operation(@RequestParam("uid") int uid,@RequestParam("id") int id, @RequestParam("mark") int mark,HttpServletRequest req){
         String reStr = JumpPage.COUPON_EDIT;
@@ -47,10 +62,17 @@ public class CouponController {
         }
         context.put("timeUnits", EnumUtil.getEnums(Quantity.STATUS_FOUR));
         context.put("timeTypes", EnumUtil.getEnums(Quantity.STATUS_EIGHT));
+        context.put("couponSrc", EnumUtil.getEnums(Quantity.STATUS_TWELVE));
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
         return new ModelAndView(reStr,context);
     }
 
+    /**
+     * 优惠设置－创建
+     * @param uid
+     * @param req
+     * @return
+     */
     @RequestMapping("/add")
     public ModelAndView addEntity(@RequestParam("uid") int uid, HttpServletRequest req){
 
@@ -66,6 +88,13 @@ public class CouponController {
         return new ModelAndView(JumpPage.COUPON,context);
     }
 
+    /**
+     * 优惠设置－编辑
+     * @param uid
+     * @param id
+     * @param req
+     * @return
+     */
     @RequestMapping("/edit")
     public ModelAndView editEntity(@RequestParam("uid") int uid,@RequestParam("id") int id, HttpServletRequest req){
 
@@ -81,6 +110,13 @@ public class CouponController {
         return new ModelAndView(JumpPage.COUPON,context);
     }
 
+    /**
+     * 优惠设置－删除
+     * @param uid
+     * @param id
+     * @param req
+     * @return
+     */
     @RequestMapping("/del")
     public ModelAndView delEntity(@RequestParam("uid") int uid,@RequestParam("id") int id, HttpServletRequest req){
 

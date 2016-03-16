@@ -9,6 +9,7 @@ public class CourseImg {
     private String url;
     private int width;
     private int height;
+    private int sortValue;
     private int status;
     private String addTime;
     private String updateTime;
@@ -51,6 +52,14 @@ public class CourseImg {
 
     public void setHeight(int height) {
         this.height = height;
+    }
+
+    public int getSortValue() {
+        return sortValue;
+    }
+
+    public void setSortValue(int sortValue) {
+        this.sortValue = sortValue;
     }
 
     public int getStatus() {

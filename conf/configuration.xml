@@ -30,7 +30,9 @@
             <QzLeavePath>http://i.momia.cn/admin/im/group/leave</QzLeavePath>
             <GroupCoursePath>http://i.momia.cn/admin/course/booking/batch</GroupCoursePath>
             <AppPushPath>http://i.momia.cn/admin/push</AppPushPath>
+            <UsersAppPushPath>http://i.momia.cn/admin/push/batch</UsersAppPushPath>
             <SmsPath>http://i.momia.cn/admin/sms/notify</SmsPath>
+            <CancelCoursePath>http://i.momia.cn/admin/course/sku/cancel</CancelCoursePath>
         </PortUrl>
         <PortTime>
             <Time>5</Time>

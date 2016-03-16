@@ -23,7 +23,7 @@ public interface CourseSkuService {
     public String getCopySkuHtml(int course_id);
     public String getSkuPlaceHtml(int cs_id);
 
-    public int update_CourseSku(int course_id,int id);
+    public int update_CourseSku(int course_id,int id,String content);
 
     //处理未勾选的试听课的sku信息，清除剩余库存，添加到正常课程的sku信息上
     public void update_un_check(int course_id, String[] course_sku_id);

@@ -82,6 +82,8 @@ public class OrderPackageServiceImpl implements OrderPackageService {
 
                 entity.setCourses(getOrderCourses(order_id,entity.getId()));
 
+                this.getOrderPackageOrigin(entity);
+
                 reData.add(entity);
             }
         }
@@ -182,6 +184,37 @@ public class OrderPackageServiceImpl implements OrderPackageService {
         Object [] params = new Object[]{entity.getBookableCount(), entity.getId()};
         int reData = jdbcTemplate.update(sql,params);
         return reData;
+    }
+
+    /**
+     * 计算购买来源
+     * @param orderPackage
+     * @return
+     */
+    private OrderPackage getOrderPackageOrigin(OrderPackage orderPackage){
+        String sql = "SELECT a.Id,b.id as s_skuid,b.SubjectId,b.CourseId,b.Price,c.Type FROM SG_SubjectOrderPackage a, SG_SubjectSku b, SG_Subject c where a.Id = ? and a.SkuId = b.Id and b.SubjectId = c.Id and a.Status > ? and b.Status > ? and c.Status > ? and b.Status != ? ";
+        Object [] params = new Object[]{orderPackage.getId(), Quantity.STATUS_ZERO, Quantity.STATUS_ZERO, Quantity.STATUS_ZERO, Quantity.STATUS_THREE};
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sql, params);
+        if (list.size() > 0){
+            for (int i = 0; i < list.size(); i++) {
+                int type = Integer.parseInt(list.get(i).get("Type").toString());
+                int courseId = Integer.parseInt(list.get(i).get("CourseId").toString());
+//                String title = list.get(i).get("Title").toString();
+                if (type == 2){
+                    orderPackage.setOriginType(2);//试听课
+                }else{
+                    if (courseId == 0){
+                        orderPackage.setOriginType(1);//课程包课程
+                    }else{
+                        orderPackage.setOriginType(3);//推荐
+                    }
+                }
+
+            }
+        }
+
+        return orderPackage;
+
     }
 
 }

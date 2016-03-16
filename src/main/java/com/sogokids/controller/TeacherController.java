@@ -33,6 +33,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * 讲师信息
  * Created by hoze on 15/11/13.
  */
 @Controller
@@ -66,6 +67,12 @@ public class TeacherController {
     @Autowired
     private CourseMaterialService courseMaterialService;
 
+    /**
+     * 讲师列表
+     * @param uid
+     * @param req
+     * @return
+     */
     @RequestMapping("/info")
     public ModelAndView info(@RequestParam("uid") int uid, HttpServletRequest req){
         Map<String, Object> context = new HashMap<String, Object>();
@@ -74,6 +81,13 @@ public class TeacherController {
         return new ModelAndView(adminUserService.isUserFunc(req,JumpPage.TEACHER),context);
     }
 
+    /**
+     * 讲师查询
+     * @param uid
+     * @param name
+     * @param req
+     * @return
+     */
     @RequestMapping("/query")
     public ModelAndView query_teacher(@RequestParam("uid") int uid, @RequestParam("name") String name, HttpServletRequest req){
         Map<String, Object> context = new HashMap<String, Object>();
@@ -87,6 +101,13 @@ public class TeacherController {
         return new ModelAndView(JumpPage.TEACHER,context);
     }
 
+    /**
+     * 讲师操作跳转
+     * @param uid
+     * @param id
+     * @param req
+     * @return
+     */
     @RequestMapping("/oper")
     public ModelAndView operation(@RequestParam("uid") int uid,@RequestParam("id") int id,HttpServletRequest req){
         String reStr = JumpPage.TEACHER_EDIT;
@@ -102,7 +123,12 @@ public class TeacherController {
         return new ModelAndView(reStr,context);
     }
 
-
+    /**
+     * 验证讲师与用户手机
+     * @param req
+     * @param rsp
+     * @return
+     */
     @RequestMapping("/isMobile")
     public String isMobile(HttpServletRequest req, HttpServletResponse rsp){
         rsp.setContentType("text/html; charset=UTF-8");
@@ -132,7 +158,12 @@ public class TeacherController {
         return null;
     }
 
-
+    /**
+     * 创建讲师
+     * @param req
+     * @param rsp
+     * @return
+     */
     @RequestMapping("/add")
     public String addEntity(HttpServletRequest req, HttpServletResponse rsp){
         rsp.setContentType("text/html; charset=UTF-8");
@@ -163,6 +194,13 @@ public class TeacherController {
 
     }
 
+    /**
+     * 编辑讲师
+     * @param uid
+     * @param id
+     * @param req
+     * @return
+     */
     @RequestMapping("/edit")
     public ModelAndView editEntity(@RequestParam("uid") int uid,@RequestParam("id") int id, HttpServletRequest req){
 
@@ -179,6 +217,13 @@ public class TeacherController {
         return new ModelAndView(JumpPage.TEACHER,context);
     }
 
+    /**
+     * 删除讲师
+     * @param uid
+     * @param id
+     * @param req
+     * @return
+     */
     @RequestMapping("/del")
     public ModelAndView delEntity(@RequestParam("uid") int uid,@RequestParam("id") int id, HttpServletRequest req){
 
@@ -194,6 +239,12 @@ public class TeacherController {
         return new ModelAndView(JumpPage.TEACHER,context);
     }
 
+    /**
+     * 分配讲师信息
+     * @param uid
+     * @param req
+     * @return
+     */
     @RequestMapping("/assign")
     public ModelAndView assignInfo(@RequestParam("uid") int uid, HttpServletRequest req){
         Map<String, Object> context = new HashMap<String, Object>();
@@ -203,6 +254,12 @@ public class TeacherController {
         return new ModelAndView(adminUserService.isUserFunc(req,JumpPage.ASSIGN),context);
     }
 
+    /**
+     * 教案更新
+     * @param uid
+     * @param req
+     * @return
+     */
     @RequestMapping("/material")
     public ModelAndView materialInfo(@RequestParam("uid") int uid, HttpServletRequest req){
         Map<String, Object> context = new HashMap<String, Object>();
@@ -211,6 +268,12 @@ public class TeacherController {
         return new ModelAndView(adminUserService.isUserFunc(req,JumpPage.MATERIAL),context);
     }
 
+    /**
+     * 审核讲师信息
+     * @param uid
+     * @param req
+     * @return
+     */
     @RequestMapping("/check")
     public ModelAndView checkInfo(@RequestParam("uid") int uid, HttpServletRequest req){
         Map<String, Object> context = new HashMap<String, Object>();
@@ -437,6 +500,14 @@ public class TeacherController {
         return null;
     }
 
+    /**
+     * 老师操作跳转
+     * @param uid
+     * @param id
+     * @param sid
+     * @param req
+     * @return
+     */
     @RequestMapping("/teacherOper")
     public ModelAndView teacherOperation(@RequestParam("uid") int uid,@RequestParam("id") int id,@RequestParam("sid") int sid,HttpServletRequest req){
         Map<String, Object> context = new HashMap<String, Object>();
@@ -450,6 +521,15 @@ public class TeacherController {
         return new ModelAndView(JumpPage.ASSIGN_TEACHER,context);
     }
 
+    /**
+     * 分配讲师
+     * @param mark
+     * @param id
+     * @param sid
+     * @param req
+     * @param rsp
+     * @return
+     */
     @RequestMapping("/assign_teacher")
     public String assign_add_delTeacher(@RequestParam("mark") int mark,@RequestParam("id") int id,@RequestParam("sid") int sid, HttpServletRequest req, HttpServletResponse rsp){
         rsp.setContentType("text/html; charset=UTF-8");
