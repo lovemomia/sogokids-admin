@@ -60,7 +60,7 @@ public class UserServiceImpl implements UserService {
             public void processRow(ResultSet rs) throws SQLException {
                 entity.setId(rs.getInt("id"));
                 entity.setUsername(rs.getString("username"));
-                entity.setPassword(rs.getString("password"));
+                entity.setPassword(new String(new Base64().decode(rs.getString("password"))));
                 entity.setStatus(rs.getInt("status"));
                 entity.setAddTime(rs.getString("addTime"));
             }

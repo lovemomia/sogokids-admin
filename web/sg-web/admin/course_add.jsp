@@ -95,8 +95,8 @@
                                  </span> </span>
                         </a>
                         <ul class="dropdown-menu animated fadeInRight m-t-xs">
-                            <li><a href="#">个人资料</a></li>
-                            <li><a href="#">修改密码</a></li>
+                            <li><a href="${ctx}/user/oper.do?uid=${user.id}&id=${user.id}&mark=2">个人资料</a></li>
+                            <li><a href="${ctx}/user/oper.do?uid=${user.id}&id=${user.id}&mark=2">修改密码</a></li>
                             <li class="divider"></li>
                             <li><a href="${ctx}/user/login.do">安全退出</a></li>
                         </ul>
@@ -928,12 +928,12 @@
         </div>
     </div>
 </div>
-</div>
 
 <!-- sg-admin javascript -->
 <script src="${ctx}/sg-web/js/sg-admin/sogokids-course.js"></script>
 <script src="${ctx}/sg-web/js/sg-admin/sogokids-img.js"></script>
 <script src="${ctx}/sg-web/js/sg-admin/sogokids-cour-tabs.js"></script>
+<script src="${ctx}/sg-web/js/sg-admin/sogokids-onkeydown.js"></script>
 
 <script language="JavaScript">
 

@@ -4,6 +4,7 @@ import com.sogokids.home.model.Event;
 import com.sogokids.home.service.EventService;
 import com.sogokids.system.service.CityService;
 import com.sogokids.utils.util.Quantity;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowCallbackHandler;
@@ -134,7 +135,7 @@ public class EventServiceImpl implements EventService {
         }else{
             entity.setVersion("");
         }
-        entity.setWeight(Integer.parseInt(request.getParameter("weight")));
+        entity.setWeight(Integer.parseInt(StringUtils.isEmpty(request.getParameter("weight"))?"0":request.getParameter("weight")));
 
         return entity;
     }
