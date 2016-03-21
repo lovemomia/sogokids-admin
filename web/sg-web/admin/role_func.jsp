@@ -45,8 +45,8 @@
                                  </span> </span>
                         </a>
                         <ul class="dropdown-menu animated fadeInRight m-t-xs">
-                            <li><a href="#">个人资料</a></li>
-                            <li><a href="#">修改密码</a></li>
+                            <li><a href="${ctx}/user/oper.do?uid=${user.id}&id=${user.id}&mark=2">个人资料</a></li>
+                            <li><a href="${ctx}/user/oper.do?uid=${user.id}&id=${user.id}&mark=2">修改密码</a></li>
                             <li class="divider"></li>
                             <li><a href="${ctx}/user/login.do">安全退出</a></li>
                         </ul>
@@ -325,7 +325,6 @@
             </div>
         </div>
     </div>
-</div>
 </div>
 
 <script language="JavaScript">

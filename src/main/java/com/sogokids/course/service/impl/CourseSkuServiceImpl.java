@@ -22,6 +22,7 @@ import com.sogokids.utils.util.CastUtil;
 import com.sogokids.utils.util.DateUtil;
 import com.sogokids.utils.util.Quantity;
 import com.sogokids.utils.util.StringUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -142,7 +143,7 @@ public class CourseSkuServiceImpl implements CourseSkuService {
                 entity.setAdult(Integer.parseInt(list.get(i).get("Adult").toString()));
                 entity.setChild(Integer.parseInt(list.get(i).get("Child").toString()));
                 entity.setStatus(Integer.parseInt(list.get(i).get("Status").toString()));
-                entity.setAddTime(list.get(i).get("AddTime").toString());
+                entity.setAddTime(list.get(i).get("AddTime")==null?"":list.get(i).get("AddTime").toString());
 
                 entity.setPlaceName(placeService.get(Integer.parseInt(list.get(i).get("PlaceId").toString())).getAddress());
                 entity.setCourseName(courseService.get(Integer.parseInt(list.get(i).get("CourseId").toString())).getTitle());
@@ -276,7 +277,6 @@ public class CourseSkuServiceImpl implements CourseSkuService {
         return reData;
     }
 
-//    @Override
     public int updateStatus(int id,int status) {
         String sql = "update SG_CourseSku set Status = ? where Id = ? ";
         Object [] params = new Object[]{status, id};
@@ -420,6 +420,7 @@ public class CourseSkuServiceImpl implements CourseSkuService {
                     String input_hidden_id = "un_stock_"+sku.getId();
                     String y_input_id = "y_stock_"+sku.getId();
                     List<CourseSku> courseSkus = this.getCourseSkuById(course_id_c, sku.getId());
+                    String startTime = StringUtils.isEmpty(sku.getStartTime())?"":sku.getStartTime().substring(0,16);
                     sb.append("<tr>");
                     if (courseSkus.size() > 0) {
                         sb.append("<td><input id='course_sku_id' name='course_sku_id' type='checkbox' value='" + sku.getId() + "' checked></td>");
@@ -428,7 +429,7 @@ public class CourseSkuServiceImpl implements CourseSkuService {
                     }
                     sb.append("<td>");
 
-                    sb.append("时间:"+sku.getStartTime().substring(0,16));
+                    sb.append("时间:"+startTime);
                     sb.append("<br>");
                     sb.append("<br>");
                     sb.append("地址:"+sku.getPlaceName());
@@ -477,11 +478,12 @@ public class CourseSkuServiceImpl implements CourseSkuService {
             for (CourseSku sku : course_sku){
                 if (sku.getUnlockedStock() != 0) {
                     String input_id = "stock_"+sku.getId();
+                    String startTime = StringUtils.isEmpty(sku.getStartTime())?"":sku.getStartTime().substring(0, 16);
                     sb.append("<tr>");
                     sb.append("<td><input id='course_sku_id' name='course_sku_id' type='checkbox' value='"+sku.getId()+"'></td>");
                     sb.append("<td>");
 
-                    sb.append("时间:"+sku.getStartTime().substring(0,16));
+                    sb.append("时间:"+startTime);
                     sb.append("<br>");
                     sb.append("<br>");
                     sb.append("地址:"+sku.getPlaceName());

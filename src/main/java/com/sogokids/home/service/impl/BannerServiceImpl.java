@@ -4,6 +4,8 @@ import com.sogokids.home.model.Banner;
 import com.sogokids.home.service.BannerService;
 import com.sogokids.system.service.CityService;
 import com.sogokids.utils.util.Quantity;
+import com.sogokids.utils.util.StringUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowCallbackHandler;
@@ -127,7 +129,7 @@ public class BannerServiceImpl implements BannerService {
             entity.setVersion("");
         }
 
-        entity.setWeight(Integer.parseInt(request.getParameter("weight")));
+        entity.setWeight(Integer.parseInt(StringUtils.isEmpty(request.getParameter("weight"))?"0":request.getParameter("weight")));
 
         return entity;
     }
