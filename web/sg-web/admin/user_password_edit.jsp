@@ -225,13 +225,13 @@
         </div>
         <div class="row">
             <div class="ibox-content">
-                <form class="form-horizontal" id="vform" action="${ctx}/user/editEntity.do?uid=${user.id}&id=${model.id}" method="post">
+                <form class="form-horizontal" id="vform" action="${ctx}/user/edit.do?uid=${user.id}&id=${model.id}" method="post">
                     <fieldset>
                         <%--<div class="hr-line-dashed"></div>--%>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">用户名称 </label>
                             <div class="col-sm-8">
-                                <input id="username" name="username" type="text" class="form-control" value="${model.username}">
+                                <input id="username" name="username" type="text" class="form-control" value="${model.username}" readonly>
                             </div>
                         </div>
 

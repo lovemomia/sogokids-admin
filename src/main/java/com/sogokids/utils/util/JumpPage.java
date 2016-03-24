@@ -12,6 +12,7 @@ public class JumpPage {
     public static final String USER_ADD = "admin/user_add";
     public static final String USER_EDIT = "admin/user_edit";
     public static final String USER_ROLE = "admin/user_role";
+    public static final String USER_PASSWORD_EDIT = "admin/user_password_edit";
 
     public static final String ROLE = "admin/role";
     public static final String ROLE_ADD = "admin/role_add";
