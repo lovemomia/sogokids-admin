@@ -120,6 +120,9 @@ public class UserController {
             context.put("w_list",roleService.getWList(id));
             context.put(Quantity.RETURN_ENTITY,userService.get(id));
             reStr = JumpPage.USER_ROLE;
+        }else if(mark == 2){
+            context.put(Quantity.RETURN_ENTITY,userService.get(id));
+            reStr = JumpPage.USER_PASSWORD_EDIT;
         }else{
             context.put(Quantity.RETURN_ENTITY,userService.get(id));
         }
@@ -153,7 +156,7 @@ public class UserController {
     }
 
     /**
-     *编辑用户
+     *编辑用户名密码
      * @param uid
      * @param id
      * @param req
@@ -161,6 +164,22 @@ public class UserController {
      */
     @RequestMapping("/edit")
     public ModelAndView editEntity(@RequestParam("uid") int uid,@RequestParam("id") int id, HttpServletRequest req){
+
+        Map<String, Object> context = new HashMap<String, Object>();
+        int reDate = userService.update(userService.formEntity(req, id));
+        context.put(Quantity.RETURN_MSG,"");
+        return new ModelAndView(JumpPage.USER_LOGIN,context);
+    }
+
+    /**
+     *编辑用户
+     * @param uid
+     * @param id
+     * @param req
+     * @return
+     */
+    @RequestMapping("/editEntity")
+    public ModelAndView edit(@RequestParam("uid") int uid,@RequestParam("id") int id, HttpServletRequest req){
 
         Map<String, Object> context = new HashMap<String, Object>();
         int reDate = userService.update(userService.formEntity(req, id));
