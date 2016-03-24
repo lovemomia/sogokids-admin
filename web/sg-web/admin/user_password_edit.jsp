@@ -97,10 +97,10 @@
                     </ul>
                 </li>
                 <li><a href="${ctx}/coupon/info.do?uid=${user.id}"><i class="fa fa-cc-paypal"></i> <span class="nav-label">优惠设置</span></a></li>
-                <li class="active">
+                <li>
                     <a href="index.jsp#"><i class="fa fa-user"></i> <span class="nav-label">用户信息</span><span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
-                        <li class="active"><a href="${ctx}/user/info.do?uid=${user.id}"><i class="fa fa-users"></i> <span class="nav-label">用户信息</span> </a></li>
+                        <li><a href="${ctx}/user/info.do?uid=${user.id}"><i class="fa fa-users"></i> <span class="nav-label">用户信息</span> </a></li>
                         <li><a href="${ctx}/role/info.do?uid=${user.id}"><i class="fa fa-graduation-cap"></i> <span class="nav-label">角色设置</span> </a></li>
                         <li><a href="${ctx}/func/info.do?uid=${user.id}"><i class="fa fa-joomla"></i> <span class="nav-label">权限设置</span> </a></li>
                     </ul>
@@ -206,21 +206,15 @@
         </div>
         <div class="row wrapper border-bottom white-bg page-heading">
             <div class="col-lg-10">
-                <h2>用户列表</h2>
+                <h2>用户信息</h2>
                 <ol class="breadcrumb">
                     <li>
                         <a href="${ctx}/user/index.do?uid=${user.id}">主页</a>
                     </li>
                     <li>
-                        <a href="${ctx}/user/info.do?uid=${user.id}">用户信息</a>
-                    </li>
-                    <li>
-                        <strong>编辑用户</strong>
+                        <strong>密码修改</strong>
                     </li>
                 </ol>
-            </div>
-            <div class="col-lg-2">
-                <h2><a href="${ctx}/user/info.do?uid=${user.id}" class="btn btn-primary btn-x">返回</a></h2>
             </div>
         </div>
         <div class="row">
