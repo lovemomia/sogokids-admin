@@ -103,6 +103,14 @@
                     </ul>
                 </li>
                 <li>
+                    <a href="index.jsp#"><i class="fa fa-language"></i> <span class="nav-label">合作单位</span><span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li><a href="${ctx}/coop/info.do?uid=${user.id}"><i class="fa fa-spinner"></i> <span class="nav-label">单位管理</span> </a></li>
+                        <li><a href="${ctx}/coop_user/info.do?uid=${user.id}"><i class="fa fa-group"></i> <span class="nav-label">人员管理</span> </a></li>
+                        <li><a href="${ctx}/coop_activity/info.do?uid=${user.id}"><i class="fa fa-joomla"></i> <span class="nav-label">活动管理</span> </a></li>
+                    </ul>
+                </li>
+                <li>
                     <a href="index.jsp#"><i class="fa fa-gears"></i> <span class="nav-label">系统设置</span><span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
                         <li><a href="${ctx}/city/info.do?uid=${user.id}"><i class="fa fa-hacker-news"></i> <span class="nav-label">城市信息</span> </a></li>

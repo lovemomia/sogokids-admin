@@ -1,10 +1,13 @@
 package com.sogokids.discuss.service.impl;
 
+import cn.momia.common.config.Configuration;
+import com.sogokids.course.model.CourseImg;
 import com.sogokids.discuss.model.DiscussTopic;
 import com.sogokids.discuss.service.DiscussTopicService;
 import com.sogokids.utils.util.Quantity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowCallbackHandler;
 import org.springframework.stereotype.Service;
@@ -23,6 +26,9 @@ import java.util.Map;
 @Service
 public class DiscussTopicServiceImpl implements DiscussTopicService {
     private final Logger log = LoggerFactory.getLogger(DiscussTopicServiceImpl.class);
+
+    @Autowired
+    private Configuration configuration;
 
     @Resource
     private JdbcTemplate jdbcTemplate;
@@ -147,5 +153,45 @@ public class DiscussTopicServiceImpl implements DiscussTopicService {
         entity.setContent(request.getParameter("content"));
 
         return entity;
+    }
+
+    /**
+     * 预览话题信息
+     * @param id
+     * @return
+     */
+    @Override
+    public String getPreview(int id){
+        StringBuffer sb = new StringBuffer();
+        DiscussTopic discussTopic = this.get(id);
+        String fm_pic_url = configuration.getString(Quantity.DISPLAY_IMAGE) + discussTopic.getCover();
+
+        sb.append("<div class='ibox-title'>");
+        sb.append("<h5>话题预览</h5>");
+        sb.append("</div>");
+
+        sb.append("<div class='ibox-content'>");
+            sb.append("<div class='well'>");
+            sb.append("<h3>封面</h3>");
+            sb.append("<p  align='center'><img src='" + fm_pic_url + "' style='width: 300px;height: 200px'></p>");
+            sb.append("</div>");
+
+            sb.append("<div class='well'>");
+            sb.append("<h3>标题</h3>");
+            sb.append("<p  align='center'>").append(discussTopic.getTitle()).append("</p>");
+            sb.append("</div>");
+
+            sb.append("<div class='well'>");
+            sb.append("<h3>副标题</h3>");
+            sb.append("<p  align='center'>").append(discussTopic.getSubTitle()).append("</p>");
+            sb.append("</div>");
+
+            sb.append("<div class='well'>");
+            sb.append("<h3>话题内容</h3>");
+            sb.append(discussTopic.getContent());
+            sb.append("</div>");
+        sb.append("</div>");
+
+        return sb.toString();
     }
 }

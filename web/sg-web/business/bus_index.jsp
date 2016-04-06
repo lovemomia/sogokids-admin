@@ -41,12 +41,19 @@
                 <ul class="nav" id="side-menu">
                     <li class="nav-header">
 
-                        <div class="dropdown profile-element" align="center"> <span>
-                                <img alt="image" class="img-circle" src="${ctx}/sg-web/img/face.png" />
-                                 </span>
-                            <a data-toggle="dropdown" class="dropdown-toggle" href="${ctx}/bus/index.do?uid=${bus.id}">
-                                    <span class="clear"> <span class="block m-t-xs"> <strong class="font-bold">${bus.name}</strong>
-                                 </span>  </span>
+                        <div class="dropdown profile-element" align="center">
+                            <span>
+                                <c:choose>
+                                    <c:when test="${empty busUser.cooperator.cover}">
+                                        <img alt="image" class="img-circle" src="${ctx}/sg-web/img/face.png" />
+                                    </c:when>
+                                    <c:otherwise>
+                                        <img src="${filepath}${busUser.cooperator.cover}" alt="image" class="img-circle" style="width: 65px;height: 65px;"/>
+                                    </c:otherwise>
+                                </c:choose>
+                            </span>
+                            <a data-toggle="dropdown" class="dropdown-toggle" href="${ctx}/bus/index.do?uid=${busUser.id}">
+                                <span class="clear"> <span class="block m-t-xs"> <strong class="font-bold"><font color="#1AB394">${busUser.cooperator.name}</font><br>${busUser.name}</strong></span>  </span>
                                 <%--<span class="text-muted text-xs">商家账户 <b class="caret"></b></span>--%>
                             </a>
                             <ul class="dropdown-menu animated fadeInRight m-t-xs">
@@ -61,17 +68,16 @@
                         </div>
 
                     </li>
-                    <li class="active"><a href="${ctx}/bus/index.do?uid=${bus.id}"><i class="fa fa-th-large"></i> <span class="nav-label">主页</span> </a></li>
-                    <li><a href="${ctx}/bus/coupons.do?uid=${bus.id}"><i class="fa fa-edit"></i> <span class="nav-label">商家验证</span> </a></li>
-                    <%--<li><a href="${ctx}/busquery/busproducts.do?uid=${bus.id}"><i class="fa fa-bar-chart-o"></i> <span class="nav-label">订单查询</span> </a></li>--%>
-                    <li>
-                        <a href="#"><i class="fa fa-bar-chart-o"></i> <span class="nav-label">交易数据</span><span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level">
-                            <li><a href="${ctx}/busquery/busproducts.do?uid=${bus.id}">销售数据</a></li>
-                            <li><a href="${ctx}/busquery/buyproducts.do?uid=${bus.id}">消费数据</a></li>
-                            <li><a href="${ctx}/busquery/refundproducts.do?uid=${bus.id}">退款数据</a></li>
-                        </ul>
-                    </li>
+                    <li class="active"><a href="${ctx}/bus/index.do?uid=${busUser.id}"><i class="fa fa-th-large"></i> <span class="nav-label">主页</span> </a></li>
+                    <li><a href="${ctx}/bus_coop_activity/info.do?uid=${busUser.id}"><i class="fa fa-joomla"></i> <span class="nav-label">商家活动</span> </a></li>
+                    <%--<li>--%>
+                        <%--<a href="#"><i class="fa fa-bar-chart-o"></i> <span class="nav-label">交易数据</span><span class="fa arrow"></span></a>--%>
+                        <%--<ul class="nav nav-second-level">--%>
+                            <%--<li><a href="${ctx}/busquery/busproducts.do?uid=${bus.id}">销售数据</a></li>--%>
+                            <%--<li><a href="${ctx}/busquery/buyproducts.do?uid=${bus.id}">消费数据</a></li>--%>
+                            <%--<li><a href="${ctx}/busquery/refundproducts.do?uid=${bus.id}">退款数据</a></li>--%>
+                        <%--</ul>--%>
+                    <%--</li>--%>
                 </ul>
 
             </div>
@@ -85,7 +91,7 @@
                     </div>
                     <ul class="nav navbar-top-links navbar-right">
                         <li>
-                            <span class="m-r-sm text-muted welcome-message"><a href="${ctx}/bus/index.do?uid=${bus.id}" title="返回首页"><i class="fa fa-home"></i></a>欢迎登录松果亲子-商家后台</span>
+                            <span class="m-r-sm text-muted welcome-message"><a href="${ctx}/bus/index.do?uid=${busUser.id}" title="返回首页"><i class="fa fa-home"></i></a>欢迎 <font color="#1AB394">${busUser.cooperator.name}</font></span>
                         </li>
                         <li class="dropdown">
                             <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">

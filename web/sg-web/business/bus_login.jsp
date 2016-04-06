@@ -23,12 +23,12 @@
         <div>
             <div><h1 class="logo-name">SG</h1></div>
             <h3>松果亲子互动平台--商家</h3>
-            <form class="m-t" id="login_form" role="form" action="${ctx}/bus/buslogin.do" method="post">
+            <form class="m-t" id="login_form" role="form" action="${ctx}/bus/loginpage.do" method="post">
                 <div class="form-group">
-                    <input type="text" class="form-control" id="nameCode" name = "nameCode" placeholder="商户编号" required="">
+                    <input type="text" class="form-control" id="name" name = "name" placeholder="客户名称" required="">
                 </div>
                 <div class="form-group">
-                    <input type="password" class="form-control" id="password" name = "password" placeholder="商户密码" required="">
+                    <input type="password" class="form-control" id="password" name = "password" placeholder="客户密码" required="">
                 </div>
                 <button type="submit" class="btn btn-primary block full-width m-b">登 录</button>
                 <p class="text-muted text-center">${msg}</p>

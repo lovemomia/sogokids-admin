@@ -60,7 +60,6 @@ $(function () {
         var title = $('#title').val();
         var cover = $('#cover').val();
         var keyWord = $('#keyWord').val();
-        var price = $('#price').val();
         var minAge = $('#minAge').val();
         var maxAge = $('#maxAge').val();
         //var recommend = $('#recommend').val();
@@ -74,21 +73,10 @@ $(function () {
         }else if(keyWord == null || keyWord == ""){
             layer.alert('请填写关键字信息！',3,'提示信息');
             return false;
-        }else if(price == null || price == "" || !strP.test(price)){
-            layer.alert('没有填写原价信息或格式不正确(只能填写整数值或小数)！',3,'提示信息');
-            return false;
         }else if(minAge == null || minAge == "" || !re.test(minAge) || maxAge == null || maxAge == "" || !re.test(maxAge) || parseInt(maxAge) < parseInt(minAge)){
             layer.alert('没有填写年龄范围信息或格式不正确(只能填写整数值,举例格式"4至7岁")！',3,'提示信息');
             return false;
         }else {
-            //$.post("/course/validation_recommend.do", {textarea_value: recommend, label_name: "推荐理由", max_row_value: 4, row_length: 20},
-            //    function (data) {
-            //        if (data.success == 0) {
-            //
-            //        } else {
-            //            layer.alert(data.msg, 10, '提示信息');
-            //        }
-            //    }, "json");
             if (course_id == 0) {
                 $.post("/course/add.do", $("#course_form").serialize(),
                     function (data) {

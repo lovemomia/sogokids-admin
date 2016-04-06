@@ -17,4 +17,6 @@ public interface DiscussTopicService {
     public int delete(int id);
     public DiscussTopic formEntity(HttpServletRequest request, int id);
 
+    public String getPreview(int id);
+
 }

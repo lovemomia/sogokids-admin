@@ -45,16 +45,15 @@
                     <div class="dropdown profile-element" align="center"> <span>
                                 <img alt="image" class="img-circle" src="${ctx}/sg-web/img/face.png" />
                                  </span>
-                        <a data-toggle="dropdown" class="dropdown-toggle" href="${ctx}/bus/index.do?uid=${bus.id}">
-                                    <span class="clear"> <span class="block m-t-xs"> <strong class="font-bold">${bus.name}</strong>
-                                 </span>  </span>
+                        <a data-toggle="dropdown" class="dropdown-toggle" href="${ctx}/user/index.do?uid=${user.id}">
+                                    <span class="clear"> <span class="block m-t-xs"> <strong class="font-bold">${user.username}</strong>
+                                 </span> </span>
                         </a>
-
                         <ul class="dropdown-menu animated fadeInRight m-t-xs">
-                            <li><a href="#">个人资料</a></li>
-                            <li><a href="#">修改密码</a></li>
+                            <li><a href="${ctx}/user/oper.do?uid=${user.id}&id=${user.id}&mark=2">个人资料</a></li>
+                            <li><a href="${ctx}/user/oper.do?uid=${user.id}&id=${user.id}&mark=2">修改密码</a></li>
                             <li class="divider"></li>
-                            <li><a href="${ctx}/bus/login.do">安全退出</a></li>
+                            <li><a href="${ctx}/user/login.do">安全退出</a></li>
                         </ul>
                     </div>
                     <div class="logo-element">
@@ -62,14 +61,61 @@
                     </div>
 
                 </li>
-                <li><a href="${ctx}/bus/index.do?uid=${bus.id}"><i class="fa fa-th-large"></i> <span class="nav-label">主页</span> </a></li>
-                <li><a href="${ctx}/bus/coupons.do?uid=${bus.id}"><i class="fa fa-edit"></i> <span class="nav-label">商家验证</span> </a></li>
-                <li class="active">
-                    <a href="#"><i class="fa fa-bar-chart-o"></i> <span class="nav-label">交易数据</span><span class="fa arrow"></span></a>
+                <li><a href="${ctx}/user/index.do?uid=${user.id}"><i class="fa fa-th-large"></i> <span class="nav-label">主页</span> </a></li>
+                <li><a href="${ctx}/sub/info.do?uid=${user.id}"><i class="fa fa-connectdevelop"></i> <span class="nav-label">课程体系</span> </a></li>
+                <li><a href="${ctx}/book/info.do?uid=${user.id}"><i class="fa fa-leanpub"></i> <span class="nav-label">试听课程</span> </a></li>
+                <li><a href="${ctx}/one/info.do?uid=${user.id}"><i class="fa fa-drupal"></i> <span class="nav-label">推荐课程</span> </a></li>
+                <li>
+                    <a href="index.jsp#"><i class="fa fa-bar-chart"></i> <span class="nav-label">查询统计</span><span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
-                        <li class="active"><a href="${ctx}/busquery/busproducts.do?uid=${bus.id}">销售数据</a></li>
-                        <li><a href="${ctx}/busquery/buyproducts.do?uid=${bus.id}">消费数据</a></li>
-                        <li><a href="${ctx}/busquery/refundproducts.do?uid=${bus.id}">退款数据</a></li>
+                        <li><a href="${ctx}/query/info.do?uid=${user.id}"><i class="fa fa-pie-chart"></i> <span class="nav-label">选课查询</span> </a></li>
+                        <li><a href="${ctx}/query/order.do?uid=${user.id}"><i class="fa fa-rub"></i> <span class="nav-label">订单查询</span> </a></li>
+                    </ul>
+                </li>
+                <li><a href="${ctx}/discuss/info.do?uid=${user.id}"><i class="fa fa-comments-o"></i> <span class="nav-label">话题管理</span></a></li>
+                <li>
+                    <a href="index.jsp#"><i class="fa fa-user-secret"></i> <span class="nav-label">老师管理</span><span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li><a href="${ctx}/teacher/check.do?uid=${user.id}"><i class="fa fa-edit"></i> <span class="nav-label">资质审核</span> </a></li>
+                        <li><a href="${ctx}/teacher/info.do?uid=${user.id}"><i class="fa fa-user-secret"></i> <span class="nav-label">师资力量</span></a></li>
+                        <li><a href="${ctx}/teacher/assign.do?uid=${user.id}"><i class="fa fa-code-fork"></i> <span class="nav-label">课程分配</span> </a></li>
+                        <li><a href="${ctx}/teacher/material.do?uid=${user.id}"><i class="fa fa-delicious"></i> <span class="nav-label">教案更新</span></a></li>
+                    </ul>
+                </li>
+                <li><a href="${ctx}/group/info.do?uid=${user.id}"><i class="fa fa-building"></i> <span class="nav-label">批量选课</span> </a></li>
+                <li>
+                    <a href="index.jsp#"><i class="fa fa-home"></i> <span class="nav-label">首页配置</span><span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li><a href="${ctx}/banner/info.do?uid=${user.id}"><i class="fa fa-star"></i> <span class="nav-label">banner设置</span> </a></li>
+                        <li><a href="${ctx}/event/info.do?uid=${user.id}"><i class="fa fa-globe"></i> <span class="nav-label">event设置</span> </a></li>
+                        <li><a href="${ctx}/icon/info.do?uid=${user.id}"><i class="fa fa-picture-o"></i> <span class="nav-label">icon设置</span> </a></li>
+                    </ul>
+                </li>
+                <li class="active">
+                    <a href="index.jsp#"><i class="fa fa-language"></i> <span class="nav-label">合作单位</span><span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li><a href="${ctx}/coop/info.do?uid=${user.id}"><i class="fa fa-spinner"></i> <span class="nav-label">单位管理</span> </a></li>
+                        <li class="active"><a href="${ctx}/coop_user/info.do?uid=${user.id}"><i class="fa fa-group"></i> <span class="nav-label">人员管理</span> </a></li>
+                        <li><a href="${ctx}/coop_activity/info.do?uid=${user.id}"><i class="fa fa-joomla"></i> <span class="nav-label">活动管理</span> </a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="index.jsp#"><i class="fa fa-gears"></i> <span class="nav-label">系统设置</span><span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li><a href="${ctx}/city/info.do?uid=${user.id}"><i class="fa fa-hacker-news"></i> <span class="nav-label">城市信息</span> </a></li>
+                        <li><a href="${ctx}/region/info.do?uid=${user.id}"><i class="fa fa-map-marker"></i> <span class="nav-label">区域信息</span> </a></li>
+                        <li><a href="${ctx}/place/info.do?uid=${user.id}"><i class="fa fa-rebel"></i> <span class="nav-label">商户信息</span> </a></li>
+                        <li><a href="${ctx}/inst/info.do?uid=${user.id}"><i class="fa fa-bank"></i> <span class="nav-label">机构信息</span> </a></li>
+                        <li><a href="${ctx}/app/info.do?uid=${user.id}"><i class="fa fa-mobile-phone"></i> <span class="nav-label">APP版本</span></a></li>
+                    </ul>
+                </li>
+                <li><a href="${ctx}/coupon/info.do?uid=${user.id}"><i class="fa fa-cc-paypal"></i> <span class="nav-label">优惠设置</span></a></li>
+                <li>
+                    <a href="index.jsp#"><i class="fa fa-user"></i> <span class="nav-label">用户信息</span><span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li><a href="${ctx}/user/info.do?uid=${user.id}"><i class="fa fa-users"></i> <span class="nav-label">用户信息</span> </a></li>
+                        <li><a href="${ctx}/role/info.do?uid=${user.id}"><i class="fa fa-graduation-cap"></i> <span class="nav-label">角色设置</span> </a></li>
+                        <li><a href="${ctx}/func/info.do?uid=${user.id}"><i class="fa fa-joomla"></i> <span class="nav-label">权限设置</span> </a></li>
                     </ul>
                 </li>
             </ul>
@@ -85,10 +131,10 @@
                 </div>
                 <ul class="nav navbar-top-links navbar-right">
                     <li>
-                        <span class="m-r-sm text-muted welcome-message"><a href="${ctx}/bus/index.do?uid=${bus.id}" title="返回首页"><i class="fa fa-home"></i></a>欢迎登录松果亲子后台</span>
+                        <span class="m-r-sm text-muted welcome-message"><a href="${ctx}/user/index.do?uid=${user.id}" title="返回首页"><i class="fa fa-home"></i></a>欢迎登录松果亲子后台</span>
                     </li>
                     <li class="dropdown">
-                        <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
+                        <a class="dropdown-toggle count-info" data-toggle="dropdown" href="index.jsp#">
                             <i class="fa fa-envelope"></i> <span class="label label-warning">16</span>
                         </a>
                         <ul class="dropdown-menu dropdown-messages">
@@ -130,7 +176,7 @@
                         </ul>
                     </li>
                     <li class="dropdown">
-                        <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
+                        <a class="dropdown-toggle count-info" data-toggle="dropdown" href="index.jsp#">
                             <i class="fa fa-bell"></i> <span class="label label-primary">8</span>
                         </a>
                         <ul class="dropdown-menu dropdown-alerts">
@@ -163,7 +209,7 @@
                         </ul>
                     </li>
                     <li>
-                        <a href="${ctx}/bus/login.do">
+                        <a href="${ctx}/user/login.do">
                             <i class="fa fa-sign-out"></i> 退出
                         </a>
                     </li>
@@ -173,18 +219,21 @@
         </div>
         <div class="row wrapper border-bottom white-bg page-heading">
             <div class="col-lg-10">
-                <h2>订单查询</h2>
+                <h2>人员列表</h2>
                 <ol class="breadcrumb">
                     <li>
-                        <a href="${ctx}/bus/index.do?uid=${bus.id}">主页</a>
+                        <a href="${ctx}/user/index.do?uid=${user.id}">主页</a>
                     </li>
                     <li>
-                        <a href="${ctx}/busquery/busproducts.do?uid=${bus.id}">销售数据</a>
+                        <a href="${ctx}/coop_user/info.do?uid=${user.id}">人员管理</a>
                     </li>
                     <li>
                         <strong>数据列表</strong>
                     </li>
                 </ol>
+            </div>
+            <div class="col-lg-2">
+                <h2><a href="${ctx}/coop_user/oper.do?uid=${user.id}&id=0&mark=0" class="btn btn-primary btn-x">创建人员</a></h2>
             </div>
         </div>
         <div class="row">
@@ -193,22 +242,19 @@
                     <table class="table table-striped table-bordered table-hover dataTables-example">
                         <thead>
                         <tr class="gradeX">
-                            <th>活动编号</th>
-                            <th>活动名称</th>
-                            <th>上线时间</th>
-                            <th>下线时间</th>
+                            <th>人员名称</th>
+                            <th>加入时间</th>
                             <th>操作</th>
                         </tr>
                         </thead>
                         <tbody>
                         <c:forEach items="${entitys}" var="entity">
                             <tr>
-                                <td><c:out value="${entity.id}"></c:out></td>
-                                <td><c:out value="${entity.title}"></c:out></td>
-                                <td><c:out value="${fn:substring(entity.onlineTime,0,19)}"></c:out></td>
-                                <td><c:out value="${fn:substring(entity.offlineTime,0,19)}"></c:out></td>
+                                <td><c:out value="${entity.name}"></c:out></td>
+                                <td><c:out value="${fn:substring(entity.addTime,0,19)}"></c:out></td>
                                 <td class="center">
-                                    <a href="${ctx}/busquery/busorder.do?uid=${bus.id}&pid=${entity.id}&mark=1" class="btn btn-white btn-sm"><i class="fa fa-newspaper-o"></i> 销售详情 </a>
+                                    <a href="${ctx}/coop_user/oper.do?uid=${user.id}&id=${entity.id}&mark=1" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i> 编辑 </a>
+                                    <a href="${ctx}/coop_user/del.do?uid=${user.id}&id=${entity.id}" class="btn btn-white btn-sm"><i class="fa fa-times-circle"></i> 删除 </a>
                                 </td>
                             </tr>
                         </c:forEach>
@@ -227,11 +273,13 @@
         </div>
     </div>
 </div>
-</div>
 <!-- Page-Level Scripts -->
 <script>
     $(document).ready(function () {
-        $('.dataTables-example').dataTable();
+        $('.dataTables-example').dataTable({
+            "aLengthMenu":[25,50,100],
+            "bSort": false //排序功能
+        });
     });
 </script>
 </body>

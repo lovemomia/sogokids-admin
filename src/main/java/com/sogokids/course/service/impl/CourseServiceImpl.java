@@ -481,7 +481,7 @@ public class CourseServiceImpl implements CourseService {
         entity.setCover(request.getParameter("cover"));
         entity.setMinAge(Integer.parseInt(request.getParameter("minAge")));
         entity.setMaxAge(Integer.parseInt(request.getParameter("maxAge")));
-        entity.setPrice(new BigDecimal(request.getParameter("price")));
+        entity.setPrice(new BigDecimal(StringUtils.isEmpty(request.getParameter("price"))?"0":request.getParameter("price")));
         entity.setGoal("");
         entity.setFlow("");
         entity.setTips(request.getParameter("tips"));
@@ -500,7 +500,7 @@ public class CourseServiceImpl implements CourseService {
         entity.setCover(request.getParameter("cover"));
         entity.setMinAge(Integer.parseInt(request.getParameter("minAge")));
         entity.setMaxAge(Integer.parseInt(request.getParameter("maxAge")));
-        entity.setPrice(new BigDecimal(request.getParameter("price")));
+        entity.setPrice(new BigDecimal(StringUtils.isEmpty(request.getParameter("price"))?"0":request.getParameter("price")));
         entity.setGoal("");
         entity.setFlow("");
         entity.setTips(request.getParameter("tips"));
