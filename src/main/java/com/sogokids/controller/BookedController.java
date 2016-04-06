@@ -54,9 +54,6 @@ public class BookedController {
     private CourseService courseService;
 
     @Autowired
-    private ImagesService imagesService;
-
-    @Autowired
     private CourseImgService courseImgService;
 
     @Autowired

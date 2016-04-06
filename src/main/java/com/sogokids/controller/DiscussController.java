@@ -151,4 +151,19 @@ public class DiscussController {
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
         return new ModelAndView(JumpPage.DISCUSS,context);
     }
+
+    /**
+     * 话题信息预览
+     * @param uid
+     * @param id
+     * @param req
+     * @return
+     */
+    @RequestMapping("/preview")
+    public ModelAndView preview(@RequestParam("uid") int uid,@RequestParam("id") int id, HttpServletRequest req) {
+        Map<String, Object> context = new HashMap<String, Object>();
+        context.put("previewHtml", discussTopicService.getPreview(id));
+        context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        return new ModelAndView(JumpPage.DISCUSS_PREVIEW,context);
+    }
 }

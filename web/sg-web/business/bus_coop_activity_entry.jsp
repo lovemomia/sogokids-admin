@@ -12,21 +12,21 @@
     <link href="${ctx}/sg-web/css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
     <link href="${ctx}/sg-web/font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
 
-    <!-- Morris -->
-    <link href="${ctx}/sg-web/css/plugins/morris/morris-0.4.3.min.css" rel="stylesheet">
-
-    <!-- Gritter -->
-    <link href="${ctx}/sg-web/js/plugins/gritter/jquery.gritter.css" rel="stylesheet">
+    <!-- Data Tables -->
+    <link href="${ctx}/sg-web/css/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet">
 
     <link href="${ctx}/sg-web/css/animate.css" rel="stylesheet">
     <link href="${ctx}/sg-web/css/style.css?v=2.2.0" rel="stylesheet">
 
     <!-- Mainly scripts -->
     <script src="${ctx}/sg-web/js/jquery-2.1.1.min.js"></script>
-    <script src="${ctx}/sg-web/js/jquery.cookie.js"></script>
     <script src="${ctx}/sg-web/js/bootstrap.min.js?v=3.4.0"></script>
     <script src="${ctx}/sg-web/js/plugins/metisMenu/jquery.metisMenu.js"></script>
     <script src="${ctx}/sg-web/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
+    <!-- Data Tables -->
+    <script src="${ctx}/sg-web/js/plugins/dataTables/jquery.dataTables.js"></script>
+    <script src="${ctx}/sg-web/js/plugins/dataTables/dataTables.bootstrap.js"></script>
 
     <!-- Custom and plugin javascript -->
     <script src="${ctx}/sg-web/js/hplus.js?v=2.2.0"></script>
@@ -41,12 +41,19 @@
                 <ul class="nav" id="side-menu">
                     <li class="nav-header">
 
-                        <div class="dropdown profile-element" align="center"> <span>
-                                <img alt="image" class="img-circle" src="${ctx}/sg-web/img/face.png" />
-                                 </span>
-                            <a data-toggle="dropdown" class="dropdown-toggle" href="${ctx}/bus/index.do?uid=${bus.id}">
-                                    <span class="clear"> <span class="block m-t-xs"> <strong class="font-bold">${bus.name}</strong>
-                                 </span>  </span>
+                        <div class="dropdown profile-element" align="center">
+                            <span>
+                                <c:choose>
+                                    <c:when test="${empty busUser.cooperator.cover}">
+                                        <img alt="image" class="img-circle" src="${ctx}/sg-web/img/face.png" />
+                                    </c:when>
+                                    <c:otherwise>
+                                        <img src="${filepath}${busUser.cooperator.cover}" alt="image" class="img-circle" style="width: 65px;height: 65px;"/>
+                                    </c:otherwise>
+                                </c:choose>
+                            </span>
+                            <a data-toggle="dropdown" class="dropdown-toggle" href="${ctx}/bus/index.do?uid=${busUser.id}">
+                                <span class="clear"> <span class="block m-t-xs"> <strong class="font-bold"><font color="#1AB394">${busUser.cooperator.name}</font><br>${busUser.name}</strong></span>  </span>
                                 <%--<span class="text-muted text-xs">商家账户 <b class="caret"></b></span>--%>
                             </a>
                             <ul class="dropdown-menu animated fadeInRight m-t-xs">
@@ -61,17 +68,16 @@
                         </div>
 
                     </li>
-                    <li><a href="${ctx}/bus/index.do?uid=${bus.id}"><i class="fa fa-th-large"></i> <span class="nav-label">主页</span> </a></li>
-                    <li class="active"><a href="${ctx}/bus/coupons.do?uid=${bus.id}"><i class="fa fa-edit"></i> <span class="nav-label">商家验证</span> </a></li>
-                    <%--<li><a href="${ctx}/busquery/busproducts.do?uid=${bus.id}"><i class="fa fa-bar-chart-o"></i> <span class="nav-label">订单查询</span> </a></li>--%>
-                    <li>
-                        <a href="#"><i class="fa fa-bar-chart-o"></i> <span class="nav-label">交易数据</span><span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level">
-                            <li><a href="${ctx}/busquery/busproducts.do?uid=${bus.id}">销售数据</a></li>
-                            <li><a href="${ctx}/busquery/buyproducts.do?uid=${bus.id}">消费数据</a></li>
-                            <li><a href="${ctx}/busquery/refundproducts.do?uid=${bus.id}">退款数据</a></li>
-                        </ul>
-                    </li>
+                    <li><a href="${ctx}/bus/index.do?uid=${busUser.id}"><i class="fa fa-th-large"></i> <span class="nav-label">主页</span> </a></li>
+                    <li class="active"><a href="${ctx}/bus_coop_activity/info.do?uid=${busUser.id}"><i class="fa fa-joomla"></i> <span class="nav-label">商家活动</span> </a></li>
+                    <%--<li>--%>
+                        <%--<a href="#"><i class="fa fa-bar-chart-o"></i> <span class="nav-label">交易数据</span><span class="fa arrow"></span></a>--%>
+                        <%--<ul class="nav nav-second-level">--%>
+                            <%--<li><a href="${ctx}/busquery/busproducts.do?uid=${bus.id}">销售数据</a></li>--%>
+                            <%--<li><a href="${ctx}/busquery/buyproducts.do?uid=${bus.id}">消费数据</a></li>--%>
+                            <%--<li><a href="${ctx}/busquery/refundproducts.do?uid=${bus.id}">退款数据</a></li>--%>
+                        <%--</ul>--%>
+                    <%--</li>--%>
                 </ul>
 
             </div>
@@ -85,7 +91,7 @@
                     </div>
                     <ul class="nav navbar-top-links navbar-right">
                         <li>
-                            <span class="m-r-sm text-muted welcome-message"><a href="${ctx}/bus/index.do?uid=${bus.id}" title="返回首页"><i class="fa fa-home"></i></a>欢迎登录松果亲子-商家后台</span>
+                            <span class="m-r-sm text-muted welcome-message"><a href="${ctx}/bus/index.do?uid=${busUser.id}" title="返回首页"><i class="fa fa-home"></i></a>欢迎 <font color="#1AB394">${busUser.cooperator.name}</font></span>
                         </li>
                         <li class="dropdown">
                             <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
@@ -168,62 +174,95 @@
                             </a>
                         </li>
                     </ul>
+
                 </nav>
             </div>
             <div class="row wrapper border-bottom white-bg page-heading">
                 <div class="col-lg-10">
-                    <h2>商家验证</h2>
+                    <h2>活动列表</h2>
                     <ol class="breadcrumb">
                         <li>
-                            <a href="${ctx}/bus/index.do?uid=${bus.id}">主页</a>
+                            <a href="${ctx}/bus/index.do?uid=${busUser.id}">主页</a>
                         </li>
                         <li>
-                            <a href="${ctx}/bus/coupons.do?uid=${bus.id}">商家验证</a>
+                            <a href="${ctx}/bus_coop_activity/info.do?uid=${busUser.id}">活动管理</a>
                         </li>
                         <li>
-                            <strong>验证数据</strong>
+                            <strong>数据列表</strong>
                         </li>
                     </ol>
+                </div>
+                <div class="col-lg-2">
+                    <h2><a href="${ctx}/bus_coop_activity/info.do?uid=${busUser.id}" class="btn btn-primary btn-x">返回</a></h2>
                 </div>
             </div>
             <div class="row">
                 <div class="ibox-content">
-                    <form class="form-horizontal" id="vform" action="${ctx}/bus/test.do" method="post">
-                        <fieldset>
-                            <div class="hr-line-dashed"></div>
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label">输入验证码 </label>
-                                <div class="col-sm-8">
-                                    <input id="ticketNumber" name="ticketNumber" type="text" class="form-control" >
-                                    <input id="uid" name="uid" type="hidden" value="${bus.id}" >
-                                </div>
-                            </div>
-
-                            <div class="hr-line-dashed"></div>
-                            <div class="form-group">
-                                <div class="col-sm-4 col-sm-offset-5">
-                                    <button class="btn btn-primary" type="submit">进行验证</button>
-                                </div>
-                            </div>
-                            <div class="hr-line-dashed"></div>
-                            <div class="form-group">
-                                <div class="col-sm-12">
-                                    ${msg}
-                                </div>
-                            </div>
-                        </fieldset>
+                    <div align="center">
+                        <H3>${model.title}&numsp;&numsp;${model.startTime}&numsp;&numsp;已报名${model.sum_count}人</H3>
+                    </div>
+                    <form>
+                        <table class="table table-striped table-bordered table-hover dataTables-example">
+                            <thead>
+                            <tr class="gradeX">
+                                <th>小孩姓名</th>
+                                <th>手机号码</th>
+                                <th>付款金额</th>
+                                <th>付款时间</th>
+                                <th>付款方式</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <c:forEach items="${model.activityEntries}" var="entity">
+                                <tr>
+                                    <td><c:out value="${entity.childName}"></c:out></td>
+                                    <td><c:out value="${entity.mobile}"></c:out></td>
+                                    <td><c:out value="${entity.fee}"></c:out>元</td>
+                                    <td><c:out value="${fn:substring(entity.finishTime,0,19)}"></c:out></td>
+                                    <td>
+                                        <c:choose>
+                                            <c:when test="${entity.payType == 21}">
+                                                微信APP支付
+                                            </c:when>
+                                            <c:when test="${entity.payType == 22}">
+                                                微信公众号支付
+                                            </c:when>
+                                            <c:when test="${entity.payType == 1}">
+                                                支付宝支付
+                                            </c:when>
+                                            <c:otherwise>
+                                                未支付
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </td>
+                                </tr>
+                            </c:forEach>
+                            </tbody>
+                        </table>
                     </form>
                 </div>
             </div>
-            <div class="footer">
-                <div class="pull-right">
-                    By：<a href="http://www.duolaqinzi.com" target="_blank">sg home</a>
-                </div>
-                <div>
-                    <strong>Copyright</strong> SG &copy; 2015
+            <div class="row">
+                <div class="footer">
+                    <div class="pull-right">
+                        By：<a href="http://www.duolaqinzi.com" target="_blank">sg home</a>
+                    </div>
+                    <div>
+                        <strong>Copyright</strong> SG &copy; 2015
+                    </div>
                 </div>
             </div>
+
         </div>
     </div>
+    <!-- Page-Level Scripts -->
+    <script>
+        $(document).ready(function () {
+            $('.dataTables-example').dataTable({
+                "aLengthMenu":[25,50,100],
+                "bSort": false //排序功能
+            });
+        });
+    </script>
 </body>
 </html>

@@ -6,6 +6,7 @@ package com.sogokids.utils.util;
  * Created by hoze on 15/8/27.
  */
 public class JumpPage {
+
     public static final String USER_LOGIN = "admin/login";
     public static final String INDEX = "admin/index";
     public static final String USER = "admin/user";
@@ -136,5 +137,29 @@ public class JumpPage {
     public static final String DISCUSS = "admin/discuss";
     public static final String DISCUSS_ADD = "admin/discuss_add";
     public static final String DISCUSS_EDIT = "admin/discuss_edit";
+    public static final String DISCUSS_PREVIEW = "admin/discuss_preview";
+
+    public static final String COOP = "admin/coop";
+    public static final String COOP_ADD = "admin/coop_add";
+    public static final String COOP_EDIT = "admin/coop_edit";
+
+    public static final String COOP_USER = "admin/coop_user";
+    public static final String COOP_USER_ADD = "admin/coop_user_add";
+    public static final String COOP_USER_EDIT = "admin/coop_user_edit";
+
+    public static final String COOP_ACTIVITY = "admin/coop_activity";
+    public static final String COOP_ACTIVITY_ADD = "admin/coop_activity_add";
+    public static final String COOP_ACTIVITY_EDIT = "admin/coop_activity_edit";
+    public static final String COOP_ACTIVITY_ENTRY = "admin/coop_activity_entry";
+
+
+    /**
+     * 商户端配置
+     */
+    public static final String BUS_LOGIN = "business/bus_login";
+    public static final String BUS_INDEX = "business/bus_index";
+
+    public static final String BUS_COOP_ACTIVITY = "business/bus_coop_activity";
+    public static final String BUS_COOP_ACTIVITY_ENTRY = "business/bus_coop_activity_entry";
 
 }

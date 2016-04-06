@@ -48,6 +48,8 @@ public class Quantity {
     public static final String RETURN_ENTITY = "model";
     public static final String RETURN_ENTITY_LIST = "entitys";
 
+    public static final String RETURN_BUS_USER = "busUser";
+
 
     public static final String RETURN_SUCCESS = "success";
     public static final String RETURN_MSG = "msg";
