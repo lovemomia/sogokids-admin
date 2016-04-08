@@ -79,7 +79,7 @@ public class CooperatorServiceImpl implements CooperatorService {
 
     @Override
     public int insert(Cooperator entity) {
-        String sql = "insert into SG_Cooperator(Name, Cover, Status, AddTime) value(?, ?, NOW()) ";
+        String sql = "insert into SG_Cooperator(Name, Cover, Status, AddTime) value(?, ?, ?, NOW()) ";
         Object [] params = new Object[]{entity.getName(), entity.getCover(), Quantity.STATUS_ONE};
         int reData = jdbcTemplate.update(sql,params);
         return reData;
