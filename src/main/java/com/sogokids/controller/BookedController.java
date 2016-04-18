@@ -16,6 +16,7 @@ import com.sogokids.subject.service.SubjectService;
 import com.sogokids.subject.service.SubjectSkuService;
 import com.sogokids.system.model.Institution;
 import com.sogokids.system.service.InstitutionService;
+import com.sogokids.system.service.MenuService;
 import com.sogokids.system.service.PlaceService;
 import com.sogokids.user.service.UserService;
 import com.sogokids.utils.util.JumpPage;
@@ -74,6 +75,9 @@ public class BookedController {
     @Autowired
     private SubjectSkuService subjectSkuService;
 
+    @Autowired
+    private MenuService menuService;
+
     /**
      *试听课列表
      * @param uid
@@ -85,6 +89,7 @@ public class BookedController {
         Map<String, Object> context = new HashMap<String, Object>();
         context.put(Quantity.RETURN_ENTITY_LIST, subjectService.getCoursesBySubjects());
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_THREE));
         return new ModelAndView(adminUserService.isUserFunc(req,JumpPage.BOOKED),context);
     }
 
@@ -93,11 +98,10 @@ public class BookedController {
      * @param uid
      * @param id
      * @param mark
-     * @param req
      * @return
      */
     @RequestMapping("/oper")
-    public ModelAndView operation(@RequestParam("uid") int uid,@RequestParam("id") int id,@RequestParam("mark") int mark,HttpServletRequest req){
+    public ModelAndView operation(@RequestParam("uid") int uid,@RequestParam("id") int id,@RequestParam("mark") int mark){
         String reStr = JumpPage.BOOKED_EDIT;
         Map<String, Object> context = new HashMap<String, Object>();
         if (mark == 0) {
@@ -128,6 +132,7 @@ public class BookedController {
 //        context.put("y_teacher", teacherService.getY_Teachers(id));
 //        context.put("w_teacher",teacherService.getW_Teachers(id));
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_THREE));
         return new ModelAndView(reStr,context);
     }
 
@@ -135,11 +140,10 @@ public class BookedController {
      *删除试听课
      * @param uid
      * @param id
-     * @param req
      * @return
      */
     @RequestMapping("/del")
-    public ModelAndView delEntity(@RequestParam("uid") int uid,@RequestParam("id") int id, HttpServletRequest req){
+    public ModelAndView delEntity(@RequestParam("uid") int uid,@RequestParam("id") int id){
 
         Map<String, Object> context = new HashMap<String, Object>();
         List<CourseSku> courseSkus = courseSkuService.getModelsByCourse_Key(id);
@@ -155,6 +159,7 @@ public class BookedController {
         }
         context.put(Quantity.RETURN_ENTITY_LIST, subjectService.getCoursesBySubjects());
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_THREE));
         return new ModelAndView(JumpPage.BOOKED,context);
     }
 
@@ -163,11 +168,10 @@ public class BookedController {
      * @param uid
      * @param id
      * @param mark
-     * @param req
      * @return
      */
     @RequestMapping("/upOrDown")
-    public ModelAndView updateStatus(@RequestParam("uid") int uid,@RequestParam("id") int id,@RequestParam("mark") int mark, HttpServletRequest req){
+    public ModelAndView updateStatus(@RequestParam("uid") int uid,@RequestParam("id") int id,@RequestParam("mark") int mark){
 
         Map<String, Object> context = new HashMap<String, Object>();
 
@@ -182,6 +186,7 @@ public class BookedController {
         }
         context.put(Quantity.RETURN_ENTITY_LIST, subjectService.getCoursesBySubjects());
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_THREE));
         return new ModelAndView(JumpPage.BOOKED,context);
     }
 
@@ -190,11 +195,10 @@ public class BookedController {
      * @param uid
      * @param id
      * @param mark
-     * @param req
      * @return
      */
     @RequestMapping("/subcopy")
-    public ModelAndView sub_copy(@RequestParam("uid") int uid,@RequestParam("id") int id,@RequestParam("mark") int mark,HttpServletRequest req){
+    public ModelAndView sub_copy(@RequestParam("uid") int uid,@RequestParam("id") int id,@RequestParam("mark") int mark){
         Map<String, Object> context = new HashMap<String, Object>();
 
         Course course = courseService.get(id);//试听课对象
@@ -206,6 +210,7 @@ public class BookedController {
         context.put("course_c", course);
 
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_THREE));
         return new ModelAndView(JumpPage.SUB_COPY,context);
     }
 
@@ -391,6 +396,7 @@ public class BookedController {
 
         context.put(Quantity.RETURN_ENTITY_LIST, subjectService.getCoursesBySubjects());
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_THREE));
         return new ModelAndView(JumpPage.BOOKED,context);
     }
 
@@ -407,6 +413,7 @@ public class BookedController {
         context.put("previewHtml", courseService.getPreview(id));
         context.put(Quantity.RETURN_ENTITY_LIST, subjectService.getCoursesBySubjects());
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_THREE));
         return new ModelAndView(JumpPage.BOOKED_PREVIEW,context);
     }
 

@@ -4,6 +4,7 @@ import com.sogokids.cooperator.model.ActivityEntry;
 import com.sogokids.cooperator.model.CooperatorActivity;
 import com.sogokids.cooperator.service.ActivityEntryService;
 import com.sogokids.cooperator.service.CooperatorActivityService;
+import com.sogokids.cooperator.service.CooperatorService;
 import com.sogokids.utils.util.DateUtil;
 import com.sogokids.utils.util.Quantity;
 import org.apache.commons.lang3.StringUtils;
@@ -29,6 +30,9 @@ public class CooperatorActivityServiceImpl implements CooperatorActivityService 
 
     @Autowired
     private ActivityEntryService activityEntryService;
+
+    @Autowired
+    private CooperatorService cooperatorService;
 
     @Resource
     private JdbcTemplate jdbcTemplate;
@@ -86,6 +90,45 @@ public class CooperatorActivityServiceImpl implements CooperatorActivityService 
                     entity.setNeedPay(Integer.parseInt(list.get(i).get("NeedPay").toString()));
                     entity.setPrice(new BigDecimal(list.get(i).get("Price").toString()));
                     entity.setCooperatorId(Integer.parseInt(list.get(i).get("CooperatorId").toString()));
+                    entity.setCooperator(cooperatorService.get(entity.getCooperatorId()));
+
+                    entity.setStartTime(list.get(i).get("StartTime") == null ? "" : list.get(i).get("StartTime").toString());
+                    entity.setEndTime(list.get(i).get("EndTime") == null ? "" : list.get(i).get("EndTime").toString());
+                    entity.setOnlineTime(list.get(i).get("OnlineTime") == null ? "" : list.get(i).get("OnlineTime").toString());
+                    entity.setOfflineTime(list.get(i).get("OfflineTime") == null ? "" : list.get(i).get("OfflineTime").toString());
+
+                    entity.setStatus(Integer.parseInt(list.get(i).get("Status").toString()));
+                    entity.setAddTime(list.get(i).get("AddTime") == null ? "" : list.get(i).get("AddTime").toString());
+                    entity.setSum_count(activityEntryService.getActivityEntrys(Integer.parseInt(list.get(i).get("Id").toString())).size());
+                    reData.add(entity);
+                }
+            }catch (Exception _ex){
+                _ex.printStackTrace();
+            }
+        }
+
+        return reData;
+    }
+
+    @Override
+    public List<CooperatorActivity> getEntitysByCoopId(int coopId) {
+        List<CooperatorActivity> reData = new ArrayList<CooperatorActivity>();
+        String sql = "select Id, Cover, Title, `Desc`, Message, NeedPay, Price, CooperatorId, StartTime, EndTime, OnlineTime, OfflineTime, Status, AddTime from SG_Activity where Status > ? and CooperatorId = ? order by StartTime desc ";
+        Object [] params = new Object[]{Quantity.STATUS_ZERO,coopId};
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sql, params);
+        if(list.size() > 0){
+            try {
+                for (int i = 0; i < list.size(); i++) {
+                    CooperatorActivity entity = new CooperatorActivity();
+                    entity.setId(Integer.parseInt(list.get(i).get("Id").toString()));
+                    entity.setCover(list.get(i).get("Cover").toString());
+                    entity.setTitle(list.get(i).get("Title").toString());
+                    entity.setDesc(list.get(i).get("Desc").toString());
+                    entity.setMessage(list.get(i).get("Message") == null ? "" : list.get(i).get("Message").toString());
+                    entity.setNeedPay(Integer.parseInt(list.get(i).get("NeedPay").toString()));
+                    entity.setPrice(new BigDecimal(list.get(i).get("Price").toString()));
+                    entity.setCooperatorId(Integer.parseInt(list.get(i).get("CooperatorId").toString()));
+                    entity.setCooperator(cooperatorService.get(entity.getCooperatorId()));
 
                     entity.setStartTime(list.get(i).get("StartTime") == null ? "" : list.get(i).get("StartTime").toString());
                     entity.setEndTime(list.get(i).get("EndTime") == null ? "" : list.get(i).get("EndTime").toString());

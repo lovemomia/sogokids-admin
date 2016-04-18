@@ -1,6 +1,7 @@
 package com.sogokids.controller;
 
 import com.sogokids.cooperator.service.CooperatorService;
+import com.sogokids.system.service.MenuService;
 import com.sogokids.user.service.UserService;
 import com.sogokids.utils.util.JumpPage;
 import com.sogokids.utils.util.Quantity;
@@ -27,6 +28,9 @@ public class CooperatorController {
     @Autowired
     private CooperatorService cooperatorService;
 
+    @Autowired
+    private MenuService menuService;
+
 
     /**
      * 合作单位－列表
@@ -39,6 +43,7 @@ public class CooperatorController {
         Map<String, Object> context = new HashMap<String, Object>();
         context.put(Quantity.RETURN_ENTITY_LIST, cooperatorService.getEntitys());
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_SEVENTEEN));
         return new ModelAndView(adminUserService.isUserFunc(req, JumpPage.COOP),context);
     }
 
@@ -60,6 +65,7 @@ public class CooperatorController {
             context.put(Quantity.RETURN_ENTITY, cooperatorService.get(id));
         }
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_SEVENTEEN));
         return new ModelAndView(reStr,context);
     }
 
@@ -81,6 +87,7 @@ public class CooperatorController {
         }
         context.put(Quantity.RETURN_ENTITY_LIST, cooperatorService.getEntitys());
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_SEVENTEEN));
         return new ModelAndView(JumpPage.COOP,context);
     }
 
@@ -103,6 +110,7 @@ public class CooperatorController {
         }
         context.put(Quantity.RETURN_ENTITY_LIST, cooperatorService.getEntitys());
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_SEVENTEEN));
         return new ModelAndView(JumpPage.COOP,context);
     }
 
@@ -125,6 +133,7 @@ public class CooperatorController {
         }
         context.put(Quantity.RETURN_ENTITY_LIST, cooperatorService.getEntitys());
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_SEVENTEEN));
         return new ModelAndView(JumpPage.COOP,context);
     }
 }

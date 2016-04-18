@@ -2,7 +2,7 @@ package com.sogokids.controller;
 
 
 import com.sogokids.system.service.CityService;
-import com.sogokids.system.service.RegionService;
+import com.sogokids.system.service.MenuService;
 import com.sogokids.user.service.UserService;
 import com.sogokids.utils.util.JumpPage;
 import com.sogokids.utils.util.Quantity;
@@ -28,7 +28,7 @@ public class CityController {
     private CityService cityService;
 
     @Autowired
-    private RegionService regionService;
+    private MenuService menuService;
 
     @Autowired
     private UserService adminUserService;
@@ -44,6 +44,7 @@ public class CityController {
         Map<String, Object> context = new HashMap<String, Object>();
         context.put(Quantity.RETURN_ENTITY_LIST, cityService.getEntitys());
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_TWENTY));
         return new ModelAndView(adminUserService.isUserFunc(req,JumpPage.CITY),context);
     }
 
@@ -70,6 +71,7 @@ public class CityController {
             context.put(Quantity.RETURN_ENTITY, cityService.get(id));
         }
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_TWENTY));
         return new ModelAndView(reStr,context);
     }
 
@@ -91,6 +93,7 @@ public class CityController {
         }
         context.put(Quantity.RETURN_ENTITY_LIST, cityService.getEntitys());
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_TWENTY));
         return new ModelAndView(JumpPage.CITY,context);
     }
 
@@ -113,6 +116,7 @@ public class CityController {
         }
         context.put(Quantity.RETURN_ENTITY_LIST, cityService.getEntitys());
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_TWENTY));
         return new ModelAndView(JumpPage.CITY,context);
     }
 
@@ -135,6 +139,7 @@ public class CityController {
         }
         context.put(Quantity.RETURN_ENTITY_LIST, cityService.getEntitys());
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_TWENTY));
         return new ModelAndView(JumpPage.CITY,context);
     }
 }

@@ -11,6 +11,7 @@ import java.util.List;
 public interface CooperatorActivityService {
     public CooperatorActivity get(int id);
     public List<CooperatorActivity> getEntitys();
+    public List<CooperatorActivity> getEntitysByCoopId(int coopId);
     public int insert(CooperatorActivity entity);
     public int update(CooperatorActivity entity);
     public int delete(int id);

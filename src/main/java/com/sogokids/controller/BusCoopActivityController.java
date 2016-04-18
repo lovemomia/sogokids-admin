@@ -1,10 +1,7 @@
 package com.sogokids.controller;
 
 import com.sogokids.cooperator.service.CooperatorActivityService;
-import com.sogokids.cooperator.service.CooperatorService;
 import com.sogokids.cooperator.service.CooperatorUserService;
-import com.sogokids.user.service.UserService;
-import com.sogokids.utils.util.EnumUtil;
 import com.sogokids.utils.util.JumpPage;
 import com.sogokids.utils.util.Quantity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +36,8 @@ public class BusCoopActivityController {
     @RequestMapping("/info")
     public ModelAndView info(@RequestParam("uid") int uid, HttpServletRequest req){
         Map<String, Object> context = new HashMap<String, Object>();
-        context.put(Quantity.RETURN_ENTITY_LIST, cooperatorActivityService.getEntitys());
+        int coopid = busUserService.get(uid).getCooperatorId();
+        context.put(Quantity.RETURN_ENTITY_LIST, cooperatorActivityService.getEntitysByCoopId(coopid));
         context.put(Quantity.RETURN_BUS_USER,busUserService.get(uid));
         return new ModelAndView(JumpPage.BUS_COOP_ACTIVITY,context);
     }

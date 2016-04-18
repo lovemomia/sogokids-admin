@@ -11,6 +11,7 @@ import com.sogokids.subject.service.SubjectNoticeService;
 import com.sogokids.subject.service.SubjectService;
 import com.sogokids.subject.service.SubjectSkuService;
 import com.sogokids.system.service.CityService;
+import com.sogokids.system.service.MenuService;
 import com.sogokids.user.service.UserService;
 import com.sogokids.utils.util.EnumUtil;
 import com.sogokids.utils.util.JumpPage;
@@ -60,6 +61,9 @@ public class SubjectController {
     @Autowired
     private CityService cityService;
 
+    @Autowired
+    private MenuService menuService;
+
     /**
      *课程包列表
      * @param uid
@@ -71,6 +75,7 @@ public class SubjectController {
         Map<String, Object> context = new HashMap<String, Object>();
         context.put(Quantity.RETURN_ENTITY_LIST, subjectService.getEntitys(Quantity.STATUS_ONE));
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_TWO));
         return new ModelAndView(adminUserService.isUserFunc(req,JumpPage.SUB),context);
     }
 
@@ -78,11 +83,10 @@ public class SubjectController {
      *课程包操作跳转
      * @param uid
      * @param id
-     * @param req
      * @return
      */
     @RequestMapping("/oper")
-    public ModelAndView operation(@RequestParam("uid") int uid,@RequestParam("id") int id,HttpServletRequest req){
+    public ModelAndView operation(@RequestParam("uid") int uid,@RequestParam("id") int id){
         String reStr = JumpPage.SUB_EDIT;
         Map<String, Object> context = new HashMap<String, Object>();
         if (id == 0) {
@@ -102,6 +106,7 @@ public class SubjectController {
         Map<String,String> comment_map = subjectService.getCommentHtml(id);
         context.put("tComments", comment_map.get("comment_t"));
         context.put("ntComments",comment_map.get("comment_nt"));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_TWO));
 
         return new ModelAndView(reStr,context);
     }
@@ -178,11 +183,10 @@ public class SubjectController {
      *删除课程包基本信息
      * @param uid
      * @param id
-     * @param req
      * @return
      */
     @RequestMapping("/del")
-    public ModelAndView delEntity(@RequestParam("uid") int uid,@RequestParam("id") int id, HttpServletRequest req){
+    public ModelAndView delEntity(@RequestParam("uid") int uid,@RequestParam("id") int id){
 
         Map<String, Object> context = new HashMap<String, Object>();
         int reDate = subjectService.delete(id);
@@ -193,6 +197,7 @@ public class SubjectController {
         }
         context.put(Quantity.RETURN_ENTITY_LIST, subjectService.getEntitys(Quantity.STATUS_ONE));
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_TWO));
         return new ModelAndView(JumpPage.SUB,context);
     }
 
@@ -518,11 +523,10 @@ public class SubjectController {
      * @param uid
      * @param id
      * @param mark
-     * @param req
      * @return
      */
     @RequestMapping("/upOrDown")
-    public ModelAndView updateStatus(@RequestParam("uid") int uid,@RequestParam("id") int id,@RequestParam("mark") int mark, HttpServletRequest req){
+    public ModelAndView updateStatus(@RequestParam("uid") int uid,@RequestParam("id") int id,@RequestParam("mark") int mark){
 
         Map<String, Object> context = new HashMap<String, Object>();
         int reDate = subjectService.updateStatus(id, mark);
@@ -533,6 +537,7 @@ public class SubjectController {
         }
         context.put(Quantity.RETURN_ENTITY_LIST, subjectService.getEntitys(Quantity.STATUS_ONE));
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_TWO));
         return new ModelAndView(JumpPage.SUB,context);
     }
 
@@ -540,14 +545,14 @@ public class SubjectController {
      *课程包预览
      * @param uid
      * @param id
-     * @param req
      * @return
      */
     @RequestMapping("/preview")
-    public ModelAndView preview(@RequestParam("uid") int uid,@RequestParam("id") int id, HttpServletRequest req) {
+    public ModelAndView preview(@RequestParam("uid") int uid,@RequestParam("id") int id) {
         Map<String, Object> context = new HashMap<String, Object>();
         context.put("previewHtml", subjectService.getPreview(id));
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_TWO));
         return new ModelAndView(JumpPage.SUB_PREVIEW,context);
     }
 

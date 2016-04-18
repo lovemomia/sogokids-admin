@@ -3,6 +3,7 @@ package com.sogokids.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.sogokids.cooperator.service.CooperatorService;
 import com.sogokids.cooperator.service.CooperatorUserService;
+import com.sogokids.system.service.MenuService;
 import com.sogokids.user.service.UserService;
 import com.sogokids.utils.util.JumpPage;
 import com.sogokids.utils.util.Quantity;
@@ -37,6 +38,9 @@ public class CoopUserController {
     @Autowired
     private CooperatorUserService cooperatorUserService;
 
+    @Autowired
+    private MenuService menuService;
+
     /**
      * 合作单位-人员信息－列表
      * @param uid
@@ -48,6 +52,7 @@ public class CoopUserController {
         Map<String, Object> context = new HashMap<String, Object>();
         context.put(Quantity.RETURN_ENTITY_LIST, cooperatorUserService.getEntitys());
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_EIGHTEEN));
         return new ModelAndView(adminUserService.isUserFunc(req, JumpPage.COOP_USER),context);
     }
 
@@ -70,6 +75,7 @@ public class CoopUserController {
         }
         context.put("coops",cooperatorService.getEntitys());
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_EIGHTEEN));
         return new ModelAndView(reStr,context);
     }
 
@@ -91,6 +97,7 @@ public class CoopUserController {
         }
         context.put(Quantity.RETURN_ENTITY_LIST, cooperatorUserService.getEntitys());
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_EIGHTEEN));
         return new ModelAndView(JumpPage.COOP_USER,context);
     }
 
@@ -113,6 +120,7 @@ public class CoopUserController {
         }
         context.put(Quantity.RETURN_ENTITY_LIST, cooperatorUserService.getEntitys());
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_EIGHTEEN));
         return new ModelAndView(JumpPage.COOP_USER,context);
     }
 
@@ -135,6 +143,7 @@ public class CoopUserController {
         }
         context.put(Quantity.RETURN_ENTITY_LIST, cooperatorUserService.getEntitys());
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_EIGHTEEN));
         return new ModelAndView(JumpPage.COOP_USER,context);
     }
 

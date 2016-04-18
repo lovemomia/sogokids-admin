@@ -1,12 +1,15 @@
 package com.sogokids.controller;
 
 
+import com.sogokids.system.model.Menu;
+import com.sogokids.system.service.MenuService;
 import com.sogokids.user.model.AdminRole;
 import com.sogokids.user.model.User;
 import com.sogokids.user.service.AdminRoleService;
 import com.sogokids.user.service.RoleService;
 import com.sogokids.user.service.UserService;
 import com.sogokids.utils.util.JumpPage;
+import com.sogokids.utils.util.MenuUtil;
 import com.sogokids.utils.util.Quantity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
@@ -34,6 +38,9 @@ public class UserController {
 
     @Autowired
     private AdminRoleService adminRoleService;
+
+    @Autowired
+    private MenuService menuService;
 
 
     /**
@@ -64,6 +71,7 @@ public class UserController {
             context.put(Quantity.RETURN_USER, entity);
             context.put(Quantity.RETURN_SUCCESS, 0);
             context.put(Quantity.RETURN_MSG, "登录成功");
+            context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(entity.getId(),Quantity.STATUS_ONE));
             reStr = JumpPage.INDEX;
         }else {
             context.put(Quantity.RETURN_SUCCESS, 1);
@@ -84,6 +92,7 @@ public class UserController {
         Map<String, Object> context = new HashMap<String, Object>();
         User entity = userService.get(uid);
         context.put(Quantity.RETURN_USER, entity);
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_ONE));
         return new ModelAndView(JumpPage.INDEX,context);
     }
 
@@ -98,6 +107,7 @@ public class UserController {
         Map<String, Object> context = new HashMap<String, Object>();
         context.put(Quantity.RETURN_ENTITY_LIST, userService.getEntityList(Quantity.WHERE));
         context.put(Quantity.RETURN_USER, userService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_TWENTY_SIX));
         return new ModelAndView(userService.isUserFunc(req,JumpPage.USER),context);
     }
 
@@ -128,6 +138,8 @@ public class UserController {
         }
         context.put(Quantity.RETURN_USER,userService.get(uid));
         context.put(Quantity.RETURN_MSG, "");
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_TWENTY_SIX));
+//        context.put(Quantity.RETURN_MENUS, );
         return new ModelAndView(reStr,context);
     }
 
@@ -152,6 +164,7 @@ public class UserController {
         }
         context.put(Quantity.RETURN_ENTITY_LIST, userService.getEntityList(Quantity.WHERE));
         context.put(Quantity.RETURN_USER, userService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_TWENTY_SIX));
         return new ModelAndView(JumpPage.USER,context);
     }
 
@@ -190,6 +203,7 @@ public class UserController {
         }
         context.put(Quantity.RETURN_ENTITY_LIST, userService.getEntityList(Quantity.WHERE));
         context.put(Quantity.RETURN_USER, userService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_TWENTY_SIX));
         return new ModelAndView(JumpPage.USER,context);
     }
 
@@ -212,6 +226,7 @@ public class UserController {
         }
         context.put(Quantity.RETURN_ENTITY_LIST, userService.getEntityList(Quantity.WHERE));
         context.put(Quantity.RETURN_USER, userService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_TWENTY_SIX));
         return new ModelAndView(JumpPage.USER,context);
     }
 
@@ -253,6 +268,7 @@ public class UserController {
         context.put("w_list",roleService.getWList(user_id));
         context.put(Quantity.RETURN_ENTITY,userService.get(user_id));
         context.put(Quantity.RETURN_USER, userService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_TWENTY_SIX));
         return new ModelAndView(JumpPage.USER_ROLE,context);
     }
 

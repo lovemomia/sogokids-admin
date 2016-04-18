@@ -13,7 +13,7 @@
     <context:component-scan base-package="com.sogokids" />
     <!--默认的mvc注解映射的支持 -->
     <mvc:annotation-driven/>
-    <!-- 支持异步方法执行 -->
+    <!-- 支持异步方法执行－定时器配置 -->
     <task:annotation-driven />
 
     <!-- 视图解析器和json解析器 -->
@@ -46,24 +46,5 @@
         <!-- one of the properties available; the maximum file size in bytes -->
         <property name="maxUploadSize" value="-1"/>
     </bean>
-
-    <!--&lt;!&ndash; 总错误处理 &ndash;&gt;-->
-    <!--<bean id="exceptionResolver"-->
-          <!--class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">-->
-        <!--<property name="defaultErrorView">-->
-            <!--<value>/user/login.do</value>-->
-        <!--</property>-->
-        <!--&lt;!&ndash;<property name="defaultStatusCode">&ndash;&gt;-->
-        <!--&lt;!&ndash;<value>500</value>&ndash;&gt;-->
-        <!--&lt;!&ndash;</property>&ndash;&gt;-->
-        <!--&lt;!&ndash;<property name="warnLogCategory">&ndash;&gt;-->
-        <!--&lt;!&ndash;<&ndash;&gt;-->
-        <!--&lt;!&ndash;<value></value>&ndash;&gt;-->
-        <!--&lt;!&ndash;&lt;!&ndash; <value>org.springframework.web.servlet.handler.SimpleMappingExceptionResolver</value> &ndash;&gt;&ndash;&gt;-->
-        <!--&lt;!&ndash;<props>&ndash;&gt;-->
-        <!--&lt;!&ndash;<prop key="com.momia.until.SessionTimeoutException">redirect:/user/login.do</prop>&ndash;&gt;-->
-        <!--&lt;!&ndash;</props>&ndash;&gt;-->
-        <!--&lt;!&ndash;</property>&ndash;&gt;-->
-    <!--</bean>-->
 
 </beans>

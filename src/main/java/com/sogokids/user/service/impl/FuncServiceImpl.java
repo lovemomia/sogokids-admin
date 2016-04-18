@@ -112,7 +112,7 @@ public class FuncServiceImpl implements FuncService {
     @Override
     public boolean isFunc(int uid,String link){
         boolean reData = false;
-        String sql = "select a.Id,a.Username,c.Id as RId,c.Name,e.Id as FId,e.Name as funcName,e.Link from sogokids.SG_Admin a,sogokids.SG_AdminRole b,sogokids.SG_Role c,sogokids.SG_RoleFunc d,sogokids.SG_Func e where a.Status > 0 and c.Status > 0 and e.Status > 0 and a.Id = b.AdminId and c.Id = b.RoleId and c.Id = d.RoleId and e.Id = d.FuncId and a.Id = ? and link = ? ";
+        String sql = "select a.Id,a.Username,c.Id as RId,c.Name,e.Id as FId,e.Name as funcName,e.Link from SG_Admin a,SG_AdminRole b,SG_Role c,SG_RoleFunc d,SG_Func e where a.Status > 0 and c.Status > 0 and e.Status > 0 and a.Id = b.AdminId and c.Id = b.RoleId and c.Id = d.RoleId and e.Id = d.FuncId and a.Id = ? and link = ? ";
         Object [] params = new Object[]{uid,link};
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql,params);
         if (list.size() > 0){
@@ -125,7 +125,7 @@ public class FuncServiceImpl implements FuncService {
     @Override
     public List<Func> getYList(int r_id) {
         List<Func> reData = new ArrayList<Func>();
-        String sql = "select * from sogokids.SG_Func where status > 0 and id in (select b.FuncId from sogokids.SG_Role a,sogokids.SG_RoleFunc b where a.Id = b.RoleId and a.id = ? )";
+        String sql = "select * from SG_Func where status > 0 and id in (select b.FuncId from SG_Role a,SG_RoleFunc b where a.Id = b.RoleId and a.id = ? )";
         Object [] params = new Object[]{r_id};
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql,params);
         if(list.size() > 0){
@@ -147,7 +147,7 @@ public class FuncServiceImpl implements FuncService {
     @Override
     public List<Func> getWList(int r_id) {
         List<Func> reData = new ArrayList<Func>();
-        String sql = "select * from sogokids.SG_Func where status > 0 and id not in (select b.FuncId from sogokids.SG_Role a,sogokids.SG_RoleFunc b where a.Id = b.RoleId and a.id = ? )";
+        String sql = "select * from SG_Func where status > 0 and id not in (select b.FuncId from SG_Role a,SG_RoleFunc b where a.Id = b.RoleId and a.id = ? )";
         Object [] params = new Object[]{r_id};
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql,params);
         if(list.size() > 0){
@@ -164,5 +164,26 @@ public class FuncServiceImpl implements FuncService {
         }
 
         return reData;
+    }
+
+    /**
+     * 获取登录用户的权限菜单并去处重复数据,组装成字符串进行比对
+     * @param uid
+     * @return
+     */
+    @Override
+    public String getDistinctFunc(int uid){
+        StringBuffer sb = new StringBuffer();
+        sb.append("/user/index.do");
+        String sql = "select distinct e.Link from SG_Admin a,SG_AdminRole b,SG_Role c,SG_RoleFunc d,SG_Func e where a.Status > 0 and c.Status > 0 and e.Status > 0 and a.Id = b.AdminId and c.Id = b.RoleId and c.Id = d.RoleId and e.Id = d.FuncId and a.Id = ? ";
+        Object [] params = new Object[]{uid};
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sql,params);
+        if(list.size() > 0){
+            for (int i = 0; i < list.size(); i++) {
+                sb.append(",").append(list.get(i).get("Link").toString());
+            }
+        }
+
+        return sb.toString();
     }
 }

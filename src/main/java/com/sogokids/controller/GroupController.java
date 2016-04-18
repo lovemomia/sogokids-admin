@@ -7,6 +7,7 @@ import com.sogokids.group.service.GroupUserService;
 import com.sogokids.group.service.SelectionGroupService;
 import com.sogokids.http.model.HttpResult;
 import com.sogokids.query.service.CustomerService;
+import com.sogokids.system.service.MenuService;
 import com.sogokids.user.service.UserService;
 import com.sogokids.utils.util.CastUtil;
 import com.sogokids.utils.util.JumpPage;
@@ -49,6 +50,9 @@ public class GroupController {
     @Autowired
     private GroupCourseService groupCourseService;
 
+    @Autowired
+    private MenuService menuService;
+
     /**
      * 批量选课－列表
      * @param uid
@@ -60,6 +64,7 @@ public class GroupController {
         Map<String, Object> context = new HashMap<String, Object>();
         context.put(Quantity.RETURN_ENTITY_LIST, selectionGroupService.getEntitys());
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_THIRTEEN));
         return new ModelAndView(adminUserService.isUserFunc(req, JumpPage.GROUP),context);
     }
 
@@ -82,6 +87,7 @@ public class GroupController {
         }
         context.put(Quantity.RETURN_ENTITY, selectionGroupService.get(id));
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_THIRTEEN));
         return new ModelAndView(reStr,context);
     }
 
@@ -203,6 +209,7 @@ public class GroupController {
         }
         context.put(Quantity.RETURN_ENTITY_LIST, selectionGroupService.getEntitys());
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_THIRTEEN));
         return new ModelAndView(JumpPage.GROUP,context);
     }
 
@@ -226,6 +233,7 @@ public class GroupController {
         context.put(Quantity.RETURN_ENTITY_LIST, selectionGroupService.getGroupCustomers(gid,""));
         context.put(Quantity.RETURN_ENTITY, selectionGroupService.get(gid));
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_THIRTEEN));
         return new ModelAndView(JumpPage.GROUP_USER,context);
     }
 
@@ -247,6 +255,7 @@ public class GroupController {
         context.put(Quantity.RETURN_ENTITY_LIST, selectionGroupService.getGroupCustomers(gid,where));
         context.put(Quantity.RETURN_ENTITY, selectionGroupService.get(gid));
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_THIRTEEN));
 
         return new ModelAndView(JumpPage.GROUP_USER,context);
     }
@@ -269,6 +278,7 @@ public class GroupController {
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
         context.put("title",title);
         context.put("dateTime",dateTime);
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_THIRTEEN));
 
         return new ModelAndView(JumpPage.GROUP_COURSE,context);
     }

@@ -1,6 +1,7 @@
 package com.sogokids.controller;
 
 import com.sogokids.system.service.InstitutionService;
+import com.sogokids.system.service.MenuService;
 import com.sogokids.user.service.UserService;
 import com.sogokids.utils.util.JumpPage;
 import com.sogokids.utils.util.Quantity;
@@ -28,6 +29,9 @@ public class InstitutionController {
     @Autowired
     private InstitutionService institutionService;
 
+    @Autowired
+    private MenuService menuService;
+
     /**
      *机构－列表
      * @param uid
@@ -39,6 +43,7 @@ public class InstitutionController {
         Map<String, Object> context = new HashMap<String, Object>();
         context.put(Quantity.RETURN_ENTITY_LIST, institutionService.getEntitys());
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_TWENTY_THREE));
         return new ModelAndView(adminUserService.isUserFunc(req,JumpPage.INST),context);
     }
 
@@ -59,6 +64,7 @@ public class InstitutionController {
             context.put(Quantity.RETURN_ENTITY, institutionService.get(id));
         }
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_TWENTY_THREE));
         return new ModelAndView(reStr,context);
     }
 
@@ -80,6 +86,7 @@ public class InstitutionController {
         }
         context.put(Quantity.RETURN_ENTITY_LIST, institutionService.getEntitys());
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_TWENTY_THREE));
         return new ModelAndView(JumpPage.INST,context);
     }
 
@@ -102,6 +109,7 @@ public class InstitutionController {
         }
         context.put(Quantity.RETURN_ENTITY_LIST, institutionService.getEntitys());
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_TWENTY_THREE));
         return new ModelAndView(JumpPage.INST,context);
     }
 
@@ -124,6 +132,7 @@ public class InstitutionController {
         }
         context.put(Quantity.RETURN_ENTITY_LIST, institutionService.getEntitys());
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_TWENTY_THREE));
         return new ModelAndView(JumpPage.INST,context);
     }
 

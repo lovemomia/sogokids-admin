@@ -7,6 +7,7 @@ import com.sogokids.course.service.CourseRecommendService;
 import com.sogokids.course.service.CourseService;
 import com.sogokids.subject.model.SubjectSku;
 import com.sogokids.subject.service.SubjectSkuService;
+import com.sogokids.system.service.MenuService;
 import com.sogokids.user.service.UserService;
 import com.sogokids.utils.util.JumpPage;
 import com.sogokids.utils.util.Quantity;
@@ -44,6 +45,9 @@ public class SetOneController {
     @Autowired
     private CourseRecommendService courseRecommendService;
 
+    @Autowired
+    private MenuService menuService;
+
     /**
      *推荐课程－课程列表
      * @param uid
@@ -55,6 +59,7 @@ public class SetOneController {
         Map<String, Object> context = new HashMap<String, Object>();
         context.put(Quantity.RETURN_ENTITY_LIST, courseRecommendService.getCourses());
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_FOUR));
         return new ModelAndView(adminUserService.isUserFunc(req,JumpPage.SET_ONE),context);
     }
 
@@ -62,11 +67,10 @@ public class SetOneController {
      *课程推荐－操作跳转
      * @param uid
      * @param id
-     * @param req
      * @return
      */
     @RequestMapping("/oper")
-    public ModelAndView operation(@RequestParam("uid") int uid,@RequestParam("id") int id,HttpServletRequest req){
+    public ModelAndView operation(@RequestParam("uid") int uid,@RequestParam("id") int id){
         String reStr = JumpPage.SET_ONE_EDIT;
         Map<String, Object> context = new HashMap<String, Object>();
         context.put("course",courseService.get(id));
@@ -80,6 +84,7 @@ public class SetOneController {
 //        context.put("time_unit", EnumUtil.getEnums(Quantity.STATUS_FOUR));
 
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_FOUR));
         return new ModelAndView(reStr,context);
     }
 
@@ -240,11 +245,10 @@ public class SetOneController {
      * @param uid
      * @param id
      * @param mark
-     * @param req
      * @return
      */
     @RequestMapping("/upOrDown")
-    public ModelAndView updateStatus(@RequestParam("uid") int uid,@RequestParam("id") int id,@RequestParam("mark") int mark, HttpServletRequest req){
+    public ModelAndView updateStatus(@RequestParam("uid") int uid,@RequestParam("id") int id,@RequestParam("mark") int mark){
 
         Map<String, Object> context = new HashMap<String, Object>();
 
@@ -259,6 +263,7 @@ public class SetOneController {
         }
         context.put(Quantity.RETURN_ENTITY_LIST, courseRecommendService.getCourses());
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_FOUR));
         return new ModelAndView(JumpPage.SET_ONE,context);
     }
 
@@ -266,11 +271,10 @@ public class SetOneController {
      *推荐课程－取消推荐
      * @param uid
      * @param id
-     * @param req
      * @return
      */
     @RequestMapping("/cancelCourse")
-    public ModelAndView cancelCourse(@RequestParam("uid") int uid,@RequestParam("id") int id, HttpServletRequest req){
+    public ModelAndView cancelCourse(@RequestParam("uid") int uid,@RequestParam("id") int id){
         Map<String, Object> context = new HashMap<String, Object>();
         int reData = courseService.update_cancelCourse(id);
 
@@ -284,6 +288,7 @@ public class SetOneController {
 
         context.put(Quantity.RETURN_ENTITY_LIST, courseRecommendService.getCourses());
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_FOUR));
         return new ModelAndView(JumpPage.SET_ONE,context);
     }
 
@@ -291,15 +296,15 @@ public class SetOneController {
      *课程推荐－预览课程
      * @param uid
      * @param id
-     * @param req
      * @return
      */
     @RequestMapping("/preview")
-    public ModelAndView preview(@RequestParam("uid") int uid,@RequestParam("id") int id, HttpServletRequest req) {
+    public ModelAndView preview(@RequestParam("uid") int uid,@RequestParam("id") int id) {
         Map<String, Object> context = new HashMap<String, Object>();
         context.put("previewHtml", courseService.getPreview(id));
         context.put(Quantity.RETURN_ENTITY_LIST, courseRecommendService.getCourses());
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_FOUR));
         return new ModelAndView(JumpPage.COURSE_SET_PREVIEW,context);
     }
 
@@ -353,6 +358,7 @@ public class SetOneController {
 
         context.put(Quantity.RETURN_ENTITY_LIST, courseRecommendService.getCourses());
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_FOUR));
 
         return new ModelAndView(JumpPage.SET_ONE,context);
     }

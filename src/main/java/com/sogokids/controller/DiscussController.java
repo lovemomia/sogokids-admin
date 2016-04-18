@@ -1,6 +1,7 @@
 package com.sogokids.controller;
 
 import com.sogokids.discuss.service.DiscussTopicService;
+import com.sogokids.system.service.MenuService;
 import com.sogokids.user.service.UserService;
 import com.sogokids.utils.util.JumpPage;
 import com.sogokids.utils.util.Quantity;
@@ -28,6 +29,9 @@ public class DiscussController {
     @Autowired
     private UserService adminUserService;
 
+    @Autowired
+    private MenuService menuService;
+
     /**
      *话题列表
      * @param uid
@@ -39,6 +43,7 @@ public class DiscussController {
         Map<String, Object> context = new HashMap<String, Object>();
         context.put(Quantity.RETURN_ENTITY_LIST, discussTopicService.getEntitys());
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_EIGHT));
         return new ModelAndView(adminUserService.isUserFunc(req, JumpPage.DISCUSS),context);
     }
 
@@ -61,6 +66,7 @@ public class DiscussController {
 //        context.put("citys", cityService.getEntitys());
 //        context.put("subs",subjectService.getEntitys(Quantity.STATUS_ONE));
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_EIGHT));
         return new ModelAndView(reStr,context);
     }
 
@@ -82,6 +88,7 @@ public class DiscussController {
         }
         context.put(Quantity.RETURN_ENTITY_LIST, discussTopicService.getEntitys());
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_EIGHT));
         return new ModelAndView(JumpPage.DISCUSS,context);
     }
 
@@ -104,6 +111,7 @@ public class DiscussController {
         }
         context.put(Quantity.RETURN_ENTITY_LIST, discussTopicService.getEntitys());
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_EIGHT));
         return new ModelAndView(JumpPage.DISCUSS,context);
     }
 
@@ -126,6 +134,7 @@ public class DiscussController {
         }
         context.put(Quantity.RETURN_ENTITY_LIST, discussTopicService.getEntitys());
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_EIGHT));
         return new ModelAndView(JumpPage.DISCUSS,context);
     }
 
@@ -149,6 +158,7 @@ public class DiscussController {
         }
         context.put(Quantity.RETURN_ENTITY_LIST, discussTopicService.getEntitys());
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_EIGHT));
         return new ModelAndView(JumpPage.DISCUSS,context);
     }
 
@@ -164,6 +174,7 @@ public class DiscussController {
         Map<String, Object> context = new HashMap<String, Object>();
         context.put("previewHtml", discussTopicService.getPreview(id));
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_EIGHT));
         return new ModelAndView(JumpPage.DISCUSS_PREVIEW,context);
     }
 }

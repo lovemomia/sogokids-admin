@@ -3,6 +3,7 @@ package com.sogokids.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.sogokids.query.model.Customer;
 import com.sogokids.query.service.CustomerService;
+import com.sogokids.system.service.MenuService;
 import com.sogokids.teacher.model.CourseMaterial;
 import com.sogokids.teacher.model.Teacher;
 import com.sogokids.teacher.model.TeacherEducation;
@@ -67,6 +68,9 @@ public class TeacherController {
     @Autowired
     private CourseMaterialService courseMaterialService;
 
+    @Autowired
+    private MenuService menuService;
+
     /**
      * 讲师列表
      * @param uid
@@ -78,6 +82,7 @@ public class TeacherController {
         Map<String, Object> context = new HashMap<String, Object>();
         context.put(Quantity.RETURN_ENTITY_LIST, teacherService.getEntitys());
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_TEN));
         return new ModelAndView(adminUserService.isUserFunc(req,JumpPage.TEACHER),context);
     }
 
@@ -98,6 +103,7 @@ public class TeacherController {
         context.put(Quantity.RETURN_ENTITY_LIST, teacherService.getEntitysByWhere(where));
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
         context.put("name",name);
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_TEN));
         return new ModelAndView(JumpPage.TEACHER,context);
     }
 
@@ -120,6 +126,7 @@ public class TeacherController {
         context.put("sexs", EnumUtil.getEnums(Quantity.STATUS_SIX));
         context.put("jobs", EnumUtil.getEnums(Quantity.STATUS_SEVEN));
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_TEN));
         return new ModelAndView(reStr,context);
     }
 
@@ -251,6 +258,7 @@ public class TeacherController {
         context.put("w_assign", courseAssignService.getCourseAssigns().get("w_assign"));
         context.put("y_assign", courseAssignService.getCourseAssigns().get("y_assign"));
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_ELEVEN));
         return new ModelAndView(adminUserService.isUserFunc(req,JumpPage.ASSIGN),context);
     }
 
@@ -265,6 +273,7 @@ public class TeacherController {
         Map<String, Object> context = new HashMap<String, Object>();
         context.put(Quantity.RETURN_ENTITY_LIST, courseMaterialService.getMaterials());
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_TWELVE));
         return new ModelAndView(adminUserService.isUserFunc(req,JumpPage.MATERIAL),context);
     }
 
@@ -280,6 +289,7 @@ public class TeacherController {
         context.put("d_check", teacherService.getTeachers().get("d_check"));
         context.put("y_check", teacherService.getTeachers().get("y_check"));
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_NINE));
         return new ModelAndView(adminUserService.isUserFunc(req,JumpPage.CHECK),context);
     }
 
@@ -518,6 +528,7 @@ public class TeacherController {
         context.put("w_teacher",teacherService.getW_Teachers(id,sid));
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
 
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_ELEVEN));
         return new ModelAndView(JumpPage.ASSIGN_TEACHER,context);
     }
 
@@ -584,6 +595,7 @@ public class TeacherController {
         context.put("teacherCourses", courseAssignService.getTeacherCourses(id));
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
 
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_TEN));
         return new ModelAndView(JumpPage.TEACHER_COURSE,context);
     }
 
@@ -607,6 +619,7 @@ public class TeacherController {
             reStr = JumpPage.MATERIAL_EDIT;
         }
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_TWELVE));
 
         return new ModelAndView(reStr,context);
     }
@@ -662,6 +675,7 @@ public class TeacherController {
         }
         context.put(Quantity.RETURN_ENTITY_LIST, courseMaterialService.getMaterials());
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_TWELVE));
         return new ModelAndView(JumpPage.MATERIAL,context);
     }
 
@@ -686,6 +700,7 @@ public class TeacherController {
         }
         context.put(Quantity.RETURN_ENTITY_LIST, courseMaterialService.getMaterials());
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_TWELVE));
         return new ModelAndView(JumpPage.MATERIAL,context);
     }
 

@@ -3,6 +3,7 @@ package com.sogokids.controller;
 import com.sogokids.home.service.EventService;
 import com.sogokids.system.service.AppVersionService;
 import com.sogokids.system.service.CityService;
+import com.sogokids.system.service.MenuService;
 import com.sogokids.user.service.UserService;
 import com.sogokids.utils.util.EnumUtil;
 import com.sogokids.utils.util.JumpPage;
@@ -36,6 +37,9 @@ public class EventController {
     @Autowired
     private AppVersionService appVersionService;
 
+    @Autowired
+    private MenuService menuService;
+
     /**
      * event列表
      * @param uid
@@ -47,6 +51,7 @@ public class EventController {
         Map<String, Object> context = new HashMap<String, Object>();
         context.put(Quantity.RETURN_ENTITY_LIST, eventService.getEntitys());
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_FIFTEEN));
         return new ModelAndView(adminUserService.isUserFunc(req,JumpPage.EVENT),context);
     }
 
@@ -71,6 +76,7 @@ public class EventController {
         context.put("platforms", EnumUtil.getEnums(Quantity.STATUS_NINE));
         context.put("types", EnumUtil.getEnums(Quantity.STATUS_ELEVEN));
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_FIFTEEN));
         return new ModelAndView(reStr,context);
     }
 
@@ -92,6 +98,7 @@ public class EventController {
         }
         context.put(Quantity.RETURN_ENTITY_LIST, eventService.getEntitys());
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_FIFTEEN));
         return new ModelAndView(JumpPage.EVENT,context);
     }
 
@@ -114,6 +121,7 @@ public class EventController {
         }
         context.put(Quantity.RETURN_ENTITY_LIST, eventService.getEntitys());
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_FIFTEEN));
         return new ModelAndView(JumpPage.EVENT,context);
     }
 
@@ -136,6 +144,7 @@ public class EventController {
         }
         context.put(Quantity.RETURN_ENTITY_LIST, eventService.getEntitys());
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_FIFTEEN));
         return new ModelAndView(JumpPage.EVENT,context);
     }
 }
