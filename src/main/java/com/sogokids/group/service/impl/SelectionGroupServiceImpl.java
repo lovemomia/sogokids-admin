@@ -94,7 +94,7 @@ public class SelectionGroupServiceImpl implements SelectionGroupService {
                     Course course = courseService.get(groupCourse.getCourseId());
                     CourseSku courseSku = courseSkuService.get(groupCourse.getCourseSkuId());
 //                    Place place = placeService.get(courseSku.getPlaceId());
-                    entity.setCourseName("("+DateUtil.getDateStr_cn(DateUtil.StrToDate(courseSku.getStartTime()))+" "+course.getKeyWord()+")");
+                    entity.setCourseName("("+DateUtil.getDateStr_cn(DateUtil.StrToDate(StringUtils.isEmpty(courseSku.getStartTime()) ? "0000-00-00 00:00:00":courseSku.getStartTime()))+" "+course.getKeyWord()+")");
                 }
 
                 reData.add(entity);

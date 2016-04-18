@@ -2,6 +2,7 @@ package com.sogokids.controller;
 
 import com.sogokids.cooperator.service.CooperatorActivityService;
 import com.sogokids.cooperator.service.CooperatorService;
+import com.sogokids.system.service.MenuService;
 import com.sogokids.user.service.UserService;
 import com.sogokids.utils.util.EnumUtil;
 import com.sogokids.utils.util.JumpPage;
@@ -32,6 +33,9 @@ public class CoopActivityController {
     @Autowired
     private CooperatorActivityService cooperatorActivityService;
 
+    @Autowired
+    private MenuService menuService;
+
     /**
      * 合作单位-活动信息－列表
      * @param uid
@@ -43,6 +47,7 @@ public class CoopActivityController {
         Map<String, Object> context = new HashMap<String, Object>();
         context.put(Quantity.RETURN_ENTITY_LIST, cooperatorActivityService.getEntitys());
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_NINETEEN));
         return new ModelAndView(adminUserService.isUserFunc(req, JumpPage.COOP_ACTIVITY),context);
     }
 
@@ -66,6 +71,7 @@ public class CoopActivityController {
         context.put("coops",cooperatorService.getEntitys());
         context.put("needs", EnumUtil.getEnums(Quantity.STATUS_TWO));
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_NINETEEN));
         return new ModelAndView(reStr,context);
     }
 
@@ -87,6 +93,7 @@ public class CoopActivityController {
         }
         context.put(Quantity.RETURN_ENTITY_LIST, cooperatorActivityService.getEntitys());
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_NINETEEN));
         return new ModelAndView(JumpPage.COOP_ACTIVITY,context);
     }
 
@@ -109,6 +116,7 @@ public class CoopActivityController {
         }
         context.put(Quantity.RETURN_ENTITY_LIST, cooperatorActivityService.getEntitys());
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_NINETEEN));
         return new ModelAndView(JumpPage.COOP_ACTIVITY,context);
     }
 
@@ -131,6 +139,7 @@ public class CoopActivityController {
         }
         context.put(Quantity.RETURN_ENTITY_LIST, cooperatorActivityService.getEntitys());
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_NINETEEN));
         return new ModelAndView(JumpPage.COOP_ACTIVITY,context);
     }
 
@@ -145,6 +154,7 @@ public class CoopActivityController {
         Map<String, Object> context = new HashMap<String, Object>();
         context.put(Quantity.RETURN_ENTITY, cooperatorActivityService.getActivityEntrys(id));
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_NINETEEN));
         return new ModelAndView(JumpPage.COOP_ACTIVITY_ENTRY,context);
     }
 

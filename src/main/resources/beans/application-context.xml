@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
-       xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:task="http://www.springframework.org/schema/task" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  xmlns:tx="http://www.springframework.org/schema/tx"
        xmlns:aop="http://www.springframework.org/schema/aop"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
 
     <!-- 加载配置文件 -->
     <bean id="conf" class="com.sogokids.utils.config.XmlConfiguration" init-method="init">
@@ -22,17 +20,7 @@
     <bean class="com.sogokids.utils.util.FileUtil">
         <property name="serverPath" value="${Image.Tongqu.DisplayPath}" />
         <property name="uploadPath" value="${Image.Tongqu.UploadPath}" />
-        <!--<property name="groupPath" value="${Image.Tongqu.GroupPath}" />-->
     </bean>
-
-    <!-- Spring MVC配置 -->
-    <context:annotation-config />
-    <!--扫描注解 -->
-    <context:component-scan base-package="com.sogokids" />
-    <!--默认的mvc注解映射的支持 -->
-    <mvc:annotation-driven/>
-    <!-- 支持异步方法执行 -->
-    <task:annotation-driven />
 
     <!-- 数据库和事务配置 -->
 

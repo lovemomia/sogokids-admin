@@ -71,6 +71,48 @@ public class DateUtil {
     }
 
     /**
+     * 获取星期
+     * @param currentDate
+     * @return
+     */
+    public static String getWeekStr(String currentDate) {
+        DateFormat df = new SimpleDateFormat("yy-MM-dd");//日期格式化辅助类
+        Date d;
+        String weekStr = "星期一";
+        try {
+            d = df.parse(currentDate);//格式化日期
+            switch (d.getDay()){
+                case 0:
+                    weekStr = "星期日";
+                    break;
+                case 1:
+                    weekStr = "星期一";
+                    break;
+                case 2:
+                    weekStr = "星期二";
+                    break;
+                case 3:
+                    weekStr = "星期三";
+                    break;
+                case 4:
+                    weekStr = "星期四";
+                    break;
+                case 5:
+                    weekStr = "星期五";
+                    break;
+                case 6:
+                    weekStr = "星期六";
+                    break;
+            }
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return weekStr;
+    }
+
+    /**
      * 计算两个日期之间相差的天数
      * @param smdate 较小的时间
      * @param bdate  较大的时间
@@ -178,7 +220,7 @@ public class DateUtil {
     }
 
     /**
-     * 获取当前日期前一天的0点格式
+     * 获取指定日期前一天的0点格式
      * @return
      */
     public static String getDateDay(String dateTime){
@@ -192,6 +234,36 @@ public class DateUtil {
         String reStr = format.format(date) + " 00:00:00";
 
         return reStr;
+    }
+
+    /**
+     * 获取当前日期前一天
+     * @return
+     */
+    public static String getDatePreDay(){
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = StrToDate(NowDateStr());
+        Calendar calendar   =   new GregorianCalendar();
+        calendar.setTime(date);
+        calendar.add(calendar.DAY_OF_MONTH,-1);
+        date = calendar.getTime();
+
+        return format.format(date);
+    }
+
+    /**
+     * 获取当前日期前7天
+     * @return
+     */
+    public static String getDate7Day(){
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = StrToDate(NowDateStr());
+        Calendar calendar   =   new GregorianCalendar();
+        calendar.setTime(date);
+        calendar.add(calendar.DAY_OF_MONTH,-7);
+        date = calendar.getTime();
+
+        return format.format(date);
     }
 
     /**
@@ -272,6 +344,23 @@ public class DateUtil {
     }
 
     /**
+     * 根据传入的日期转换 格式 MM/dd
+     * @param date_str
+     * @return
+     */
+    public static String getDateStr_en(String date_str) {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = null;
+        try {
+            date = format.parse(date_str);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        SimpleDateFormat df = new SimpleDateFormat("MM/dd");
+        return df.format(date);
+    }
+
+    /**
      * 根据传入的日期转换 格式 HH:mm
      * @param date
      * @return
@@ -331,7 +420,17 @@ public class DateUtil {
     }
 
     public static void main(String[] args) {
-        String birthDate = "1983-09-01";
-        System.out.print(getAge(birthDate));
+        String sdsds = getDate7Day();
+
+        String sss = getDatePreDay();
+
+        String seek = getWeekStr("2016-04-11");
+
+        String en_str = getDateStr_en("2016-04-11");
+
+        System.out.print(sdsds+"====="+sss+"-----"+seek+"======="+en_str);
+
+//        String birthDate = "1983-09-01";
+//        System.out.print(getAge(birthDate));
     }
 }

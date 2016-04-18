@@ -1,6 +1,7 @@
 package com.sogokids.controller;
 
 
+import com.sogokids.system.service.MenuService;
 import com.sogokids.user.model.RoleFunc;
 import com.sogokids.user.service.FuncService;
 import com.sogokids.user.service.RoleFuncService;
@@ -38,6 +39,9 @@ public class RoleController {
     @Autowired
     private FuncService funcService;
 
+    @Autowired
+    private MenuService menuService;
+
     /**
      *用户角色－列表
      * @param uid
@@ -49,6 +53,7 @@ public class RoleController {
         Map<String, Object> context = new HashMap<String, Object>();
         context.put(Quantity.RETURN_ENTITY_LIST, roleService.getEntityList());
         context.put(Quantity.RETURN_USER, userService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_TWENTY_SEVEN));
         return new ModelAndView(userService.isUserFunc(req,JumpPage.ROLE),context);
     }
 
@@ -76,6 +81,7 @@ public class RoleController {
         }
         context.put(Quantity.RETURN_USER,userService.get(uid));
         context.put(Quantity.RETURN_MSG, "");
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_TWENTY_SEVEN));
         return new ModelAndView(reStr,context);
     }
 
@@ -97,6 +103,7 @@ public class RoleController {
         }
         context.put(Quantity.RETURN_ENTITY_LIST, roleService.getEntityList());
         context.put(Quantity.RETURN_USER, userService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_TWENTY_SEVEN));
         return new ModelAndView(JumpPage.ROLE,context);
     }
 
@@ -119,6 +126,7 @@ public class RoleController {
         }
         context.put(Quantity.RETURN_ENTITY_LIST, roleService.getEntityList());
         context.put(Quantity.RETURN_USER, userService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_TWENTY_SEVEN));
         return new ModelAndView(JumpPage.ROLE,context);
     }
 
@@ -141,6 +149,7 @@ public class RoleController {
         }
         context.put(Quantity.RETURN_ENTITY_LIST, roleService.getEntityList());
         context.put(Quantity.RETURN_USER, userService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_TWENTY_SEVEN));
         return new ModelAndView(JumpPage.ROLE,context);
     }
 
@@ -182,6 +191,7 @@ public class RoleController {
         context.put("w_list",funcService.getWList(role_id));
         context.put(Quantity.RETURN_ENTITY,roleService.get(role_id));
         context.put(Quantity.RETURN_USER, userService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_TWENTY_SEVEN));
         return new ModelAndView(JumpPage.ROLE_FUNC,context);
     }
 

@@ -1,6 +1,7 @@
 package com.sogokids.controller;
 
 import com.sogokids.system.service.AppVersionService;
+import com.sogokids.system.service.MenuService;
 import com.sogokids.user.service.UserService;
 import com.sogokids.utils.util.JumpPage;
 import com.sogokids.utils.util.Quantity;
@@ -28,6 +29,9 @@ public class AppVersionController {
     @Autowired
     private UserService adminUserService;
 
+    @Autowired
+    private MenuService menuService;
+
     /**
      * app版本列表
      * @param uid
@@ -39,6 +43,7 @@ public class AppVersionController {
         Map<String, Object> context = new HashMap<String, Object>();
         context.put(Quantity.RETURN_ENTITY_LIST, appVersionService.getEntitys());
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_TWENTY_FOUR));
         return new ModelAndView(adminUserService.isUserFunc(req,JumpPage.APP),context);
     }
 
@@ -60,6 +65,7 @@ public class AppVersionController {
         }
 
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_TWENTY_FOUR));
         return new ModelAndView(reStr,context);
     }
 
@@ -81,6 +87,7 @@ public class AppVersionController {
         }
         context.put(Quantity.RETURN_ENTITY_LIST, appVersionService.getEntitys());
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_TWENTY_FOUR));
         return new ModelAndView(JumpPage.APP,context);
     }
 
@@ -103,6 +110,7 @@ public class AppVersionController {
         }
         context.put(Quantity.RETURN_ENTITY_LIST, appVersionService.getEntitys());
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_TWENTY_FOUR));
         return new ModelAndView(JumpPage.APP,context);
     }
 
@@ -125,6 +133,7 @@ public class AppVersionController {
         }
         context.put(Quantity.RETURN_ENTITY_LIST, appVersionService.getEntitys());
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_TWENTY_FOUR));
         return new ModelAndView(JumpPage.APP,context);
     }
 }

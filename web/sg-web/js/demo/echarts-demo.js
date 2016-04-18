@@ -2,7 +2,7 @@ $(function () {
     var lineChart = echarts.init(document.getElementById("echarts-line-chart"));
     var lineoption = {
         title : {
-            text: '未来一周气温变化'
+            text: '新用户注册统计'
         },
         tooltip : {
             trigger: 'axis'

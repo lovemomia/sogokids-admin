@@ -3,6 +3,7 @@ package com.sogokids.controller;
 import com.sogokids.home.service.IconService;
 import com.sogokids.system.service.AppVersionService;
 import com.sogokids.system.service.CityService;
+import com.sogokids.system.service.MenuService;
 import com.sogokids.user.service.UserService;
 import com.sogokids.utils.util.EnumUtil;
 import com.sogokids.utils.util.JumpPage;
@@ -36,6 +37,9 @@ public class IconController {
     @Autowired
     private AppVersionService appVersionService;
 
+    @Autowired
+    private MenuService menuService;
+
     /**
      * icon－列表
      * @param uid
@@ -47,6 +51,7 @@ public class IconController {
         Map<String, Object> context = new HashMap<String, Object>();
         context.put(Quantity.RETURN_ENTITY_LIST, iconService.getEntitys());
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_SIXTEEN));
         return new ModelAndView(adminUserService.isUserFunc(req,JumpPage.ICON),context);
     }
 
@@ -70,6 +75,7 @@ public class IconController {
         context.put("citys", cityService.getEntitys());
         context.put("platforms", EnumUtil.getEnums(Quantity.STATUS_NINE));
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_SIXTEEN));
         return new ModelAndView(reStr,context);
     }
 
@@ -91,6 +97,7 @@ public class IconController {
         }
         context.put(Quantity.RETURN_ENTITY_LIST, iconService.getEntitys());
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_SIXTEEN));
         return new ModelAndView(JumpPage.ICON,context);
     }
 
@@ -113,6 +120,7 @@ public class IconController {
         }
         context.put(Quantity.RETURN_ENTITY_LIST, iconService.getEntitys());
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_SIXTEEN));
         return new ModelAndView(JumpPage.ICON,context);
     }
 
@@ -135,6 +143,7 @@ public class IconController {
         }
         context.put(Quantity.RETURN_ENTITY_LIST, iconService.getEntitys());
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_SIXTEEN));
         return new ModelAndView(JumpPage.ICON,context);
     }
 }

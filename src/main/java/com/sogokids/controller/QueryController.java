@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.sogokids.order.service.OrderService;
 import com.sogokids.query.service.CourseTimeQueryService;
 import com.sogokids.query.service.QueryService;
+import com.sogokids.system.service.MenuService;
 import com.sogokids.user.service.UserService;
 import com.sogokids.utils.util.DateUtil;
 import com.sogokids.utils.util.EnumUtil;
@@ -42,6 +43,9 @@ public class QueryController {
     @Autowired
     private OrderService orderService;
 
+    @Autowired
+    private MenuService menuService;
+
 
     @RequestMapping("/info")
     public ModelAndView info(@RequestParam("uid") int uid, HttpServletRequest req){
@@ -50,6 +54,7 @@ public class QueryController {
         context.put("endTime", DateUtil.NowDateW());
         context.put("title", "");
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_FIVE));
         return new ModelAndView(adminUserService.isUserFunc(req,JumpPage.QUERY_COURSE),context);
     }
 
@@ -66,6 +71,7 @@ public class QueryController {
         context.put("endTime", endTime);
         context.put("title", title);
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_FIVE));
         return new ModelAndView(reStr,context);
     }
 
@@ -81,6 +87,7 @@ public class QueryController {
         context.put("courseName",req.getParameter("name"));
         context.put("courseUser",courseTimeQueryService.getCourseUsers(id,sku_id));
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_FIVE));
         return new ModelAndView(JumpPage.QUERY_DETAIL,context);
     }
 
@@ -93,6 +100,7 @@ public class QueryController {
         context.put("mobile", "");
         context.put("new_status", 0);
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_SIX));
         return new ModelAndView(adminUserService.isUserFunc(req,JumpPage.QUERY_ORDER),context);
     }
 
@@ -112,6 +120,7 @@ public class QueryController {
         context.put("new_status", new_status);
         context.put("status", EnumUtil.getEnums(Quantity.STATUS_FIVE));
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_SIX));
         return new ModelAndView(reStr,context);
     }
 
@@ -129,6 +138,7 @@ public class QueryController {
         context.put("new_status", new_status);
         context.put("status", EnumUtil.getEnums(Quantity.STATUS_FIVE));
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_SIX));
         return new ModelAndView(JumpPage.ORDER_DETAIL,context);
     }
 
@@ -151,6 +161,7 @@ public class QueryController {
         context.put("new_status", new_status);
         context.put("status", EnumUtil.getEnums(Quantity.STATUS_FIVE));
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_SIX));
         return new ModelAndView(JumpPage.QUERY_ORDER,context);
     }
 

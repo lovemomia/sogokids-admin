@@ -22,6 +22,7 @@ public class CooperatorActivity {
     private int status;
     private String addTime;
 
+    private Cooperator cooperator;
     private int sum_count;
 
     private List<ActivityEntry> activityEntries;
@@ -144,6 +145,14 @@ public class CooperatorActivity {
 
     public void setActivityEntries(List<ActivityEntry> activityEntries) {
         this.activityEntries = activityEntries;
+    }
+
+    public Cooperator getCooperator() {
+        return cooperator;
+    }
+
+    public void setCooperator(Cooperator cooperator) {
+        this.cooperator = cooperator;
     }
 
     public int getSum_count() {

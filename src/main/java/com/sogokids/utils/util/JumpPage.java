@@ -152,6 +152,8 @@ public class JumpPage {
     public static final String COOP_ACTIVITY_EDIT = "admin/coop_activity_edit";
     public static final String COOP_ACTIVITY_ENTRY = "admin/coop_activity_entry";
 
+    public static final String REPORT = "admin/report";
+
 
     /**
      * 商户端配置

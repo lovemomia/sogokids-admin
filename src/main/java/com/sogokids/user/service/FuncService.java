@@ -22,4 +22,6 @@ public interface FuncService {
     public List<Func> getYList(int r_id);
 
     public List<Func> getWList(int r_id);
+
+    public String getDistinctFunc(int uid);
 }

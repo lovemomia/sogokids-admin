@@ -1,41 +1,22 @@
 package com.sogokids.system.model;
 
+import java.util.List;
+
 /**
  * Created by hoze on 15/12/30.
  */
 public class Menu {
 
     private int id;
-    private String url;
-    private String name;
-    private int active;
+    private String MenuCode;
+    private String MenuName;
+    private String MenuUrl;
+    private int MenuActive;
     private int parentId;
-    private int type;
+    private int sequence;
+    private String icon;
 
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getActive() {
-        return active;
-    }
-
-    public void setActive(int active) {
-        this.active = active;
-    }
+    private List<Menu> menus;
 
     public int getId() {
         return id;
@@ -43,6 +24,38 @@ public class Menu {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getMenuCode() {
+        return MenuCode;
+    }
+
+    public void setMenuCode(String menuCode) {
+        MenuCode = menuCode;
+    }
+
+    public String getMenuUrl() {
+        return MenuUrl;
+    }
+
+    public void setMenuUrl(String menuUrl) {
+        MenuUrl = menuUrl;
+    }
+
+    public String getMenuName() {
+        return MenuName;
+    }
+
+    public void setMenuName(String menuName) {
+        MenuName = menuName;
+    }
+
+    public int getMenuActive() {
+        return MenuActive;
+    }
+
+    public void setMenuActive(int menuActive) {
+        MenuActive = menuActive;
     }
 
     public int getParentId() {
@@ -53,16 +66,27 @@ public class Menu {
         this.parentId = parentId;
     }
 
-    public void setType(int type) {
-        this.type = type;
+    public int getSequence() {
+        return sequence;
     }
 
-    public Menu(int id, String url, String name, int active, int parentId, int type){
-        this.id = id;
-        this.url = url;
-        this.name = name;
-        this.active = active;
-        this.parentId = parentId;
-        this.type = type;
+    public void setSequence(int sequence) {
+        this.sequence = sequence;
+    }
+
+    public List<Menu> getMenus() {
+        return menus;
+    }
+
+    public void setMenus(List<Menu> menus) {
+        this.menus = menus;
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
     }
 }

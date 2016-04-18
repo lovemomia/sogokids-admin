@@ -1,6 +1,7 @@
 package com.sogokids.controller;
 
 
+import com.sogokids.system.service.MenuService;
 import com.sogokids.user.service.FuncService;
 import com.sogokids.user.service.UserService;
 import com.sogokids.utils.util.JumpPage;
@@ -29,6 +30,9 @@ public class FuncController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private MenuService menuService;
+
     /**
      * 权限信息－列表
      * @param uid
@@ -40,6 +44,7 @@ public class FuncController {
         Map<String, Object> context = new HashMap<String, Object>();
         context.put(Quantity.RETURN_ENTITY_LIST, funcService.getEntityList());
         context.put(Quantity.RETURN_USER, userService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_TWENTY_EIGHT));
         return new ModelAndView(userService.isUserFunc(req,JumpPage.FUNC),context);
     }
 
@@ -61,6 +66,7 @@ public class FuncController {
         }
         context.put(Quantity.RETURN_USER,userService.get(uid));
         context.put(Quantity.RETURN_MSG, "");
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_TWENTY_EIGHT));
         return new ModelAndView(reStr,context);
     }
 
@@ -82,6 +88,7 @@ public class FuncController {
         }
         context.put(Quantity.RETURN_ENTITY_LIST, funcService.getEntityList());
         context.put(Quantity.RETURN_USER, userService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_TWENTY_EIGHT));
         return new ModelAndView(JumpPage.FUNC,context);
     }
 
@@ -104,6 +111,7 @@ public class FuncController {
         }
         context.put(Quantity.RETURN_ENTITY_LIST, funcService.getEntityList());
         context.put(Quantity.RETURN_USER, userService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_TWENTY_EIGHT));
         return new ModelAndView(JumpPage.FUNC,context);
     }
 
@@ -126,6 +134,7 @@ public class FuncController {
         }
         context.put(Quantity.RETURN_ENTITY_LIST, funcService.getEntityList());
         context.put(Quantity.RETURN_USER, userService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_TWENTY_EIGHT));
         return new ModelAndView(JumpPage.FUNC,context);
     }
 

@@ -1,6 +1,7 @@
 package com.sogokids.controller;
 
 import com.sogokids.coupon.service.CouponService;
+import com.sogokids.system.service.MenuService;
 import com.sogokids.user.service.UserService;
 import com.sogokids.utils.util.EnumUtil;
 import com.sogokids.utils.util.JumpPage;
@@ -29,6 +30,9 @@ public class CouponController {
     @Autowired
     private CouponService couponService;
 
+    @Autowired
+    private MenuService menuService;
+
     /**
      * 优惠设置－列表
      * @param uid
@@ -40,6 +44,7 @@ public class CouponController {
         Map<String, Object> context = new HashMap<String, Object>();
         context.put(Quantity.RETURN_ENTITY_LIST, couponService.getEntitys());
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_TWENTY_FIVE));
         return new ModelAndView(adminUserService.isUserFunc(req,JumpPage.COUPON),context);
     }
 
@@ -64,6 +69,7 @@ public class CouponController {
         context.put("timeTypes", EnumUtil.getEnums(Quantity.STATUS_EIGHT));
         context.put("couponSrc", EnumUtil.getEnums(Quantity.STATUS_TWELVE));
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_TWENTY_FIVE));
         return new ModelAndView(reStr,context);
     }
 
@@ -85,6 +91,7 @@ public class CouponController {
         }
         context.put(Quantity.RETURN_ENTITY_LIST, couponService.getEntitys());
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_TWENTY_FIVE));
         return new ModelAndView(JumpPage.COUPON,context);
     }
 
@@ -107,6 +114,7 @@ public class CouponController {
         }
         context.put(Quantity.RETURN_ENTITY_LIST, couponService.getEntitys());
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_TWENTY_FIVE));
         return new ModelAndView(JumpPage.COUPON,context);
     }
 
@@ -129,6 +137,7 @@ public class CouponController {
         }
         context.put(Quantity.RETURN_ENTITY_LIST, couponService.getEntitys());
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_TWENTY_FIVE));
         return new ModelAndView(JumpPage.COUPON,context);
     }
 

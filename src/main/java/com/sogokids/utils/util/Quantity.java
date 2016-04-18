@@ -21,6 +21,24 @@ public class Quantity {
     public static final int STATUS_TEN = 10;
     public static final int STATUS_ELEVEN = 11;
     public static final int STATUS_TWELVE = 12;
+    public static final int STATUS_THIRTEEN = 13;
+    public static final int STATUS_FOURTEEN = 14;
+    public static final int STATUS_FIFTEEN = 15;
+    public static final int STATUS_SIXTEEN = 16;
+    public static final int STATUS_SEVENTEEN = 17;
+    public static final int STATUS_EIGHTEEN = 18;
+    public static final int STATUS_NINETEEN = 19;
+    public static final int STATUS_TWENTY = 20;
+    public static final int STATUS_TWENTY_ONE = 21;
+    public static final int STATUS_TWENTY_TWO = 22;
+    public static final int STATUS_TWENTY_THREE = 23;
+    public static final int STATUS_TWENTY_FOUR = 24;
+    public static final int STATUS_TWENTY_FIVE = 25;
+    public static final int STATUS_TWENTY_SIX = 26;
+    public static final int STATUS_TWENTY_SEVEN = 27;
+    public static final int STATUS_TWENTY_EIGHT = 28;
+    public static final int STATUS_TWENTY_NINE = 29;
+    public static final int STATUS_THIRTY = 30;
 
     public static final int RESULT_CODE_SUCESS = 0;
     public static final int RESULT_CODE_ERROR = -1;
@@ -53,6 +71,7 @@ public class Quantity {
 
     public static final String RETURN_SUCCESS = "success";
     public static final String RETURN_MSG = "msg";
+    public static final String RETURN_MENUS = "menus";
 
     public static final String RETURN_PRODUCT_S = "products";
     public static final String RETURN_CITY_S = "citys";
