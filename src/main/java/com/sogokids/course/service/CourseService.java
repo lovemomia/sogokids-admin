@@ -48,4 +48,6 @@ public interface CourseService {
      * @return
      */
     public String getPreview(int course_id);
+
+    public void update_order(HttpServletRequest req);
 }

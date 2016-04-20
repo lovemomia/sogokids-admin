@@ -44,6 +44,7 @@ public class ReportController {
     @RequestMapping("/info")
     public ModelAndView info(@RequestParam("uid") int uid, HttpServletRequest req){
         Map<String, Object> context = new HashMap<String, Object>();
+        int all_user_number = regUserService.getAllUserCount();
         Map map = regUserService.getregUsers();
         context.put("x_date",map.get("user_date"));
         context.put("y_number",map.get("user_number"));
@@ -52,6 +53,7 @@ public class ReportController {
         context.put("y_st_number",map_order.get("y_st_number"));
         context.put("y_tj_number",map_order.get("y_tj_number"));
         context.put("y_kc_number",map_order.get("y_kc_number"));
+        context.put("all_user_number",all_user_number);
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
         context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_SEVEN));
         return new ModelAndView(JumpPage.REPORT,context);

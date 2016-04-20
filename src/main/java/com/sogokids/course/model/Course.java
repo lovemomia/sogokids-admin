@@ -28,6 +28,7 @@ public class Course {
     private int status;
     private String addTime;
     private String updateTime;
+    private int order;
 
     private String subjectTitle;
     private int flag = 0;//是否已推荐
@@ -193,6 +194,14 @@ public class Course {
 
     public void setUpdateTime(String updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public int getOrder() {
+        return order;
+    }
+
+    public void setOrder(int order) {
+        this.order = order;
     }
 
     public int getFlag() {

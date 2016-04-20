@@ -264,7 +264,8 @@
                                             <a href="javascript:void(0)" onclick="delCourse(${entity.id})" class="btn btn-white btn-sm"><i class="fa fa-times-circle"></i> 删除 </a>
                                         </c:otherwise>
                                     </c:choose>
-
+                                    <a href="${ctx}/course/move.do?uid=${user.id}&subid=${subid}&id=${entity.id}&flag=1" class="btn btn-warning btn-sm"><i class="fa fa-arrow-circle-o-up"></i>上移</a>
+                                    <a href="${ctx}/course/move.do?uid=${user.id}&subid=${subid}&id=${entity.id}&flag=2" class="btn btn-success btn-sm"><i class="fa fa-arrow-circle-o-down"></i>下移</a>
                                 </td>
                             </tr>
                         </c:forEach>

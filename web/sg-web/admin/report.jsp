@@ -200,6 +200,8 @@
 <script>
     $(document).ready(function () {
 
+        var num_user = ${all_user_number};
+
         var lineChart = echarts.init(document.getElementById("echarts-line-chart"));
         var lineoption = {
             title : {
@@ -209,7 +211,7 @@
                 trigger: 'axis'
             },
             legend: {
-                data:['注册用户']
+                data:['注册用户('+num_user+'人)']
             },
             xAxis : [
                 {
@@ -228,7 +230,7 @@
             ],
             series : [
                 {
-                    name:'注册用户',
+                    name:'注册用户('+num_user+'人)',
                     type:'line',
                     data:${y_number},
                     itemStyle : { normal: {label : {show: true}}},//显示每个折点的值

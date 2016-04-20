@@ -201,14 +201,6 @@
             "bSort": false //排序功能
         });
     });
-
-    function delSubject(id){
-        layer.confirm('您确定要删除此课程体系吗？', function(index){
-            window.location.href="${ctx}/sub/del.do?uid=${user.id}&id="+id;
-            layer.close(index);
-        });
-
-    }
 </script>
 </body>
 </html>

@@ -13,5 +13,6 @@ public interface RegUserService {
     public List<RegUser> getEntitys();
     public Map getregUsers();
     public RegUser getDateRegUser();
+    public int getAllUserCount();
 
 }
