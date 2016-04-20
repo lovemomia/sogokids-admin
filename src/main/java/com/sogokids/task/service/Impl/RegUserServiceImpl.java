@@ -109,4 +109,17 @@ public class RegUserServiceImpl implements RegUserService {
 
         return map;
     }
+
+    @Override
+    public int getAllUserCount(){
+        int number = 0;
+
+        String sql = "select * from SG_User where status > ? ";
+        Object [] params = new Object[]{Quantity.STATUS_ZERO};
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sql, params);
+
+        number = list.size();
+
+        return number;
+    }
 }

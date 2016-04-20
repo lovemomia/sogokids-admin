@@ -116,7 +116,7 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public List<Course> getEntitys() {
         List<Course> reData = new ArrayList<Course>();
-        String sql = "select Id,ParentId,SubjectId,Title,Cover,MinAge,MaxAge,Joined,Price,Goal,Flow,Tips,InstitutionId,KeyWord,Feature,Status,AddTime from SG_Course where Status > ? order by Id desc";
+        String sql = "select Id,ParentId,SubjectId,Title,Cover,MinAge,MaxAge,Joined,Price,Goal,Flow,Tips,InstitutionId,KeyWord,Feature,`Order`,Status,AddTime from SG_Course where Status > ? order by Id desc";
         Object [] params = new Object[]{Quantity.STATUS_ZERO};
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql, params);
         if(list.size() > 0){
@@ -139,6 +139,7 @@ public class CourseServiceImpl implements CourseService {
                 entity.setTips(list.get(i).get("Tips").toString());
                 entity.setInstitutionId(Integer.parseInt(list.get(i).get("InstitutionId").toString()));
                 entity.setKeyWord(list.get(i).get("KeyWord").toString());
+                entity.setOrder(Integer.parseInt(list.get(i).get("Order").toString()));
                 entity.setStatus(Integer.parseInt(list.get(i).get("Status").toString()));
                 entity.setAddTime(list.get(i).get("AddTime").toString());
 
@@ -157,7 +158,7 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public List<Course> getEntitysBySubId(int id) {
         List<Course> reData = new ArrayList<Course>();
-        String sql = "select Id,ParentId,SubjectId,Title,Cover,MinAge,MaxAge,Joined,Price,Goal,Flow,Tips,InstitutionId,KeyWord,Feature,Status,AddTime from SG_Course where SubjectId = ? and Status > ? and Status != ? ";
+        String sql = "select Id,ParentId,SubjectId,Title,Cover,MinAge,MaxAge,Joined,Price,Goal,Flow,Tips,InstitutionId,KeyWord,Feature,`Order`,Status,AddTime from SG_Course where SubjectId = ? and Status > ? and Status != ? ";
         Object [] params = new Object[]{id, Quantity.STATUS_ZERO, Quantity.STATUS_THREE};
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql, params);
         if(list.size() > 0){
@@ -180,6 +181,7 @@ public class CourseServiceImpl implements CourseService {
                 entity.setTips(list.get(i).get("Tips").toString());
                 entity.setInstitutionId(Integer.parseInt(list.get(i).get("InstitutionId").toString()));
                 entity.setKeyWord(list.get(i).get("KeyWord").toString());
+                entity.setOrder(Integer.parseInt(list.get(i).get("Order").toString()));
                 entity.setStatus(Integer.parseInt(list.get(i).get("Status").toString()));
                 entity.setAddTime(list.get(i).get("AddTime").toString());
 
@@ -197,7 +199,7 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public List<Course> getCoursesBySubId(int id) {
         List<Course> reData = new ArrayList<Course>();
-        String sql = "select * from (select Id,ParentId,SubjectId,Title,Cover,MinAge,MaxAge,Joined,Price,Goal,Flow,Tips,InstitutionId,KeyWord,Feature,Status,AddTime from SG_Course where SubjectId = ? and Status > ? order by addTime desc ) as course order by status asc ";
+        String sql = "select * from (select Id,ParentId,SubjectId,Title,Cover,MinAge,MaxAge,Joined,Price,Goal,Flow,Tips,InstitutionId,KeyWord,Feature,`Order`,Status,AddTime from SG_Course where SubjectId = ? and Status > ? order by `Order` asc ) as course order by status asc ";
         Object [] params = new Object[]{id, Quantity.STATUS_ZERO};
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql, params);
         if(list.size() > 0){
@@ -220,6 +222,7 @@ public class CourseServiceImpl implements CourseService {
                 entity.setTips(list.get(i).get("Tips").toString());
                 entity.setInstitutionId(Integer.parseInt(list.get(i).get("InstitutionId").toString()));
                 entity.setKeyWord(list.get(i).get("KeyWord").toString());
+                entity.setOrder(Integer.parseInt(list.get(i).get("Order").toString()));
                 entity.setStatus(Integer.parseInt(list.get(i).get("Status").toString()));
                 entity.setAddTime(list.get(i).get("AddTime").toString());
 
@@ -273,7 +276,7 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public List<Course> getEntitysById(int id) {
         List<Course> reData = new ArrayList<Course>();
-        String sql = "select Id,ParentId,SubjectId,Title,Cover,MinAge,MaxAge,Joined,Price,Goal,Flow,Tips,InstitutionId,KeyWord,Feature,Status,AddTime from SG_Course where ParentId = ? and Status > ? and Status != ? ";
+        String sql = "select Id,ParentId,SubjectId,Title,Cover,MinAge,MaxAge,Joined,Price,Goal,Flow,Tips,InstitutionId,KeyWord,Feature,`Order`,Status,AddTime from SG_Course where ParentId = ? and Status > ? and Status != ? ";
         Object [] params = new Object[]{id, Quantity.STATUS_ZERO, Quantity.STATUS_THREE};
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql, params);
         if(list.size() > 0){
@@ -295,6 +298,7 @@ public class CourseServiceImpl implements CourseService {
                 entity.setTips(list.get(i).get("Tips").toString());
                 entity.setInstitutionId(Integer.parseInt(list.get(i).get("InstitutionId").toString()));
                 entity.setKeyWord(list.get(i).get("KeyWord").toString());
+                entity.setOrder(Integer.parseInt(list.get(i).get("Order").toString()));
                 entity.setStatus(Integer.parseInt(list.get(i).get("Status").toString()));
                 entity.setAddTime(list.get(i).get("AddTime").toString());
 
@@ -307,7 +311,7 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public Course get(int id) {
-        String sql = "select Id,ParentId,SubjectId,Title,Cover,MinAge,MaxAge,Joined,Price,Goal,Flow,Tips,Notice,InstitutionId,KeyWord,Feature,Status,AddTime from SG_Course where Id = ? and Status > ? ";
+        String sql = "select Id,ParentId,SubjectId,Title,Cover,MinAge,MaxAge,Joined,Price,Goal,Flow,Tips,Notice,InstitutionId,KeyWord,Feature,`Order`,Status,AddTime from SG_Course where Id = ? and Status > ? ";
         final Object [] params = new Object[]{id, Quantity.STATUS_ZERO};
         final Course entity = new Course();
         jdbcTemplate.query(sql,params, new RowCallbackHandler(){
@@ -328,6 +332,7 @@ public class CourseServiceImpl implements CourseService {
                 entity.setNotice(rs.getString("Notice"));
                 entity.setInstitutionId(rs.getInt("InstitutionId"));
                 entity.setKeyWord(rs.getString("KeyWord"));
+                entity.setOrder(rs.getInt("Order"));
                 entity.setStatus(rs.getInt("Status"));
                 entity.setAddTime(rs.getString("AddTime"));
 
@@ -394,7 +399,7 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public int insertKey(Course course) {
         final Course entity = course;
-        final String sql = "insert into SG_Course(ParentId,SubjectId,Title,Cover,MinAge,MaxAge,Joined,Price,Goal,Flow,Tips,Notice,InstitutionId,KeyWord,Feature,Status,AddTime) value(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW()) ";
+        final String sql = "insert into SG_Course(ParentId,SubjectId,Title,Cover,MinAge,MaxAge,Joined,Price,Goal,Flow,Tips,Notice,InstitutionId,KeyWord,Feature,`Order`,Status,AddTime) value(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW()) ";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         int reData = 0;
         try {
@@ -416,8 +421,9 @@ public class CourseServiceImpl implements CourseService {
                     ps.setString(++i, entity.getTips());
                     ps.setString(++i, entity.getNotice());
                     ps.setInt(++i, entity.getInstitutionId());
-                    ps.setString(++i, entity.getFeature());
                     ps.setString(++i, entity.getKeyWord());
+                    ps.setString(++i, entity.getFeature());
+                    ps.setInt(++i, entity.getOrder());
                     ps.setInt(++i, Quantity.STATUS_TWO);
 
                     return ps;
@@ -461,6 +467,13 @@ public class CourseServiceImpl implements CourseService {
         return reData;
     }
 
+    private int updateOrder(Course course) {
+        String sql = "update SG_Course set `Order` = ? where Id = ? ";
+        Object [] params = new Object[]{course.getOrder(), course.getId()};
+        int reData = jdbcTemplate.update(sql,params);
+        return reData;
+    }
+
     @Override
     public int delete(int id) {
         String sql = "update SG_Course set Status = ? where Id = ? ";
@@ -475,7 +488,8 @@ public class CourseServiceImpl implements CourseService {
 
         entity.setId(id);
         entity.setParentId(Quantity.STATUS_ZERO);
-        entity.setSubjectId(Integer.parseInt(request.getParameter("subjectId")));
+        int sub_id = Integer.parseInt(request.getParameter("subjectId"));
+        entity.setSubjectId(sub_id);
         entity.setTitle(request.getParameter("title"));
         entity.setFeature(request.getParameter("feature"));
         entity.setCover(request.getParameter("cover"));
@@ -488,6 +502,7 @@ public class CourseServiceImpl implements CourseService {
         entity.setNotice("");
         entity.setInstitutionId(Integer.parseInt(request.getParameter("institutionId")));
         entity.setKeyWord(request.getParameter("keyWord"));
+        entity.setOrder(this.getCourseOrderMaxBySubId(sub_id)+1);
 
         return entity;
     }
@@ -821,11 +836,11 @@ public class CourseServiceImpl implements CourseService {
 //        List<CourseBook> courseBooks = courseBookService.getEntitys(course_id);
         List<CourseDetail> courseDetails = courseDetailService.getModelsByCourse_Key(course_id);
         sb.append("<div class='ibox-title'>");
-        sb.append("<h5>"+course.getTitle()+"</h5>");
+        sb.append("<h5>" + course.getTitle() + "</h5>");
         sb.append("</div>");
         sb.append("<div class='ibox-content'>");
         sb.append("<div class='well'>");
-        sb.append("<p  align='center'><img src='"+fm_pic_url+"' style='width: 300px;height: 200px'></p>");
+        sb.append("<p  align='center'><img src='" + fm_pic_url + "' style='width: 300px;height: 200px'></p>");
         sb.append("</div>");
 
         sb.append("<div class='well'>");
@@ -919,6 +934,80 @@ public class CourseServiceImpl implements CourseService {
         sb.append("</div>");
 
         return sb.toString();
+    }
+
+//    @Override
+    public int getCourseOrderMaxBySubId(int sub_id) {
+        String sql = "SELECT max(`Order`) as `Order` FROM SG_Course where Status > 0 and Status != 3 and SubjectId ="+sub_id;
+        final Map reData = new HashMap();
+        jdbcTemplate.query(sql, new RowCallbackHandler(){
+            public void processRow(ResultSet rs) throws SQLException {
+                reData.put("order", rs.getInt("Order"));
+            }
+        });
+
+        return Integer.parseInt(reData.get("order").toString());
+    }
+
+    @Override
+    public void update_order(HttpServletRequest req){
+        int cour_id = Integer.parseInt(req.getParameter("id"));
+        int sub_id = Integer.parseInt(req.getParameter("subid"));
+        int flag = Integer.parseInt(req.getParameter("flag"));
+        List<Course> courses = this.getCoursesBySubId(sub_id);
+
+        try{
+            update_ListIndex(courses, cour_id, flag);
+        }catch (Exception _ex){
+            _ex.printStackTrace();
+        }
+    }
+
+    private void update_ListIndex(List<Course> courses, int cour_id, int flag){
+        int list_index1 = 0;
+        int list_index2 = 0;
+        if (courses.size() > 0) {
+            for (int i = 0; i < courses.size(); i++) {
+                if (courses.get(i).getId() == cour_id) {
+                    list_index1 = i;
+                    break;
+                }
+            }
+            if (flag == 1) {
+                list_index2 = list_index1 - 1;
+                if (list_index2 >= 0) {
+                    update_exchange(courses, list_index1, list_index2);
+                }
+            } else {
+                list_index2 = list_index1 + 1;
+                if (list_index2 <= courses.size()-1) {
+                    update_exchange(courses, list_index1, list_index2);
+                }
+            }
+        }
+    }
+
+    private int update_exchange(List<Course> courses, int list_index1, int list_index2){
+        int reData = 1;
+        Course entity1 = courses.get(list_index1);
+        Course entity2 = courses.get(list_index2);
+        if (entity1.getStatus() == entity2.getStatus()) {
+            Course course1 = this.get(entity1.getId());
+            int order1 = course1.getOrder();
+            Course course2 = this.get(entity2.getId());
+            int order2 = course2.getOrder();
+            course1.setOrder(order2);
+            course2.setOrder(order1);
+            int index1_int = this.updateOrder(course1);
+            if (index1_int > 0) {
+                int index2_int = this.updateOrder(course2);
+                if (index2_int > 0) {
+                    reData = 0;
+                }
+            }
+        }
+
+        return reData;
     }
 
 }

@@ -169,7 +169,7 @@ public class CourseController {
     public String addEntity(HttpServletRequest req, HttpServletResponse rsp){
         rsp.setContentType("text/html; charset=UTF-8");
         Map<String, Object> context = new HashMap<String, Object>();
-        int reDate = courseService.insertKey(courseService.formEntity(req,Quantity.STATUS_ONE));
+        int reDate = courseService.insertKey(courseService.formEntity(req,Quantity.STATUS_ZERO));
         if (reDate > 0) {
             context.put(Quantity.RETURN_SUCCESS, 0);
             context.put(Quantity.RETURN_MSG, "课程基本信息添加成功!");
@@ -1044,5 +1044,24 @@ public class CourseController {
         context.put("subid", Integer.parseInt(req.getParameter("subid")));
         context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_TWO));
         return new ModelAndView(JumpPage.COURSE_PREVIEW,context);
+    }
+
+    /**
+     * 课程－移动数据排序
+     * @param uid
+     * @param req
+     * @return
+     */
+    @RequestMapping("/move")
+    public ModelAndView moveWeight(@RequestParam("uid") int uid,@RequestParam("subid") int subid,HttpServletRequest req){
+        Map<String, Object> context = new HashMap<String, Object>();
+
+        courseService.update_order(req);
+
+        context.put(Quantity.RETURN_ENTITY_LIST, courseService.getCoursesBySubId(subid));
+        context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        context.put("subid", subid);
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_TWO));
+        return new ModelAndView(JumpPage.COURSE,context);
     }
 }
