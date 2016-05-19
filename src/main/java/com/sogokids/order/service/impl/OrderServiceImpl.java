@@ -1,5 +1,9 @@
 package com.sogokids.order.service.impl;
 
+import cn.momia.common.config.Configuration;
+import com.alibaba.fastjson.JSONObject;
+import com.sogokids.http.model.HttpResult;
+import com.sogokids.http.service.HttpClientService;
 import com.sogokids.order.model.Order;
 import com.sogokids.order.model.OrderPackage;
 import com.sogokids.order.model.Payment;
@@ -8,8 +12,12 @@ import com.sogokids.order.service.OrderService;
 import com.sogokids.order.service.PaymentService;
 import com.sogokids.query.service.CustomerService;
 import com.sogokids.subject.service.SubjectService;
+import com.sogokids.utils.util.CastUtil;
 import com.sogokids.utils.util.DateUtil;
 import com.sogokids.utils.util.Quantity;
+import com.sogokids.utils.util.StringUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowCallbackHandler;
@@ -29,6 +37,8 @@ import java.util.Map;
 @Service
 public class OrderServiceImpl implements OrderService {
 
+    private final Logger log = LoggerFactory.getLogger(OrderServiceImpl.class);
+
     @Autowired
     private CustomerService customerService;
 
@@ -40,6 +50,12 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private OrderPackageService orderPackageService;
+
+    @Autowired
+    private Configuration configuration;
+
+    @Autowired
+    private HttpClientService httpClientService;
 
     @Resource
     private JdbcTemplate jdbcTemplate;
@@ -193,6 +209,55 @@ public class OrderServiceImpl implements OrderService {
         }
 
         return sum;
+    }
+
+    @Override
+    public List<Order> getRefundOrders(){
+        List<Order> reData = new ArrayList<Order>();
+        String sql = "select Id,UserId,SubjectId,Contact,Mobile,inviteCode,refundMessage,Status,AddTime from SG_SubjectOrder where Status = ? order by AddTime desc";
+        Object [] params = new Object[]{Quantity.STATUS_FIVE};
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sql,params);
+        if(list.size() > 0){
+            for (int i = 0; i < list.size(); i++) {
+                Order entity = new Order();
+                int id = Integer.parseInt(list.get(i).get("Id").toString());
+                entity.setId(id);
+                int user_id = Integer.parseInt(list.get(i).get("UserId").toString());
+                entity.setUserId(user_id);
+                entity.setSubjectId(Integer.parseInt(list.get(i).get("SubjectId").toString()));
+                entity.setContact(list.get(i).get("Contact").toString());
+                entity.setMobile(list.get(i).get("Mobile").toString());
+                entity.setInviteCode(list.get(i).get("inviteCode").toString());
+                entity.setRefundMessage(list.get(i).get("refundMessage") == null ? "":list.get(i).get("refundMessage").toString());
+                entity.setStatus(Integer.parseInt(list.get(i).get("Status").toString()));
+                entity.setAddTime(list.get(i).get("AddTime").toString());
+
+                reData.add(entity);
+            }
+        }
+
+        return reData;
+    }
+
+    @Override
+    public int refundOrder(int id){
+        String upload_refund_order_url = configuration.getString(Quantity.UPLOAD_ORDER_REFUND);
+        StringBuffer sb = new StringBuffer();
+        long expired = DateUtil.getDateExpired(configuration.getInt(Quantity.SERVICE_PORT_TIME));//请求有效期
+        sb.append("expired=").append(expired);
+        sb.append("oid=").append(id);
+        sb.append("key=").append(configuration.getString(Quantity.SERVICE_PORT_KEY));
+
+        String sign = StringUtil.getSign(sb.toString());//请求加密串
+
+        String param = "expired="+expired+"&oid="+id+"&sign="+sign;
+        log.info("OrderServiceImpl -> RefundOrder -> info:确认退款组装参数结束.");
+        log.info("OrderServiceImpl -> RefundOrder -> info:确认退款发出请求.");
+        JSONObject jsonObject = httpClientService.httpPost(upload_refund_order_url, param);
+        HttpResult result = CastUtil.toObject(jsonObject, HttpResult.class);
+        log.info("OrderServiceImpl -> RefundOrder -> info:确认退款发出请求结束,返回errno:"+result.getErrno()+"=="+result.getErrmsg());
+
+        return result.getErrno();
     }
 
 }

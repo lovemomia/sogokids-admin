@@ -188,4 +188,45 @@ public class QueryController {
         }
         return null;
     }
+
+    /**
+     * 获取申请退款的订单列表
+     * @param uid
+     * @return
+     */
+    @RequestMapping("/query_refund")
+    public ModelAndView query_refund(@RequestParam("uid") int uid){
+        Map<String, Object> context = new HashMap<String, Object>();
+        context.put("orders", orderService.getRefundOrders());
+        context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_THIRTY_ONE));
+        return new ModelAndView(JumpPage.QUERY_REFUND,context);
+    }
+
+
+    /**
+     * 跳用退款接口进行退款
+     * @param uid
+     * @param id
+     * @param req
+     * @return
+     */
+    @RequestMapping("/refundOrder")
+    public ModelAndView refundOrder(@RequestParam("uid") int uid,@RequestParam("id") int id,HttpServletRequest req){
+        Map<String, Object> context = new HashMap<String, Object>();
+        int reData = orderService.refundOrder(id);
+        if (reData == 0){
+            context.put(Quantity.RETURN_SUCCESS,"0");
+            context.put(Quantity.RETURN_MSG,"确认退款成功!");
+        }else{
+            context.put(Quantity.RETURN_SUCCESS,"-1");
+            context.put(Quantity.RETURN_MSG,"确认退款失败!");
+        }
+        context.put("orders", orderService.getRefundOrders());
+        context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_THIRTY_ONE));
+        return new ModelAndView(JumpPage.QUERY_REFUND,context);
+    }
+
+
 }

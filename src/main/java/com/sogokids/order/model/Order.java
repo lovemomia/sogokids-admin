@@ -26,6 +26,8 @@ public class Order {
     private List<OrderPackage> orderPackages;//选课信息
     private BigDecimal priceSum;
 
+    private String refundMessage;
+
     private int tk_mark;
 
     public int getId() {
@@ -138,6 +140,14 @@ public class Order {
 
     public void setPriceSum(BigDecimal priceSum) {
         this.priceSum = priceSum;
+    }
+
+    public String getRefundMessage() {
+        return refundMessage;
+    }
+
+    public void setRefundMessage(String refundMessage) {
+        this.refundMessage = refundMessage;
     }
 
     public int getTk_mark() {

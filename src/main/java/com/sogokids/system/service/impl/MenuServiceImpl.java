@@ -175,6 +175,9 @@ public class MenuServiceImpl implements MenuService {
             case Quantity.STATUS_SEVEN:
                 menus = this.getMenuHtml(uid, MenuUtil.MENU_QUERY_CODE, MenuUtil.MENU_REPORT_CODE);
                 break;
+            case Quantity.STATUS_THIRTY_ONE:
+                menus = this.getMenuHtml(uid, MenuUtil.MENU_QUERY_CODE, MenuUtil.MENU_QUERY_REFUND_CODE);
+                break;
 
             case Quantity.STATUS_EIGHT:
                 menus = this.getMenuHtml(uid, MenuUtil.MENU_DISCUSS_CODE, MenuUtil.MENU_CODE);
@@ -250,6 +253,14 @@ public class MenuServiceImpl implements MenuService {
                 break;
             case Quantity.STATUS_TWENTY_EIGHT:
                 menus = this.getMenuHtml(uid, MenuUtil.MENU_USER_CODE, MenuUtil.MENU_USER_FUNC_CODE);
+                break;
+
+            //拼团管理
+            case Quantity.STATUS_TWENTY_NINE:
+                menus = this.getMenuHtml(uid, MenuUtil.MENU_DEAL_CODE, MenuUtil.MENU_DEAL_SUBJECT_CODE);
+                break;
+            case Quantity.STATUS_THIRTY:
+                menus = this.getMenuHtml(uid, MenuUtil.MENU_DEAL_CODE, MenuUtil.MENU_DEAL_GROUP_CODE);
                 break;
         }
 

@@ -5,6 +5,7 @@ import com.sogokids.subject.model.SubjectSku;
 import com.sogokids.subject.service.SubjectService;
 import com.sogokids.subject.service.SubjectSkuService;
 import com.sogokids.utils.util.Quantity;
+import com.sogokids.utils.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowCallbackHandler;
@@ -16,6 +17,7 @@ import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -137,8 +139,20 @@ public class SubjectSkuServiceImpl implements SubjectSkuService {
                 entity.setAdult(rs.getInt("Adult"));
                 entity.setChild(rs.getInt("Child"));
                 entity.setCourseCount(rs.getInt("CourseCount"));
-                entity.setTimeUnit(rs.getInt("TimeUnit"));
-                entity.setTime(rs.getInt("Time"));
+                if(rs.getInt("TimeUnit") == 1){
+                    if (rs.getInt("Time") == 3){
+                        entity.setTimeUnit(2);
+                    }else if (rs.getInt("Time") == 12){
+                        entity.setTimeUnit(3);
+                    }else if (rs.getInt("Time") == 6){
+                        entity.setTimeUnit(4);
+                    }else{
+                        entity.setTimeUnit(1);
+                    }
+                }else{
+                    entity.setTime(rs.getInt("Time"));
+                    entity.setTimeUnit(rs.getInt("TimeUnit"));
+                }
                 entity.setStatus(rs.getInt("Status"));
                 entity.setAddTime(rs.getString("AddTime"));
             }
@@ -149,8 +163,8 @@ public class SubjectSkuServiceImpl implements SubjectSkuService {
 
     @Override
     public int insert(SubjectSku entity) {
-        String sql = "insert into SG_SubjectSku(SubjectId,`Desc`,Price,OriginalPrice,Adult,Child,CourseCount,Time,TimeUnit,Status,AddTime) value(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW()) ";
-        Object [] params = new Object[]{entity.getSubjectId(), entity.getDesc(), entity.getPrice(), entity.getOriginalPrice(), entity.getAdult(), entity.getChild(), entity.getCourseCount(), entity.getTime(), entity.getTimeUnit(), Quantity.STATUS_ONE};
+        String sql = "insert into SG_SubjectSku(Cover,Title,SubjectId,`Desc`,Price,OriginalPrice,Adult,Child,CourseCount,Time,TimeUnit,Status,AddTime) value(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW()) ";
+        Object [] params = new Object[]{entity.getCover(), entity.getTitle(),entity.getSubjectId(), entity.getDesc(), entity.getPrice(), entity.getOriginalPrice(), entity.getAdult(), entity.getChild(), entity.getCourseCount(), entity.getTime(), entity.getTimeUnit(), Quantity.STATUS_ONE};
         int reDate = 0;
         try {
             reDate = jdbcTemplate.update(sql, params);
@@ -175,8 +189,8 @@ public class SubjectSkuServiceImpl implements SubjectSkuService {
 
     @Override
     public int update(SubjectSku entity) {
-        String sql = "update SG_SubjectSku set SubjectId = ?, `Desc` = ?, Price = ?, OriginalPrice = ?, Adult = ?, Child = ?, CourseCount = ?, Time = ?, TimeUnit = ? where Id = ? ";
-        Object [] params = new Object[]{entity.getSubjectId(), entity.getDesc(), entity.getPrice(), entity.getOriginalPrice(), entity.getAdult(), entity.getChild(), entity.getCourseCount(), entity.getTime(), entity.getTimeUnit(), entity.getId()};
+        String sql = "update SG_SubjectSku set Cover = ?, Title = ?, SubjectId = ?, `Desc` = ?, Price = ?, OriginalPrice = ?, Adult = ?, Child = ?, CourseCount = ?, Time = ?, TimeUnit = ? where Id = ? ";
+        Object [] params = new Object[]{entity.getCover(), entity.getTitle(), entity.getSubjectId(), entity.getDesc(), entity.getPrice(), entity.getOriginalPrice(), entity.getAdult(), entity.getChild(), entity.getCourseCount(), entity.getTime(), entity.getTimeUnit(), entity.getId()};
         int reData = jdbcTemplate.update(sql,params);
         return reData;
     }
@@ -213,8 +227,13 @@ public class SubjectSkuServiceImpl implements SubjectSkuService {
             courseCount = "1";
         }
         entity.setCourseCount(Integer.parseInt(courseCount));
-        entity.setTime(Integer.parseInt(request.getParameter("time")));
-        entity.setTimeUnit(Integer.parseInt(request.getParameter("timeUnit")));
+
+        int timeUnit = Integer.parseInt(request.getParameter("timeUnit"));
+        Map map = this.getMonthNumber(timeUnit, Integer.parseInt(courseCount));
+        entity.setTime(Integer.parseInt(map.get("month").toString()));
+        entity.setTimeUnit(Quantity.STATUS_ONE);
+        entity.setCover(map.get("cover").toString());
+        entity.setTitle(map.get("title").toString());
 
         return entity;
     }
@@ -322,6 +341,36 @@ public class SubjectSkuServiceImpl implements SubjectSkuService {
         }
 
         return sb.toString();
+    }
+
+
+    private Map getMonthNumber(int flag,int courseCount){
+
+        Map reData = new HashMap();
+        switch (flag) {
+            case Quantity.STATUS_ONE:
+                reData.put("month",1);
+                reData.put("cover","/2016-05-18/bb41ef507b72d8adeef7ac21bb226d87.jpg");
+                reData.put("title",courseCount+"次月度包");
+                break;
+            case Quantity.STATUS_TWO:
+                reData.put("month",3);
+                reData.put("cover","/2016-05-18/7da6fa3fe95010f00d9f0b1e205e66e0.jpg");
+                reData.put("title",courseCount+"次季度包");
+                break;
+            case Quantity.STATUS_THREE:
+                reData.put("month",12);
+                reData.put("cover","/2016-05-18/776e97fab56e9f3684482cc3ee190ce2.jpg");
+                reData.put("title",courseCount+"次年度包");
+                break;
+            case Quantity.STATUS_FOUR:
+                reData.put("month",6);
+                reData.put("cover","/2016-05-18/3607a84eab4c8194110d626d2701f7a2.jpg");
+                reData.put("title",courseCount+"次半年度包");
+                break;
+        }
+
+        return reData;
     }
 
 }

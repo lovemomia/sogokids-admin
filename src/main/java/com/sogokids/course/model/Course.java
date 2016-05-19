@@ -42,7 +42,7 @@ public class Course {
 
     private int st_mark;
 
-    private int selected = 0;
+    private int selected = 0;//菜单联动时使用
 
     public int getId() {
         return id;
