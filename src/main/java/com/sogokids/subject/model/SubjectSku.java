@@ -24,6 +24,13 @@ public class SubjectSku {
 
     private String dateTime;
 
+    private int selected=0;//菜单联动时使用
+
+    private String ld_name;
+
+    private String cover;
+    private String title;
+
     public int getId() {
         return id;
     }
@@ -150,5 +157,37 @@ public class SubjectSku {
 
     public void setDateTime(String dateTime) {
         this.dateTime = dateTime;
+    }
+
+    public int getSelected() {
+        return selected;
+    }
+
+    public void setSelected(int selected) {
+        this.selected = selected;
+    }
+
+    public String getLd_name() {
+        return ld_name;
+    }
+
+    public void setLd_name(String ld_name) {
+        this.ld_name = ld_name;
+    }
+
+    public String getCover() {
+        return cover;
+    }
+
+    public void setCover(String cover) {
+        this.cover = cover;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 }

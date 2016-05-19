@@ -131,8 +131,8 @@ public class SubjectServiceImpl implements SubjectService {
     @Override
     public List<Subject> getModelsByType() {
         List<Subject> reData = new ArrayList<Subject>();
-        String sql = "select Id,`Type`,CityId,Title,Cover,Tags,Intro,Notice,Stock,Status,AddTime from SG_Subject where `Type` = 1 and Status > ? ";
-        Object [] params = new Object[]{Quantity.STATUS_ZERO};
+        String sql = "select Id,`Type`,CityId,Title,Cover,Tags,Intro,Notice,Stock,Status,AddTime from SG_Subject where `Type` = 1 and Status = ? ";
+        Object [] params = new Object[]{Quantity.STATUS_ONE};
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql, params);
         if(list.size() > 0){
             for (int i = 0; i < list.size(); i++) {
@@ -143,14 +143,7 @@ public class SubjectServiceImpl implements SubjectService {
             }
         }
 
-        List<Subject> sub_ls = new ArrayList<Subject>();
-        Subject sub = new Subject();
-        sub.setId(0);
-        sub.setTitle("请选择");
-        sub_ls.add(sub);
-        sub_ls.addAll(reData);
-
-        return sub_ls;
+        return reData;
     }
 
     @Override

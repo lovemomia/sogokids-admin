@@ -28,11 +28,7 @@
     <script src="${ctx}/sg-web/js/plugins/pace/pace.min.js"></script>
     <!-- layer javascript -->
     <script src="${ctx}/sg-web/js/plugins/layer/layer.min.js"></script>
-
-    <!-- ueditor javascript -->
-    <script type="text/javascript" charset="utf-8" src="${ctx}/sg-web/ueditor/ueditor.config.js"></script>
-    <script type="text/javascript" charset="utf-8" src="${ctx}/sg-web/ueditor/ueditor.all.min.js"> </script>
-    <script type="text/javascript" charset="utf-8" src="${ctx}/sg-web/ueditor/lang/zh-cn/zh-cn.js"> </script>
+    <script src="${ctx}/sg-web/js/sg-admin/sogokids-onkeydown.js"></script>
 
 
 </head>
@@ -165,22 +161,27 @@
         </div>
         <div class="row wrapper border-bottom white-bg page-heading">
             <div class="col-lg-10">
-                <h2>创建教案</h2>
+                <h2>拼团信息</h2>
                 <ol class="breadcrumb">
-                    <li><a href="${ctx}/user/index.do?uid=${user.id}">主页</a></li>
-                    <li><a href="${ctx}/teacher/material.do?uid=${user.id}">教案更新</a></li>
-                    <li><strong>创建教案</strong></li>
+                    <li>
+                        <a href="${ctx}/user/index.do?uid=${user.id}">主页</a>
+                    </li>
+                    <li>
+                        <a href="${ctx}/deal/info.do?uid=${user.id}">拼团信息</a>
+                    </li>
+                    <li>
+                        <strong>创建拼团</strong>
+                    </li>
                 </ol>
             </div>
             <div class="col-lg-2">
-                <h2><a href="${ctx}/teacher/material.do?uid=${user.id}" class="btn btn-primary btn-x">返回</a></h2>
+                <h2><a href="${ctx}/deal/info.do?uid=${user.id}" class="btn btn-primary btn-x">返回</a></h2>
             </div>
         </div>
         <div class="row">
             <div class="ibox-content">
-                <form class="form-horizontal" id="vform" action="${ctx}/teacher/editMaterial.do?uid=${user.id}" method="post">
+                <form class="form-horizontal" id="vform" action="${ctx}/deal/add.do?uid=${user.id}" method="post">
                     <fieldset>
-                        <input id="id" name="id" type="hidden" value="0">
                         <div class="selectList">
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">课程体系 </label>
@@ -191,26 +192,37 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-2 control-label">课程名称 </label>
+                                <label class="col-sm-2 control-label">体系价格 </label>
                                 <div class="col-sm-4">
-                                    <select id="courseId" name="courseId" class="city form-control">
+                                    <select id="subjectSkuId" name="subjectSkuId" class="city form-control">
 
                                     </select>
                                 </div>
                             </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">拼团标题</label>
+                            <div class="col-sm-4">
+                                <input id="title" name="title" type="text" class="form-control" >
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">最大成团数 </label>
+                            <div class="col-sm-2">
+                                <input id="maxJoinCount" name="maxJoinCount" type="text" class="form-control" >
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">拼团天数 </label>
+                            <div class="col-sm-2">
+                                <input id="days" name="days" type="text" class="form-control" >
+                            </div>
+                        </div>
 
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label">教案内容 </label>
-                                    <div class="col-sm-8">
-                                        <script id="my_editor" name = "content" type="text/plain"></script>
-                                    </div>
-                                </div>
-
-                            <%--<div class="hr-line-dashed"></div>--%>
-                            <div class="form-group">
-                                <div class="col-sm-4 col-sm-offset-5">
-                                    <button class="btn btn-primary" id="btn_save" name="btn_save" type="button" style="width: 30%;">保存</button>
-                                </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div class="col-sm-4 col-sm-offset-5">
+                                <button class="btn btn-primary" type="button" id="btn_save_deal" name="btn_save_deal">保存内容</button>
                             </div>
                         </div>
                     </fieldset>
@@ -231,38 +243,38 @@
     $(document).ready(function () {
 
         $(".selectList").each(function(){
-            var url = "/teacher/dataJson.do?id=0";
+            var url = "/deal/dataJson.do?id=0";
             var areaJson;
             var temp_html;
             var oSubject = $(this).find(".province");
-            var oCourse = $(this).find(".city");
+            var oSku = $(this).find(".city");
             //初始化课程体系
             var subject = function(){
                 $.each(areaJson,function(i,subject){
                     temp_html+="<option value='"+subject.id+"'>"+subject.title+"</option>";
                 });
                 oSubject.html(temp_html);
-                course();
+                sku();
             };
             //赋值课程
-            var course = function(){
+            var sku = function(){
                 temp_html = "";
 
                 var n = oSubject.get(0).selectedIndex;
-                var courses = areaJson[n].courses;
-                if(courses == undefined){
+                var subjectSkus = areaJson[n].subjectSkus;
+                if(subjectSkus == undefined){
                 }else{
-                    $.each(areaJson[n].courses,function(i,course){
-                        temp_html+="<option value='"+course.id+"'>"+course.title+"</option>";
+                    $.each(areaJson[n].subjectSkus,function(i,subjectSku){
+                        temp_html+="<option value='"+subjectSku.id+"'>"+subjectSku.ld_name+"</option>";
                     });
                 }
 
-                oCourse.html(temp_html);
+                oSku.html(temp_html);
             };
 
             //选择课程体系改变课程
             oSubject.change(function(){
-                course();
+                sku();
             });
 
             //获取json数据
@@ -272,24 +284,32 @@
             });
         });
 
-        $('#btn_save').click(function(){
-            var course_id = $('#courseId').val();
-            if(course_id == null || course_id == ""){
-                layer.alert("对不起,请选择课程!",10,'提示信息');
+        $('#btn_save_deal').click(function (){
+            var re = /^[-]{0,1}[0-9]{1,}$/;
+            var subjectId = $('#subjectId').val();
+            var subjectSkuId = $('#subjectSkuId').val();
+            var title = $('#title').val();
+            var maxJoinCount = $('#maxJoinCount').val();
+            var days = $('#days').val();
+            if(subjectId == null || subjectId == ""){
+                layer.alert('请选择课程体系信息！',3,'提示信息');
                 return false;
-            }else{
+            }else if(subjectSkuId == null || subjectSkuId == ""){
+                layer.alert('请选择课程体系价格信息！',3,'提示信息');
+                return false;
+            }else if(title == null || title == ""){
+                layer.alert('请填写拼团标题信息！',3,'提示信息');
+                return false;
+            }else if(maxJoinCount == null || maxJoinCount == "" || !re.test(maxJoinCount)){
+                layer.alert('没有填写最大成团数信息或填写格式错误(只能填写整数值,格式举例"4")！',3,'提示信息');
+                return false;
+            }else if(days == null || days == "" || !re.test(days)){
+                layer.alert('没有填写拼团天数信息或填写格式错误(只能填写整数值,格式举例"4")！',3,'提示信息');
+                return false;
+            }else {
                 $('#vform').submit();
             }
         });
-
-        var editor = new baidu.editor.ui.Editor({
-            textarea : 'detail',
-            initialFrameHeight:400,
-            initialFrameWidth:null,
-            toolbars: [['bold', 'italic','underline','|','justifyleft','justifycenter','justifyright','justifyjustify','|','superscript','subscript','|','forecolor','backcolor','|',"simpleupload"]],
-            autoHeightEnabled:false
-        });
-        editor.render("my_editor");
 
     });
 </script>

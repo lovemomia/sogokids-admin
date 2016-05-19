@@ -99,6 +99,7 @@ public class JumpPage {
     public static final String QUERY_DETAIL = "admin/query_detail";
     public static final String QUERY_ORDER = "admin/query_order";
     public static final String ORDER_DETAIL = "admin/order_detail";
+    public static final String QUERY_REFUND = "admin/refund_order";
 
     public static final String TEACHER = "admin/teacher";
     public static final String TEACHER_ADD = "admin/teacher_add";
@@ -153,6 +154,12 @@ public class JumpPage {
     public static final String COOP_ACTIVITY_ENTRY = "admin/coop_activity_entry";
 
     public static final String REPORT = "admin/report";
+
+    public static final String DEAL_SUBJECT = "admin/deal_subject";
+    public static final String DEAL_SUBJECT_ADD = "admin/deal_subject_add";
+    public static final String DEAL_SUBJECT_EDIT = "admin/deal_subject_edit";
+    public static final String DEAL_GROUP = "admin/deal_group";
+    public static final String DEAL_JOIN = "admin/deal_join";
 
 
     /**

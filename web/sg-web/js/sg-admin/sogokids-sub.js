@@ -108,7 +108,7 @@ $(document).ready(function () {
         var child = $('#child').val();
         var price = $('#price').val();
         var courseCount = $('#courseCount').val();
-        var time = $('#time').val();
+        //var time = $('#time').val();
         var desc = $('#desc').val();
         if(subId == 0){
             layer.alert('请先保存基本信息！',5,'提示信息');
@@ -124,9 +124,6 @@ $(document).ready(function () {
             return false;
         }else if(courseCount == null || courseCount == "" || !re.test(courseCount)){
             layer.alert('没有填写选课次数信息或格式不正确(只能填写整数值)！',3,'提示信息');
-            return false;
-        }else if(time == null || time == "" || !re.test(time)){
-            layer.alert('没有填写选课期限信息或格式不正确(只能填写整数值)！',3,'提示信息');
             return false;
         }else if(desc == null || desc == ""){
             layer.alert('没有填写规则描述信息！',3,'提示信息');
@@ -287,7 +284,7 @@ function clareSku(){
     $('#adult').val(1);
     $('#child').val(1);
     $('#courseCount').val("");
-    $('#time').val("");
+    $('#timeUnit').val(1);
 }
 
 /**
@@ -302,15 +299,17 @@ function valSku(attrs){
     $('#adult').val(sku.adult);
     $('#child').val(sku.child);
     $('#courseCount').val(sku.courseCount);
-    $('#time').val(sku.time);
+    //$('#time').val(sku.time);
     var timeUnit = sku.timeUnit;
     var timehtml = "";
     if(timeUnit == 1){
-        timehtml = "<select id='timeUnit' name='timeUnit' class='form-control m-b'> <option value=1 selected>月</option><option value=2 >季度</option><option value=3 >年</option></select>";
+        timehtml = "<select id='timeUnit' name='timeUnit' class='form-control m-b'> <option value=1 selected>月</option><option value=2 >季度</option><option value=4 >半年</option><option value=3 >年</option></select>";
     }else if(timeUnit == 2){
-        timehtml = "<select id='timeUnit' name='timeUnit' class='form-control m-b'> <option value=1 >月</option><option value=2 selected>季度</option><option value=3 >年</option></select>";
+        timehtml = "<select id='timeUnit' name='timeUnit' class='form-control m-b'> <option value=1 >月</option><option value=2 selected>季度</option><option value=4 >半年</option><option value=3 >年</option></select>";
+    }else if(timeUnit == 3){
+        timehtml = "<select id='timeUnit' name='timeUnit' class='form-control m-b'> <option value=1 >月</option><option value=2 >季度</option><option value=4 >半年</option><option value=3 selected>年</option></select>";
     }else{
-        timehtml = "<select id='timeUnit' name='timeUnit' class='form-control m-b'> <option value=1 >月</option><option value=2 >季度</option><option value=3 selected>年</option></select>";
+        timehtml = "<select id='timeUnit' name='timeUnit' class='form-control m-b'> <option value=1 >月</option><option value=2 >季度</option><option value=4 selected>半年</option><option value=3 >年</option></select>";
     }
 
     var divshow = $("#div_time");

@@ -27,7 +27,9 @@ public class Subject {
 
     private List<Course> courses;
 
-    private int selected = 0;
+    private List<SubjectSku> subjectSkus;
+
+    private int selected = 0;//菜单联动时使用
 
     public int getId() {
         return id;
@@ -155,5 +157,13 @@ public class Subject {
 
     public void setSelected(int selected) {
         this.selected = selected;
+    }
+
+    public List<SubjectSku> getSubjectSkus() {
+        return subjectSkus;
+    }
+
+    public void setSubjectSkus(List<SubjectSku> subjectSkus) {
+        this.subjectSkus = subjectSkus;
     }
 }

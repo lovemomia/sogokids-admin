@@ -13,9 +13,11 @@
     <link href="${ctx}/sg-web/css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
     <link href="${ctx}/sg-web/font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
 
+    <!-- Data Tables -->
+    <link href="${ctx}/sg-web/css/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet">
+
     <link href="${ctx}/sg-web/css/animate.css" rel="stylesheet">
     <link href="${ctx}/sg-web/css/style.css?v=2.2.0" rel="stylesheet">
-    <link href="${ctx}/sg-web/js/plugins/layer/skin/layer.css" rel="stylesheet">
 
     <!-- Mainly scripts -->
     <script src="${ctx}/sg-web/js/jquery-2.1.1.min.js"></script>
@@ -23,17 +25,16 @@
     <script src="${ctx}/sg-web/js/plugins/metisMenu/jquery.metisMenu.js"></script>
     <script src="${ctx}/sg-web/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
 
+    <!-- Data Tables -->
+    <script src="${ctx}/sg-web/js/plugins/dataTables/jquery.dataTables.js"></script>
+    <script src="${ctx}/sg-web/js/plugins/dataTables/dataTables.bootstrap.js"></script>
+
     <!-- Custom and plugin javascript -->
     <script src="${ctx}/sg-web/js/hplus.js?v=2.2.0"></script>
     <script src="${ctx}/sg-web/js/plugins/pace/pace.min.js"></script>
+
     <!-- layer javascript -->
     <script src="${ctx}/sg-web/js/plugins/layer/layer.min.js"></script>
-
-    <!-- ueditor javascript -->
-    <script type="text/javascript" charset="utf-8" src="${ctx}/sg-web/ueditor/ueditor.config.js"></script>
-    <script type="text/javascript" charset="utf-8" src="${ctx}/sg-web/ueditor/ueditor.all.min.js"> </script>
-    <script type="text/javascript" charset="utf-8" src="${ctx}/sg-web/ueditor/lang/zh-cn/zh-cn.js"> </script>
-
 
 </head>
 
@@ -43,7 +44,6 @@
         <div class="sidebar-collapse">
             <ul class="nav" id="side-menu">
                 <li class="nav-header">
-
                     <div class="dropdown profile-element" align="center"> <span>
                                 <img alt="image" class="img-circle" src="${ctx}/sg-web/img/face.png" />
                                  </span>
@@ -165,55 +165,49 @@
         </div>
         <div class="row wrapper border-bottom white-bg page-heading">
             <div class="col-lg-10">
-                <h2>创建教案</h2>
+                <h2>退款审核</h2>
                 <ol class="breadcrumb">
-                    <li><a href="${ctx}/user/index.do?uid=${user.id}">主页</a></li>
-                    <li><a href="${ctx}/teacher/material.do?uid=${user.id}">教案更新</a></li>
-                    <li><strong>创建教案</strong></li>
+                    <li>
+                        <a href="${ctx}/user/index.do?uid=${user.id}">主页</a>
+                    </li>
+                    <li>
+                        <a href="${ctx}/query/query_refund.do?uid=${user.id}">退款审核</a>
+                    </li>
+                    <li>
+                        <strong>数据列表</strong>
+                    </li>
                 </ol>
-            </div>
-            <div class="col-lg-2">
-                <h2><a href="${ctx}/teacher/material.do?uid=${user.id}" class="btn btn-primary btn-x">返回</a></h2>
             </div>
         </div>
         <div class="row">
             <div class="ibox-content">
-                <form class="form-horizontal" id="vform" action="${ctx}/teacher/editMaterial.do?uid=${user.id}" method="post">
-                    <fieldset>
-                        <input id="id" name="id" type="hidden" value="0">
-                        <div class="selectList">
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label">课程体系 </label>
-                                <div class="col-sm-4">
-                                    <select id="subjectId" name="subjectId" class="province form-control">
-
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label">课程名称 </label>
-                                <div class="col-sm-4">
-                                    <select id="courseId" name="courseId" class="city form-control">
-
-                                    </select>
-                                </div>
-                            </div>
-
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label">教案内容 </label>
-                                    <div class="col-sm-8">
-                                        <script id="my_editor" name = "content" type="text/plain"></script>
-                                    </div>
-                                </div>
-
-                            <%--<div class="hr-line-dashed"></div>--%>
-                            <div class="form-group">
-                                <div class="col-sm-4 col-sm-offset-5">
-                                    <button class="btn btn-primary" id="btn_save" name="btn_save" type="button" style="width: 30%;">保存</button>
-                                </div>
-                            </div>
-                        </div>
-                    </fieldset>
+                <form>
+                    <table class="table table-striped table-bordered table-hover dataTables-example">
+                        <thead>
+                        <tr class="gradeX">
+                            <th>订单号</th>
+                            <th>用户昵称</th>
+                            <th>联系方式</th>
+                            <th>订单时间</th>
+                            <th>退款原因</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <c:forEach items="${orders}" var="entity">
+                            <tr>
+                                <td><c:out value="${entity.id}"></c:out></td>
+                                <td><c:out value="${entity.contact}"></c:out></td>
+                                <td><c:out value="${entity.mobile}"></c:out></td>
+                                <td><c:out value="${fn:substring(entity.addTime,0,19)}"></c:out></td>
+                                <td><c:out value="${entity.refundMessage}"></c:out></td>
+                                <td class="center">
+                                    <a href="javascript:void(0)" onclick="refund(${entity.id})" class="btn btn-primary btn-sm"><i class="fa fa-history"></i> 退款 </a>
+                                </td>
+                            </tr>
+                        </c:forEach>
+                        </tbody>
+                    </table>
                 </form>
             </div>
         </div>
@@ -227,71 +221,23 @@
         </div>
     </div>
 </div>
-<script language="JavaScript">
+<!-- Page-Level Scripts -->
+<script>
     $(document).ready(function () {
-
-        $(".selectList").each(function(){
-            var url = "/teacher/dataJson.do?id=0";
-            var areaJson;
-            var temp_html;
-            var oSubject = $(this).find(".province");
-            var oCourse = $(this).find(".city");
-            //初始化课程体系
-            var subject = function(){
-                $.each(areaJson,function(i,subject){
-                    temp_html+="<option value='"+subject.id+"'>"+subject.title+"</option>";
-                });
-                oSubject.html(temp_html);
-                course();
-            };
-            //赋值课程
-            var course = function(){
-                temp_html = "";
-
-                var n = oSubject.get(0).selectedIndex;
-                var courses = areaJson[n].courses;
-                if(courses == undefined){
-                }else{
-                    $.each(areaJson[n].courses,function(i,course){
-                        temp_html+="<option value='"+course.id+"'>"+course.title+"</option>";
-                    });
-                }
-
-                oCourse.html(temp_html);
-            };
-
-            //选择课程体系改变课程
-            oSubject.change(function(){
-                course();
-            });
-
-            //获取json数据
-            $.getJSON(url,function(data){
-                areaJson = data;
-                subject();
-            });
+        $('.dataTables-example').dataTable({
+            "aLengthMenu":[50,100],
+            "bSort": false //排序功能
         });
-
-        $('#btn_save').click(function(){
-            var course_id = $('#courseId').val();
-            if(course_id == null || course_id == ""){
-                layer.alert("对不起,请选择课程!",10,'提示信息');
-                return false;
-            }else{
-                $('#vform').submit();
-            }
-        });
-
-        var editor = new baidu.editor.ui.Editor({
-            textarea : 'detail',
-            initialFrameHeight:400,
-            initialFrameWidth:null,
-            toolbars: [['bold', 'italic','underline','|','justifyleft','justifycenter','justifyright','justifyjustify','|','superscript','subscript','|','forecolor','backcolor','|',"simpleupload"]],
-            autoHeightEnabled:false
-        });
-        editor.render("my_editor");
-
     });
+
+    function refund(id){
+        layer.confirm('是否已确认进行退款？', function(index){
+            window.location.href="${ctx}/query/refundOrder.do?uid=${user.id}&id="+id;
+            layer.close(index);
+        });
+
+    }
+
 </script>
 </body>
 </html>

@@ -491,10 +491,10 @@
                                                                         <%--<div class="hr-line-dashed"></div>--%>
                                                                         <div class="form-group" >
                                                                             <label class="col-sm-3 control-label">选课期限</label>
+                                                                            <%--<div class="col-sm-3">--%>
+                                                                                <%--<input id="time" name="time" type="text" class="form-control">--%>
+                                                                            <%--</div>--%>
                                                                             <div class="col-sm-3">
-                                                                                <input id="time" name="time" type="text" class="form-control">
-                                                                            </div>
-                                                                            <div class="col-sm-3" style="width: 33%">
                                                                                 <div id="div_time">
                                                                                     <select id="timeUnit" name="timeUnit" class="form-control m-b">
                                                                                         <c:forEach items="${time_unit}" var="node">

@@ -39,6 +39,9 @@ public class Quantity {
     public static final int STATUS_TWENTY_EIGHT = 28;
     public static final int STATUS_TWENTY_NINE = 29;
     public static final int STATUS_THIRTY = 30;
+    public static final int STATUS_THIRTY_ONE = 31;
+    public static final int STATUS_THIRTY_TWO = 32;
+    public static final int STATUS_THIRTY_THREE = 33;
 
     public static final int RESULT_CODE_SUCESS = 0;
     public static final int RESULT_CODE_ERROR = -1;
@@ -57,6 +60,7 @@ public class Quantity {
     public static final String UPLOAD_USERS_APP_PUSH = "ServicePort.PortUrl.UsersAppPushPath";
     public static final String UPLOAD_SMS = "ServicePort.PortUrl.SmsPath";
     public static final String UPLOAD_CANCEL_COURSE = "ServicePort.PortUrl.CancelCoursePath";
+    public static final String UPLOAD_ORDER_REFUND = "ServicePort.PortUrl.OrderRefund";
 
     public static final String SERVICE_PORT_TIME = "ServicePort.PortTime.Time";
     public static final String SERVICE_PORT_KEY = "ServicePort.PortKey";

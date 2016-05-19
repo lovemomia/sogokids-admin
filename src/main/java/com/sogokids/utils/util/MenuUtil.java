@@ -56,4 +56,10 @@ public class MenuUtil {
     public static final String MENU_USER_ROLE_CODE = "1033";
     public static final String MENU_USER_FUNC_CODE = "1034";
 
+    public static final String MENU_DEAL_CODE = "1035";
+    public static final String MENU_DEAL_SUBJECT_CODE = "1036";
+    public static final String MENU_DEAL_GROUP_CODE = "1037";
+
+    public static final String MENU_QUERY_REFUND_CODE = "1038";
+
 }
