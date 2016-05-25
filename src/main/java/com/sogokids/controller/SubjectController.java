@@ -483,7 +483,7 @@ public class SubjectController {
     }
 
     /**
-     *取消课程包
+     *取消课程包sku
      * @param subId
      * @param req
      * @param rsp
@@ -581,6 +581,42 @@ public class SubjectController {
         Map<String,String> comment_map = subjectService.getCommentHtml(subId);
         context.put("tComments", comment_map.get("comment_t"));
         context.put("ntComments",comment_map.get("comment_nt"));
+        Writer writer = null;
+        try {
+            writer = rsp.getWriter();
+            writer.write(JSONObject.toJSONString(context));
+            writer.flush();
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            IOUtils.closeQuietly(writer);
+        }
+        return null;
+    }
+
+    /**
+     *激活课程包sku
+     * @param subId
+     * @param req
+     * @param rsp
+     * @return
+     */
+    @RequestMapping("/activeSku")
+    public String activeSku(@RequestParam("subId") int subId, HttpServletRequest req, HttpServletResponse rsp) {
+        rsp.setContentType("text/html; charset=UTF-8");
+        Map<String, Object> context = new HashMap<String, Object>();
+
+        int skuId = Integer.parseInt(req.getParameter("skuId"));
+        int reDate = subjectSkuService.updateStatus(skuId, Quantity.STATUS_ONE);
+        if (reDate > 0) {
+            context.put(Quantity.RETURN_SUCCESS, 0);
+            context.put(Quantity.RETURN_MSG, "课程体系sku信息激活成功!");
+        } else {
+            context.put(Quantity.RETURN_SUCCESS, 1);
+            context.put(Quantity.RETURN_MSG, "课程体系sku信息激活失败!");
+        }
+        context.put("skuHtml", subjectSkuService.getSkuHtml(subId));
         Writer writer = null;
         try {
             writer = rsp.getWriter();

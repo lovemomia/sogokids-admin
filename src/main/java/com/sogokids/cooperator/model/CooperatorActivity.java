@@ -19,6 +19,12 @@ public class CooperatorActivity {
     private String endTime;
     private String onlineTime;
     private String offlineTime;
+    private String icon;
+    private String detail;
+    private int forNewUser;
+    private int stock;
+    private int unlockedStock;
+    private int lockedStock;
     private int status;
     private String addTime;
 
@@ -161,5 +167,53 @@ public class CooperatorActivity {
 
     public void setSum_count(int sum_count) {
         this.sum_count = sum_count;
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
+
+    public String getDetail() {
+        return detail;
+    }
+
+    public void setDetail(String detail) {
+        this.detail = detail;
+    }
+
+    public int getForNewUser() {
+        return forNewUser;
+    }
+
+    public void setForNewUser(int forNewUser) {
+        this.forNewUser = forNewUser;
+    }
+
+    public int getStock() {
+        return stock;
+    }
+
+    public void setStock(int stock) {
+        this.stock = stock;
+    }
+
+    public int getUnlockedStock() {
+        return unlockedStock;
+    }
+
+    public void setUnlockedStock(int unlockedStock) {
+        this.unlockedStock = unlockedStock;
+    }
+
+    public int getLockedStock() {
+        return lockedStock;
+    }
+
+    public void setLockedStock(int lockedStock) {
+        this.lockedStock = lockedStock;
     }
 }

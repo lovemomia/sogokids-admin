@@ -275,6 +275,27 @@ function cancelSku(id){
 }
 
 /**
+ * 激活sku信息
+ * @param id
+ */
+function activeSku(id){
+    var subId = $('#sub_id').val();
+    layer.confirm('您确定要激活此SKU吗？', function(index){
+        $.post("/sub/activeSku.do?subId="+subId, {skuId:id},
+            function(data){
+                if(data.success == 0) {
+                    var divshow = $("#sku_div");
+                    divshow.text("");
+                    divshow.append(data.skuHtml);
+                }else{
+                    layer.alert(data.msg,10,'提示信息');
+                }
+            }, "json");
+        layer.close(index);
+    });
+}
+
+/**
  * 清空sku控件信息
  */
 function clareSku(){

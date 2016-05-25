@@ -47,18 +47,24 @@ public class CooperatorActivityServiceImpl implements CooperatorActivityService 
 
     @Override
     public CooperatorActivity get(int id) {
-        String sql = "select Id, Cover, Title, `Desc`, Message, NeedPay, Price, CooperatorId, StartTime, EndTime, OnlineTime, OfflineTime, Status, AddTime from SG_Activity where Id = ? and Status > ? ";
+        String sql = "select Id, Icon, Cover, Title, `Desc`, Detail, Message, NeedPay, Price, CooperatorId, StartTime, EndTime, OnlineTime, OfflineTime, ForNewUser, Stock, UnlockedStock, LockedStock, Status, AddTime from SG_Activity where Id = ? and Status > ? ";
         final Object [] params = new Object[]{id, Quantity.STATUS_ZERO};
         final CooperatorActivity entity = new CooperatorActivity();
         jdbcTemplate.query(sql,params, new RowCallbackHandler(){
             public void processRow(ResultSet rs) throws SQLException {
                 entity.setId(rs.getInt("Id"));
+                entity.setIcon(rs.getString("Icon"));
                 entity.setCover(rs.getString("Cover"));
                 entity.setTitle(rs.getString("Title"));
                 entity.setDesc(rs.getString("Desc"));
+                entity.setDetail(rs.getString("Detail").replace(".jpg","_m.jpg"));
                 entity.setMessage(rs.getString("Message"));
                 entity.setNeedPay(rs.getInt("NeedPay"));
                 entity.setPrice(rs.getBigDecimal("Price"));
+                entity.setStock(rs.getInt("Stock"));
+                entity.setUnlockedStock(rs.getInt("UnlockedStock"));
+                entity.setLockedStock(rs.getInt("LockedStock"));
+                entity.setForNewUser(rs.getInt("ForNewUser"));
                 entity.setCooperatorId(rs.getInt("CooperatorId"));
                 entity.setStartTime(rs.getString("StartTime"));
                 entity.setEndTime(rs.getString("EndTime"));
@@ -75,7 +81,7 @@ public class CooperatorActivityServiceImpl implements CooperatorActivityService 
     @Override
     public List<CooperatorActivity> getEntitys() {
         List<CooperatorActivity> reData = new ArrayList<CooperatorActivity>();
-        String sql = "select Id, Cover, Title, `Desc`, Message, NeedPay, Price, CooperatorId, StartTime, EndTime, OnlineTime, OfflineTime, Status, AddTime from SG_Activity where Status > ? order by StartTime desc ";
+        String sql = "select Id, Icon, Cover, Title, `Desc`, Detail, Message, NeedPay, Price, CooperatorId, StartTime, EndTime, OnlineTime, OfflineTime, ForNewUser, Stock, UnlockedStock, LockedStock, Status, AddTime from SG_Activity where Status > ? order by StartTime desc ";
         Object [] params = new Object[]{Quantity.STATUS_ZERO};
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql, params);
         if(list.size() > 0){
@@ -148,18 +154,20 @@ public class CooperatorActivityServiceImpl implements CooperatorActivityService 
         return reData;
     }
 
+    //select Id, Icon, Cover, Title, `Desc`, Detail, Message, NeedPay, Price, CooperatorId, StartTime, EndTime, OnlineTime, OfflineTime, ForNewUser, Stock, UnlockedStock, LockedStock, Status, AddTime from SG_Activity
+
     @Override
     public int insert(CooperatorActivity entity) {
-        String sql = "insert into SG_Activity(Cover, Title, `Desc`, Message, NeedPay, Price, CooperatorId, StartTime, EndTime, OnlineTime, OfflineTime, Status, AddTime) value(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW()) ";
-        Object [] params = new Object[]{entity.getCover(), entity.getTitle(), entity.getDesc(), entity.getMessage(), entity.getNeedPay(), entity.getPrice(), entity.getCooperatorId(), entity.getStartTime(), entity.getEndTime(), entity.getOnlineTime(), entity.getOfflineTime(), Quantity.STATUS_ONE};
+        String sql = "insert into SG_Activity(Icon, Cover, Title, `Desc`, Detail, Message, NeedPay, Price, CooperatorId, StartTime, EndTime, OnlineTime, OfflineTime, ForNewUser, Stock, UnlockedStock, Status, AddTime) value(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW()) ";
+        Object [] params = new Object[]{entity.getIcon(), entity.getCover(), entity.getTitle(), entity.getDesc(), entity.getDetail(), entity.getMessage(), entity.getNeedPay(), entity.getPrice(), entity.getCooperatorId(), entity.getStartTime(), entity.getEndTime(), entity.getOnlineTime(), entity.getOfflineTime(), entity.getForNewUser(), entity.getStock(), entity.getUnlockedStock(), Quantity.STATUS_ONE};
         int reData = jdbcTemplate.update(sql,params);
         return reData;
     }
 
     @Override
     public int update(CooperatorActivity entity) {
-        String sql = "update SG_Activity set Cover = ?, Title = ?, `Desc` = ?, Message = ?, NeedPay = ?, Price = ?, CooperatorId = ?, StartTime = ?, EndTime = ?, OnlineTime = ?, OfflineTime = ? where Id = ? ";
-        Object [] params = new Object[]{entity.getCover(), entity.getTitle(), entity.getDesc(), entity.getMessage(), entity.getNeedPay(), entity.getPrice(), entity.getCooperatorId(), entity.getStartTime(), entity.getEndTime(), entity.getOnlineTime(), entity.getOfflineTime(), entity.getId()};
+        String sql = "update SG_Activity set Icon = ?, Cover = ?, Title = ?, `Desc` = ?, Detail = ?, Message = ?, NeedPay = ?, Price = ?, CooperatorId = ?, StartTime = ?, EndTime = ?, OnlineTime = ?, OfflineTime = ?, ForNewUser = ?, Stock = ?, UnlockedStock = ?  where Id = ? ";
+        Object [] params = new Object[]{entity.getIcon(), entity.getCover(), entity.getTitle(), entity.getDesc(), entity.getDetail(), entity.getMessage(), entity.getNeedPay(), entity.getPrice(), entity.getCooperatorId(), entity.getStartTime(), entity.getEndTime(), entity.getOnlineTime(), entity.getOfflineTime(), entity.getForNewUser(), entity.getStock(), entity.getUnlockedStock(), entity.getId()};
         int reData = jdbcTemplate.update(sql,params);
         return reData;
     }
@@ -176,9 +184,13 @@ public class CooperatorActivityServiceImpl implements CooperatorActivityService 
     public CooperatorActivity formEntity(HttpServletRequest request, int id) {
         CooperatorActivity entity = new CooperatorActivity();
         entity.setId(id);
+        entity.setIcon(StringUtils.isEmpty(request.getParameter("icon"))?"":request.getParameter("icon"));
         entity.setCover(StringUtils.isEmpty(request.getParameter("cover"))?"":request.getParameter("cover"));
         entity.setTitle(StringUtils.isEmpty(request.getParameter("title")) ? "" : request.getParameter("title"));
         entity.setDesc(StringUtils.isEmpty(request.getParameter("desc")) ? "" : request.getParameter("desc"));
+        String detail = StringUtils.isEmpty(request.getParameter("content")) ? "" : request.getParameter("content");
+        detail = detail.replace("_m.jpg",".jpg");
+        entity.setDetail(detail);
         entity.setMessage(StringUtils.isEmpty(request.getParameter("message")) ? "" : request.getParameter("message"));
         entity.setNeedPay(Integer.parseInt(request.getParameter("needPay")));
         entity.setPrice(new BigDecimal(StringUtils.isEmpty(request.getParameter("price")) ? "0" : request.getParameter("price")));
@@ -189,6 +201,24 @@ public class CooperatorActivityServiceImpl implements CooperatorActivityService 
         entity.setEndTime(StringUtils.isEmpty(request.getParameter("endTime")) ? time_null_value : request.getParameter("endTime"));
         entity.setOnlineTime(StringUtils.isEmpty(request.getParameter("onlineTime")) ? time_null_value : request.getParameter("onlineTime"));
         entity.setOfflineTime(StringUtils.isEmpty(request.getParameter("offlineTime")) ? time_null_value : request.getParameter("offlineTime"));
+
+        int forNewUser = Integer.parseInt(StringUtils.isEmpty(request.getParameter("forNewUser")) ? "0" : "1");
+        entity.setForNewUser(forNewUser);
+
+        int stock = Integer.parseInt(StringUtils.isEmpty(request.getParameter("stock")) ? "0" : request.getParameter("stock"));
+
+        if (id > 0){
+            CooperatorActivity cooperatorActivity = this.get(id);
+            int old_stock = cooperatorActivity.getStock();
+            int old_unlockedStock = cooperatorActivity.getUnlockedStock();
+            int stock_old_c = stock - old_stock;
+            int unlockedStock = old_unlockedStock + stock_old_c;
+            entity.setStock(stock);
+            entity.setUnlockedStock(unlockedStock);
+        }else{
+            entity.setStock(stock);
+            entity.setUnlockedStock(stock);
+        }
 
         return entity;
     }
@@ -221,5 +251,22 @@ public class CooperatorActivityServiceImpl implements CooperatorActivityService 
         });
 
         return entity;
+    }
+
+    @Override
+    public boolean isUnlockedStock(int id,int stock){
+        boolean isTrue = true;
+
+        CooperatorActivity cooperatorActivity = this.get(id);
+
+        int old_stock = cooperatorActivity.getStock();
+        int old_unlockedStock = cooperatorActivity.getUnlockedStock();
+        int stock_old_c = stock - old_stock;
+        int unlockedStock = old_unlockedStock + stock_old_c;
+        if (unlockedStock < 0){
+            isTrue = false;
+        }
+
+        return isTrue;
     }
 }

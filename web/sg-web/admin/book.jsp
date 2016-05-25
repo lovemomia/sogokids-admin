@@ -225,12 +225,12 @@
                                 <td class="center">
                                     <c:choose>
                                         <c:when test="${entity.status == 1}">
-                                            <a href="${ctx}/book/subcopy.do?uid=${user.id}&id=${entity.id}&mark=8" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i> 编辑 </a>
+                                            <%--<a href="${ctx}/book/subcopy.do?uid=${user.id}&id=${entity.id}&mark=8" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i> 编辑 </a>--%>
                                             <a href="${ctx}/book/upOrDown.do?uid=${user.id}&id=${entity.id}&mark=4" class="btn btn-danger btn-sm"><i class="fa fa-level-down"></i> 下线 </a>
                                             <a href="${ctx}/book/preview.do?uid=${user.id}&id=${entity.id}" class="btn btn-white btn-sm"><i class="fa fa-eye"></i> 预览 </a>
                                         </c:when>
                                         <c:otherwise>
-                                            <a href="${ctx}/book/subcopy.do?uid=${user.id}&id=${entity.id}&mark=8" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i> 编辑 </a>
+                                            <%--<a href="${ctx}/book/subcopy.do?uid=${user.id}&id=${entity.id}&mark=8" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i> 编辑 </a>--%>
                                             <%--<a href="${ctx}/book/del.do?uid=${user.id}&id=${entity.id}" class="btn btn-white btn-sm"><i class="fa fa-times-circle"></i> 删除 </a>--%>
                                             <%--<a href="javascript:void(0)" onclick="delCourse(${entity.id})" class="btn btn-white btn-sm"><i class="fa fa-times-circle"></i> 删除 </a>--%>
                                             <a href="${ctx}/book/upOrDown.do?uid=${user.id}&id=${entity.id}&mark=1" class="btn btn-primary btn-sm"><i class="fa fa-level-up"></i> 上线 </a>

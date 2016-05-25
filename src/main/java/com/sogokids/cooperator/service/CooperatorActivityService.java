@@ -17,4 +17,6 @@ public interface CooperatorActivityService {
     public int delete(int id);
     public CooperatorActivity formEntity(HttpServletRequest request, int id);
     public CooperatorActivity getActivityEntrys(int id);
+
+    public boolean isUnlockedStock(int id,int stock);
 }

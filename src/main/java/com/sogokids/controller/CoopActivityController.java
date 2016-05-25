@@ -1,12 +1,15 @@
 package com.sogokids.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.sogokids.cooperator.service.CooperatorActivityService;
 import com.sogokids.cooperator.service.CooperatorService;
+import com.sogokids.course.model.CourseSku;
 import com.sogokids.system.service.MenuService;
 import com.sogokids.user.service.UserService;
 import com.sogokids.utils.util.EnumUtil;
 import com.sogokids.utils.util.JumpPage;
 import com.sogokids.utils.util.Quantity;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +17,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -156,6 +162,31 @@ public class CoopActivityController {
         context.put(Quantity.RETURN_USER,adminUserService.get(uid));
         context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_NINETEEN));
         return new ModelAndView(JumpPage.COOP_ACTIVITY_ENTRY,context);
+    }
+
+    @RequestMapping("/isUnlockedStock")
+    public ModelAndView isUnlockedStock(@RequestParam("id") int id,HttpServletRequest req, HttpServletResponse rsp){
+        rsp.setContentType("text/html; charset=UTF-8");
+        Map<String, Object> context = new HashMap<String, Object>();
+        int stock = Integer.parseInt(req.getParameter("stock"));
+        if (!cooperatorActivityService.isUnlockedStock(id,stock)){
+            context.put("success",0);
+            context.put("msg","库存减少差已大于剩余库存，请重新填写!");
+        }else{
+            context.put("success",1);
+        }
+        Writer writer = null;
+        try {
+            writer = rsp.getWriter();
+            writer.write(JSONObject.toJSONString(context));
+            writer.flush();
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            IOUtils.closeQuietly(writer);
+        }
+        return null;
     }
 
 

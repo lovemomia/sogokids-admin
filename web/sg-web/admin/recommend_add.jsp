@@ -17,30 +17,19 @@
     <link href="${ctx}/sg-web/css/style.css?v=2.2.0" rel="stylesheet">
     <link href="${ctx}/sg-web/js/plugins/layer/skin/layer.css" rel="stylesheet">
 
-    <link href="${ctx}/sg-web/css/plugins/switchery/switchery.css" rel="stylesheet">
-
     <!-- Mainly scripts -->
     <script src="${ctx}/sg-web/js/jquery-2.1.1.min.js"></script>
     <script src="${ctx}/sg-web/js/bootstrap.min.js?v=3.4.0"></script>
     <script src="${ctx}/sg-web/js/plugins/metisMenu/jquery.metisMenu.js"></script>
     <script src="${ctx}/sg-web/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
-    <!-- layerDate plugin javascript -->
-    <script src="${ctx}/sg-web/js/plugins/layer/laydate/laydate.js"></script>
-
-    <!-- layer javascript -->
-    <script src="${ctx}/sg-web/js/plugins/layer/layer.min.js"></script>
-    <!-- Switchery -->
-    <script src="${ctx}/sg-web/js/plugins/switchery/switchery.js"></script>
 
     <!-- Custom and plugin javascript -->
     <script src="${ctx}/sg-web/js/hplus.js?v=2.2.0"></script>
     <script src="${ctx}/sg-web/js/plugins/pace/pace.min.js"></script>
-    <script src="${ctx}/sg-web/js/sg-admin/sogokids-onkeydown.js"></script>
 
-    <!-- ueditor javascript -->
-    <script type="text/javascript" charset="utf-8" src="${ctx}/sg-web/ueditor/ueditor.config.js"></script>
-    <script type="text/javascript" charset="utf-8" src="${ctx}/sg-web/ueditor/ueditor.all.min.js"> </script>
-    <script type="text/javascript" charset="utf-8" src="${ctx}/sg-web/ueditor/lang/zh-cn/zh-cn.js"> </script>
+    <!-- layer javascript -->
+    <script src="${ctx}/sg-web/js/plugins/layer/layer.min.js"></script>
+    <script src="${ctx}/sg-web/js/sg-admin/sogokids-onkeydown.js"></script>
 
 </head>
 
@@ -172,135 +161,145 @@
         </div>
         <div class="row wrapper border-bottom white-bg page-heading">
             <div class="col-lg-10">
-                <h2>活动列表</h2>
+                <h2>推荐列表</h2>
                 <ol class="breadcrumb">
                     <li>
                         <a href="${ctx}/user/index.do?uid=${user.id}">主页</a>
                     </li>
                     <li>
-                        <a href="${ctx}/coop_activity/info.do?uid=${user.id}">活动信息</a>
+                        <a href="${ctx}/recommend/info.do?uid=${user.id}">推荐信息</a>
                     </li>
                     <li>
-                        <strong>创建活动</strong>
+                        <strong>创建推荐信息</strong>
                     </li>
                 </ol>
             </div>
             <div class="col-lg-2">
-                <h2><a href="${ctx}/coop_activity/info.do?uid=${user.id}" class="btn btn-primary btn-x">返回</a></h2>
+                <h2><a href="${ctx}/recommend/info.do?uid=${user.id}" class="btn btn-primary btn-x">返回</a></h2>
             </div>
         </div>
         <div class="row">
             <div class="ibox-content">
-                <form class="form-horizontal" id="activity_form" name="activity_form" action="${ctx}/coop_activity/add.do?uid=${user.id}" method="post">
+                <form class="form-horizontal" id="vform" action="${ctx}/recommend/add.do?uid=${user.id}" method="post">
                     <fieldset>
+                        <%--<table>--%>
+                            <%--<tbody>--%>
+                                <%--<tr>--%>
+                                    <%--<td><label>选择城市 </label></td>--%>
+                                    <%--<td>--%>
+                                        <%--<select id="cityId" name="cityId" class="form-control" >--%>
+                                            <%--<c:forEach items="${citys}" var="node">--%>
+                                                <%--<option value="${node.id}">${node.name}</option>--%>
+                                            <%--</c:forEach>--%>
+                                        <%--</select>--%>
+                                    <%--</td>--%>
+                                    <%--<td rowspan="2"><label >上传图片</label></td>--%>
+                                    <%--<td rowspan="2">--%>
+                                        <%--<img id="img_a" src="${ctx}/sg-web/img/770jiahao.jpg" style="width: 200px;height: 100px;border: 1px solid #999;"/>--%>
+                                        <%--<input id="img_path" type="file" name="img_path" style="opacity: 0;filter:alpha(opacity=0);">--%>
+                                        <%--<input id="cover" name="cover" type="hidden">--%>
+                                        <%--<input id="filepath" name="filepath" type="hidden" value="${filepath}">--%>
+                                    <%--</td>--%>
+                                <%--</tr>--%>
+                                <%--<tr>--%>
+                                    <%--<td><label>排序顺序</label></td>--%>
+                                    <%--<td>--%>
+                                        <%--<input id="weight" name="weight" type="text" class="form-control">--%>
+                                    <%--</td>--%>
+                                <%--</tr>--%>
+                                <%--<tr>--%>
+                                    <%--<td><label>应用类型 </label></td>--%>
+                                    <%--<td>--%>
+                                        <%--<select id="platform" name="platform" class="form-control" style="width: 60%" >--%>
+                                            <%--<c:forEach items="${platforms}" var="node">--%>
+                                                <%--<option value="${node.id}">${node.name}</option>--%>
+                                            <%--</c:forEach>--%>
+                                        <%--</select>--%>
+                                    <%--</td>--%>
+                                    <%--<td><label>App版本 </label></td>--%>
+                                    <%--<td>--%>
+                                        <%--<select id="version" name="version" class="form-control" disabled >--%>
+                                            <%--<c:forEach items="${versions}" var="node">--%>
+                                                <%--<option value="${node.versionCode}">${node.versionDesc}</option>--%>
+                                            <%--</c:forEach>--%>
+                                        <%--</select>--%>
+                                    <%--</td>--%>
+                                <%--</tr>--%>
+                                <%--<tr>--%>
+                                    <%--<td><label>跳转连接</label></td>--%>
+                                    <%--<td colspan="3">--%>
+                                        <%--<textarea id="action" name="action" class="form-control" rows="5" style="resize:none;"></textarea>--%>
+                                    <%--</td>--%>
+                                <%--</tr>--%>
+                            <%--</tbody>--%>
+                        <%--</table>--%>
+                        <%--<div class="hr-line-dashed"></div>--%>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">活动图</label>
-                            <div class="col-sm-3" style="cursor: pointer;">
-                                <img id="img_a" src="${ctx}/sg-web/img/770jiahao.jpg" style="width: 270px;height: 150px;border: 1px solid #999;"/>
+                            <label class="col-sm-2 control-label">选择城市 </label>
+                            <div class="col-sm-3">
+                                <select id="cityId" name="cityId" class="form-control" >
+                                    <c:forEach items="${citys}" var="node">
+                                        <option value="${node.id}">${node.name}</option>
+                                    </c:forEach>
+                                </select>
+                            </div>
+                            <label class="col-sm-2 control-label">上传图片</label>
+                            <div class="col-sm-2" style="cursor: pointer;">
+                                <img id="img_a" src="${ctx}/sg-web/img/770jiahao.jpg" style="width: 200px;height: 100px;border: 1px solid #999;"/>
                                 <input id="img_path" type="file" name="img_path" style="opacity: 0;filter:alpha(opacity=0);">
                                 <input id="cover" name="cover" type="hidden">
                                 <input id="filepath" name="filepath" type="hidden" value="${filepath}">
                             </div>
-                            <label class="col-sm-2 control-label">转发logo</label>
-                            <div class="col-sm-3" style="cursor: pointer;">
-                                <img id="img_b" src="${ctx}/sg-web/img/770jiahao.jpg" style="width: 150px;height: 150px;border: 1px solid #999;"/>
-                                <input id="icon_path" type="file" name="icon_path" style="opacity: 0;filter:alpha(opacity=0);">
-                                <input id="icon" name="icon" type="hidden">
-                            </div>
+                            <%--<div>--%>
+                                <%--<button class="btn btn-primary" type="button" id="btn_img_save" name="btn_img_save">上传</button>--%>
+                            <%--</div>--%>
                         </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">推荐标题</label>
+                                <div class="col-sm-3">
+                                    <textarea id="title" name="title" class="form-control" rows="3" style="resize:none;"></textarea>
+                                </div>
+                                <label class="col-sm-2 control-label">推荐描述</label>
+                                <div class="col-sm-3">
+                                    <textarea id="desc" name="desc" class="form-control" rows="3" style="resize:none;"></textarea>
+                                </div>
+                            </div>
+                        <%--<div class="hr-line-dashed"></div>--%>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">选择单位 </label>
+                            <label class="col-sm-2 control-label">应用类型 </label>
                             <div class="col-sm-3">
-                                <select id="cooperatorId" name="cooperatorId" class="form-control" >
-                                    <c:forEach items="${coops}" var="node">
+                                <select id="platform" name="platform" class="form-control" >
+                                    <c:forEach items="${platforms}" var="node">
                                         <option value="${node.id}">${node.name}</option>
                                     </c:forEach>
                                 </select>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">活动标题 </label>
+                            <label class="col-sm-2 control-label">App版本 </label>
                             <div class="col-sm-3">
-                                <textarea id="title" name="title" class="form-control" rows="3" style="resize:none;"></textarea>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">活动描述 </label>
-                            <div class="col-sm-3">
-                                <textarea id="desc" name="desc" class="form-control" rows="3" style="resize:none;"></textarea>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">短信消息 </label>
-                            <div class="col-sm-3">
-                                <textarea id="message" name="message" class="form-control" rows="3" style="resize:none;"></textarea>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">是否付费 </label>
-                            <div class="col-sm-3">
-                                <select id="needPay" name="needPay" class="form-control" >
-                                    <c:forEach items="${needs}" var="node">
-                                        <option value="${node.id}">${node.name}</option>
+                                <select id="version" name="version" class="form-control" disabled >
+                                    <c:forEach items="${versions}" var="node">
+                                        <option value="${node.versionCode}">${node.versionDesc}</option>
                                     </c:forEach>
                                 </select>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">活动价格 </label>
-                            <div class="col-sm-3">
-                                <input id="price" name="price" type="text" class="form-control" >
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">排序顺序</label>
+                                <div class="col-sm-3">
+                                    <input id="weight" name="weight" type="text" class="form-control">
+                                </div>
                             </div>
-                        </div>
+                        <%--<div class="hr-line-dashed"></div>--%>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">售卖数量 </label>
-                            <div class="col-sm-3">
-                                <input id="stock" name="stock" type="text" value="0" class="form-control" >
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">是否新用户专享 </label>
-                            <div class="col-sm-3">
-                                <%--<input id="forNewUser" name="forNewUser" type="text" class="form-control" value="0" >--%>
-                                <%--(值为1是新用户专享,0则不是)--%>
-                                    <input id="forNewUser" name="forNewUser" type="checkbox" class="js-switch" />
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">开始时间</label>
-                            <div class="col-sm-3">
-                                <input id="startTime" name="startTime" type="text" class="form-control layer-date" placeholder="YYYY-MM-DD hh:mm:ss" onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" readonly>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">结束时间</label>
-                            <div class="col-sm-3">
-                                <input id="endTime" name="endTime" type="text" class="form-control layer-date" placeholder="YYYY-MM-DD hh:mm:ss" onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" readonly>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">上线时间</label>
-                            <div class="col-sm-3">
-                                <input id="onlineTime" name="onlineTime" type="text" class="form-control layer-date" placeholder="YYYY-MM-DD hh:mm:ss" onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" readonly>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">下线时间</label>
-                            <div class="col-sm-3">
-                                <input id="offlineTime" name="offlineTime" type="text" class="form-control layer-date" placeholder="YYYY-MM-DD hh:mm:ss" onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" readonly>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">活动详情</label>
+                            <label class="col-sm-2 control-label">跳转连接</label>
                             <div class="col-sm-8">
-                                <script id="my_editor" name = "content" type="text/plain"></script>
+                                <textarea id="action" name="action" class="form-control" rows="5" style="resize:none;"></textarea>
                             </div>
                         </div>
                         <div class="hr-line-dashed"></div>
                         <div class="form-group">
                             <div class="col-sm-4 col-sm-offset-5">
-                                <button class="btn btn-primary" type="button" id="btn_save_activity" name="btn_save_activity">保存内容</button>
+                                <button class="btn btn-primary" type="submit">保存内容</button>
                             </div>
                         </div>
                     </fieldset>
@@ -317,30 +316,11 @@
         </div>
     </div>
 </div>
-
 <script language="JavaScript">
     $(document).ready(function () {
 
-        var editor = new baidu.editor.ui.Editor({
-            textarea : 'detail',
-            initialFrameHeight:390,
-            initialFrameWidth:null,
-            toolbars: [['bold', 'italic','underline','|','forecolor','backcolor','|',"simpleupload",'|','justifyleft','justifycenter','justifyright','justifyjustify']],
-            autoHeightEnabled:false
-        });
-        editor.render("my_editor");
-
-        var elem = document.querySelector('.js-switch');
-        var switchery = new Switchery(elem, {
-            color: '#1AB394'
-        });
-
         $('#img_a').click(function (){
             document.getElementById("img_path").click();
-        });
-
-        $('#img_b').click(function (){
-            document.getElementById("icon_path").click();
         });
 
         $('#img_path').change(function (){
@@ -373,79 +353,12 @@
             }
         });
 
-        $('#icon_path').change(function (){
-            var pathUrl = $('#icon_path').val();
-            if(pathUrl != null || pathUrl != ""){
-                //创建FormData对象
-                var data1 = new FormData();
-                //为FormData对象添加数据
-                $.each($('#icon_path')[0].files, function(i, file) {
-                    data1.append('upload_file', file);
-                });
-
-                $.ajax({
-                    url:'/upload/jsonImg.do',
-                    type:'POST',
-                    data:data1,
-                    cache: false,
-                    contentType: false,    //不可缺
-                    processData: false,    //不可缺
-                    success:function(data){
-                        var obj = $.parseJSON(data);
-                        if(obj.success == 0){
-                            $("#icon").val(obj.path);
-                            $("#img_b").attr("src", $("#filepath").val() + obj.path);
-                        }else{
-                            layer.alert(obj.msg,10,'提示信息');
-                        }
-                    }
-                });
-            }
-        });
-
-        $('#btn_save_activity').click(function (){
-
-            var strP=/^\d+(\.\d+)?$/;
-            var icon = $('#icon').val();
-            var cover = $('#cover').val();
-            var title = $('#title').val();
-            var message = $('#message').val();
-            var needPay = $('#needPay').val();
-            var price = $('#price').val();
-            var startTime = $('#startTime').val();
-            var endTime = $('#endTime').val();
-            var onlineTime = $('#onlineTime').val();
-            var offlineTime = $('#offlineTime').val();
-
-            if(title == null || title == ""){
-                layer.alert('请填写标题信息！',3,'提示信息');
-                return false;
-            }else if(cover == null || cover == ""){
-                layer.alert('请上传活动图！',3,'提示信息');
-                return false;
-            }else if(icon == null || icon == ""){
-                layer.alert('请上传转发logo！',3,'提示信息');
-                return false;
-            }else if(message == null || message == ""){
-                layer.alert('请填写短信信息！',3,'提示信息');
-                return false;
-            }else if(needPay == 1 && (price == null || price == "" || !strP.test(price))){
-                layer.alert('您已选择需要付款活动,未填写价格信息或填写格式出错(只能填写数字类型,举例格式"100或10.99")！',3,'提示信息');
-                return false;
-            }else if(startTime == null || startTime == ""){
-                layer.alert('请填写开始时间信息！',3,'提示信息');
-                return false;
-            }else if(endTime == null || endTime == ""){
-                layer.alert('请填写结束时间信息！',3,'提示信息');
-                return false;
-            }else if(onlineTime == null || onlineTime == ""){
-                layer.alert('请填写上线时间信息！',3,'提示信息');
-                return false;
-            }else if(offlineTime == null || offlineTime == ""){
-                layer.alert('请填写下线时间信息！',3,'提示信息');
-                return false;
-            }else {
-                $('#activity_form').submit();
+        $('#platform').change(function(){
+            var platform_val = $(this).children('option:selected').val();
+            if(platform_val == 1){
+                $('#version').attr("disabled",false);
+            }else{
+                $('#version').attr("disabled",true);
             }
         });
 
