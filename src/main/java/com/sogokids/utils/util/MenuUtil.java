@@ -61,5 +61,6 @@ public class MenuUtil {
     public static final String MENU_DEAL_GROUP_CODE = "1037";
 
     public static final String MENU_QUERY_REFUND_CODE = "1038";
+    public static final String MENU_HOME_RECOMMEND_CODE = "1039";
 
 }

@@ -211,6 +211,9 @@ public class MenuServiceImpl implements MenuService {
             case Quantity.STATUS_SIXTEEN:
                 menus = this.getMenuHtml(uid, MenuUtil.MENU_HOME_CODE, MenuUtil.MENU_HOME_ICON_CODE);
                 break;
+            case Quantity.STATUS_THIRTY_TWO:
+                menus = this.getMenuHtml(uid, MenuUtil.MENU_HOME_CODE, MenuUtil.MENU_HOME_RECOMMEND_CODE);
+                break;
 
             //合作单位
             case Quantity.STATUS_SEVENTEEN:

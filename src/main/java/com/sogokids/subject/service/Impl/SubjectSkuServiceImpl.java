@@ -257,6 +257,36 @@ public class SubjectSkuServiceImpl implements SubjectSkuService {
         return entity;
     }
 
+    /**
+     * 单独处理sku的html的方法
+     */
+    private List<SubjectSku> getSubjectSku_Key(int sub_id) {
+        List<SubjectSku> reData = new ArrayList<SubjectSku>();
+        String sql = "select Id,SubjectId,`Desc`,Price,OriginalPrice,Adult,Child,CourseCount,Time,TimeUnit,Status,AddTime from SG_SubjectSku where SubjectId = ? and CourseId = ? and Status > ? and Status != ? ";
+        Object [] params = new Object[]{sub_id, Quantity.STATUS_ZERO, Quantity.STATUS_ZERO, Quantity.STATUS_FOUR};
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sql, params);
+        if(list.size() > 0){
+            for (int i = 0; i < list.size(); i++) {
+                SubjectSku entity = new SubjectSku();
+                entity.setId(Integer.parseInt(list.get(i).get("Id").toString()));
+                entity.setSubjectId(Integer.parseInt(list.get(i).get("SubjectId").toString()));
+                entity.setDesc(list.get(i).get("Desc").toString());
+                entity.setPrice(new BigDecimal(list.get(i).get("Price").toString()));
+                entity.setOriginalPrice(new BigDecimal(list.get(i).get("OriginalPrice").toString()));
+                entity.setAdult(Integer.parseInt(list.get(i).get("Adult").toString()));
+                entity.setChild(Integer.parseInt(list.get(i).get("Child").toString()));
+                entity.setCourseCount(Integer.parseInt(list.get(i).get("CourseCount").toString()));
+                entity.setTime(Integer.parseInt(list.get(i).get("Time").toString()));
+                entity.setTimeUnit(Integer.parseInt(list.get(i).get("TimeUnit").toString()));
+                entity.setStatus(Integer.parseInt(list.get(i).get("Status").toString()));
+                entity.setAddTime(list.get(i).get("AddTime").toString());
+                reData.add(entity);
+            }
+        }
+
+        return reData;
+    }
+
     @Override
     public String getSkuHtml(int sub_id){
         StringBuffer sb = new StringBuffer();
@@ -264,7 +294,7 @@ public class SubjectSkuServiceImpl implements SubjectSkuService {
         String p_end = "</p>";
         Subject subject = subjectService.get(sub_id);
         int status = subject.getStatus();
-        List<SubjectSku> sub_sku = this.getModelsBySub_Key(sub_id);
+        List<SubjectSku> sub_sku = this.getSubjectSku_Key(sub_id);
         if (sub_sku.size() > 0){
 
             for (SubjectSku sku : sub_sku){
@@ -298,7 +328,12 @@ public class SubjectSkuServiceImpl implements SubjectSkuService {
                     sb.append("&nbsp;&nbsp;");
                     sb.append("<a class='btn btn-danger btn-sm' href='javascript:void(0)' onclick=\"skuDel(" + sku_value + ")\"><i class='fa fa-trash'></i>删除</a>");
                 }else{
-                    sb.append("<a class='btn btn-danger btn-sm' href='javascript:void(0)' onclick=\"cancelSku(" + sku_value + ")\"><i class='fa fa-minus-circle'></i>取消</a>");
+                    int sku_status = sku.getStatus();
+                    if(sku_status == 3) {
+                        sb.append("<a class='btn btn-default btn-sm' href='javascript:void(0)' onclick=\"activeSku(" + sku_value + ")\"><i class='fa fa-check'></i>激活</a>");
+                    }else{
+                        sb.append("<a class='btn btn-danger btn-sm' href='javascript:void(0)' onclick=\"cancelSku(" + sku_value + ")\"><i class='fa fa-minus-circle'></i>取消</a>");
+                    }
                 }
                 sb.append(p_end);
                 sb.append("<div class='hr-line-dashed'></div>");

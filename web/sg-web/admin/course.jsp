@@ -239,23 +239,23 @@
                                             <%--<a href="javascript:void(0)" onclick="delCourse(${entity.id})" class="btn btn-white btn-sm"><i class="fa fa-times-circle"></i> 删除 </a>--%>
                                         </c:otherwise>
                                     </c:choose>
-                                    <c:choose>
-                                        <c:when test="${entity.copyFlag == 0}">
-                                            <a href="${ctx}/course/copyOper.do?uid=${user.id}&id=${entity.id}&subid=${subid}" class="btn btn-white btn-sm"><i class="fa fa-volume-up"></i> 加入试听 </a>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <a href="javascript:void(0)" onclick="cancelTrialCourse(${entity.id})" class="btn btn-white btn-sm"><i class="fa fa-volume-off"></i> 取消试听 </a>
-                                        </c:otherwise>
-                                    </c:choose>
+                                    <%--<c:choose>--%>
+                                        <%--<c:when test="${entity.copyFlag == 0}">--%>
+                                            <%--<a href="${ctx}/course/copyOper.do?uid=${user.id}&id=${entity.id}&subid=${subid}" class="btn btn-white btn-sm"><i class="fa fa-volume-up"></i> 加入试听 </a>--%>
+                                        <%--</c:when>--%>
+                                        <%--<c:otherwise>--%>
+                                            <%--<a href="javascript:void(0)" onclick="cancelTrialCourse(${entity.id})" class="btn btn-white btn-sm"><i class="fa fa-volume-off"></i> 取消试听 </a>--%>
+                                        <%--</c:otherwise>--%>
+                                    <%--</c:choose>--%>
 
-                                    <c:choose>
-                                        <c:when test="${entity.flag == 0}">
-                                            <a href="${ctx}/course/oper.do?uid=${user.id}&id=${entity.id}&mark=1&subid=${subid}" class="btn btn-white btn-sm"><i class="fa fa-thumbs-up"></i> 推荐课程 </a>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <a href="javascript:void(0)" onclick="cancelCourse(${entity.id})" class="btn btn-white btn-sm"><i class="fa fa-thumbs-down"></i> 取消推荐 </a>
-                                        </c:otherwise>
-                                    </c:choose>
+                                    <%--<c:choose>--%>
+                                        <%--<c:when test="${entity.flag == 0}">--%>
+                                            <%--<a href="${ctx}/course/oper.do?uid=${user.id}&id=${entity.id}&mark=1&subid=${subid}" class="btn btn-white btn-sm"><i class="fa fa-thumbs-up"></i> 推荐课程 </a>--%>
+                                        <%--</c:when>--%>
+                                        <%--<c:otherwise>--%>
+                                            <%--<a href="javascript:void(0)" onclick="cancelCourse(${entity.id})" class="btn btn-white btn-sm"><i class="fa fa-thumbs-down"></i> 取消推荐 </a>--%>
+                                        <%--</c:otherwise>--%>
+                                    <%--</c:choose>--%>
                                     <c:choose>
                                         <c:when test="${entity.status == 1}">
                                             <a href="${ctx}/course/preview.do?uid=${user.id}&id=${entity.id}&subid=${subid}" class="btn btn-white btn-sm"><i class="fa fa-eye"></i> 预览 </a>

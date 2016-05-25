@@ -69,6 +69,10 @@ public class JumpPage {
     public static final String EVENT_ADD = "admin/event_add";
     public static final String EVENT_EDIT = "admin/event_edit";
 
+    public static final String RECOMMEND = "admin/recommend";
+    public static final String RECOMMEND_ADD = "admin/recommend_add";
+    public static final String RECOMMEND_EDIT = "admin/recommend_edit";
+
     public static final String SUB = "admin/sub";
     public static final String SUB_ADD = "admin/sub_add";
     public static final String SUB_EDIT = "admin/sub_edit";

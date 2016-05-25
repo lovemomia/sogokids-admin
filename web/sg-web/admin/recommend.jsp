@@ -33,9 +33,6 @@
     <script src="${ctx}/sg-web/js/hplus.js?v=2.2.0"></script>
     <script src="${ctx}/sg-web/js/plugins/pace/pace.min.js"></script>
 
-    <!-- layer javascript -->
-    <script src="${ctx}/sg-web/js/plugins/layer/layer.min.js"></script>
-
 </head>
 
 <body>
@@ -166,22 +163,22 @@
         </div>
         <div class="row wrapper border-bottom white-bg page-heading">
             <div class="col-lg-10">
-                <h2>推荐课程</h2>
-                <%--<ol class="breadcrumb">--%>
-                    <%--<li>--%>
-                        <%--<a href="${ctx}/user/index.do?uid=${user.id}">主页</a>--%>
-                    <%--</li>--%>
-                    <%--<li>--%>
-                        <%--<a href="${ctx}/book/info.do?uid=${user.id}">试听课程</a>--%>
-                    <%--</li>--%>
-                    <%--<li>--%>
-                        <%--<strong>数据列表</strong>--%>
-                    <%--</li>--%>
-                <%--</ol>--%>
+                <h2>推荐列表</h2>
+                <ol class="breadcrumb">
+                    <li>
+                        <a href="${ctx}/user/index.do?uid=${user.id}">主页</a>
+                    </li>
+                    <li>
+                        <a href="${ctx}/recommend/info.do?uid=${user.id}">推荐信息</a>
+                    </li>
+                    <li>
+                        <strong>数据列表</strong>
+                    </li>
+                </ol>
             </div>
-            <%--<div class="col-lg-2">--%>
-                <%--<h2><a href="${ctx}/sub/oper.do?uid=${user.id}&id=0" class="btn btn-primary btn-x">创建课程包</a></h2>--%>
-            <%--</div>--%>
+            <div class="col-lg-2">
+                <h2><a href="${ctx}/recommend/oper.do?uid=${user.id}&id=0" class="btn btn-primary btn-x">创建推荐信息</a></h2>
+            </div>
         </div>
         <div class="row">
             <div class="ibox-content">
@@ -189,46 +186,35 @@
                     <table class="table table-striped table-bordered table-hover dataTables-example">
                         <thead>
                         <tr class="gradeX">
-                            <th>项目</th>
-                            <th>年龄段</th>
-                            <th>状态</th>
-                            <th>课程体系</th>
+                            <th>编号</th>
+                            <th>所属城市</th>
+                            <th>图片</th>
+                            <th>标题</th>
+                            <th>排序顺序</th>
+                            <th>应用类型</th>
+                            <%--<th>添加时间</th>--%>
                             <th>操作</th>
                         </tr>
                         </thead>
                         <tbody>
                         <c:forEach items="${entitys}" var="entity">
                             <tr>
-                                <td>
-                                    <div class="chat">
-                                        <img id="img_a" src="${filepath}${entity.cover}" class="chat-avatar" style="width: 100px;height: 50px"/>
-                                        <div>
-                                            <c:out value="${entity.title}"></c:out>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td><c:out value="${entity.minAge}"></c:out>至<c:out value="${entity.maxAge}"></c:out>岁</td>
+                                <td><c:out value="${entity.id}"></c:out></td>
+                                <td><c:out value="${entity.cityName}"></c:out></td>
+                                <td><img id="img_a" src="${filepath}${entity.cover}" style="width: 100px;height: 50px"/></td>
+                                <td><c:out value="${entity.title}"></c:out></td>
+                                <td><c:out value="${entity.weight}"></c:out></td>
                                 <td>
                                     <c:choose>
-                                        <c:when test="${entity.status == 1}">
-                                            <font color="#1AB394"> <b>已上线</b></font>
-                                        </c:when>
-                                        <c:when test="${entity.status == 2}">
-                                            <font color="#F8AC59"> 未上线</font>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <font color="#ED5565"> 已下线</font>
-                                        </c:otherwise>
+                                        <c:when test="${entity.platform == 1}">APP</c:when>
+                                        <c:when test="${entity.platform == 2}">M站</c:when>
+                                        <c:otherwise>通用</c:otherwise>
                                     </c:choose>
                                 </td>
-                                <td><c:out value="${entity.subjectTitle}"></c:out></td>
+                                <%--<td><c:out value="${fn:substring(entity.addTime,0,19)}"></c:out></td>--%>
                                 <td class="center">
-                                    <%--<a href="${ctx}/one/oper.do?uid=${user.id}&id=${entity.id}&mark=8" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i> 编辑 </a>--%>
-                                    <a href="javascript:void(0)" onclick="cancelCourse(${entity.id})" class="btn btn-white btn-sm"><i class="fa fa-volume-up"></i> 取消推荐 </a>
-                                    <a href="${ctx}/one/preview.do?uid=${user.id}&id=${entity.id}" class="btn btn-white btn-sm"><i class="fa fa-eye"></i> 预览 </a>
-
-                                    <a href="${ctx}/one/move.do?uid=${user.id}&id=${entity.id}&flag=1" class="btn btn-warning btn-sm"><i class="fa fa-arrow-circle-o-up"></i>上移</a>
-                                    <a href="${ctx}/one/move.do?uid=${user.id}&id=${entity.id}&flag=2" class="btn btn-success btn-sm"><i class="fa fa-arrow-circle-o-down"></i>下移</a>
+                                    <a href="${ctx}/recommend/oper.do?uid=${user.id}&id=${entity.id}" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i> 编辑 </a>
+                                    <a href="${ctx}/recommend/del.do?uid=${user.id}&id=${entity.id}" class="btn btn-white btn-sm"><i class="fa fa-times-circle"></i> 删除 </a>
                                 </td>
                             </tr>
                         </c:forEach>
@@ -255,13 +241,6 @@
             "bSort": false //排序功能
         });
     });
-
-    function cancelCourse(id){
-        layer.confirm('您确定要取消此课程推荐吗？', function(index){
-            window.location.href="${ctx}/one/cancelCourse.do?uid=${user.id}&id="+id;
-            layer.close(index);
-        });
-    }
 </script>
 </body>
 </html>
