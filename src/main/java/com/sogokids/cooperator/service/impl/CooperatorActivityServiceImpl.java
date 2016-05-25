@@ -57,7 +57,7 @@ public class CooperatorActivityServiceImpl implements CooperatorActivityService 
                 entity.setCover(rs.getString("Cover"));
                 entity.setTitle(rs.getString("Title"));
                 entity.setDesc(rs.getString("Desc"));
-                entity.setDetail(rs.getString("Detail").replace(".jpg","_m.jpg"));
+                entity.setDetail(rs.getString("Detail")==null?"":rs.getString("Detail").replace(".jpg","_m.jpg"));
                 entity.setMessage(rs.getString("Message"));
                 entity.setNeedPay(rs.getInt("NeedPay"));
                 entity.setPrice(rs.getBigDecimal("Price"));
