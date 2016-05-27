@@ -186,12 +186,12 @@
                     <table class="table table-striped table-bordered table-hover dataTables-example">
                         <thead>
                         <tr class="gradeX">
-                            <th>项目</th>
-                            <th>开始时间</th>
-                            <th>结束时间</th>
-                            <th>价格</th>
-                            <th>活动单位</th>
-                            <th>操作</th>
+                            <th width="20%">项目</th>
+                            <th width="8%">价格</th>
+                            <th width="12%">活动单位</th>
+                            <th width="20%">转发地址</th>
+                            <th width="15%">开始时间</th>
+                            <th width="25%">操作</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -212,10 +212,10 @@
                                         </div>
                                     </div>
                                 </td>
-                                <td><c:out value="${fn:substring(entity.startTime,0,19)}"></c:out></td>
-                                <td><c:out value="${fn:substring(entity.endTime,0,19)}"></c:out></td>
                                 <td><c:out value="${entity.price}"></c:out>元</td>
                                 <td><c:out value="${entity.cooperator.name}"></c:out></td>
+                                <td><c:out value="${entity.activityPath}"></c:out></td>
+                                <td><c:out value="${fn:substring(entity.startTime,0,19)}"></c:out></td>
                                 <td class="center">
                                     <a href="${ctx}/coop_activity/oper.do?uid=${user.id}&id=${entity.id}&mark=1" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i> 编辑 </a>
                                     <a href="${ctx}/coop_activity/sign.do?uid=${user.id}&id=${entity.id}" class="btn btn-white btn-sm"><i class="fa fa-leanpub"></i> 已报名(${entity.sum_count}人) </a>

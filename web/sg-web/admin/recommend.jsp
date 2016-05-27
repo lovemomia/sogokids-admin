@@ -214,6 +214,14 @@
                                 <%--<td><c:out value="${fn:substring(entity.addTime,0,19)}"></c:out></td>--%>
                                 <td class="center">
                                     <a href="${ctx}/recommend/oper.do?uid=${user.id}&id=${entity.id}" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i> 编辑 </a>
+                                    <c:choose>
+                                        <c:when test="${entity.status == 2}">
+                                            <a href="${ctx}/recommend/upOrDown.do?uid=${user.id}&id=${entity.id}&mark=1" class="btn btn-primary btn-sm"><i class="fa fa-level-up"></i> 上线 </a>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <a href="${ctx}/recommend/upOrDown.do?uid=${user.id}&id=${entity.id}&mark=2" class="btn btn-danger btn-sm"><i class="fa fa-level-down"></i> 下线 </a>
+                                        </c:otherwise>
+                                    </c:choose>
                                     <a href="${ctx}/recommend/del.do?uid=${user.id}&id=${entity.id}" class="btn btn-white btn-sm"><i class="fa fa-times-circle"></i> 删除 </a>
                                 </td>
                             </tr>
