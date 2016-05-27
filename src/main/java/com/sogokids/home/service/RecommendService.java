@@ -15,6 +15,7 @@ public interface RecommendService {
     public int insert(Recommend entity);
     public int update(Recommend entity);
     public int delete(int id);
+    public int updateStatus(int id, int status);
     public Recommend formEntity(HttpServletRequest request, int id);
 
 }

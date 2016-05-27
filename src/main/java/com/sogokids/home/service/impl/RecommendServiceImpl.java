@@ -1,10 +1,13 @@
 package com.sogokids.home.service.impl;
 
+import cn.momia.common.config.Configuration;
 import com.sogokids.home.model.Recommend;
 import com.sogokids.home.service.RecommendService;
 import com.sogokids.system.service.CityService;
 import com.sogokids.utils.util.Quantity;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowCallbackHandler;
@@ -24,6 +27,8 @@ import java.util.Map;
 @Service
 public class RecommendServiceImpl implements RecommendService {
 
+    private final Logger log = LoggerFactory.getLogger(RecommendServiceImpl.class);
+
     @Autowired
     private CityService cityService;
 
@@ -37,7 +42,6 @@ public class RecommendServiceImpl implements RecommendService {
     public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
-
 
     @Override
     public List<Recommend> getEntitys() {
@@ -61,6 +65,7 @@ public class RecommendServiceImpl implements RecommendService {
                 entity.setAddTime(list.get(i).get("AddTime")==null ? "0000-00-00 00:00:00" : list.get(i).get("AddTime").toString());
 
                 entity.setCityName(cityService.get(Integer.parseInt(list.get(i).get("CityId").toString())).getName());
+
                 reData.add(entity);
             }
         }
@@ -95,7 +100,7 @@ public class RecommendServiceImpl implements RecommendService {
     @Override
     public int insert(Recommend entity) {
         String sql = "insert into SG_Recommend(CityId,Cover,Title,`Desc`,Action,Platform,Version,Weight,Status,AddTime) value(?, ?, ?, ?, ?, ?, ?, ?, ?, NOW()) ";
-        Object [] params = new Object[]{entity.getCityId(), entity.getCover(), entity.getTitle(), entity.getDesc(), entity.getAction(), entity.getPlatform(), entity.getVersion(), entity.getWeight(), Quantity.STATUS_ONE};
+        Object [] params = new Object[]{entity.getCityId(), entity.getCover(), entity.getTitle(), entity.getDesc(), entity.getAction(), entity.getPlatform(), entity.getVersion(), entity.getWeight(), Quantity.STATUS_TWO};
         int reData = jdbcTemplate.update(sql,params);
         return reData;
     }
@@ -113,6 +118,19 @@ public class RecommendServiceImpl implements RecommendService {
         String sql = "update SG_Recommend set Status = ? where Id = ? ";
         Object [] params = new Object[]{Quantity.STATUS_ZERO,id};
         int reData = jdbcTemplate.update(sql,params);
+        return reData;
+    }
+
+    @Override
+    public int updateStatus(int id, int status) {
+        String sql = "update SG_Recommend set Status = ? where Id = ? ";
+        Object [] params = new Object[]{status, id};
+        int reData = 0;
+        try{
+            reData = jdbcTemplate.update(sql,params);
+        }catch (Exception _ex){
+            log.error("RecommendServiceImpl -> updateStatus -> error:"+_ex.getMessage());
+        }
         return reData;
     }
 

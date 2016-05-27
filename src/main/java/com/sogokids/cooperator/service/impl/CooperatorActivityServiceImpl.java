@@ -1,5 +1,6 @@
 package com.sogokids.cooperator.service.impl;
 
+import cn.momia.common.config.Configuration;
 import com.sogokids.cooperator.model.ActivityEntry;
 import com.sogokids.cooperator.model.CooperatorActivity;
 import com.sogokids.cooperator.service.ActivityEntryService;
@@ -34,6 +35,9 @@ public class CooperatorActivityServiceImpl implements CooperatorActivityService 
     @Autowired
     private CooperatorService cooperatorService;
 
+    @Autowired
+    private Configuration configuration;
+
     @Resource
     private JdbcTemplate jdbcTemplate;
 
@@ -44,6 +48,8 @@ public class CooperatorActivityServiceImpl implements CooperatorActivityService 
     public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
+
+    private String activity_url = "/activity/detail/";
 
     @Override
     public CooperatorActivity get(int id) {
@@ -88,7 +94,8 @@ public class CooperatorActivityServiceImpl implements CooperatorActivityService 
             try {
                 for (int i = 0; i < list.size(); i++) {
                     CooperatorActivity entity = new CooperatorActivity();
-                    entity.setId(Integer.parseInt(list.get(i).get("Id").toString()));
+                    int id = Integer.parseInt(list.get(i).get("Id").toString());
+                    entity.setId(id);
                     entity.setCover(list.get(i).get("Cover").toString());
                     entity.setTitle(list.get(i).get("Title").toString());
                     entity.setDesc(list.get(i).get("Desc").toString());
@@ -106,6 +113,8 @@ public class CooperatorActivityServiceImpl implements CooperatorActivityService 
                     entity.setStatus(Integer.parseInt(list.get(i).get("Status").toString()));
                     entity.setAddTime(list.get(i).get("AddTime") == null ? "" : list.get(i).get("AddTime").toString());
                     entity.setSum_count(activityEntryService.getActivityEntrys(Integer.parseInt(list.get(i).get("Id").toString())).size());
+                    String activityPath = configuration.getString(Quantity.UPLOAD_ACTIVITY)+activity_url+id;
+                    entity.setActivityPath(activityPath);
                     reData.add(entity);
                 }
             }catch (Exception _ex){

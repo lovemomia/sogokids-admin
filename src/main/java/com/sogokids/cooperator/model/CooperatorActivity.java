@@ -33,6 +33,8 @@ public class CooperatorActivity {
 
     private List<ActivityEntry> activityEntries;
 
+    private String activityPath;
+
     public int getId() {
         return id;
     }
@@ -215,5 +217,13 @@ public class CooperatorActivity {
 
     public void setLockedStock(int lockedStock) {
         this.lockedStock = lockedStock;
+    }
+
+    public String getActivityPath() {
+        return activityPath;
+    }
+
+    public void setActivityPath(String activityPath) {
+        this.activityPath = activityPath;
     }
 }

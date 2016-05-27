@@ -20,6 +20,7 @@
         <Tongqu>
             <DisplayPath>http://s.momia.cn</DisplayPath>
             <UploadPath>http://upload.momia.cn/upload/image</UploadPath>
+            <ActivityPath>http://m.momia.cn</ActivityPath>
         </Tongqu>
     </Image>
 

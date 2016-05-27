@@ -51,6 +51,7 @@ public class Quantity {
 
     public static final String DISPLAY_IMAGE = "Image.Tongqu.DisplayPath";
     public static final String UPLOAD_IMAGE = "Image.Tongqu.UploadPath";
+    public static final String UPLOAD_ACTIVITY = "Image.Tongqu.ActivityPath";
 
     public static final String UPLOAD_QZ = "ServicePort.PortUrl.QzPath";
     public static final String UPLOAD_QZ_JOIN = "ServicePort.PortUrl.QzJoinPath";

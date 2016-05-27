@@ -146,4 +146,28 @@ public class RecommendController {
         context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_THIRTY_TWO));
         return new ModelAndView(JumpPage.RECOMMEND,context);
     }
+
+    /**
+     * 推荐上下线
+     * @param uid
+     * @param id
+     * @param req
+     * @return
+     */
+    @RequestMapping("/upOrDown")
+    public ModelAndView upOrDown(@RequestParam("uid") int uid,@RequestParam("id") int id, @RequestParam("mark") int mark, HttpServletRequest req){
+
+        Map<String, Object> context = new HashMap<String, Object>();
+        int reDate = recommendService.updateStatus(id, mark);
+        if (reDate > 0){
+            context.put(Quantity.RETURN_MSG,"操作上下线数据成功!");
+        }else{
+            context.put(Quantity.RETURN_MSG,"操作上下线数据失败!");
+        }
+        context.put(Quantity.RETURN_ENTITY_LIST, recommendService.getEntitys());
+        context.put(Quantity.RETURN_USER,adminUserService.get(uid));
+        context.put(Quantity.RETURN_MENUS, menuService.getMenuStrings(uid, Quantity.STATUS_THIRTY_TWO));
+        return new ModelAndView(JumpPage.RECOMMEND,context);
+    }
+
 }
