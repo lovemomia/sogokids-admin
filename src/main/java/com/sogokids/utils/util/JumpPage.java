@@ -165,6 +165,18 @@ public class JumpPage {
     public static final String DEAL_GROUP = "admin/deal_group";
     public static final String DEAL_JOIN = "admin/deal_join";
 
+    public static final String EXPERT = "admin/expert";
+    public static final String EXPERT_ADD = "admin/expert_add";
+    public static final String EXPERT_EDIT = "admin/expert_edit";
+
+    public static final String EXPERT_BANNER = "admin/ebanner";
+    public static final String EXPERT_BANNER_ADD = "admin/ebanner_add";
+    public static final String EXPERT_BANNER_EDIT = "admin/ebanner_edit";
+
+    public static final String EXPERT_COURSE = "admin/ecourse";
+    public static final String EXPERT_COURSE_ADD = "admin/ecourse_add";
+    public static final String EXPERT_COURSE_EDIT = "admin/ecourse_edit";
+
 
     /**
      * 商户端配置

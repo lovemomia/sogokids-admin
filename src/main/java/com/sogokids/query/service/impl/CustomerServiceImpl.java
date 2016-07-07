@@ -77,6 +77,19 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
+    public int updateCustomerStatus(int id) {
+        String sql = "update SG_User set Role = ? where Id = ? ";
+        Object [] params = new Object[]{Quantity.STATUS_NINE, id};
+        int reData = 0;
+        try{
+            reData = jdbcTemplate.update(sql,params);
+        }catch (Exception _ex){
+            _ex.printStackTrace();
+        }
+        return reData;
+    }
+
+    @Override
     public String getUserInfo(List<Long> uids){
         StringBuffer sb = new StringBuffer();
 

@@ -63,4 +63,9 @@ public class MenuUtil {
     public static final String MENU_QUERY_REFUND_CODE = "1038";
     public static final String MENU_HOME_RECOMMEND_CODE = "1039";
 
+    public static final String MENU_EXPERT_ZCODE = "1041";
+    public static final String MENU_EXPERT_BANNER_CODE = "1042";
+    public static final String MENU_EXPERT_CODE = "1043";
+    public static final String MENU_EXPERT_COURSE_CODE = "1044";
+
 }

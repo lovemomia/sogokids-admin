@@ -265,6 +265,17 @@ public class MenuServiceImpl implements MenuService {
             case Quantity.STATUS_THIRTY:
                 menus = this.getMenuHtml(uid, MenuUtil.MENU_DEAL_CODE, MenuUtil.MENU_DEAL_GROUP_CODE);
                 break;
+
+            //问答应用
+            case Quantity.STATUS_THIRTY_THREE:
+                menus = this.getMenuHtml(uid, MenuUtil.MENU_EXPERT_ZCODE, MenuUtil.MENU_EXPERT_BANNER_CODE);
+                break;
+            case Quantity.STATUS_THIRTY_FOUR:
+                menus = this.getMenuHtml(uid, MenuUtil.MENU_EXPERT_ZCODE, MenuUtil.MENU_EXPERT_CODE);
+                break;
+            case Quantity.STATUS_THIRTY_FIVE:
+                menus = this.getMenuHtml(uid, MenuUtil.MENU_EXPERT_ZCODE, MenuUtil.MENU_EXPERT_COURSE_CODE);
+                break;
         }
 
         return menus;
