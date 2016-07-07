@@ -13,11 +13,9 @@
     <link href="${ctx}/sg-web/css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
     <link href="${ctx}/sg-web/font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
 
-    <!-- Data Tables -->
-    <link href="${ctx}/sg-web/css/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet">
-
     <link href="${ctx}/sg-web/css/animate.css" rel="stylesheet">
     <link href="${ctx}/sg-web/css/style.css?v=2.2.0" rel="stylesheet">
+    <link href="${ctx}/sg-web/js/plugins/layer/skin/layer.css" rel="stylesheet">
 
     <!-- Mainly scripts -->
     <script src="${ctx}/sg-web/js/jquery-2.1.1.min.js"></script>
@@ -25,16 +23,13 @@
     <script src="${ctx}/sg-web/js/plugins/metisMenu/jquery.metisMenu.js"></script>
     <script src="${ctx}/sg-web/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
 
-    <!-- Data Tables -->
-    <script src="${ctx}/sg-web/js/plugins/dataTables/jquery.dataTables.js"></script>
-    <script src="${ctx}/sg-web/js/plugins/dataTables/dataTables.bootstrap.js"></script>
-
     <!-- Custom and plugin javascript -->
     <script src="${ctx}/sg-web/js/hplus.js?v=2.2.0"></script>
     <script src="${ctx}/sg-web/js/plugins/pace/pace.min.js"></script>
 
     <!-- layer javascript -->
     <script src="${ctx}/sg-web/js/plugins/layer/layer.min.js"></script>
+    <script src="${ctx}/sg-web/js/sg-admin/sogokids-onkeydown.js"></script>
 
 </head>
 
@@ -50,7 +45,7 @@
                                  </span>
                         <a data-toggle="dropdown" class="dropdown-toggle" href="${ctx}/user/index.do?uid=${user.id}">
                                     <span class="clear"> <span class="block m-t-xs"> <strong class="font-bold">${user.username}</strong>
-                                 </span>  </span>
+                                 </span> </span>
                         </a>
                         <ul class="dropdown-menu animated fadeInRight m-t-xs">
                             <li><a href="${ctx}/user/oper.do?uid=${user.id}&id=${user.id}&mark=2">个人资料</a></li>
@@ -166,74 +161,81 @@
         </div>
         <div class="row wrapper border-bottom white-bg page-heading">
             <div class="col-lg-10">
-                <h2>推荐课程</h2>
-                <%--<ol class="breadcrumb">--%>
-                    <%--<li>--%>
-                        <%--<a href="${ctx}/user/index.do?uid=${user.id}">主页</a>--%>
-                    <%--</li>--%>
-                    <%--<li>--%>
-                        <%--<a href="${ctx}/book/info.do?uid=${user.id}">试听课程</a>--%>
-                    <%--</li>--%>
-                    <%--<li>--%>
-                        <%--<strong>数据列表</strong>--%>
-                    <%--</li>--%>
-                <%--</ol>--%>
+                <h2>banner列表</h2>
+                <ol class="breadcrumb">
+                    <li>
+                        <a href="${ctx}/user/index.do?uid=${user.id}">主页</a>
+                    </li>
+                    <li>
+                        <a href="${ctx}/expert/banner_info.do?uid=${user.id}">banner信息</a>
+                    </li>
+                    <li>
+                        <strong>创建banner信息</strong>
+                    </li>
+                </ol>
             </div>
-            <%--<div class="col-lg-2">--%>
-                <%--<h2><a href="${ctx}/sub/oper.do?uid=${user.id}&id=0" class="btn btn-primary btn-x">创建课程包</a></h2>--%>
-            <%--</div>--%>
+            <div class="col-lg-2">
+                <h2><a href="${ctx}/expert/banner_info.do?uid=${user.id}" class="btn btn-primary btn-x">返回</a></h2>
+            </div>
         </div>
         <div class="row">
             <div class="ibox-content">
-                <form>
-                    <table class="table table-striped table-bordered table-hover dataTables-example">
-                        <thead>
-                        <tr class="gradeX">
-                            <th>项目</th>
-                            <th>年龄段</th>
-                            <th>状态</th>
-                            <th>课程体系</th>
-                            <th>操作</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <c:forEach items="${entitys}" var="entity">
-                            <tr>
-                                <td>
-                                    <div class="chat">
-                                        <img id="img_a" src="${filepath}${entity.cover}" class="chat-avatar" style="width: 100px;height: 50px"/>
-                                        <div>
-                                            <c:out value="${entity.title}"></c:out>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td><c:out value="${entity.minAge}"></c:out>至<c:out value="${entity.maxAge}"></c:out>岁</td>
-                                <td>
-                                    <c:choose>
-                                        <c:when test="${entity.status == 1}">
-                                            <font color="#1AB394"> <b>已上线</b></font>
-                                        </c:when>
-                                        <c:when test="${entity.status == 2}">
-                                            <font color="#F8AC59"> 未上线</font>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <font color="#ED5565"> 已下线</font>
-                                        </c:otherwise>
-                                    </c:choose>
-                                </td>
-                                <td><c:out value="${entity.subjectTitle}"></c:out></td>
-                                <td class="center">
-                                    <a href="${ctx}/one/oper.do?uid=${user.id}&id=${entity.id}&mark=8" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i> 编辑 </a>
-                                    <a href="javascript:void(0)" onclick="cancelCourse(${entity.id})" class="btn btn-white btn-sm"><i class="fa fa-volume-up"></i> 取消推荐 </a>
-                                    <a href="${ctx}/one/preview.do?uid=${user.id}&id=${entity.id}" class="btn btn-white btn-sm"><i class="fa fa-eye"></i> 预览 </a>
-
-                                    <a href="${ctx}/one/move.do?uid=${user.id}&id=${entity.id}&flag=1" class="btn btn-warning btn-sm"><i class="fa fa-arrow-circle-o-up"></i>上移</a>
-                                    <a href="${ctx}/one/move.do?uid=${user.id}&id=${entity.id}&flag=2" class="btn btn-success btn-sm"><i class="fa fa-arrow-circle-o-down"></i>下移</a>
-                                </td>
-                            </tr>
-                        </c:forEach>
-                        </tbody>
-                    </table>
+                <form class="form-horizontal" id="vform" action="${ctx}/expert/banner_add.do?uid=${user.id}" method="post">
+                    <fieldset>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">选择城市 </label>
+                            <div class="col-sm-3">
+                                <select id="cityId" name="cityId" class="form-control" >
+                                    <c:forEach items="${citys}" var="node">
+                                        <option value="${node.id}">${node.name}</option>
+                                    </c:forEach>
+                                </select>
+                            </div>
+                            <label class="col-sm-2 control-label">上传图片</label>
+                            <div class="col-sm-2" style="cursor: pointer;">
+                                <img id="img_a" src="${ctx}/sg-web/img/770jiahao.jpg" style="width: 200px;height: 100px;border: 1px solid #999;"/>
+                                <input id="img_path" type="file" name="img_path" style="opacity: 0;filter:alpha(opacity=0);">
+                                <input id="cover" name="cover" type="hidden">
+                                <input id="filepath" name="filepath" type="hidden" value="${filepath}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">应用类型 </label>
+                            <div class="col-sm-3">
+                                <select id="platform" name="platform" class="form-control" >
+                                    <c:forEach items="${platforms}" var="node">
+                                        <option value="${node.id}">${node.name}</option>
+                                    </c:forEach>
+                                </select>
+                            </div>
+                            <label class="col-sm-2 control-label">App版本 </label>
+                            <div class="col-sm-3">
+                                <select id="version" name="version" class="form-control" disabled >
+                                    <c:forEach items="${versions}" var="node">
+                                        <option value="${node.versionCode}">${node.versionDesc}</option>
+                                    </c:forEach>
+                                </select>
+                            </div>
+                        </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">排序顺序</label>
+                                <div class="col-sm-3">
+                                    <input id="weight" name="weight" type="text" class="form-control">
+                                </div>
+                            </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">跳转连接</label>
+                            <div class="col-sm-8">
+                                <textarea id="action" name="action" class="form-control" rows="5" style="resize:none;"></textarea>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div class="col-sm-4 col-sm-offset-5">
+                                <button class="btn btn-primary" type="submit">保存内容</button>
+                            </div>
+                        </div>
+                    </fieldset>
                 </form>
             </div>
         </div>
@@ -247,21 +249,53 @@
         </div>
     </div>
 </div>
-<!-- Page-Level Scripts -->
-<script>
+<script language="JavaScript">
     $(document).ready(function () {
-        $('.dataTables-example').dataTable({
-            "aLengthMenu":[25,50,100],
-            "bSort": false //排序功能
-        });
-    });
 
-    function cancelCourse(id){
-        layer.confirm('您确定要取消此课程推荐吗？', function(index){
-            window.location.href="${ctx}/one/cancelCourse.do?uid=${user.id}&id="+id;
-            layer.close(index);
+        $('#img_a').click(function (){
+            document.getElementById("img_path").click();
         });
-    }
+
+        $('#img_path').change(function (){
+            var pathUrl = $('#img_path').val();
+            if(pathUrl != null || pathUrl != ""){
+                //创建FormData对象
+                var data = new FormData();
+                //为FormData对象添加数据
+                $.each($('#img_path')[0].files, function(i, file) {
+                    data.append('upload_file', file);
+                });
+
+                $.ajax({
+                    url:'/upload/jsonImg.do',
+                    type:'POST',
+                    data:data,
+                    cache: false,
+                    contentType: false,    //不可缺
+                    processData: false,    //不可缺
+                    success:function(data){
+                        var obj = $.parseJSON(data);
+                        if(obj.success == 0){
+                            $("#cover").val(obj.path);
+                            $("#img_a").attr("src", $("#filepath").val() + obj.path);
+                        }else{
+                            layer.alert(obj.msg,10,'提示信息');
+                        }
+                    }
+                });
+            }
+        });
+
+        $('#platform').change(function(){
+            var platform_val = $(this).children('option:selected').val();
+            if(platform_val == 1){
+                $('#version').attr("disabled",false);
+            }else{
+                $('#version').attr("disabled",true);
+            }
+        });
+
+    });
 </script>
 </body>
 </html>

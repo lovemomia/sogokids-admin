@@ -13,6 +13,7 @@ public interface CustomerService {
     public Customer getCustomerByMobile(String mobile);
 
     public int updateCustomer(int id);
+    public int updateCustomerStatus(int id);
 
     public String getUserInfo(List<Long> uids);
 }

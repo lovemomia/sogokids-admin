@@ -42,6 +42,9 @@ public class Quantity {
     public static final int STATUS_THIRTY_ONE = 31;
     public static final int STATUS_THIRTY_TWO = 32;
     public static final int STATUS_THIRTY_THREE = 33;
+    public static final int STATUS_THIRTY_FOUR = 34;
+    public static final int STATUS_THIRTY_FIVE = 35;
+    public static final int STATUS_THIRTY_SIX = 36;
 
     public static final int RESULT_CODE_SUCESS = 0;
     public static final int RESULT_CODE_ERROR = -1;
@@ -51,6 +54,7 @@ public class Quantity {
 
     public static final String DISPLAY_IMAGE = "Image.Tongqu.DisplayPath";
     public static final String UPLOAD_IMAGE = "Image.Tongqu.UploadPath";
+    public static final String UPLOAD_AUDIO = "Image.Tongqu.UploadAudioPath";
     public static final String UPLOAD_ACTIVITY = "Image.Tongqu.ActivityPath";
 
     public static final String UPLOAD_QZ = "ServicePort.PortUrl.QzPath";

@@ -144,10 +144,10 @@ public class TeacherController {
         if (customer.getId() > 0){
             context.put("userId",customer.getId());
             context.put(Quantity.RETURN_SUCCESS,0);
-            context.put(Quantity.RETURN_MSG,"编辑讲师信息成功!");
+            context.put(Quantity.RETURN_MSG,"操作信息成功!");
         }else{
             context.put(Quantity.RETURN_SUCCESS,1);
-            context.put(Quantity.RETURN_MSG,"编辑讲师信息失败,手机号验证失败!");
+            context.put(Quantity.RETURN_MSG,"操作信息失败,手机号验证失败,不是注册用户!");
         }
 
 
